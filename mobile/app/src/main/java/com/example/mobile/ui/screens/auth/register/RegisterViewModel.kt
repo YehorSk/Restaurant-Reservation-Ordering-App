@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mobile.auth.data.model.AuthResult
 import com.example.mobile.auth.data.repository.AuthPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
+import com.example.mobile.utils.ConnectivityRepository
 import com.example.mobile.utils.cleanError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,11 +20,25 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     val authRepository: AuthRepository,
-    val preferencesRepository: AuthPreferencesRepository
+    val preferencesRepository: AuthPreferencesRepository,
+    val connectivityRepository: ConnectivityRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState.asStateFlow()
+
+    init {
+        val isOnline = connectivityRepository.isInternetConnected()
+        if (!isOnline) {
+            _uiState.update { currentState ->
+                currentState.copy(internetError = true)
+            }
+        }else{
+            _uiState.update { currentState ->
+                currentState.copy(internetError = false)
+            }
+        }
+    }
 
     private fun validateRegInput(uiState: RegisterState): Boolean{
         return with(uiState.registerForm){

@@ -1,5 +1,6 @@
 package com.example.mobile.ui.screens.auth.register
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,10 +27,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.mobile.auth.data.model.AuthResult
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -40,6 +41,7 @@ fun RegisterScreen(
     onLogClick: () -> Unit,
     onSuccess: () -> Unit
 ) {
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val uiState by authViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -73,6 +75,11 @@ fun RegisterScreen(
             if(uiState.isLoggedIn){
                 Timber.d("Navigating to home screen from Register")
                 onSuccess()
+            }
+        }
+        LaunchedEffect(uiState.internetError) {
+            if(uiState.internetError){
+                Toast.makeText(context,"No internet connection!", Toast.LENGTH_LONG).show()
             }
         }
         if (uiState.isLoading) {

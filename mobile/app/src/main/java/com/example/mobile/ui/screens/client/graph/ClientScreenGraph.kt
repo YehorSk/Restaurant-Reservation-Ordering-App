@@ -41,7 +41,8 @@ fun ClientScreenGraph(
 fun BottomBar(navController: NavHostController){
     val screens = listOf(
         BottomBarScreen.Home,
-        BottomBarScreen.Settings
+        BottomBarScreen.Orders,
+        BottomBarScreen.Settings,
     )
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()

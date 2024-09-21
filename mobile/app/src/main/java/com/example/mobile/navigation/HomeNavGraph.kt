@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mobile.ui.screens.client.home.MainScreen
+import com.example.mobile.ui.screens.client.orders.OrdersScreen
 import com.example.mobile.ui.screens.common.settings.SettingsScreen
 
 @Composable
@@ -35,11 +36,15 @@ fun HomeNavGraph(
                 onSuccessLoggedOut = onLoggedOut
             )
         }
+        composable(HomeScreen.Orders.route) {
+            OrdersScreen()
+        }
     }
 }
 
 
 sealed class HomeScreen(val route: String){
     object Home: HomeScreen(route = "HOME")
+    object Orders: HomeScreen(route = "ORDERS")
     object Settings: HomeScreen(route = "SETTINGS")
 }

@@ -1,5 +1,6 @@
 package com.example.mobile.ui.screens.auth.login
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,6 +42,7 @@ fun LoginScreen(
     onSuccessWaiter: () -> Unit,
     onRegClick: () -> Unit,
 ) {
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -86,6 +89,11 @@ fun LoginScreen(
 
                     }
                 }
+            }
+        }
+        LaunchedEffect(uiState.internetError) {
+            if(uiState.internetError){
+                Toast.makeText(context,"No internet connection!",Toast.LENGTH_LONG).show()
             }
         }
 

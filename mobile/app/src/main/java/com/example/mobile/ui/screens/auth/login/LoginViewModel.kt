@@ -38,6 +38,9 @@ class LoginViewModel @Inject constructor(
         val isOnline = connectivityRepository.isInternetConnected()
         if (isOnline){
             authenticate()
+            _uiState.update { currentState ->
+                currentState.copy(internetError = false)
+            }
         }else{
             checkIfLoggedIn()
             _uiState.update { currentState ->
