@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Models\Cart;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -21,6 +22,10 @@ class AuthController extends Controller
         }
 
         $user = User::where('email',$request->email)->first();
+
+        $cart = new Cart;
+        $cart->client_id = $user->id;
+        $cart->save();
 
         return $this->success([
             'user' => $user,

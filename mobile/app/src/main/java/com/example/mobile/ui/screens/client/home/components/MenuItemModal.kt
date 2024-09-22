@@ -1,13 +1,21 @@
 package com.example.mobile.ui.screens.client.home.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -38,16 +46,48 @@ fun MenuItemModal(
             Column(
                 modifier = Modifier.background(Color.White),
             ) {
-                AsyncImage(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp),
-                    model = menuItem.picture,
-                    contentDescription = "",
-                    placeholder = painterResource(R.drawable.menu_item_placeholder),
-                    contentScale = ContentScale.Crop,
-                    error = painterResource(R.drawable.menu_item_placeholder)
-                )
+                ){
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp),
+                        model = menuItem.picture,
+                        contentDescription = "",
+                        placeholder = painterResource(R.drawable.menu_item_placeholder),
+                        contentScale = ContentScale.Crop,
+                        error = painterResource(R.drawable.menu_item_placeholder)
+                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        horizontalArrangement = Arrangement.End
+                    ){
+                        IconButton(
+                            onClick = {},
+                            modifier = Modifier.background(Color.White),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Star,
+                                contentDescription = "",
+                                modifier = Modifier.size(30.dp)
+                            )
+                        }
+                        IconButton(
+                            onClick = onDismiss
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "",
+                                modifier = Modifier.size(30.dp)
+                            )
+                        }
+                    }
+                }
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -65,9 +105,27 @@ fun MenuItemModal(
                 Text(
                     modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
                     fontSize = 16.sp,
-                    text = menuItem.description
+                    text = menuItem.longDescription
                 )
             }
         }
     )
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewMenuItemModal() {
+//    MenuItemModal(
+//        onDismiss = {},
+//        menuItem = MenuItem(
+//            id = "1",
+//            createdAt = "2023-09-22",
+//            updatedAt = "2023-09-22",
+//            menuId = "menu1",
+//            name = "Sample Dish",
+//            description = "A delicious sample dish with fresh ingredients.",
+//            picture = "https://example.com/sample.jpg",
+//            price = "12.99"
+//        )
+//    )
+//}

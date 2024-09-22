@@ -2,6 +2,7 @@ package com.example.mobile.ui.screens
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,10 +18,16 @@ sealed class BottomBarScreen(
         icon = Icons.Default.Home
     )
 
+    object Cart : BottomBarScreen(
+        route = "CART",
+        title = "CART",
+        icon = Icons.Default.ShoppingCart
+    )
+
     object Orders : BottomBarScreen(
         route = "ORDERS",
         title = "ORDERS",
-        icon = Icons.Default.ShoppingCart
+        icon = Icons.Default.Receipt
     )
 
     object Settings : BottomBarScreen(

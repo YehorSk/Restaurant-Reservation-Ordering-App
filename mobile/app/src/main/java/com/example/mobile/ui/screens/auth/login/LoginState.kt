@@ -1,7 +1,6 @@
 package com.example.mobile.ui.screens.auth.login
 
 import kotlinx.serialization.Serializable
-import java.lang.Error
 
 data class LoginState(
     val loginForm: LoginForm = LoginForm(),

@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,7 +55,7 @@ fun MenuItem(
 
             )
             Text(
-                text = menuItem.description,
+                text = menuItem.shortDescription,
                 fontSize = 12.sp,
                 maxLines = 2,
                 modifier = modifier
@@ -79,7 +78,7 @@ fun MenuItem(
                 .weight(1f)
                 .padding(16.dp)
                 .clip(RoundedCornerShape(10.dp)),
-            contentDescription = menuItem.description,
+            contentDescription = menuItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),
             contentScale = ContentScale.Crop,
             error = painterResource(R.drawable.menu_item_placeholder)
@@ -98,7 +97,9 @@ fun MenuItemPreview(){
                 updatedAt = "",
                 menuId = "",
                 name = "Pancakes",
-                description = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
+                longDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
+                shortDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
+                recipe = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 picture = "",
                 price = "5.99"
             ),

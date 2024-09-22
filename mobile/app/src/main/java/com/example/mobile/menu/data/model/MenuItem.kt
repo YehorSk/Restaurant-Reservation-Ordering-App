@@ -13,7 +13,11 @@ data class MenuItem(
     @SerialName("menu_id")
     val menuId: String,
     val name: String,
-    val description: String,
+    @SerialName("short_description")
+    val shortDescription: String,
+    @SerialName("long_description")
+    val longDescription: String,
+    val recipe: String,
     val picture: String,
     val price: String
 )

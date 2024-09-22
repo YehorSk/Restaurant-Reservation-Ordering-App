@@ -41,6 +41,7 @@ fun ClientScreenGraph(
 fun BottomBar(navController: NavHostController){
     val screens = listOf(
         BottomBarScreen.Home,
+        BottomBarScreen.Cart,
         BottomBarScreen.Orders,
         BottomBarScreen.Settings,
     )

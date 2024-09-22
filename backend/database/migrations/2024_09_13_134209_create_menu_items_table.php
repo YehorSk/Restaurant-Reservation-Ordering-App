@@ -16,7 +16,9 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedBigInteger("menu_id");
             $table->string('name');
-            $table->longText('description');
+            $table->longText('short_description');
+            $table->longText('long_description');
+            $table->longText('recipe');
             $table->longText('picture');
             $table->float('price');
 

@@ -10,6 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.mobile.ui.screens.client.cart.CartScreen
 import com.example.mobile.ui.screens.client.home.MainScreen
 import com.example.mobile.ui.screens.client.orders.OrdersScreen
 import com.example.mobile.ui.screens.common.settings.SettingsScreen
@@ -39,12 +40,16 @@ fun HomeNavGraph(
         composable(HomeScreen.Orders.route) {
             OrdersScreen()
         }
+        composable(HomeScreen.Cart.route) {
+            CartScreen()
+        }
     }
 }
 
 
 sealed class HomeScreen(val route: String){
     object Home: HomeScreen(route = "HOME")
+    object Cart: HomeScreen(route = "CART")
     object Orders: HomeScreen(route = "ORDERS")
     object Settings: HomeScreen(route = "SETTINGS")
 }
