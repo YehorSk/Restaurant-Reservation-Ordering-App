@@ -24,4 +24,9 @@ class MenuItem extends Model
         return $this->belongsTo(Menu::class);
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
 }

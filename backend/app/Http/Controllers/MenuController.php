@@ -11,5 +11,9 @@ class MenuController extends Controller
         $menus = Menu::with('items')->get();
         return response()->json($menus);
     }
-    
+
+    public function addItemToCart(Request $request){
+
+    }
+
 }
