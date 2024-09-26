@@ -23,10 +23,6 @@ class AuthController extends Controller
 
         $user = User::where('email',$request->email)->first();
 
-        $cart = new Cart;
-        $cart->client_id = $user->id;
-        $cart->save();
-
         return $this->success([
             'user' => $user,
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken

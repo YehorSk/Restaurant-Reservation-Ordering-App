@@ -49,7 +49,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function cartItems()
+    public function menuItems()
     {
         return $this->belongsToMany(MenuItem::class);
     }

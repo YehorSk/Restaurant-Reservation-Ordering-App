@@ -1,9 +1,8 @@
-package com.example.mobile.ui.screens.client.home.viewmodel
+package com.example.mobile.ui.screens.client.cart.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.menu.data.model.Menu
-import com.example.mobile.menu.data.model.MenuItem
+import com.example.mobile.menu.data.model.MenuItemUser
 import com.example.mobile.menu.data.repository.MenuRepositoryImpl
 import com.example.mobile.utils.ConnectivityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,43 +14,35 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ClientMainScreenViewModel @Inject constructor(
+class CartScreenViewModel @Inject constructor(
     val menuRepositoryImpl: MenuRepositoryImpl,
     val connectivityRepository: ConnectivityRepository
 ) : ViewModel(){
 
-    private val _uiState = MutableStateFlow(ClientMainUiState())
-    val uiState: StateFlow<ClientMainUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(CartScreenUiState())
+    val uiState: StateFlow<CartScreenUiState> = _uiState.asStateFlow()
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
     init {
         val isOnline = connectivityRepository.isInternetConnected()
         if(isOnline){
-            getMenus()
+            getItems()
         }
     }
 
-    fun getMenus(){
+    fun getItems(){
         viewModelScope.launch {
             _isLoading.value = true
             _uiState.update { state ->
-                state.copy(menus = menuRepositoryImpl.getAllMenus())
+                state.copy(items = menuRepositoryImpl.getAllItems())
             }
             _isLoading.value = false
         }
     }
 
-    fun setMenu(menu: MenuItem){
-        _uiState.update {
-            it.copy(currentMenu = menu)
-        }
-    }
-
-
 }
 
-data class ClientMainUiState(
-    val menus: List<Menu>? = null,
-    val currentMenu: MenuItem? = null
+data class CartScreenUiState(
+    val items: List<MenuItemUser>? = null
 )
