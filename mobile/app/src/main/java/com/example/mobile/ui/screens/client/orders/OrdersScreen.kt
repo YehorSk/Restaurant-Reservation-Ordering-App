@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun OrdersScreen(
-
+    modifier:Modifier = Modifier
 ){
     Column(
         modifier = Modifier.fillMaxSize(),

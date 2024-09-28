@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('menu_items_orders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
-            $table->unsignedBigInteger("menu_id");
+            $table->integer("quantity");
+            $table->float("price");
+            $table->unsignedBigInteger("order_id");
             $table->unsignedBigInteger("menu_item_id");
 
-            $table->foreign("menu_id")->references("id")->on("menus")->onDelete("cascade");
+            $table->foreign("order_id")->references("id")->on("orders")->onDelete("cascade");
             $table->foreign("menu_item_id")->references("id")->on("menu_items")->onDelete("cascade");
         });
     }

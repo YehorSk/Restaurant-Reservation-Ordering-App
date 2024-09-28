@@ -2,6 +2,7 @@ package com.example.mobile.ui.screens.client.cart.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.common.NetworkResult
 import com.example.mobile.menu.data.model.MenuItemUser
 import com.example.mobile.menu.data.repository.MenuRepositoryImpl
 import com.example.mobile.utils.ConnectivityRepository
@@ -15,8 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartScreenViewModel @Inject constructor(
-    val menuRepositoryImpl: MenuRepositoryImpl,
-    val connectivityRepository: ConnectivityRepository
+    val menuRepositoryImpl: MenuRepositoryImpl
 ) : ViewModel(){
 
     private val _uiState = MutableStateFlow(CartScreenUiState())
@@ -25,17 +25,24 @@ class CartScreenViewModel @Inject constructor(
     val isLoading = _isLoading.asStateFlow()
 
     init {
-        val isOnline = connectivityRepository.isInternetConnected()
-        if(isOnline){
-            getItems()
-        }
+        getItems()
     }
 
     fun getItems(){
         viewModelScope.launch {
             _isLoading.value = true
             _uiState.update { state ->
-                state.copy(items = menuRepositoryImpl.getAllItems())
+                when(val result = menuRepositoryImpl.getAllItems()){
+                    is NetworkResult.Error -> {
+                        if(result.code == 503){
+                            state.copy(internetError = true)
+                        }else{
+                            state.copy(error = result.message.toString())
+                        }
+                    }
+                    is NetworkResult.Success -> state.copy(items = result.data)
+                }
+
             }
             _isLoading.value = false
         }
@@ -44,5 +51,7 @@ class CartScreenViewModel @Inject constructor(
 }
 
 data class CartScreenUiState(
-    val items: List<MenuItemUser>? = null
+    val items: List<MenuItemUser>? = null,
+    val internetError: Boolean = false,
+    val error: String = ""
 )

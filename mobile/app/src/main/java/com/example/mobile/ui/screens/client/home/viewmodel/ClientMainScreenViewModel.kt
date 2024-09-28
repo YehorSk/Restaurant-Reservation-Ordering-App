@@ -2,6 +2,7 @@ package com.example.mobile.ui.screens.client.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.common.NetworkResult
 import com.example.mobile.menu.data.model.Menu
 import com.example.mobile.menu.data.model.MenuItem
 import com.example.mobile.menu.data.repository.MenuRepositoryImpl
@@ -16,8 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ClientMainScreenViewModel @Inject constructor(
-    val menuRepositoryImpl: MenuRepositoryImpl,
-    val connectivityRepository: ConnectivityRepository
+    val menuRepositoryImpl: MenuRepositoryImpl
 ) : ViewModel(){
 
     private val _uiState = MutableStateFlow(ClientMainUiState())
@@ -26,17 +26,27 @@ class ClientMainScreenViewModel @Inject constructor(
     val isLoading = _isLoading.asStateFlow()
 
     init {
-        val isOnline = connectivityRepository.isInternetConnected()
-        if(isOnline){
-            getMenus()
-        }
+        getMenus()
     }
 
     fun getMenus(){
         viewModelScope.launch {
             _isLoading.value = true
             _uiState.update { state ->
-                state.copy(menus = menuRepositoryImpl.getAllMenus())
+                when(val result = menuRepositoryImpl.getAllMenus()){
+                    is NetworkResult.Error -> {
+                        if(result.code == 503){
+                            state.copy(internetError = true)
+                        }else{
+                            state.copy(error = result.message.toString())
+                        }
+                    }
+                    is NetworkResult.Success -> state.copy(
+                        menus = result.data,
+                        internetError = false,
+                        error = ""
+                    )
+                }
             }
             _isLoading.value = false
         }
@@ -47,11 +57,11 @@ class ClientMainScreenViewModel @Inject constructor(
             it.copy(currentMenu = menu)
         }
     }
-
-
 }
 
 data class ClientMainUiState(
     val menus: List<Menu>? = null,
-    val currentMenu: MenuItem? = null
+    val currentMenu: MenuItem? = null,
+    val internetError: Boolean = false,
+    val error: String = ""
 )

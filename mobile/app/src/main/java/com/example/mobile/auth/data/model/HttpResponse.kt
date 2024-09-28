@@ -9,7 +9,6 @@ import kotlinx.serialization.json.JsonTransformingSerializer
 
 object DataSerializer : JsonTransformingSerializer<Data>(Data.serializer()) {
     override fun transformDeserialize(element: JsonElement): JsonElement {
-        // If the element is an array, replace it with an empty object
         return if (element is JsonArray) JsonObject(emptyMap()) else element
     }
 }

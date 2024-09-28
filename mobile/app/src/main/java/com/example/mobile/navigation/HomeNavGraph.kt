@@ -38,10 +38,14 @@ fun HomeNavGraph(
             )
         }
         composable(HomeScreen.Orders.route) {
-            OrdersScreen()
+            OrdersScreen(
+                modifier = modifier
+            )
         }
         composable(HomeScreen.Cart.route) {
-            CartScreen()
+            CartScreen(
+                modifier = modifier
+            )
         }
     }
 }

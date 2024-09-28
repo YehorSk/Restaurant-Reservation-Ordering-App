@@ -12,8 +12,4 @@ class MenuController extends Controller
         return response()->json($menus);
     }
 
-    public function addItemToCart(Request $request){
-
-    }
-
 }

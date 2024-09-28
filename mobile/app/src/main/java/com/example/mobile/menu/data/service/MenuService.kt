@@ -13,10 +13,6 @@ interface MenuService {
     @GET("menu")
     suspend fun getAllMenus(): List<Menu>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @GET("user-cart-items")
     suspend fun getUserCartItems(@Header("Authorization") token: String) : List<MenuItemUser>
 

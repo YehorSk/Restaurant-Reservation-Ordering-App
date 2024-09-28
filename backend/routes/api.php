@@ -39,11 +39,13 @@ Route::post('/register',[AuthController::class,'register']);
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::get('/logout',[AuthController::class,'logout']);
-    Route::apiResource('menu', MenuController::class);
-    Route::controller(UserController::class)->group(function (){
-        Route::get('user-cart-items','getUserCartItems');
-    });
 });
+
+Route::apiResource('menu', MenuController::class);
+Route::controller(UserController::class)->group(function (){
+    Route::get('user-cart-items','getUserCartItems');
+    Route::post('add-user-cart-item','addUserCartItem');
+})->middleware('auth:sanctum');
 
 
 
