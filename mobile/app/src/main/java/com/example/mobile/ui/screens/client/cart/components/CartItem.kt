@@ -64,15 +64,29 @@ fun CartItem(
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp)
             )
-            Text(
-                text = "€"+menuItem.price,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                maxLines = 2,
+            Row(
                 modifier = modifier
-                    .fillMaxWidth()
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp)
-            )
+            ) {
+                Text(
+                    text = menuItem.pivot.quantity+"x",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+                Text(
+                    text = menuItem.pivot.price+ " €",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+            }
         }
         AsyncImage(
             model = menuItem.picture,
@@ -106,7 +120,12 @@ fun MenuItemPreview(){
                 price = "5.99",
                 pivot = Pivot(
                     userId = "0",
-                    menuItemId = "0"
+                    menuItemId = "0",
+                    price = "100",
+                    quantity = "20",
+                    createdAt = "",
+                    updatedAt = "",
+                    note = ""
                 )
             ),
             onClick = {}

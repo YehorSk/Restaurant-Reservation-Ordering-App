@@ -26,9 +26,12 @@ class UserController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $user->menuItems()->attach($request->input('menu_item_id'), [
-                'quantity' => $request->input('amount'),
+                'quantity' => $request->input('quantity'),
                 'price' => $request->input('price'),
+                'note' => $request->input('note') ?? '',
             ]);
+            return response()->json("Item added to cart");
         }
+        return $this->error('', 'No user', 401);
     }
 }

@@ -46,6 +46,3 @@ Route::controller(UserController::class)->group(function (){
     Route::get('user-cart-items','getUserCartItems');
     Route::post('add-user-cart-item','addUserCartItem');
 })->middleware('auth:sanctum');
-
-
-

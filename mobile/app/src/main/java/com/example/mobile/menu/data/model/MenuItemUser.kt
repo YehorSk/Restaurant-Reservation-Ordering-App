@@ -29,5 +29,12 @@ data class Pivot(
     @SerialName("user_id")
     val userId: String,
     @SerialName("menu_item_id")
-    val menuItemId: String
+    val menuItemId: String,
+    val quantity: String,
+    val price: String,
+    val note: String = "",
+    @SerialName("created_at")
+    val createdAt: String,
+    @SerialName("updated_at")
+    val updatedAt: String,
 )

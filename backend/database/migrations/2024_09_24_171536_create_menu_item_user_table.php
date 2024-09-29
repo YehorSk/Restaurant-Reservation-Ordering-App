@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("menu_item_id");
             $table->integer("quantity");
             $table->float("price");
+            $table->text("note")->default("");
 
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
             $table->foreign("menu_item_id")->references("id")->on("menu_items")->onDelete("cascade");
