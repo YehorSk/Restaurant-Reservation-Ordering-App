@@ -23,6 +23,6 @@ interface MenuService {
         "Content-Type: application/vnd.api+json"
     )
     @POST("add-user-cart-item")
-    suspend fun addUserCartItem(@Header("Authorization") token: String,@Body cartForm: CartForm)
+    suspend fun addUserCartItem(@Header("Authorization") token: String,@Body cartForm: CartForm): String
 
 }

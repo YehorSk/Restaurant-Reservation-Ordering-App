@@ -69,8 +69,8 @@ class MenuRepositoryImpl @Inject constructor(
                     return NetworkResult.Error(code = 401, message = "No User")
                 }
                 val result = menuService.addUserCartItem("Bearer $token",cartForm)
-                Timber.d(result.toString())
-                NetworkResult.Success("Item added to cart")
+                Timber.d(result)
+                NetworkResult.Success(result)
             }catch (e: HttpException){
                 if(e.code() == 401){
                     NetworkResult.Error(code = 401, message = "No User")
@@ -82,5 +82,4 @@ class MenuRepositoryImpl @Inject constructor(
             NetworkResult.Error(code = 503, message = "No internet connection!")
         }
     }
-
 }

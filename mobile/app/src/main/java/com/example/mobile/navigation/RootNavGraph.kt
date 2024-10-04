@@ -37,7 +37,7 @@ fun MainNavigation(
         composable(route = Graph.WAITER) {
             WaiterScreen(
                 onLoggedOut = {
-                    navController.navigate(Graph.WAITER) {
+                    navController.navigate(Graph.AUTHENTICATION) {
                         popUpTo(Graph.ROOT) {
                             inclusive = true
                         }

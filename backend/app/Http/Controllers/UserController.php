@@ -25,6 +25,13 @@ class UserController extends Controller
     public function addUserCartItem(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
+//            $exists = $user->menuItems()
+//                ->where('menu_item_id', $request->input('menu_item_id'))
+//                ->wherePivot('note', $request->input('note')?? '')
+//                ->exists();
+//            if($exists){
+//                return response()->json("Item already exists in Cart");
+//            }
             $user->menuItems()->attach($request->input('menu_item_id'), [
                 'quantity' => $request->input('quantity'),
                 'price' => $request->input('price'),

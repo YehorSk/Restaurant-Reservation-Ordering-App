@@ -3,17 +3,22 @@ package com.example.mobile.ui.screens.client.home.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.common.NetworkResult
+import com.example.mobile.common.SideEffect
 import com.example.mobile.menu.data.model.Menu
 import com.example.mobile.menu.data.model.MenuItem
 import com.example.mobile.menu.data.repository.MenuRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,23 +35,33 @@ class ClientMainScreenViewModel @Inject constructor(
     private val _cartForm = MutableStateFlow(CartForm())
     val cartForm: StateFlow<CartForm> = _cartForm.asStateFlow()
 
+    private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
+    val sideEffectFlow: Flow<SideEffect>
+        get() = _sideEffectChannel.receiveAsFlow()
+
     init {
         getMenus()
     }
 
     fun updateNote(note: String){
+        Timber.d("Note $note")
+        Timber.d("Cart ${_cartForm.value}")
         _cartForm.update {
             it.copy(note = note)
         }
     }
 
     fun updatePrice(price: Double){
+        Timber.d("price $price")
+        Timber.d("Cart ${_cartForm.value}")
         _cartForm.update {
             it.copy(price = price)
         }
     }
 
     fun updateQuantity(quantity: Int){
+        Timber.d("Quantity $quantity")
+        Timber.d("Cart ${_cartForm.value}")
         _cartForm.update {
             it.copy(quantity = quantity)
         }
@@ -76,23 +91,22 @@ class ClientMainScreenViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             _uiState.update { state ->
-                when(val result = menuRepositoryImpl.addUserCartItem(cartForm = cartForm.value)){
+                Timber.d(_cartForm.value.toString())
+                when(val result = menuRepositoryImpl.addUserCartItem(cartForm = _cartForm.value)){
                     is NetworkResult.Error -> {
                         if(result.code == 503){
+                            _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
                             state.copy(
-                                internetError = true,
-                                success = ""
+                                internetError = true
                             )
                         }else{
-                            state.copy(
-                                error = result.message.toString(),
-                                success = ""
-                            )
+                            state.copy()
                         }
                     }
-                    is NetworkResult.Success -> state.copy(
-                        success = result.data
-                    )
+                    is NetworkResult.Success -> {
+                        _sideEffectChannel.send(SideEffect.ShowToast(result.data))
+                        state.copy()
+                    }
                 }
             }
             _isLoading.value = false
@@ -106,21 +120,19 @@ class ClientMainScreenViewModel @Inject constructor(
                 when(val result = menuRepositoryImpl.getAllMenus()){
                     is NetworkResult.Error -> {
                         if(result.code == 503){
+                            _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
                             state.copy(
                                 internetError = true,
-                                success = ""
                             )
                         }else{
-                            state.copy(
-                                error = result.message.toString(),
-                                success = ""
-                            )
+                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                            state.copy()
                         }
                     }
-                    is NetworkResult.Success -> state.copy(
+                    is NetworkResult.Success ->
+                        state.copy(
                         menus = result.data,
-                        internetError = false,
-                        error = ""
+                        internetError = false
                     )
                 }
             }
@@ -139,8 +151,6 @@ data class ClientMainUiState(
     val menus: List<Menu>? = null,
     val currentMenu: MenuItem? = null,
     val internetError: Boolean = false,
-    val error: String = "",
-    val success: String = "",
 )
 
 @Serializable

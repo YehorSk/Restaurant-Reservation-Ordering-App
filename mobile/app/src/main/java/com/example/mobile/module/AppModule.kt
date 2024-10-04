@@ -37,7 +37,7 @@ object AppModule {
     fun provideBaseUrl():  String = "http://192.168.1.18/SavchukBachelor/backend/public/api/"
 
 //    @Provides
-//    fun provideBaseUrl():  String = "http://10.0.2.2:8080/SavchukBachelor/backend/public/api/"
+//    fun provideBaseUrl():  String = "http://192.168.102.5/SavchukBachelor/backend/public/api/"
 
     @Provides
     fun providesClient(): OkHttpClient = OkHttpClient.Builder()

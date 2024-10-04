@@ -14,12 +14,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.mobile.common.SideEffect
 import com.example.mobile.ui.screens.client.home.components.MenuHeader
 import com.example.mobile.ui.screens.client.home.components.MenuItem
 import com.example.mobile.ui.screens.client.home.components.MenuItemModal
 import com.example.mobile.ui.screens.client.home.viewmodel.ClientMainScreenViewModel
 import com.example.mobile.ui.screens.common.ErrorScreen
+import com.example.mobile.ui.screens.common.SingleEventEffect
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -33,12 +38,9 @@ fun MainScreen(
     val cartForm by viewModel.cartForm.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
 
-    LaunchedEffect(uiState.success,uiState.internetError) {
-        if(uiState.success.isNotEmpty()){
-            Toast.makeText(context,uiState.success,Toast.LENGTH_LONG).show()
-        }
-        if(uiState.internetError){
-            Toast.makeText(context,"No Internet Connection!",Toast.LENGTH_LONG).show()
+    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+        when(sideEffect){
+            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }
     }
 

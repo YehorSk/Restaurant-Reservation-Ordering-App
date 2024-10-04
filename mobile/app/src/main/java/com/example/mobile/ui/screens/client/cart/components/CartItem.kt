@@ -30,6 +30,7 @@ import com.example.mobile.menu.data.model.MenuItem
 import com.example.mobile.menu.data.model.MenuItemUser
 import com.example.mobile.menu.data.model.Pivot
 import com.example.mobile.ui.theme.MobileTheme
+import timber.log.Timber
 
 @Composable
 fun CartItem(
@@ -41,6 +42,7 @@ fun CartItem(
         modifier = Modifier.background(Color.White)
             .height(140.dp)
             .clickable {
+                Timber.d("Item $menuItem")
                 onClick(menuItem)
             }
     ){
