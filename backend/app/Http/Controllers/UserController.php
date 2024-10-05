@@ -25,13 +25,18 @@ class UserController extends Controller
     public function addUserCartItem(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-//            $exists = $user->menuItems()
-//                ->where('menu_item_id', $request->input('menu_item_id'))
-//                ->wherePivot('note', $request->input('note')?? '')
-//                ->exists();
-//            if($exists){
-//                return response()->json("Item already exists in Cart");
-//            }
+            $exists = $user->menuItems()
+                ->where('menu_item_id', $request->input('menu_item_id'))
+                ->wherePivot('note', $request->input('note')?? '')
+                ->first();
+            if($exists){
+                $user->menuItems()->updateExistingPivot($request->input('menu_item_id'), [
+                    'quantity' => $exists->pivot->quantity + $request->input('quantity'),
+                    'price' => $exists->pivot->price + $request->input('price'),
+                    'note' => $request->input('note') ?? '',
+                ]);
+                return response()->json("Item in Cart was updated");
+            }
             $user->menuItems()->attach($request->input('menu_item_id'), [
                 'quantity' => $request->input('quantity'),
                 'price' => $request->input('price'),
@@ -41,4 +46,6 @@ class UserController extends Controller
         }
         return $this->error('', 'No user', 401);
     }
+
+    
 }

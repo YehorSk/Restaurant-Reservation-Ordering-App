@@ -6,6 +6,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -31,10 +32,13 @@ Route::get('/user', function (Request $request) {
     ]);
 })->middleware('auth:sanctum');
 
-
 //Public routes
-Route::post('/login',[AuthController::class,'login']);
-Route::post('/register',[AuthController::class,'register']);
+Route::controller(AuthController::class)->group(function (){
+    Route::post('/login', 'login');
+    Route::post('/register', 'register');
+    Route::get('/reset-password/{token}/{email}','reset_password')->name('password.reset');
+    Route::post('/update-password', 'update_password');
+});
 
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
@@ -42,6 +46,23 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
 });
 
 Route::apiResource('menu', MenuController::class);
+
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+
+    return $status === Password::RESET_LINK_SENT
+        ? back()->with(['status' => __($status)])
+        : back()->withErrors(['email' => __($status)]);
+})->name('password.email');
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
 Route::controller(UserController::class)->group(function (){
     Route::get('user-cart-items','getUserCartItems');
     Route::post('add-user-cart-item','addUserCartItem');

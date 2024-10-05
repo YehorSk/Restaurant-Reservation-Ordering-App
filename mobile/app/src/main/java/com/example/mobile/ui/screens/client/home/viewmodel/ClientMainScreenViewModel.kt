@@ -87,7 +87,6 @@ class ClientMainScreenViewModel @Inject constructor(
     }
 
     fun addUserCartItem(){
-        clearForm()
         viewModelScope.launch {
             _isLoading.value = true
             _uiState.update { state ->
@@ -110,6 +109,7 @@ class ClientMainScreenViewModel @Inject constructor(
                 }
             }
             _isLoading.value = false
+            clearForm()
         }
     }
 

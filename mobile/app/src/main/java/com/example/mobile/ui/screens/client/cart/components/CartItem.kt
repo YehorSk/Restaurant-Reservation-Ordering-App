@@ -40,7 +40,7 @@ fun CartItem(
 ){
     Row(
         modifier = Modifier.background(Color.White)
-            .height(140.dp)
+            .height(160.dp)
             .clickable {
                 Timber.d("Item $menuItem")
                 onClick(menuItem)
@@ -61,11 +61,21 @@ fun CartItem(
             Text(
                 text = menuItem.shortDescription,
                 fontSize = 12.sp,
-                maxLines = 2,
+                maxLines = 1,
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp)
             )
+            if(menuItem.pivot.note.isNotEmpty()){
+                Text(
+                    text = menuItem.pivot.note,
+                    fontSize = 12.sp,
+                    maxLines = 2,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                )
+            }
             Row(
                 modifier = modifier
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp)
@@ -127,7 +137,7 @@ fun MenuItemPreview(){
                     quantity = "20",
                     createdAt = "",
                     updatedAt = "",
-                    note = ""
+                    note = "Hello world"
                 )
             ),
             onClick = {}

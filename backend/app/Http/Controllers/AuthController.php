@@ -7,9 +7,12 @@ use App\Http\Requests\StoreUserRequest;
 use App\Models\Cart;
 use App\Models\User;
 use App\Traits\HttpResponses;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -47,5 +50,30 @@ class AuthController extends Controller
         return $this->success([
             'message' => 'Logged out successfully'
         ]);
+    }
+    public function reset_password($token,$email) {
+        return redirect()->to('http://localhost:5173/reset-password/' . $token . '?email=' . urlencode($email));
+    }
+
+    public function update_password(Request $request) {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, string $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+        return response()->json("Password Updated");
     }
 }
