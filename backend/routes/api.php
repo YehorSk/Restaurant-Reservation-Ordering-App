@@ -66,4 +66,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::controller(UserController::class)->group(function (){
     Route::get('user-cart-items','getUserCartItems');
     Route::post('add-user-cart-item','addUserCartItem');
+    Route::post('delete-user-cart-item','deleteUserCartItem');
+    Route::post('update-user-cart-item','updateUserCartItem');
 })->middleware('auth:sanctum');

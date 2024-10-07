@@ -18,11 +18,19 @@ import com.example.mobile.ui.screens.client.cart.viewmodel.CartScreenViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.mobile.R
+import com.example.mobile.common.SideEffect
+import com.example.mobile.menu.data.model.toMenuItem
 import com.example.mobile.ui.screens.client.cart.components.CartItem
+import com.example.mobile.ui.screens.client.home.components.MenuItemModal
+import com.example.mobile.ui.screens.common.SingleEventEffect
 
 @Composable
 fun CartScreen(
@@ -31,9 +39,13 @@ fun CartScreen(
 ){
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val cartForm by viewModel.cartForm.collectAsStateWithLifecycle()
 
-    if(uiState.error.isNotEmpty()){
-        Toast.makeText(context,uiState.error, Toast.LENGTH_LONG).show()
+    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+        when(sideEffect){
+            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     Box(
@@ -46,6 +58,9 @@ fun CartScreen(
                 CartItem(
                     menuItem = item,
                     onClick = { cartItem ->
+                        viewModel.setItem(cartItem)
+                        viewModel.setMenu(cartItem.toMenuItem())
+                        showBottomSheet = true
                     },
                 )
             }
@@ -63,6 +78,27 @@ fun CartScreen(
             Text(
                 modifier = Modifier.padding(8.dp),
                 text = "Go to checkout"
+            )
+        }
+    }
+
+    if (showBottomSheet) {
+        uiState.currentMenu?.let {
+            MenuItemModal(
+                menuItem = it,
+                onDismiss = {
+                    showBottomSheet = false
+                    viewModel.clearForm()
+                },
+                cartForm = cartForm,
+                onNoteChange = {viewModel.updateNote(it)},
+                onQuantityChange = {viewModel.updateQuantity(it)},
+                onPriceChange = {viewModel.updatePrice(it)},
+                addUserCartItem = {
+                    showBottomSheet = false
+                    viewModel.updateItem()
+                },
+                buttonText = R.string.UPDATE
             )
         }
     }

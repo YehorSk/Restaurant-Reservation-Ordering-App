@@ -7,6 +7,7 @@ import com.example.mobile.common.SideEffect
 import com.example.mobile.menu.data.model.Menu
 import com.example.mobile.menu.data.model.MenuItem
 import com.example.mobile.menu.data.repository.MenuRepositoryImpl
+import com.example.mobile.ui.screens.common.CartForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -153,11 +154,3 @@ data class ClientMainUiState(
     val internetError: Boolean = false,
 )
 
-@Serializable
-data class CartForm(
-    val quantity: Int = 1,
-    val price: Double = 0.00,
-    val note: String = "",
-    @SerialName("menu_item_id")
-    val menuItemId: String = ""
-)

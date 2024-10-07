@@ -18,6 +18,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.mobile.R
+import com.example.mobile.R.*
 import com.example.mobile.common.SideEffect
 import com.example.mobile.ui.screens.client.home.components.MenuHeader
 import com.example.mobile.ui.screens.client.home.components.MenuItem
@@ -88,7 +90,8 @@ fun MainScreen(
                 addUserCartItem = {
                     showBottomSheet = false
                     viewModel.addUserCartItem()
-                }
+                },
+                buttonText = R.string.Add
             )
         }
     }

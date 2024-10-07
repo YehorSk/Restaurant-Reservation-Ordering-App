@@ -47,5 +47,26 @@ class UserController extends Controller
         return $this->error('', 'No user', 401);
     }
 
-    
+    public function deleteUserCartItem(Request $request){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $exists = $user->menuItems()
+                ->where('menu_item_id', $request->input('menu_item_id'))
+                ->wherePivot('note', $request->input('note')?? '')
+                ->wherePivot('price', $request->input('price'))
+                ->wherePivot('quantity', $request->input('quantity'))
+                ->first();
+            if($exists){
+                $user->menuItems()->detach($exists);
+                return response()->json("Item in Cart was deleted");
+            }
+            return response()->json("Item was not deleted");
+        }
+    }
+
+    public function updateUserCartItem(Request $request){
+        return response()->json("Item in Cart was updated");
+    }
+
+
 }

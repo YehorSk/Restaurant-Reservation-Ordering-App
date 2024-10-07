@@ -3,4 +3,7 @@
     <string name="retry">Retry</string>
     <string name="loading">Loading</string>
     <string name="loading_failed">Failed to load</string>
+    <string name="UPDATE">Update</string>
+    <string name="DELETE">Delete</string>
+    <string name="Add">Add</string>
 </resources>

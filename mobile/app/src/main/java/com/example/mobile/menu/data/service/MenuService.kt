@@ -3,7 +3,7 @@ package com.example.mobile.menu.data.service
 import com.example.mobile.common.NetworkResult
 import com.example.mobile.menu.data.model.Menu
 import com.example.mobile.menu.data.model.MenuItemUser
-import com.example.mobile.ui.screens.client.home.viewmodel.CartForm
+import com.example.mobile.ui.screens.common.CartForm
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -24,5 +24,19 @@ interface MenuService {
     )
     @POST("add-user-cart-item")
     suspend fun addUserCartItem(@Header("Authorization") token: String,@Body cartForm: CartForm): String
+
+    @Headers(
+        "Accept: application/vnd.api+json",
+        "Content-Type: application/vnd.api+json"
+    )
+    @POST("add-user-cart-item")
+    suspend fun deleteUserCartItem(@Header("Authorization") token: String,@Body cartForm: CartForm): String
+
+    @Headers(
+        "Accept: application/vnd.api+json",
+        "Content-Type: application/vnd.api+json"
+    )
+    @POST("add-user-cart-item")
+    suspend fun updateUserCartItem(@Header("Authorization") token: String,@Body cartForm: CartForm): String
 
 }

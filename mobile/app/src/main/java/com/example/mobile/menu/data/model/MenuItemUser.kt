@@ -38,3 +38,16 @@ data class Pivot(
     @SerialName("updated_at")
     val updatedAt: String,
 )
+
+fun MenuItemUser.toMenuItem() = MenuItem(
+    id = this.id,
+    createdAt = this.createdAt,
+    updatedAt = this.updatedAt,
+    menuId = this.menuId,
+    name = this.name,
+    shortDescription = this.shortDescription,
+    longDescription = this.longDescription,
+    recipe = this.recipe,
+    picture = this.picture,
+    price = this.price
+)
