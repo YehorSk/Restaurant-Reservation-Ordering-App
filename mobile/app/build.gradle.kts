@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -54,6 +55,11 @@ android {
 
 dependencies {
 
+    //Room
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
     //Navigation
     implementation(libs.androidx.navigation.compose)
 
@@ -67,7 +73,6 @@ dependencies {
     implementation(libs.retrofit)
 
     // Retrofit with Kotlin serialization Converter
-
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.okhttp)
     implementation(libs.coil.compose)

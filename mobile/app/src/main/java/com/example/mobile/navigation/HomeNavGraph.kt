@@ -1,19 +1,15 @@
 package com.example.mobile.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.mobile.ui.screens.client.cart.CartScreen
-import com.example.mobile.ui.screens.client.home.MainScreen
-import com.example.mobile.ui.screens.client.orders.OrdersScreen
-import com.example.mobile.ui.screens.common.settings.SettingsScreen
+import com.example.mobile.cart.presentation.cart.CartScreen
+import com.example.mobile.menu.presentation.menu.MenuScreen
+import com.example.mobile.orders.presentation.orders.OrdersScreen
+import com.example.mobile.core.presentation.settings.SettingsScreen
 
 @Composable
 fun HomeNavGraph(
@@ -27,7 +23,7 @@ fun HomeNavGraph(
         startDestination = HomeScreen.Home.route
     ){
         composable(HomeScreen.Home.route) {
-            MainScreen(
+            MenuScreen(
                 modifier = modifier
             )
         }

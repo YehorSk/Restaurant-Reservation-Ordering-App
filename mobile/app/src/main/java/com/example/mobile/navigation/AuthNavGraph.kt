@@ -4,8 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.mobile.ui.screens.auth.login.LoginScreen
-import com.example.mobile.ui.screens.auth.register.RegisterScreen
+import com.example.mobile.auth.presentation.login.LoginScreen
+import com.example.mobile.auth.presentation.register.RegisterScreen
 import timber.log.Timber
 
 fun NavGraphBuilder.authNavGraph(

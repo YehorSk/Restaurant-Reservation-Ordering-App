@@ -1,7 +1,7 @@
 package com.example.mobile.utils
 
 import android.util.Log
-import com.example.mobile.auth.data.model.HttpResponse
+import com.example.mobile.auth.data.remote.model.HttpResponse
 import kotlinx.serialization.json.Json
 
 fun cleanError(error: String?) = error?.replace("[", "")?.replace("]", "").orEmpty()
