@@ -1,6 +1,8 @@
 package com.example.mobile.cart.data.remote.model
 
 
+import com.example.mobile.cart.data.db.model.CartItemEntity
+import com.example.mobile.cart.data.db.model.PivotCartItemEntity
 import com.example.mobile.menu.data.remote.model.MenuItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -52,4 +54,29 @@ fun CartItem.toMenuItem() = MenuItem(
     recipe = this.recipe,
     picture = this.picture,
     price = this.price
+)
+
+fun CartItem.toCartItemEntity() = CartItemEntity(
+    id = id,
+    menuId = menuId,
+    name = name,
+    shortDescription = shortDescription,
+    longDescription = longDescription,
+    recipe = recipe,
+    picture = picture,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+    price = price.toDouble(),
+    pivot = pivot.toPivotEntity()
+)
+
+fun Pivot.toPivotEntity() = PivotCartItemEntity(
+    id = id,
+    userId = userId,
+    menuItemId = menuItemId,
+    quantity = quantity.toInt(),
+    price = price.toDouble(),
+    note = note,
+    createdAt = createdAt,
+    updatedAt = updatedAt
 )

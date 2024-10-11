@@ -35,14 +35,19 @@ class UserController extends Controller
                     'price' => $exists->pivot->price + $request->input('price'),
                     'note' => $request->input('note') ?? '',
                 ]);
-                return response()->json("Item in Cart was updated");
+                return $this->success(data: $exists, message: "Item in Cart was updated");
             }
             $user->menuItems()->attach($request->input('menu_item_id'), [
                 'quantity' => $request->input('quantity'),
                 'price' => $request->input('price'),
                 'note' => $request->input('note') ?? '',
             ]);
-            return response()->json("Item added to cart");
+            $newItem = $user->menuItems()->where('menu_item_id', $request->input('menu_item_id'))
+                ->wherePivot('note', $request->input('note')?? '')
+                ->wherePivot('price', $request->input('price'))
+                ->wherePivot('quantity', $request->input('quantity'))
+                ->first();
+            return $this->success(data: $newItem, message: "Item added to cart");
         }
         return $this->error('', 'No user', 401);
     }
@@ -62,10 +67,29 @@ class UserController extends Controller
             }
             return response()->json("Item was not deleted");
         }
+        return $this->error('', 'No user', 401);
     }
 
     public function updateUserCartItem(Request $request){
-        return response()->json("Item in Cart was updated");
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $exists = $user->menuItems()
+                ->where('menu_item_id', $request->input('menu_item_id'))
+                ->wherePivot('note', $request->input('note')?? '')
+                ->wherePivot('price', $request->input('price'))
+                ->wherePivot('quantity', $request->input('quantity'))
+                ->first();
+            if($exists){
+                $user->menuItems()->updateExistingPivot($exists->id, [
+                        'note' => $request->input('note') ?? '',
+                        'price' => $request->input('price'),
+                        'quantity' => $request->input('quantity'),
+                    ]);
+                return response()->json("Item in Cart was updated");
+            }
+            return response()->json("Item in Cart was not updated");
+        }
+        return $this->error('', 'No user', 401);
     }
 
 

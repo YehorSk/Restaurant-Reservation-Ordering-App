@@ -24,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.mobile.R
-import com.example.mobile.core.domain.repository.SideEffect
+import com.example.mobile.cart.data.db.model.toMenuItem
+import com.example.mobile.cart.data.remote.model.toCartItemEntity
+import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.cart.data.remote.model.toMenuItem
 import com.example.mobile.cart.presentation.cart.components.CartItem
 import com.example.mobile.core.presentation.components.MenuItemModal
@@ -54,7 +56,7 @@ fun CartScreen(
         ) {
             items(uiState.items ?: emptyList()) { item ->
                 CartItem(
-                    menuItem = item,
+                    cartItem = item,
                     onClick = { cartItem ->
                         viewModel.setItem(cartItem)
                         viewModel.setMenu(cartItem.toMenuItem())

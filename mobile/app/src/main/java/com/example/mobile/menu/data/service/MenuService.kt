@@ -1,4 +1,4 @@
-package com.example.mobile.menu.domain.service
+package com.example.mobile.menu.data.service
 
 import com.example.mobile.menu.data.remote.model.Menu
 import com.example.mobile.core.presentation.components.CartForm
@@ -12,12 +12,5 @@ interface MenuService {
 
     @GET("menu")
     suspend fun getAllMenus(): List<Menu>
-
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
-    @POST("add-user-cart-item")
-    suspend fun addUserCartItem(@Header("Authorization") token: String,@Body cartForm: CartForm): String
 
 }

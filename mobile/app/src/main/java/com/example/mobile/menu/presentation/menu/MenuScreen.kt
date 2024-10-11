@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
-import com.example.mobile.core.domain.repository.SideEffect
+import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.menu.presentation.menu.components.MenuHeader
 import com.example.mobile.menu.presentation.menu.components.MenuItem
 import com.example.mobile.core.presentation.components.MenuItemModal

@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.mobile.R
+import com.example.mobile.cart.data.db.model.CartItemEntity
+import com.example.mobile.cart.data.db.model.PivotCartItemEntity
 import com.example.mobile.cart.data.remote.model.CartItem
 import com.example.mobile.cart.data.remote.model.Pivot
 import com.example.mobile.ui.theme.MobileTheme
@@ -28,23 +30,23 @@ import timber.log.Timber
 
 @Composable
 fun CartItem(
-    menuItem: CartItem,
+    cartItem: CartItemEntity,
     modifier: Modifier = Modifier,
-    onClick: (CartItem) -> Unit
+    onClick: (CartItemEntity) -> Unit
 ){
     Row(
         modifier = Modifier.background(Color.White)
             .height(160.dp)
             .clickable {
-                Timber.d("Item $menuItem")
-                onClick(menuItem)
+                Timber.d("Item $cartItem")
+                onClick(cartItem)
             }
     ){
         Column(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = menuItem.name,
+                text = cartItem.name,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier
@@ -53,16 +55,16 @@ fun CartItem(
 
             )
             Text(
-                text = menuItem.shortDescription,
+                text = cartItem.shortDescription,
                 fontSize = 12.sp,
                 maxLines = 1,
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp)
             )
-            if(menuItem.pivot.note.isNotEmpty()){
+            if(cartItem.pivot.note.isNotEmpty()){
                 Text(
-                    text = menuItem.pivot.note,
+                    text = cartItem.pivot.note,
                     fontSize = 12.sp,
                     maxLines = 2,
                     modifier = modifier
@@ -75,7 +77,7 @@ fun CartItem(
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp)
             ) {
                 Text(
-                    text = menuItem.pivot.quantity+"x",
+                    text = cartItem.pivot.quantity.toString()+"x",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 2,
@@ -84,7 +86,7 @@ fun CartItem(
                         .weight(1f)
                 )
                 Text(
-                    text = menuItem.pivot.price+ " €",
+                    text = cartItem.pivot.price.toString()+ " €",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 2,
@@ -95,12 +97,12 @@ fun CartItem(
             }
         }
         AsyncImage(
-            model = menuItem.picture,
+            model = cartItem.picture,
             modifier = Modifier
                 .weight(1f)
                 .padding(16.dp)
                 .clip(RoundedCornerShape(10.dp)),
-            contentDescription = menuItem.name,
+            contentDescription = cartItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),
             contentScale = ContentScale.Crop,
             error = painterResource(R.drawable.menu_item_placeholder)
@@ -113,25 +115,26 @@ fun CartItem(
 fun MenuItemPreview(){
     MobileTheme {
         CartItem(
-            menuItem = CartItem(
+            cartItem = CartItemEntity(
                 id = "0",
-                createdAt = "",
-                updatedAt = "",
                 menuId = "",
                 name = "Pancakes",
                 longDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 shortDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 recipe = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 picture = "",
-                price = "5.99",
-                pivot = Pivot(
+                price = 5.99,
+                createdAt = "",
+                updatedAt = "",
+                pivot = PivotCartItemEntity(
                     userId = "0",
                     menuItemId = "0",
-                    price = "100",
-                    quantity = "20",
+                    price = 100.0,
+                    quantity = 20,
                     createdAt = "",
                     updatedAt = "",
-                    note = "Hello world"
+                    note = "Hello world",
+                    id=""
                 )
             ),
             onClick = {}

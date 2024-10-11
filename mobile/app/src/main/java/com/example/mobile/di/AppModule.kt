@@ -1,20 +1,24 @@
 package com.example.mobile.di
 
+import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.room.Room
 import com.example.mobile.auth.data.remote.AuthPreferencesRepository
 import com.example.mobile.auth.domain.repository.AuthRepository
 import com.example.mobile.auth.data.remote.AuthRepositoryImpl
 import com.example.mobile.auth.domain.service.AuthService
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
-import com.example.mobile.cart.domain.repository.CartRepository
-import com.example.mobile.cart.domain.service.CartService
+import com.example.mobile.cart.data.dao.CartDao
+import com.example.mobile.cart.data.repository.CartRepository
+import com.example.mobile.cart.data.service.CartService
 import com.example.mobile.core.Constants
+import com.example.mobile.core.data.db.MainRoomDatabase
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
-import com.example.mobile.menu.domain.repository.MenuRepository
-import com.example.mobile.menu.domain.service.MenuService
+import com.example.mobile.menu.data.repository.MenuRepository
+import com.example.mobile.menu.data.service.MenuService
 import com.example.mobile.utils.ConnectivityRepository
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -60,11 +64,25 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun myRoomDatabase(application: Application): MainRoomDatabase {
+        return Room.databaseBuilder(
+            application,
+            MainRoomDatabase::class.java,
+            "MobileDatabase"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
     fun provideRetrofit(baseUrl: String, client: OkHttpClient) : Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
         .client(client)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
+
+    @Provides
+    @Singleton
+    fun provideCartDao(database: MainRoomDatabase): CartDao = database.cartDao
 
     @Provides
     @Singleton
@@ -77,7 +95,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMenuApiService(retrofit: Retrofit): MenuService = retrofit.create(MenuService::class.java)
-
 
     @Provides
     @Singleton
@@ -93,7 +110,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCartRepositoryImpl(cartService: CartService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository) : CartRepository = CartRepositoryImpl(cartService,authPreferencesRepository,connectivityRepository)
+    fun provideCartRepositoryImpl(cartService: CartService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository,cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService,authPreferencesRepository,connectivityRepository, cartDao)
 
     @Provides
     @Singleton

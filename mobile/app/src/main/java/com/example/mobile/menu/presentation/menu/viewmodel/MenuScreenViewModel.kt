@@ -2,8 +2,9 @@ package com.example.mobile.menu.presentation.menu.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.core.data.remote.model.NetworkResult
-import com.example.mobile.core.domain.repository.SideEffect
+import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.menu.data.remote.model.Menu
 import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
@@ -22,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuScreenViewModel @Inject constructor(
-    val menuRepositoryImpl: MenuRepositoryImpl
+    val menuRepositoryImpl: MenuRepositoryImpl,
+    val cartRepositoryImpl: CartRepositoryImpl
 ) : ViewModel(){
 
     private val _uiState = MutableStateFlow(ClientMainUiState())
@@ -90,7 +92,7 @@ class MenuScreenViewModel @Inject constructor(
             _isLoading.value = true
             _uiState.update { state ->
                 Timber.d(_cartForm.value.toString())
-                when(val result = menuRepositoryImpl.addUserCartItem(cartForm = _cartForm.value)){
+                when(val result = cartRepositoryImpl.addUserCartItem(cartForm = _cartForm.value)){
                     is NetworkResult.Error -> {
                         if(result.code == 503){
                             _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
@@ -102,7 +104,7 @@ class MenuScreenViewModel @Inject constructor(
                         }
                     }
                     is NetworkResult.Success -> {
-                        _sideEffectChannel.send(SideEffect.ShowToast(result.data))
+                        _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
                         state.copy()
                     }
                 }

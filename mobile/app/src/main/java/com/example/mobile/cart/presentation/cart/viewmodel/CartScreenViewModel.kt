@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.core.data.remote.model.NetworkResult
-import com.example.mobile.core.domain.repository.SideEffect
+import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.cart.data.remote.model.CartItem
+import com.example.mobile.cart.data.dao.CartDao
+import com.example.mobile.cart.data.db.model.CartItemEntity
+import com.example.mobile.cart.data.remote.model.toCartItemEntity
 import com.example.mobile.core.presentation.components.CartForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -22,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartScreenViewModel @Inject constructor(
-    val cartRepositoryImpl: CartRepositoryImpl
+    val cartRepositoryImpl: CartRepositoryImpl,
+    val cartDao: CartDao
 ) : ViewModel(){
 
     private val _uiState = MutableStateFlow(CartScreenUiState())
@@ -65,14 +69,6 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    fun setMenuItemId(id: String){
-        _cartForm.update {
-            it.copy(
-                menuItemId = id
-            )
-        }
-    }
-
     fun clearForm(){
         _cartForm.update {
             it.copy(
@@ -96,7 +92,7 @@ class CartScreenViewModel @Inject constructor(
                             state.copy(error = result.message.toString())
                         }
                     }
-                    is NetworkResult.Success -> state.copy(items = result.data)
+                    is NetworkResult.Success -> state.copy(items = result.data.map { it.toCartItemEntity() })
                 }
 
             }
@@ -104,12 +100,12 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    fun setItem(item: CartItem){
+    fun setItem(item: CartItemEntity){
         _cartForm.update {
             Timber.d("Item $item")
             it.copy(
-                quantity = item.pivot.quantity.toInt(),
-                price = item.pivot.price.toDouble(),
+                quantity = item.pivot.quantity,
+                price = item.pivot.price,
                 note = item.pivot.note,
                 menuItemId = item.pivot.menuItemId
             )
@@ -127,7 +123,7 @@ class CartScreenViewModel @Inject constructor(
                     }
                 }
                 is NetworkResult.Success -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.data))
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
                 }
             }
         }
@@ -145,7 +141,7 @@ class CartScreenViewModel @Inject constructor(
                     }
                 }
                 is NetworkResult.Success -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.data))
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
                 }
             }
         }
@@ -161,7 +157,7 @@ class CartScreenViewModel @Inject constructor(
 }
 
 data class CartScreenUiState(
-    val items: List<CartItem>? = null,
+    val items: List<CartItemEntity>? = null,
     val internetError: Boolean = false,
     val error: String = "",
     val currentMenu: MenuItem? = null

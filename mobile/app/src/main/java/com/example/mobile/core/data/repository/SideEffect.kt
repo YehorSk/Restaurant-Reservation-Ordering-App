@@ -1,4 +1,4 @@
-package com.example.mobile.core.domain.repository
+package com.example.mobile.core.data.repository
 
 sealed interface SideEffect {
     data class ShowToast(val message: String) : SideEffect
