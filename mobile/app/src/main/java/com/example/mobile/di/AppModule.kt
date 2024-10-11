@@ -7,9 +7,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.example.mobile.auth.data.remote.AuthPreferencesRepository
-import com.example.mobile.auth.domain.repository.AuthRepository
+import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.data.remote.AuthRepositoryImpl
-import com.example.mobile.auth.domain.service.AuthService
+import com.example.mobile.auth.data.service.AuthService
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.data.repository.CartRepository

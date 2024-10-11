@@ -3,7 +3,7 @@ package com.example.mobile.core.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.auth.data.remote.AuthPreferencesRepository
-import com.example.mobile.auth.domain.repository.AuthRepository
+import com.example.mobile.auth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

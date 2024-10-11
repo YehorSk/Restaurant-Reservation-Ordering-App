@@ -2,7 +2,7 @@ package com.example.mobile.auth.presentation.forgot
 
 import androidx.lifecycle.ViewModel
 import com.example.mobile.auth.data.remote.AuthPreferencesRepository
-import com.example.mobile.auth.domain.repository.AuthRepository
+import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.presentation.login.LoginState
 import com.example.mobile.utils.ConnectivityRepository
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -25,9 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.toMenuItem
-import com.example.mobile.cart.data.remote.model.toCartItemEntity
 import com.example.mobile.core.data.repository.SideEffect
-import com.example.mobile.cart.data.remote.model.toMenuItem
 import com.example.mobile.cart.presentation.cart.components.CartItem
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
@@ -39,6 +37,7 @@ fun CartScreen(
 ){
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
     val cartForm by viewModel.cartForm.collectAsStateWithLifecycle()
 
@@ -54,7 +53,7 @@ fun CartScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(uiState.items ?: emptyList()) { item ->
+            items(cartItems) { item ->
                 CartItem(
                     cartItem = item,
                     onClick = { cartItem ->
@@ -83,7 +82,7 @@ fun CartScreen(
     }
 
     if (showBottomSheet) {
-        uiState.currentMenu?.let {
+        uiState.currentItem?.let {
             MenuItemModal(
                 menuItem = it,
                 onDismiss = {

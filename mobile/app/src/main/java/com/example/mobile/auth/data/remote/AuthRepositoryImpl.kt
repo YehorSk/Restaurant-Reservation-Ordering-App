@@ -2,8 +2,8 @@ package com.example.mobile.auth.data.remote
 
 import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.auth.data.remote.model.HttpResponse
-import com.example.mobile.auth.domain.repository.AuthRepository
-import com.example.mobile.auth.domain.service.AuthService
+import com.example.mobile.auth.data.repository.AuthRepository
+import com.example.mobile.auth.data.service.AuthService
 import com.example.mobile.auth.presentation.login.LoginForm
 import com.example.mobile.auth.presentation.register.RegisterForm
 import com.example.mobile.utils.ConnectivityRepository

@@ -24,7 +24,7 @@ interface CartDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItems(items: List<CartItemEntity>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItem(item: CartItemEntity)
 
     @Update

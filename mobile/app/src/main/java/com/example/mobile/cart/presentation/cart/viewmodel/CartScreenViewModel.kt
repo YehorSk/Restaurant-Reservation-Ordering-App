@@ -6,7 +6,6 @@ import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.core.data.remote.model.NetworkResult
 import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.menu.data.remote.model.MenuItem
-import com.example.mobile.cart.data.remote.model.CartItem
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.model.toCartItemEntity
@@ -15,9 +14,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -31,6 +32,14 @@ class CartScreenViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(CartScreenUiState())
     val uiState: StateFlow<CartScreenUiState> = _uiState.asStateFlow()
+
+    val cartItemUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = listOf()
+        )
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
@@ -54,10 +63,11 @@ class CartScreenViewModel @Inject constructor(
     }
 
     fun updatePrice(price: Double){
+        val formattedPrice = String.format("%.2f", price).toDouble()
         Timber.d("price $price")
         Timber.d("Cart ${_cartForm.value}")
         _cartForm.update {
-            it.copy(price = price)
+            it.copy(price = formattedPrice)
         }
     }
 
@@ -92,7 +102,10 @@ class CartScreenViewModel @Inject constructor(
                             state.copy(error = result.message.toString())
                         }
                     }
-                    is NetworkResult.Success -> state.copy(items = result.data.map { it.toCartItemEntity() })
+                    is NetworkResult.Success -> {
+                        cartDao.insertItems(result.data.map { it.toCartItemEntity() })
+                        state.copy()
+                    }
                 }
 
             }
@@ -150,15 +163,14 @@ class CartScreenViewModel @Inject constructor(
 
     fun setMenu(menu: MenuItem){
         _uiState.update {
-            it.copy(currentMenu = menu)
+            it.copy(currentItem = menu)
         }
     }
 
 }
 
 data class CartScreenUiState(
-    val items: List<CartItemEntity>? = null,
     val internetError: Boolean = false,
     val error: String = "",
-    val currentMenu: MenuItem? = null
+    val currentItem: MenuItem? = null
 )

@@ -1,4 +1,4 @@
-package com.example.mobile.auth.domain.repository
+package com.example.mobile.auth.data.repository
 
 import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.auth.data.remote.model.HttpResponse

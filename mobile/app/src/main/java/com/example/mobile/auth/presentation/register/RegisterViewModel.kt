@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.auth.data.remote.AuthPreferencesRepository
-import com.example.mobile.auth.domain.repository.AuthRepository
+import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.utils.ConnectivityRepository
 import com.example.mobile.utils.cleanError
 import dagger.hilt.android.lifecycle.HiltViewModel
