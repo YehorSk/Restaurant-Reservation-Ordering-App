@@ -114,13 +114,17 @@ class CartScreenViewModel @Inject constructor(
     }
 
     fun setItem(item: CartItemEntity){
+        _uiState.update {
+            it.copy(cartItem = item)
+        }
         _cartForm.update {
             Timber.d("Item $item")
             it.copy(
+                pivotId = item.pivot.id,
                 quantity = item.pivot.quantity,
                 price = item.pivot.price,
                 note = item.pivot.note,
-                menuItemId = item.pivot.menuItemId
+                menuItemId = item.pivot.menuItemId,
             )
         }
     }
@@ -172,5 +176,6 @@ class CartScreenViewModel @Inject constructor(
 data class CartScreenUiState(
     val internetError: Boolean = false,
     val error: String = "",
-    val currentItem: MenuItem? = null
+    val currentItem: MenuItem? = null,
+    val cartItem: CartItemEntity? = null
 )

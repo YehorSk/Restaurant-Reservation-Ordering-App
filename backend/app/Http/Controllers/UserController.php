@@ -58,14 +58,12 @@ class UserController extends Controller
             $exists = $user->menuItems()
                 ->where('menu_item_id', $request->input('menu_item_id'))
                 ->wherePivot('note', $request->input('note')?? '')
-                ->wherePivot('price', $request->input('price'))
-                ->wherePivot('quantity', $request->input('quantity'))
                 ->first();
             if($exists){
                 $user->menuItems()->detach($exists);
-                return response()->json("Item in Cart was deleted");
+                return $this->success(data: $exists, message: "Item in Cart was deleted");
             }
-            return response()->json("Item was not deleted");
+            return $this->error('', "Item was not deleted", 400);
         }
         return $this->error('', 'No user', 401);
     }
@@ -74,23 +72,21 @@ class UserController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $exists = $user->menuItems()
-                ->where('menu_item_id', $request->input('menu_item_id'))
-                ->wherePivot('note', $request->input('note')?? '')
-                ->wherePivot('price', $request->input('price'))
-                ->wherePivot('quantity', $request->input('quantity'))
+                ->wherePivot('id', $request->input('pivot_id'))
                 ->first();
             if($exists){
                 $user->menuItems()->updateExistingPivot($exists->id, [
-                        'note' => $request->input('note') ?? '',
-                        'price' => $request->input('price'),
-                        'quantity' => $request->input('quantity'),
-                    ]);
-                return response()->json("Item in Cart was updated");
+                    'note' => $request->input('note') ?? '',
+                    'price' => $request->input('price'),
+                    'quantity' => $request->input('quantity'),
+                ]);
+                $item = $user->menuItems()
+                    ->wherePivot('id', $request->input('pivot_id'))
+                    ->first();
+                return $this->success(data: $item, message: "Item in Cart was updated");
             }
-            return response()->json("Item in Cart was not updated");
+            return $this->error('', "Item in Cart was not updated", 400);
         }
         return $this->error('', 'No user', 401);
     }
-
-
 }
