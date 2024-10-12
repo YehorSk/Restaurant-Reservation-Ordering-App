@@ -29,6 +29,7 @@ import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.cart.presentation.cart.components.CartItem
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
+import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
 
 @Composable
 fun CartScreen(
@@ -53,31 +54,46 @@ fun CartScreen(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            items(cartItems) { item ->
-                CartItem(
-                    cartItem = item,
-                    onClick = { cartItem ->
-                        viewModel.setItem(cartItem)
-                        viewModel.setMenu(cartItem.toMenuItem())
-                        showBottomSheet = true
-                    },
-                )
+            items(
+                items = cartItems,
+                key = {it.id}
+            ) { item ->
+                SwipeToDeleteContainer(
+                    item = item,
+                    onDelete = {
+                        viewModel.setItem(item)
+                        viewModel.deleteItem()
+                    }
+                ) {
+                    CartItem(
+                        cartItem = item,
+                        onClick = { cartItem ->
+                            viewModel.setItem(cartItem)
+                            viewModel.setMenu(cartItem.toMenuItem())
+                            showBottomSheet = true
+                        },
+                    )
+                }
             }
             item {
-                Spacer(modifier = Modifier.height(40.dp))
+                if(cartItems.isNotEmpty()){
+                    Spacer(modifier = Modifier.height(40.dp))
+                }
             }
         }
-        Button(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
-                .align(Alignment.BottomCenter),
-            onClick = {}
-        ) {
-            Text(
-                modifier = Modifier.padding(8.dp),
-                text = "Go to checkout"
-            )
+        if(cartItems.isNotEmpty()){
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
+                    .align(Alignment.BottomCenter),
+                onClick = {}
+            ) {
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = "Go to checkout"
+                )
+            }
         }
     }
 

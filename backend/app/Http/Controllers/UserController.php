@@ -56,8 +56,7 @@ class UserController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $exists = $user->menuItems()
-                ->where('menu_item_id', $request->input('menu_item_id'))
-                ->wherePivot('note', $request->input('note')?? '')
+                ->wherePivot('id', $request->input('pivot_id'))
                 ->first();
             if($exists){
                 $user->menuItems()->detach($exists);
