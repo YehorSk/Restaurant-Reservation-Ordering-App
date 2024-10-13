@@ -107,7 +107,6 @@ class CartScreenViewModel @Inject constructor(
                         state.copy()
                     }
                 }
-
             }
             _isLoading.value = false
         }

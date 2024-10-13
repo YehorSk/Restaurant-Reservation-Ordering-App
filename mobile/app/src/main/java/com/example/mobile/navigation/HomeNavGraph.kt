@@ -10,6 +10,7 @@ import com.example.mobile.cart.presentation.cart.CartScreen
 import com.example.mobile.menu.presentation.menu.MenuScreen
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.core.presentation.settings.SettingsScreen
+import com.example.mobile.favorites.presentation.favorites.FavoritesScreen
 
 @Composable
 fun HomeNavGraph(
@@ -38,6 +39,11 @@ fun HomeNavGraph(
                 modifier = modifier
             )
         }
+        composable(HomeScreen.Favorites.route) {
+            FavoritesScreen(
+                modifier = modifier
+            )
+        }
         composable(HomeScreen.Cart.route) {
             CartScreen(
                 modifier = modifier
@@ -52,4 +58,5 @@ sealed class HomeScreen(val route: String){
     object Cart: HomeScreen(route = "CART")
     object Orders: HomeScreen(route = "ORDERS")
     object Settings: HomeScreen(route = "SETTINGS")
+    object Favorites: HomeScreen(route = "FAVORITES")
 }

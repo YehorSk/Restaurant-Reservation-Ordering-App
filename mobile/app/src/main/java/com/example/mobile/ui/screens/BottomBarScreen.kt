@@ -1,6 +1,7 @@
 package com.example.mobile.ui.screens
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Receipt
 import androidx.compose.material.icons.filled.Settings
@@ -35,4 +36,11 @@ sealed class BottomBarScreen(
         title = "SETTINGS",
         icon = Icons.Default.Settings
     )
+
+    object Favorites : BottomBarScreen(
+        route = "FAVORITES",
+        title = "FAVORITES",
+        icon = Icons.Default.Favorite
+    )
+
 }

@@ -81,6 +81,9 @@ fun CartScreen(
                 }
             }
         }
+        var checkout = cartItems.sumOf {
+            it.pivot.price
+        }
         if(cartItems.isNotEmpty()){
             Button(
                 modifier = Modifier
@@ -91,7 +94,7 @@ fun CartScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
-                    text = "Go to checkout"
+                    text = "Go to checkout $checkout €"
                 )
             }
         }

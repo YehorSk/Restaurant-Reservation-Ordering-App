@@ -127,7 +127,8 @@ fun LogBody(
             loginForm = itemUiState.loginForm,
             onValueChange = onItemValueChange,
             modifier = Modifier.fillMaxWidth(),
-            logErrorItemUiState = logErrorItemUiState
+            logErrorItemUiState = logErrorItemUiState,
+            enabled = !itemUiState.isLoading
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(

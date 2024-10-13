@@ -42,6 +42,7 @@ fun BottomBar(navController: NavHostController){
     val screens = listOf(
         BottomBarScreen.Home,
         BottomBarScreen.Cart,
+        BottomBarScreen.Favorites,
         BottomBarScreen.Orders,
         BottomBarScreen.Settings,
     )
@@ -70,22 +71,24 @@ fun RowScope.AddItem(
     currentDestination: NavDestination?,
     navController: NavHostController
 ){
+    val isSelected = currentDestination?.hierarchy?.any {
+        it.route == screen.route
+    } == true
     NavigationBarItem(
         label = {
-            Text(text = screen.title)
+//            Text(text = screen.title)
         },
         icon = {
             Icon(imageVector = screen.icon, contentDescription = "Navigation Icon")
         },
-        selected = currentDestination?.hierarchy?.any{
-            it.route == screen.route
-        } == true,
+        selected = isSelected,
         onClick ={
-            navController.navigate(screen.route){
-                popUpTo(navController.graph.findStartDestination().id)
-                launchSingleTop = true
+            if(!isSelected){
+                navController.navigate(screen.route){
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
             }
         }
-
     )
 }

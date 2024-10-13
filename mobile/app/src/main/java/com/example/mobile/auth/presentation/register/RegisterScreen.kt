@@ -111,7 +111,8 @@ fun RegBody(
             registerForm = itemUiState.registerForm,
             onValueChange = onItemValueChange,
             modifier = Modifier.fillMaxWidth(),
-            itemErrorUiState = itemErrorUiState
+            itemErrorUiState = itemErrorUiState,
+            enabled = !itemUiState.isLoading
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(

@@ -47,14 +47,12 @@ fun <T> SwipeToDeleteContainer(
             }
         }
     )
-
     LaunchedEffect(key1 = isRemoved) {
         if(isRemoved){
             delay(animationDuration.toLong())
             onDelete(item)
         }
     }
-
     AnimatedVisibility(
         visible = !isRemoved,
         exit = shrinkVertically(
@@ -73,7 +71,6 @@ fun <T> SwipeToDeleteContainer(
             content(item)
         }
     }
-
 }
 
 @Composable
