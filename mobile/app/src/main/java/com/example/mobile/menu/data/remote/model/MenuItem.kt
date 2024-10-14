@@ -1,5 +1,6 @@
 package com.example.mobile.menu.data.remote.model
 
+import com.example.mobile.menu.data.db.model.MenuItemEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,3 +22,18 @@ data class MenuItem(
     val picture: String,
     val price: String
 )
+
+fun MenuItem.toMenuItemEntity(): MenuItemEntity {
+    return MenuItemEntity(
+        id = this.id,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt,
+        menuId = this.menuId,
+        name = this.name,
+        shortDescription = this.shortDescription,
+        longDescription = this.longDescription,
+        recipe = this.recipe,
+        picture = this.picture,
+        price = this.price
+    )
+}

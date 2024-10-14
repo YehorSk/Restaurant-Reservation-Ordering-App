@@ -5,6 +5,7 @@ import com.example.mobile.core.data.remote.model.NetworkResult
 import com.example.mobile.menu.data.remote.model.Menu
 import com.example.mobile.menu.data.service.MenuService
 import com.example.mobile.core.presentation.components.CartForm
+import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.repository.MenuRepository
 import com.example.mobile.utils.ConnectivityRepository
 import kotlinx.coroutines.flow.first
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class MenuRepositoryImpl @Inject constructor(
     private val menuService: MenuService,
     private val prefs: AuthPreferencesRepository,
+    private val menuDao: MenuDao,
     private val connectivityRepository: ConnectivityRepository
 ) : MenuRepository {
 
@@ -23,6 +25,7 @@ class MenuRepositoryImpl @Inject constructor(
         return if(isOnline){
             try {
                 val result = menuService.getAllMenus()
+                menuDao.insert(result)
                 NetworkResult.Success(status = "", message = "",data = result)
             }catch (e: HttpException){
                 if(e.code() == 401){

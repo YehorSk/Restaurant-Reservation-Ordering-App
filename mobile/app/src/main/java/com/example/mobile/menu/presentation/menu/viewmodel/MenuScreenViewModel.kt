@@ -2,6 +2,7 @@ package com.example.mobile.menu.presentation.menu.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.core.data.remote.model.NetworkResult
 import com.example.mobile.core.data.repository.SideEffect
@@ -9,13 +10,17 @@ import com.example.mobile.menu.data.remote.model.Menu
 import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.core.presentation.components.CartForm
+import com.example.mobile.menu.data.dao.MenuDao
+import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -24,11 +29,19 @@ import javax.inject.Inject
 @HiltViewModel
 class MenuScreenViewModel @Inject constructor(
     val menuRepositoryImpl: MenuRepositoryImpl,
-    val cartRepositoryImpl: CartRepositoryImpl
+    val cartRepositoryImpl: CartRepositoryImpl,
+    val menuDao: MenuDao
 ) : ViewModel(){
 
     private val _uiState = MutableStateFlow(ClientMainUiState())
     val uiState: StateFlow<ClientMainUiState> = _uiState.asStateFlow()
+
+    val menuUiState: StateFlow<List<MenuWithMenuItems>> = menuDao.getMenuWithMenuItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = listOf()
+        )
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
@@ -130,11 +143,13 @@ class MenuScreenViewModel @Inject constructor(
                             state.copy()
                         }
                     }
-                    is NetworkResult.Success ->
+                    is NetworkResult.Success ->{
+                        menuDao.insert(result.data)
                         state.copy(
-                        menus = result.data,
-                        internetError = false
-                    )
+                            internetError = false
+                        )
+                    }
+
                 }
             }
             _isLoading.value = false
@@ -149,7 +164,6 @@ class MenuScreenViewModel @Inject constructor(
 }
 
 data class ClientMainUiState(
-    val menus: List<Menu>? = null,
     val currentMenu: MenuItem? = null,
     val internetError: Boolean = false,
 )

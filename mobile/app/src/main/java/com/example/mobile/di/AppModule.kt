@@ -16,6 +16,7 @@ import com.example.mobile.cart.data.repository.CartRepository
 import com.example.mobile.cart.data.service.CartService
 import com.example.mobile.core.Constants
 import com.example.mobile.core.data.db.MainRoomDatabase
+import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.data.repository.MenuRepository
 import com.example.mobile.menu.data.service.MenuService
@@ -86,6 +87,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideMenuDao(database: MainRoomDatabase): MenuDao = database.menuDao
+
+    @Provides
+    @Singleton
     fun provideAuthApiService(retrofit: Retrofit): AuthService = retrofit.create(AuthService::class.java)
 
     @Provides
@@ -110,11 +115,11 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCartRepositoryImpl(cartService: CartService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository,cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService,authPreferencesRepository,connectivityRepository, cartDao)
+    fun provideCartRepositoryImpl(cartService: CartService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository, cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService,authPreferencesRepository,connectivityRepository, cartDao)
 
     @Provides
     @Singleton
-    fun provideMenuRepositoryImpl(menuService: MenuService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository) : MenuRepository = MenuRepositoryImpl(menuService,authPreferencesRepository,connectivityRepository)
+    fun provideMenuRepositoryImpl(menuService: MenuService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService,authPreferencesRepository,menuDao,connectivityRepository)
 
 
 }

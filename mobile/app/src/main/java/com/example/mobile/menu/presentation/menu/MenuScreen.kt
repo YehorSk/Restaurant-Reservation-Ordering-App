@@ -22,6 +22,8 @@ import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.core.presentation.components.ErrorScreen
 import com.example.mobile.core.presentation.components.SingleEventEffect
+import com.example.mobile.menu.data.db.model.toMenu
+import com.example.mobile.menu.data.db.model.toMenuItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -32,6 +34,7 @@ fun MenuScreen(
 
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
     val cartForm by viewModel.cartForm.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -41,31 +44,23 @@ fun MenuScreen(
         }
     }
 
-    if(uiState.internetError){
-        ErrorScreen(
-            modifier = modifier.fillMaxSize()
-        ) {
-            viewModel.getMenus()
-        }
-    }else{
-        LazyColumn(
-            modifier = modifier.fillMaxSize()
-        ) {
-            uiState.menus?.forEach { menu ->
-                stickyHeader {
-                    MenuHeader(menu = menu)
-                }
-                items(menu.items){ item ->
-                    MenuItem(
-                        menuItem = item,
-                        onClick = { menuItem ->
-                            viewModel.setMenu(menuItem)
-                            viewModel.updatePrice(menuItem.price.toDouble())
-                            viewModel.setMenuItemId(menuItem.id)
-                            showBottomSheet = true
-                        }
-                    )
-                }
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
+        menuUiState?.forEach { menu ->
+            stickyHeader {
+                MenuHeader(menu = menu.menu.toMenu(menu.menuItems.map { it.toMenuItem() }))
+            }
+            items(menu.menuItems.map { it.toMenuItem() }){ item ->
+                MenuItem(
+                    menuItem = item,
+                    onClick = { menuItem ->
+                        viewModel.setMenu(menuItem)
+                        viewModel.updatePrice(menuItem.price.toDouble())
+                        viewModel.setMenuItemId(menuItem.id)
+                        showBottomSheet = true
+                    }
+                )
             }
         }
     }
