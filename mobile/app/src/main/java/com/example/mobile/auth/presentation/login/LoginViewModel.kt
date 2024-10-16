@@ -5,13 +5,17 @@ import androidx.lifecycle.viewModelScope
 import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.auth.data.remote.AuthPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
+import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.utils.ConnectivityRepository
 import com.example.mobile.utils.cleanError
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,6 +34,10 @@ class LoginViewModel @Inject constructor(
 
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
+    private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
+    val sideEffectFlow: Flow<SideEffect>
+        get() = _sideEffectChannel.receiveAsFlow()
 
 
     init {
@@ -89,11 +97,7 @@ class LoginViewModel @Inject constructor(
                         result.data?.let { preferencesRepository.saveUser(it) }
                         currentState.copy(
                             isLoading = false,
-                            isLoggedIn = true,
-                            loginFormErrors = LoginFormErrors(
-                                email = "",
-                                password = ""
-                            )
+                            isLoggedIn = true
                         )
                     }
                     is AuthResult.Unauthorized -> {
@@ -119,32 +123,24 @@ class LoginViewModel @Inject constructor(
             _uiState.update { currentState ->
                 currentState.copy(isLoading = true)
             }
-
             val result = authRepository.login(loginForm = uiState.value.loginForm)
-
             _uiState.update { state ->
                 when (result) {
                     is AuthResult.Authorized -> {
                         Timber.tag("Authorized").v(result.data.toString())
                         result.data?.let { preferencesRepository.saveUser(httpResponse = it) }
+//                        _sideEffectChannel.send(SideEffect.ShowToast(result.data!!.message!!))
                         state.copy(
                             isLoading = false,
-                            loginFormErrors = LoginFormErrors(
-                                email = "",
-                                password = ""
-                            ),
                             isLoggedIn = true
                         )
                     }
                     is AuthResult.Unauthorized -> {
                         Timber.tag("Unauthorized").v(result.data.toString())
                         preferencesRepository.clearAllTokens()
+                        _sideEffectChannel.send(SideEffect.ShowToast(result.data!!.message!!))
                         state.copy(
                             isLoading = false,
-                            loginFormErrors = LoginFormErrors(
-                                email = cleanError(result.data?.errors?.email.toString()),
-                                password = cleanError(result.data?.errors?.password.toString())
-                            ),
                             isLoggedIn = false
                         )
                     }

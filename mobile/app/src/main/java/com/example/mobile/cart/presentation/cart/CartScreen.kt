@@ -94,7 +94,7 @@ fun CartScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
-                    text = "Go to checkout $checkout €"
+                    text = "Go to checkout ${String.format("%.2f", checkout)} €"
                 )
             }
         }

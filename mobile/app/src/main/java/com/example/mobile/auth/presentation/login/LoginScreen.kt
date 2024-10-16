@@ -12,18 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -32,6 +28,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mobile.core.data.repository.SideEffect
+import com.example.mobile.core.presentation.components.SingleEventEffect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -46,6 +44,12 @@ fun LoginScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
+
+    SingleEventEffect(loginViewModel.sideEffectFlow) { sideEffect ->
+        when(sideEffect){
+            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Box(
         modifier = modifier.fillMaxSize()
@@ -68,7 +72,6 @@ fun LoginScreen(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .fillMaxWidth(),
-                logErrorItemUiState = uiState.loginFormErrors,
                 onRegClick = onRegClick
             )
         }
@@ -114,7 +117,6 @@ fun LoginScreen(
 @Composable
 fun LogBody(
     itemUiState: LoginState,
-    logErrorItemUiState: LoginFormErrors,
     onItemValueChange: (LoginForm) -> Unit,
     onLogClick: () -> Unit,
     onRegClick: () -> Unit,
@@ -127,7 +129,6 @@ fun LogBody(
             loginForm = itemUiState.loginForm,
             onValueChange = onItemValueChange,
             modifier = Modifier.fillMaxWidth(),
-            logErrorItemUiState = logErrorItemUiState,
             enabled = !itemUiState.isLoading
         )
         Spacer(modifier = Modifier.height(20.dp))
@@ -156,40 +157,21 @@ fun LogBody(
 @Composable
 fun LogForm(
     modifier: Modifier = Modifier,
-    logErrorItemUiState: LoginFormErrors,
     loginForm: LoginForm,
     enabled: Boolean = true,
     onValueChange: (LoginForm) -> Unit = {}
 ) {
-
-    val errorEmail = (logErrorItemUiState.email != "[]" && logErrorItemUiState.email != "")
-    val errorPwd = (logErrorItemUiState.password != "[]" && logErrorItemUiState.password != "")
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
         OutlinedTextField(
             value = loginForm.email,
             onValueChange = { onValueChange(loginForm.copy(email = it)) },
             label = { Text(text = "User Email") },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true,
-            isError = errorEmail,
-            supportingText = {
-                if (errorEmail) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = logErrorItemUiState.email,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            },
-            trailingIcon = {
-                if (errorPwd)
-                    Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
-            },
+            singleLine = true
         )
         OutlinedTextField(
             value = loginForm.password,
@@ -198,20 +180,6 @@ fun LogForm(
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,
-            isError = errorPwd,
-            supportingText = {
-                if (errorPwd) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = logErrorItemUiState.password,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            },
-            trailingIcon = {
-                if (errorPwd)
-                    Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
-            },
         )
     }
 }

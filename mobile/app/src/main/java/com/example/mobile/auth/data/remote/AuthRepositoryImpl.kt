@@ -6,9 +6,12 @@ import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.data.service.AuthService
 import com.example.mobile.auth.presentation.login.LoginForm
 import com.example.mobile.auth.presentation.register.RegisterForm
+import com.example.mobile.core.data.db.MainRoomDatabase
 import com.example.mobile.utils.ConnectivityRepository
 import com.example.mobile.utils.parseHttpResponse
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -16,7 +19,8 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,
     private val prefs: AuthPreferencesRepository,
-    private val connectivityRepository: ConnectivityRepository
+    private val connectivityRepository: ConnectivityRepository,
+    private val mainRoomDatabase: MainRoomDatabase
 ) : AuthRepository {
 
     override suspend fun register(registerForm: RegisterForm): AuthResult<HttpResponse> {
@@ -92,6 +96,9 @@ class AuthRepositoryImpl @Inject constructor(
                 val token = prefs.jwtTokenFlow.first()
                 val result = authService.logout("Bearer $token")
                 prefs.clearAllTokens()
+                withContext(Dispatchers.IO) {
+                    mainRoomDatabase.clearAllTables()
+                }
                 AuthResult.Unauthorized(result)
             }catch (e: HttpException) {
                 if (e.code() == 401) {

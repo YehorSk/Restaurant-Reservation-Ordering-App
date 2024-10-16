@@ -1,10 +1,12 @@
 package com.example.mobile.menu.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.mobile.menu.data.db.model.MenuEntity
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
@@ -36,6 +38,18 @@ interface MenuDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMenuItem(menuItem: MenuItemEntity)
+
+    @Delete
+    suspend fun deleteMenu(menu: MenuEntity)
+
+    @Delete
+    suspend fun deleteMenuItem(menuItem: MenuItemEntity)
+
+    @Update
+    suspend fun updateMenu(menu: MenuEntity)
+
+    @Update
+    suspend fun updateMenuItem(menuItem: MenuItemEntity)
 
 
 }

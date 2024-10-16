@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 
 data class LoginState(
     val loginForm: LoginForm = LoginForm(),
-    val loginFormErrors: LoginFormErrors = LoginFormErrors(),
     val isEntryValid: Boolean = false,
     val isLoggedIn: Boolean = false,
     val isLoading: Boolean = false,
@@ -15,11 +14,6 @@ data class LoginState(
 
 @Serializable
 data class LoginForm(
-    val email: String = "",
-    val password: String = ""
-)
-
-data class LoginFormErrors(
     val email: String = "",
     val password: String = ""
 )

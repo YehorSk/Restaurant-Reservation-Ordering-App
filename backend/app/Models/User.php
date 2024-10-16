@@ -55,4 +55,9 @@ class User extends Authenticatable
             ->withPivot('id','quantity', 'price','note')
             ->withTimestamps();
     }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Favorite::class);
+    }
 }
