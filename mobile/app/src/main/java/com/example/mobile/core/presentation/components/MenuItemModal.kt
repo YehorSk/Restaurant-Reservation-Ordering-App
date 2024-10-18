@@ -57,7 +57,6 @@ fun MenuItemModal(
     cartForm: CartForm,
     onQuantityChange: (Int) -> Unit,
     onPriceChange: (Double) -> Unit,
-    onNoteChange: (String) -> Unit,
     addUserCartItem: () -> Unit,
     @StringRes buttonText: Int
 ){
@@ -73,7 +72,6 @@ fun MenuItemModal(
                 menuItem,
                 cartForm = cartForm,
                 onQuantityChange = onQuantityChange,
-                onNoteChange = onNoteChange,
                 onPriceChange = onPriceChange,
                 addUserCartItem = addUserCartItem,
                 buttonText = buttonText
@@ -90,7 +88,6 @@ fun MenuItemModalContent(
     cartForm: CartForm,
     onQuantityChange: (Int) -> Unit,
     onPriceChange: (Double) -> Unit,
-    onNoteChange: (String) -> Unit,
     addUserCartItem: () -> Unit,
     @StringRes buttonText: Int
 ){
@@ -166,23 +163,6 @@ fun MenuItemModalContent(
                     .fillMaxWidth()
                     .height(10.dp)
                     .background(MaterialTheme.colorScheme.surfaceVariant)
-            )
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp,bottom = 16.dp, start = 16.dp, end = 16.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.White
-                ),
-                value = cartForm.note,
-                onValueChange = { onNoteChange(it) },
-                label = {
-                    Text(text = "Add a note")
-                }
             )
             Row(
                 modifier = Modifier.padding(20.dp)
@@ -281,7 +261,6 @@ fun PreviewMenuItemModal() {
             menuItem = menuItem,
             onQuantityChange = {value -> },
             onPriceChange = {value -> },
-            onNoteChange = {value -> },
             cartForm = CartForm(),
             addUserCartItem = {},
             buttonText = R.string.Add

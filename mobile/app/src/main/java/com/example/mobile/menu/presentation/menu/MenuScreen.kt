@@ -74,7 +74,6 @@ fun MenuScreen(
                                 viewModel.clearForm()
                             },
                 cartForm = cartForm,
-                onNoteChange = {viewModel.updateNote(it)},
                 onQuantityChange = {viewModel.updateQuantity(it)},
                 onPriceChange = {viewModel.updatePrice(it)},
                 addUserCartItem = {

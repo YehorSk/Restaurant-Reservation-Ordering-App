@@ -15,8 +15,8 @@ interface CartDao {
     @Query("SELECT * FROM cart_table")
     fun getAllItems() : Flow<List<CartItemEntity>>
 
-    @Delete
-    fun deleteAllItems(items: List<CartItemEntity>)
+    @Query("DELETE FROM cart_table")
+    fun deleteAllItems()
 
     @Delete
     suspend fun deleteItem(item: CartItemEntity)

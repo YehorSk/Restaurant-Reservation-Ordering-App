@@ -56,7 +56,7 @@ fun CartScreen(
         ) {
             items(
                 items = cartItems,
-                key = {it.id}
+                key = {it.pivot.id}
             ) { item ->
                 SwipeToDeleteContainer(
                     item = item,
@@ -109,7 +109,6 @@ fun CartScreen(
                     viewModel.clearForm()
                 },
                 cartForm = cartForm,
-                onNoteChange = {viewModel.updateNote(it)},
                 onQuantityChange = {viewModel.updateQuantity(it)},
                 onPriceChange = {viewModel.updatePrice(it)},
                 addUserCartItem = {

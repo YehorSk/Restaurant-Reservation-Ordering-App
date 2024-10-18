@@ -54,14 +54,6 @@ class CartScreenViewModel @Inject constructor(
         getItems()
     }
 
-    fun updateNote(note: String){
-        Timber.d("Note $note")
-        Timber.d("Cart ${_cartForm.value}")
-        _cartForm.update {
-            it.copy(note = note)
-        }
-    }
-
     fun updatePrice(price: Double){
         val formattedPrice = String.format("%.2f", price).toDouble()
         Timber.d("price $price")
@@ -84,7 +76,6 @@ class CartScreenViewModel @Inject constructor(
             it.copy(
                 price = 0.00,
                 quantity = 1,
-                note = "",
                 menuItemId = ""
             )
         }
@@ -122,7 +113,6 @@ class CartScreenViewModel @Inject constructor(
                 pivotId = item.pivot.id,
                 quantity = item.pivot.quantity,
                 price = item.pivot.price,
-                note = item.pivot.note,
                 menuItemId = item.pivot.menuItemId,
             )
         }

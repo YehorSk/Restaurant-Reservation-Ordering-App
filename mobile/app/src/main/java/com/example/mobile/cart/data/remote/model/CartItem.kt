@@ -76,7 +76,6 @@ fun Pivot.toPivotEntity() = PivotCartItemEntity(
     menuItemId = menuItemId,
     quantity = quantity.toInt(),
     price = price.toDouble(),
-    note = note,
     createdAt = createdAt,
     updatedAt = updatedAt
 )

@@ -57,14 +57,6 @@ class MenuScreenViewModel @Inject constructor(
         getMenus()
     }
 
-    fun updateNote(note: String){
-        Timber.d("Note $note")
-        Timber.d("Cart ${_cartForm.value}")
-        _cartForm.update {
-            it.copy(note = note)
-        }
-    }
-
     fun updatePrice(price: Double){
         Timber.d("price $price")
         Timber.d("Cart ${_cartForm.value}")
@@ -94,7 +86,6 @@ class MenuScreenViewModel @Inject constructor(
             it.copy(
                 price = 0.00,
                 quantity = 1,
-                note = "",
                 menuItemId = ""
             )
         }
