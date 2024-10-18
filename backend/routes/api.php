@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::controller(UserController::class)->group(function (){
+Route::controller(CartController::class)->group(function (){
     Route::get('user-cart-items','getUserCartItems');
     Route::post('add-user-cart-item','addUserCartItem');
     Route::post('delete-user-cart-item','deleteUserCartItem');
