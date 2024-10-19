@@ -2,9 +2,12 @@ package com.example.mobile.menu.presentation.menu
 
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,13 +48,15 @@ fun MenuScreen(
     }
 
     LazyColumn(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
         menuUiState?.forEach { menu ->
             stickyHeader {
                 MenuHeader(menu = menu.menu.toMenu(menu.menuItems.map { it.toMenuItem() }))
             }
-            items(menu.menuItems.map { it.toMenuItem() }){ item ->
+            items(menu.menuItems.map { it }){ item ->
                 MenuItem(
                     menuItem = item,
                     onClick = { menuItem ->
@@ -61,6 +66,7 @@ fun MenuScreen(
                         showBottomSheet = true
                     }
                 )
+                HorizontalDivider()
             }
         }
     }

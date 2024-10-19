@@ -2,6 +2,7 @@ package com.example.mobile.core.presentation.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +19,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,10 +45,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.mobile.R
+import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.ui.theme.MobileTheme
 
@@ -52,7 +58,7 @@ import com.example.mobile.ui.theme.MobileTheme
 @Composable
 fun MenuItemModal(
     onDismiss:()->Unit,
-    menuItem: MenuItem,
+    menuItem: MenuItemEntity,
     modifier: Modifier = Modifier,
     cartForm: CartForm,
     onQuantityChange: (Int) -> Unit,
@@ -83,7 +89,7 @@ fun MenuItemModal(
 @Composable
 fun MenuItemModalContent(
     onDismiss:()->Unit,
-    menuItem: MenuItem,
+    menuItem: MenuItemEntity,
     modifier: Modifier = Modifier,
     cartForm: CartForm,
     onQuantityChange: (Int) -> Unit,
@@ -91,10 +97,14 @@ fun MenuItemModalContent(
     addUserCartItem: () -> Unit,
     @StringRes buttonText: Int
 ){
-
+    val contentColor = if(isSystemInDarkTheme()){
+        Color.White
+    }else{
+        Color.Black
+    }
     Column(
         modifier = modifier
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         Box(
             modifier = Modifier
@@ -120,11 +130,19 @@ fun MenuItemModalContent(
                     onClick = {},
                     modifier = Modifier.background(Color.White),
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = "",
-                        modifier = Modifier.size(30.dp)
-                    )
+                    if(menuItem.isFavorite){
+                        Icon(
+                            imageVector = Icons.Filled.Favorite,
+                            contentDescription = "",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }else{
+                        Icon(
+                            imageVector = Icons.Filled.FavoriteBorder,
+                            contentDescription = "",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
                 }
                 IconButton(
                     onClick = onDismiss
@@ -145,17 +163,20 @@ fun MenuItemModalContent(
                 text = menuItem.name,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = contentColor
             )
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
                 fontSize = 16.sp,
-                text = "€"+menuItem.price
+                text = "€"+menuItem.price,
+                color = contentColor
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
                 fontSize = 16.sp,
-                text = menuItem.longDescription
+                text = menuItem.longDescription,
+                color = contentColor
             )
             Spacer(
                 modifier = Modifier
@@ -239,11 +260,11 @@ fun MenuItemModalContent(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun PreviewMenuItemModal() {
     MobileTheme {
-        val menuItem = MenuItem(
+        val menuItem = MenuItemEntity(
             id = "1",
             createdAt = "2023-01-01",
             updatedAt = "2023-01-02",
@@ -253,7 +274,8 @@ fun PreviewMenuItemModal() {
             longDescription = "A delicious pizza topped with fresh ingredients, including tomatoes, cheese, and basil.",
             recipe = "Tomatoes, cheese, basil, dough",
             picture = "https://example.com/pizza.jpg",
-            price = "9.99"
+            price = "9.99",
+            isFavorite = false
         )
 
         MenuItemModalContent(

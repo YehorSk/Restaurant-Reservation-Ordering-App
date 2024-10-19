@@ -11,6 +11,7 @@ import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.menu.data.dao.MenuDao
+import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -32,6 +33,12 @@ class MenuScreenViewModel @Inject constructor(
     val cartRepositoryImpl: CartRepositoryImpl,
     val menuDao: MenuDao
 ) : ViewModel(){
+
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
+
+    private val _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
 
     private val _uiState = MutableStateFlow(ClientMainUiState())
     val uiState: StateFlow<ClientMainUiState> = _uiState.asStateFlow()
@@ -135,7 +142,6 @@ class MenuScreenViewModel @Inject constructor(
                         }
                     }
                     is NetworkResult.Success ->{
-                        menuDao.insert(result.data)
                         state.copy(
                             internetError = false
                         )
@@ -147,7 +153,7 @@ class MenuScreenViewModel @Inject constructor(
         }
     }
 
-    fun setMenu(menu: MenuItem){
+    fun setMenu(menu: MenuItemEntity){
         _uiState.update {
             it.copy(currentMenu = menu)
         }
@@ -155,7 +161,7 @@ class MenuScreenViewModel @Inject constructor(
 }
 
 data class ClientMainUiState(
-    val currentMenu: MenuItem? = null,
+    val currentMenu: MenuItemEntity? = null,
     val internetError: Boolean = false,
 )
 

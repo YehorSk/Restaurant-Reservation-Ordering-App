@@ -1,6 +1,7 @@
 package com.example.mobile.cart.presentation.cart
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +33,7 @@ import com.example.mobile.cart.presentation.cart.components.CartItem
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
+import com.example.mobile.menu.data.remote.model.toMenuItemEntity
 
 @Composable
 fun CartScreen(
@@ -49,7 +53,9 @@ fun CartScreen(
     }
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ){
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -69,11 +75,12 @@ fun CartScreen(
                         cartItem = item,
                         onClick = { cartItem ->
                             viewModel.setItem(cartItem)
-                            viewModel.setMenu(cartItem.toMenuItem())
+                            viewModel.setMenuItem(cartItem.toMenuItem().toMenuItemEntity())
                             showBottomSheet = true
                         },
                     )
                 }
+                HorizontalDivider()
             }
             item {
                 if(cartItems.isNotEmpty()){
@@ -81,7 +88,7 @@ fun CartScreen(
                 }
             }
         }
-        var checkout = cartItems.sumOf {
+        val checkout = cartItems.sumOf {
             it.pivot.price
         }
         if(cartItems.isNotEmpty()){
@@ -109,8 +116,8 @@ fun CartScreen(
                     viewModel.clearForm()
                 },
                 cartForm = cartForm,
-                onQuantityChange = {viewModel.updateQuantity(it)},
-                onPriceChange = {viewModel.updatePrice(it)},
+                onQuantityChange = {value -> viewModel.updateQuantity(value)},
+                onPriceChange = {value -> viewModel.updatePrice(value)},
                 addUserCartItem = {
                     showBottomSheet = false
                     viewModel.updateItem()

@@ -2,12 +2,14 @@ package com.example.mobile.menu.presentation.menu.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,21 +19,28 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.mobile.R
+import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
 fun MenuItem(
-    menuItem: MenuItem,
+    menuItem: MenuItemEntity,
     modifier: Modifier = Modifier,
-    onClick: (MenuItem) -> Unit
+    onClick: (MenuItemEntity) -> Unit
 ){
+    val contentColor = if(isSystemInDarkTheme()){
+        Color.White
+    }else{
+        Color.Black
+    }
     Row(
-        modifier = Modifier.background(Color.White)
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
             .height(140.dp)
             .clickable {
                 onClick(menuItem)
@@ -46,7 +55,8 @@ fun MenuItem(
                 fontWeight = FontWeight.Bold,
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                color = contentColor
 
             )
             Text(
@@ -55,7 +65,8 @@ fun MenuItem(
                 maxLines = 2,
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                color = contentColor
             )
             Text(
                 text = "€"+menuItem.price,
@@ -64,7 +75,8 @@ fun MenuItem(
                 maxLines = 2,
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp)
+                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp),
+                color = contentColor
             )
         }
         AsyncImage(
@@ -81,12 +93,12 @@ fun MenuItem(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun MenuItemPreview(){
     MobileTheme {
         MenuItem(
-            menuItem = MenuItem(
+            menuItem = MenuItemEntity(
                 id = "0",
                 createdAt = "",
                 updatedAt = "",

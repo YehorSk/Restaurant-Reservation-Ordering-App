@@ -22,7 +22,9 @@ data class MenuItemEntity(
     val longDescription: String,
     val recipe: String,
     val picture: String,
-    val price: String
+    val price: String,
+    @ColumnInfo("is_favorite")
+    val isFavorite: Boolean = false
 )
 
 fun MenuItemEntity.toMenuItem(): MenuItem {

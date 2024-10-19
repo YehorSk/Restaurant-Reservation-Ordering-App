@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.core.data.remote.model.NetworkResult
 import com.example.mobile.core.data.repository.SideEffect
-import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.model.toCartItemEntity
 import com.example.mobile.core.presentation.components.CartForm
+import com.example.mobile.menu.data.db.model.MenuItemEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -94,7 +94,12 @@ class CartScreenViewModel @Inject constructor(
                         }
                     }
                     is NetworkResult.Success -> {
-                        cartDao.insertItems(result.data.map { it.toCartItemEntity() })
+                        val serverItemIds = result.data.map { it.id }.toSet()
+                        val itemsToDelete = cartItemUiState.value.filter { it.id !in serverItemIds }
+                        cartDao.runInTransaction {
+                            cartDao.insertItems(result.data.map { it.toCartItemEntity() })
+                            cartDao.deleteItems(itemsToDelete)
+                        }
                         state.copy()
                     }
                 }
@@ -154,7 +159,7 @@ class CartScreenViewModel @Inject constructor(
         clearForm()
     }
 
-    fun setMenu(menu: MenuItem){
+    fun setMenuItem(menu: MenuItemEntity){
         _uiState.update {
             it.copy(currentItem = menu)
         }
@@ -165,6 +170,6 @@ class CartScreenViewModel @Inject constructor(
 data class CartScreenUiState(
     val internetError: Boolean = false,
     val error: String = "",
-    val currentItem: MenuItem? = null,
+    val currentItem: MenuItemEntity? = null,
     val cartItem: CartItemEntity? = null
 )

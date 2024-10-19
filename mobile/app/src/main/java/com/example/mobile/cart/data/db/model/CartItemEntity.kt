@@ -21,6 +21,7 @@ data class CartItemEntity(
     val recipe: String,
     val picture: String,
     val price: Double,
+    @ColumnInfo("is_favorite") val isFavorite: Boolean = false,
     @Embedded val pivot: PivotCartItemEntity
 )
 
@@ -31,7 +32,7 @@ data class PivotCartItemEntity(
     val quantity: Int,
     @ColumnInfo(name = "pivot_price") val price: Double,
     @ColumnInfo(name = "pivot_created_at") val createdAt: String,
-    @ColumnInfo(name = "pivot_updated_at") val updatedAt: String,
+    @ColumnInfo(name = "pivot_updated_at") val updatedAt: String
 )
 
 fun CartItemEntity.toMenuItem() = MenuItem(

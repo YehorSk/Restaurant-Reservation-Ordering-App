@@ -25,7 +25,7 @@ class MenuRepositoryImpl @Inject constructor(
         return if(isOnline){
             try {
                 val result = menuService.getAllMenus()
-                menuDao.insert(result)
+                menuDao.syncMenusWithServer(result)
                 NetworkResult.Success(status = "", message = "",data = result)
             }catch (e: HttpException){
                 if(e.code() == 401){
@@ -38,6 +38,5 @@ class MenuRepositoryImpl @Inject constructor(
             NetworkResult.Error(code = 503, message = "No internet connection!")
         }
     }
-
 
 }

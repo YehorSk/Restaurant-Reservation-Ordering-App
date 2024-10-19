@@ -11,7 +11,6 @@ import com.example.mobile.menu.data.db.model.MenuEntity
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.menu.data.remote.model.Menu
-import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.menu.data.remote.model.toMenuEntity
 import com.example.mobile.menu.data.remote.model.toMenuItemEntity
 import kotlinx.coroutines.flow.Flow
@@ -51,5 +50,35 @@ interface MenuDao {
     @Update
     suspend fun updateMenuItem(menuItem: MenuItemEntity)
 
+    @Transaction
+    suspend fun syncMenusWithServer(serverMenus: List<Menu>) {
+        val localMenus = getMenuWithMenuItemsOnce()
 
+        val serverMenuIds = serverMenus.map { it.id }.toSet()
+
+        val menusToDelete = localMenus.filter { it.menu.id !in serverMenuIds }
+
+        for (menu in menusToDelete) {
+            deleteMenu(menu.menu)
+            deleteMenuItems(menu.menuItems.map { it })
+        }
+
+        insert(serverMenus)
+    }
+
+    @Transaction
+    @Query("SELECT * FROM menu_table")
+    suspend fun getMenuWithMenuItemsOnce(): List<MenuWithMenuItems>
+
+    @Transaction
+    suspend fun deleteMenuItems(menuItems: List<MenuItemEntity>) {
+        for (item in menuItems) {
+            deleteMenuItem(item)
+        }
+    }
+
+    @Transaction
+    suspend fun runInTransaction(block: suspend () -> Unit) {
+        block()
+    }
 }
