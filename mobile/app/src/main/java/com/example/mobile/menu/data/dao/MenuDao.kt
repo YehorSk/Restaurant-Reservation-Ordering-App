@@ -22,6 +22,9 @@ interface MenuDao {
     @Query("SELECT * FROM menu_table")
     fun getMenuWithMenuItems(): Flow<List<MenuWithMenuItems>>
 
+    @Query("SELECT * FROM menu_item_table WHERE name LIKE :text OR short_description LIKE :text OR long_description LIKE :text")
+    fun searchItems(text: String): Flow<List<MenuItemEntity>>
+
     @Transaction
     suspend fun insert(menus: List<Menu>){
         for(item in menus){
@@ -56,15 +59,24 @@ interface MenuDao {
 
         val serverMenuIds = serverMenus.map { it.id }.toSet()
 
+        val serverMenuItemsIds = serverMenus.flatMap { menu -> menu.items.map { it.id } }.toSet()
+
         val menusToDelete = localMenus.filter { it.menu.id !in serverMenuIds }
+
+        val menuItemsToDelete = localMenus.flatMap { localMenu ->
+            localMenu.menuItems.filter { it.id !in serverMenuItemsIds }
+        }
 
         for (menu in menusToDelete) {
             deleteMenu(menu.menu)
             deleteMenuItems(menu.menuItems.map { it })
         }
 
+        deleteMenuItems(menuItemsToDelete.map { it })
+
         insert(serverMenus)
     }
+
 
     @Transaction
     @Query("SELECT * FROM menu_table")
