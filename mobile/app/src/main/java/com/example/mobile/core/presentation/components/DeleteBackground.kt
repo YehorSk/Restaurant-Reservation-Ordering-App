@@ -29,6 +29,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun <T> SwipeToDeleteContainer(
+    isInternetError: Boolean,
     item:T,
     onDelete: (T) -> Unit,
     animationDuration: Int = 500,
@@ -39,11 +40,15 @@ fun <T> SwipeToDeleteContainer(
     }
     val state = rememberSwipeToDismissBoxState(
         confirmValueChange = { value ->
-            if(value == SwipeToDismissBoxValue.EndToStart){
-                isRemoved = true
-                true
-            }else{
+            if(isInternetError){
                 false
+            }else{
+                if(value == SwipeToDismissBoxValue.EndToStart){
+                    isRemoved = true
+                    true
+                }else{
+                    false
+                }
             }
         }
     )

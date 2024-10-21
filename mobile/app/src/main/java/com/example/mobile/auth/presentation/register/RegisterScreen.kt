@@ -11,12 +11,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -24,13 +28,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mobile.R
+import com.example.mobile.ui.theme.MobileTheme
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -46,7 +64,8 @@ fun RegisterScreen(
     val uiState by authViewModel.uiState.collectAsStateWithLifecycle()
 
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
     ) {
         Column(
             modifier = Modifier
@@ -106,6 +125,7 @@ fun RegBody(
 ){
     Column(
         modifier = modifier
+            .padding(8.dp)
     ) {
         RegForm(
             registerForm = itemUiState.registerForm,
@@ -120,13 +140,13 @@ fun RegBody(
             enabled = itemUiState.isEntryValid,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Register")
+            Text(text = "Sign Up")
         }
         Button(
             onClick = onLogClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "LogIn")
+            Text(text = "Login")
         }
     }
 }
@@ -143,6 +163,13 @@ fun RegForm(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        Text(
+            fontWeight = FontWeight.Bold,
+            fontSize = 40.sp,
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(R.string.app_name),
+            textAlign = TextAlign.Center
+        )
         val errorName = (itemErrorUiState.name != "[]" && itemErrorUiState.name != "")
         val errorEmail = (itemErrorUiState.email != "[]" && itemErrorUiState.email != "")
         val errorPwd = (itemErrorUiState.password != "[]" && itemErrorUiState.password != "")
@@ -191,6 +218,8 @@ fun RegForm(
                     Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
             },
         )
+        var passwordVisibility: Boolean by remember { mutableStateOf(false) }
+        var passwordConfirmVisibility: Boolean by remember { mutableStateOf(false) }
         OutlinedTextField(
             value = registerForm.password,
             onValueChange = { onValueChange(registerForm.copy(password = it)) },
@@ -198,6 +227,8 @@ fun RegForm(
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,
+            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             isError = errorPwd,
             supportingText = {
                 if (errorPwd) {
@@ -209,8 +240,15 @@ fun RegForm(
                 }
             },
             trailingIcon = {
-                if (errorPwd)
-                    Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
+                val image = if (passwordVisibility)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+
+                val description = if (passwordVisibility) "Hide password" else "Show password"
+
+                IconButton(onClick = {passwordVisibility = !passwordVisibility}){
+                    Icon(imageVector  = image, description)
+                }
             },
         )
         OutlinedTextField(
@@ -220,6 +258,8 @@ fun RegForm(
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,
+            visualTransformation = if (passwordConfirmVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             isError = errorPwdCnf,
             supportingText = {
                 if (errorPwdCnf) {
@@ -231,10 +271,50 @@ fun RegForm(
                 }
             },
             trailingIcon = {
-                if (errorPwdCnf)
-                    Icon(Icons.Filled.Warning,"error", tint = MaterialTheme.colorScheme.error)
+                val image = if (passwordConfirmVisibility)
+                    Icons.Filled.Visibility
+                else Icons.Filled.VisibilityOff
+
+                val description = if (passwordConfirmVisibility) "Hide password" else "Show password"
+
+                IconButton(onClick = {passwordConfirmVisibility = !passwordConfirmVisibility}){
+                    Icon(imageVector  = image, description)
+                }
             },
         )
     }
 }
 
+@Preview
+@Composable
+fun RegBodyPreview(){
+    val fakeRegisterState = RegisterState(
+        registerForm = RegisterForm(
+            name = "Jane Smith",
+            email = "janesmith@example.com",
+            password = "securePass456",
+            passwordConfirm = "securePass456",
+            message = "Ready to register!"
+        ),
+        registerFormErrors = RegisterFormErrors(
+            name = "",
+            email = "",
+            password = "",
+            passwordConfirm = "",
+            message = ""
+        ),
+        isEntryValid = true,
+        internetError = false,
+        isLoading = false,
+        isLoggedIn = false
+    )
+    MobileTheme {
+        RegBody(
+            itemUiState = fakeRegisterState,
+            itemErrorUiState = fakeRegisterState.registerFormErrors,
+            onRegClick = {},
+            onLogClick = {},
+            onItemValueChange = {}
+        )
+    }
+}

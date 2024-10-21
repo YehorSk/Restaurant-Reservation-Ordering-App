@@ -5,22 +5,15 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.data.repository.SideEffect
@@ -32,7 +25,6 @@ import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.menu.data.db.model.toMenu
 import com.example.mobile.menu.data.db.model.toMenuItem
 import com.example.mobile.menu.presentation.menu.components.SearchBar
-import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class

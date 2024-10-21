@@ -183,7 +183,6 @@ fun MenuItemModalContent(
                     .padding(top = 5.dp, bottom = 5.dp)
                     .fillMaxWidth()
                     .height(10.dp)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
             )
             Row(
                 modifier = Modifier.padding(20.dp)

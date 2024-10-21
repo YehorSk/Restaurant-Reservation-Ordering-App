@@ -49,7 +49,6 @@ fun SearchScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
                 .background(MaterialTheme.colorScheme.primaryContainer)
                 .height(85.dp),
             horizontalArrangement = Arrangement.Center,

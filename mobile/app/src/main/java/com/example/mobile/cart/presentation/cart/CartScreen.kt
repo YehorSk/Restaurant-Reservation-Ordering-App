@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.mobile.R
+import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.toMenuItem
 import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.cart.presentation.cart.components.CartItem
@@ -48,7 +49,9 @@ fun CartScreen(
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowToast -> {
+                Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -65,6 +68,7 @@ fun CartScreen(
                 key = {it.pivot.id}
             ) { item ->
                 SwipeToDeleteContainer(
+                    isInternetError = uiState.internetError,
                     item = item,
                     onDelete = {
                         viewModel.setItem(item)

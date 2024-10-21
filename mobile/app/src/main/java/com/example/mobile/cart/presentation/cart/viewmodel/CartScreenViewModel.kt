@@ -100,7 +100,9 @@ class CartScreenViewModel @Inject constructor(
                             cartDao.insertItems(result.data.map { it.toCartItemEntity() })
                             cartDao.deleteItems(itemsToDelete)
                         }
-                        state.copy()
+                        state.copy(
+                            internetError = false
+                        )
                     }
                 }
             }
@@ -146,13 +148,13 @@ class CartScreenViewModel @Inject constructor(
             when(val result = cartRepositoryImpl.deleteUserCartItem(_cartForm.value)){
                 is NetworkResult.Error -> {
                     if(result.code == 503){
-                        _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                        _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!", code = 503))
                     }else{
-                        _sideEffectChannel.send(SideEffect.ShowToast("Unknown error"))
+                        _sideEffectChannel.send(SideEffect.ShowToast("Unknown error", code = 400))
                     }
                 }
                 is NetworkResult.Success -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:"", code = 200))
                 }
             }
         }
