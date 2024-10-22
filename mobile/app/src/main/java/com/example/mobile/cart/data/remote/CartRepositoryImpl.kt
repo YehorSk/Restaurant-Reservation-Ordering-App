@@ -8,7 +8,6 @@ import com.example.mobile.core.data.remote.model.NetworkResult
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.cart.data.remote.model.CartItem
 import com.example.mobile.cart.data.remote.model.toCartItemEntity
-import com.example.mobile.core.data.remote.ApiHandler
 import com.example.mobile.utils.ConnectivityRepository
 import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
@@ -33,7 +32,7 @@ class CartRepositoryImpl @Inject constructor(
                     return NetworkResult.Error(code = 401, message = "No User")
                 }
                 val result = cartService.getUserCartItems("Bearer $token")
-                NetworkResult.Success(status = "200", data = result, message = "")
+                NetworkResult.Success(data = result, message = "")
             }catch (e: HttpException){
                 if(e.code() == 401){
                     NetworkResult.Error(code = 401, message = "No User")
@@ -58,7 +57,7 @@ class CartRepositoryImpl @Inject constructor(
                 val result = cartService.addUserCartItem("Bearer $token",cartForm)
                 Timber.d(result.toString())
                 cartDao.insertItem(result.data.toCartItemEntity())
-                NetworkResult.Success(status = result.status, data = result.data, message = result.message)
+                NetworkResult.Success(data = result.data, message = result.message)
             }catch (e: HttpException){
                 if(e.code() == 401){
                     NetworkResult.Error(code = 401, message = "No User")
@@ -83,7 +82,7 @@ class CartRepositoryImpl @Inject constructor(
                 val result = cartService.deleteUserCartItem("Bearer $token",cartForm)
                 Timber.d(result.toString())
                 cartDao.deleteItem(result.data.toCartItemEntity())
-                NetworkResult.Success(status = result.status, data = result.data, message = result.message)
+                NetworkResult.Success(data = result.data, message = result.message)
             }catch (e: HttpException){
                 if(e.code() == 401){
                     NetworkResult.Error(code = 401, message = "No User")
@@ -108,7 +107,7 @@ class CartRepositoryImpl @Inject constructor(
                 val result = cartService.updateUserCartItem("Bearer $token",cartForm)
                 Timber.d(result.toString())
                 cartDao.updateItem(result.data.toCartItemEntity())
-                NetworkResult.Success(status = result.status, data = result.data, message = result.message)
+                NetworkResult.Success(data = result.data, message = result.message)
             }catch (e: HttpException){
                 if(e.code() == 401){
                     NetworkResult.Error(code = 401, message = "No User")

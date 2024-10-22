@@ -4,13 +4,10 @@ import com.example.mobile.auth.data.remote.AuthPreferencesRepository
 import com.example.mobile.core.data.remote.model.NetworkResult
 import com.example.mobile.menu.data.remote.model.Menu
 import com.example.mobile.menu.data.service.MenuService
-import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.repository.MenuRepository
 import com.example.mobile.utils.ConnectivityRepository
-import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
-import timber.log.Timber
 import javax.inject.Inject
 
 class MenuRepositoryImpl @Inject constructor(
@@ -26,7 +23,7 @@ class MenuRepositoryImpl @Inject constructor(
             try {
                 val result = menuService.getAllMenus()
                 menuDao.syncMenusWithServer(result)
-                NetworkResult.Success(status = "", message = "",data = result)
+                NetworkResult.Success(data = result, message = "")
             }catch (e: HttpException){
                 if(e.code() == 401){
                     NetworkResult.Error(code = 401, message = "No User")

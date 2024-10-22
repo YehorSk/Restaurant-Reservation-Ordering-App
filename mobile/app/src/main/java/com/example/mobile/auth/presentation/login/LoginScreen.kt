@@ -57,6 +57,7 @@ fun LoginScreen(
     onSuccessClient: () -> Unit,
     onSuccessWaiter: () -> Unit,
     onRegClick: () -> Unit,
+    onForgotPwdClick: () -> Unit,
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -90,7 +91,8 @@ fun LoginScreen(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .fillMaxWidth(),
-                onRegClick = onRegClick
+                onRegClick = onRegClick,
+                onForgotPwdClick = onForgotPwdClick
             )
         }
         val role = loginViewModel.userRole.collectAsStateWithLifecycle().value
@@ -138,6 +140,7 @@ fun LogBody(
     onItemValueChange: (LoginForm) -> Unit,
     onLogClick: () -> Unit,
     onRegClick: () -> Unit,
+    onForgotPwdClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -172,7 +175,7 @@ fun LogBody(
             Text(text = "Sign Up")
         }
         TextButton(
-            onClick = {},
+            onClick = onForgotPwdClick,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Forgot Password?")

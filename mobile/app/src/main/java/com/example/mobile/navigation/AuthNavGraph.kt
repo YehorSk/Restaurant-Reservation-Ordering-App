@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.example.mobile.auth.presentation.forgot.ForgotPasswordScreen
 import com.example.mobile.auth.presentation.login.LoginScreen
 import com.example.mobile.auth.presentation.register.RegisterScreen
 import timber.log.Timber
@@ -36,6 +37,9 @@ fun NavGraphBuilder.authNavGraph(
                 onRegClick = {
                     navController.navigate(AuthScreen.SignUp.route)
                 },
+                onForgotPwdClick = {
+                    navController.navigate(AuthScreen.ForgotPwd.route)
+                },
                 onSuccessClient = {
                     Timber.d("Navigating to client screen")
                     navController.navigate(Graph.HOME) {
@@ -54,6 +58,11 @@ fun NavGraphBuilder.authNavGraph(
                 },
             )
         }
+
+        composable(AuthScreen.ForgotPwd.route){
+            ForgotPasswordScreen(
+            )
+        }
     }
 }
 
@@ -61,4 +70,5 @@ fun NavGraphBuilder.authNavGraph(
 sealed class AuthScreen(val route: String){
     object Login: AuthScreen(route = "LOGIN")
     object SignUp: AuthScreen(route = "SIGN_UP")
+    object ForgotPwd: AuthScreen(route = "FORGOT_PWD")
 }
