@@ -79,16 +79,12 @@ class MenuScreenViewModel @Inject constructor(
         )
 
     fun showBottomSheet(){
-        Timber.d("Show Bottom")
-        Timber.d("showBottomSheet viewmodel ${_showBottomSheet.value}")
         _showBottomSheet.update {
             true
         }
     }
 
     fun closeBottomSheet(){
-        Timber.d("showBottomSheet viewmodel ${_showBottomSheet.value}")
-        Timber.d("Close Bottom")
         _showBottomSheet.update {
             false
         }
