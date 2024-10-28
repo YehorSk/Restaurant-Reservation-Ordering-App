@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mobile.cart.presentation.cart.CartScreen
+import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.menu.presentation.menu.MenuScreen
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.core.presentation.settings.SettingsScreen
@@ -24,6 +25,7 @@ fun HomeNavGraph(
     onLoggedOut: () -> Unit
 ){
     val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
+    val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         route = Graph.HOME,
@@ -58,7 +60,8 @@ fun HomeNavGraph(
         }
         composable(HomeScreen.Cart.route) {
             CartScreen(
-                modifier = modifier
+                modifier = modifier,
+                viewModel = cartScreenViewModel
             )
         }
         composable(

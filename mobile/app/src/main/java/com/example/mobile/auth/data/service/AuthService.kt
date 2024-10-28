@@ -22,9 +22,9 @@ interface AuthService {
     suspend fun login(@Body loginForm: LoginForm) : HttpResponse
 
     @GET("logout")
-    suspend fun logout(@Header("Authorization") token: String) : HttpResponse
+    suspend fun logout() : HttpResponse
 
     @GET("user")
-    suspend fun authenticate(@Header("Authorization") token: String) : HttpResponse
+    suspend fun authenticate() : HttpResponse
 
 }

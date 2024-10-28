@@ -1,8 +1,8 @@
 package com.example.mobile.cart.data.repository
 
-import com.example.mobile.core.data.remote.model.NetworkResult
+import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.presentation.components.CartForm
-import com.example.mobile.cart.data.remote.model.CartItem
+import com.example.mobile.cart.data.remote.dto.CartItem
 
 interface CartRepository {
 

@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.toMenuItem
 import com.example.mobile.core.data.repository.SideEffect
@@ -33,12 +34,12 @@ import com.example.mobile.cart.presentation.cart.components.CartItem
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
-import com.example.mobile.menu.data.remote.model.toMenuItemEntity
+import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 
 @Composable
 fun CartScreen(
     modifier: Modifier = Modifier,
-    viewModel: CartScreenViewModel = hiltViewModel()
+    viewModel: CartScreenViewModel
 ){
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,8 +25,6 @@ import coil.compose.AsyncImage
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.PivotCartItemEntity
-import com.example.mobile.cart.data.remote.model.CartItem
-import com.example.mobile.cart.data.remote.model.Pivot
 import com.example.mobile.ui.theme.MobileTheme
 import timber.log.Timber
 

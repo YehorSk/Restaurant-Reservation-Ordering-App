@@ -10,9 +10,9 @@ import androidx.room.Update
 import com.example.mobile.menu.data.db.model.MenuEntity
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
-import com.example.mobile.menu.data.remote.model.Menu
-import com.example.mobile.menu.data.remote.model.toMenuEntity
-import com.example.mobile.menu.data.remote.model.toMenuItemEntity
+import com.example.mobile.menu.data.remote.dto.Menu
+import com.example.mobile.menu.data.remote.dto.toMenuEntity
+import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

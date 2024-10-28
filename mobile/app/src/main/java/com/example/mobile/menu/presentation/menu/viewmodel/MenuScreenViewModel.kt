@@ -2,12 +2,9 @@ package com.example.mobile.menu.presentation.menu.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
-import com.example.mobile.core.data.remote.model.NetworkResult
+import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.data.repository.SideEffect
-import com.example.mobile.menu.data.remote.model.Menu
-import com.example.mobile.menu.data.remote.model.MenuItem
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.menu.data.dao.MenuDao
@@ -28,7 +25,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 class MenuScreenViewModel @Inject constructor(

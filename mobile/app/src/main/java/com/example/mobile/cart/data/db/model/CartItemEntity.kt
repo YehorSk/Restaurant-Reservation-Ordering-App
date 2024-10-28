@@ -3,8 +3,7 @@ package com.example.mobile.cart.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.example.mobile.menu.data.remote.model.MenuItem
+import com.example.mobile.menu.data.remote.dto.MenuItem
 
 @Entity(
     tableName = "cart_table",

@@ -3,8 +3,8 @@ package com.example.mobile.menu.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.mobile.menu.data.remote.model.Menu
-import com.example.mobile.menu.data.remote.model.MenuItem
+import com.example.mobile.menu.data.remote.dto.Menu
+import com.example.mobile.menu.data.remote.dto.MenuItem
 
 @Entity("menu_table")
 data class MenuEntity(

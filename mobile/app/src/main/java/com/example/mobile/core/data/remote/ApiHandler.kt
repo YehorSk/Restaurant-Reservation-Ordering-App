@@ -1,6 +1,6 @@
 package com.example.mobile.core.data.remote
 
-import com.example.mobile.core.data.remote.model.NetworkResult
+import com.example.mobile.core.data.remote.dto.NetworkResult
 import retrofit2.HttpException
 
 interface ApiHandler {

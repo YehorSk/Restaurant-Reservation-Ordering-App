@@ -1,9 +1,9 @@
-package com.example.mobile.cart.data.remote.model
+package com.example.mobile.cart.data.remote.dto
 
 
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.PivotCartItemEntity
-import com.example.mobile.menu.data.remote.model.MenuItem
+import com.example.mobile.menu.data.remote.dto.MenuItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

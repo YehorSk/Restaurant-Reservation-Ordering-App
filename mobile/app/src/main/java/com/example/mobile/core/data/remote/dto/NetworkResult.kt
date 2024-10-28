@@ -1,4 +1,4 @@
-package com.example.mobile.core.data.remote.model
+package com.example.mobile.core.data.remote.dto
 
 sealed class NetworkResult<T : Any> {
     class Success<T: Any>(val data: T, val message: String?) : NetworkResult<T>()

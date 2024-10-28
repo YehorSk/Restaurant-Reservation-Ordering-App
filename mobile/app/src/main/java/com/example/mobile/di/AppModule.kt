@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
+import com.example.mobile.auth.data.remote.AuthInterceptor
 import com.example.mobile.auth.data.remote.AuthPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.data.remote.AuthRepositoryImpl
@@ -51,7 +52,14 @@ object AppModule {
 //    fun provideBaseUrl():  String = "http://192.168.102.5/SavchukBachelor/backend/public/api/"
 
     @Provides
-    fun providesClient(): OkHttpClient = OkHttpClient.Builder()
+    @Singleton
+    fun provideAuthInterceptor(authPreferencesRepository: AuthPreferencesRepository): AuthInterceptor {
+        return AuthInterceptor(authPreferencesRepository)
+    }
+
+    @Provides
+    fun providesClient(authInterceptor: AuthInterceptor): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(authInterceptor)
         .connectTimeout(30, TimeUnit.SECONDS)
         .writeTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)

@@ -1,4 +1,4 @@
-package com.example.mobile.menu.data.remote.model
+package com.example.mobile.menu.data.remote.dto
 
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import kotlinx.serialization.SerialName

@@ -74,7 +74,7 @@ class AuthRepositoryImpl @Inject constructor(
                 if (token.isNullOrBlank()) {
                     return AuthResult.Unauthorized(HttpResponse(message = "Unauthenticated"))
                 }
-                val result = authService.authenticate("Bearer $token")
+                val result = authService.authenticate()
                 AuthResult.Authorized(result)
             }catch (e: HttpException) {
                 if (e.code() == 401) {
@@ -93,8 +93,7 @@ class AuthRepositoryImpl @Inject constructor(
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
             try{
-                val token = prefs.jwtTokenFlow.first()
-                val result = authService.logout("Bearer $token")
+                val result = authService.logout()
                 prefs.clearAllTokens()
                 withContext(Dispatchers.IO) {
                     mainRoomDatabase.clearAllTables()

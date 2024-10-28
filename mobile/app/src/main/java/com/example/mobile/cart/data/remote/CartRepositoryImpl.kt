@@ -4,12 +4,11 @@ import com.example.mobile.auth.data.remote.AuthPreferencesRepository
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.data.repository.CartRepository
 import com.example.mobile.cart.data.service.CartService
-import com.example.mobile.core.data.remote.model.NetworkResult
+import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.presentation.components.CartForm
-import com.example.mobile.cart.data.remote.model.CartItem
-import com.example.mobile.cart.data.remote.model.toCartItemEntity
+import com.example.mobile.cart.data.remote.dto.CartItem
+import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.utils.ConnectivityRepository
-import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,17 +22,16 @@ class CartRepositoryImpl @Inject constructor(
     : CartRepository {
 
     override suspend fun getAllItems(): NetworkResult<List<CartItem>> {
-        val token = prefs.jwtTokenFlow.first()
-        Timber.d("Token $token")
+        Timber.d("Cart getAllItems")
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
             try {
-                if(token.isNullOrBlank()){
-                    return NetworkResult.Error(code = 401, message = "No User")
-                }
-                val result = cartService.getUserCartItems("Bearer $token")
+                Timber.d("Calling getUserCartItems")
+                val result = cartService.getUserCartItems()
+                Timber.d("items: $result")
                 NetworkResult.Success(data = result, message = "")
             }catch (e: HttpException){
+                Timber.d("Error $e")
                 if(e.code() == 401){
                     NetworkResult.Error(code = 401, message = "No User")
                 }else{
@@ -46,15 +44,10 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<CartItem> {
-        val token = prefs.jwtTokenFlow.first()
-        Timber.d("Token $token")
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
             try {
-                if(token.isNullOrBlank()){
-                    return NetworkResult.Error(code = 401, message = "No User")
-                }
-                val result = cartService.addUserCartItem("Bearer $token",cartForm)
+                val result = cartService.addUserCartItem(cartForm)
                 Timber.d(result.toString())
                 cartDao.insertItem(result.data.toCartItemEntity())
                 NetworkResult.Success(data = result.data, message = result.message)
@@ -71,15 +64,10 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<CartItem> {
-        val token = prefs.jwtTokenFlow.first()
-        Timber.d("Token $token")
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
             try {
-                if(token.isNullOrBlank()){
-                    return NetworkResult.Error(code = 401, message = "No User")
-                }
-                val result = cartService.deleteUserCartItem("Bearer $token",cartForm)
+                val result = cartService.deleteUserCartItem(cartForm)
                 Timber.d(result.toString())
                 cartDao.deleteItem(result.data.toCartItemEntity())
                 NetworkResult.Success(data = result.data, message = result.message)
@@ -96,15 +84,10 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<CartItem> {
-        val token = prefs.jwtTokenFlow.first()
-        Timber.d("Token $token")
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
             try {
-                if(token.isNullOrBlank()){
-                    return NetworkResult.Error(code = 401, message = "No User")
-                }
-                val result = cartService.updateUserCartItem("Bearer $token",cartForm)
+                val result = cartService.updateUserCartItem(cartForm)
                 Timber.d(result.toString())
                 cartDao.updateItem(result.data.toCartItemEntity())
                 NetworkResult.Success(data = result.data, message = result.message)
