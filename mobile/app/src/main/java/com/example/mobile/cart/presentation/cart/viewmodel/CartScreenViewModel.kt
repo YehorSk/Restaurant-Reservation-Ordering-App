@@ -56,16 +56,12 @@ class CartScreenViewModel @Inject constructor(
 
     fun updatePrice(price: Double){
         val formattedPrice = String.format("%.2f", price).toDouble()
-        Timber.d("price $price")
-        Timber.d("Cart ${_cartForm.value}")
         _cartForm.update {
             it.copy(price = formattedPrice)
         }
     }
 
     fun updateQuantity(quantity: Int){
-        Timber.d("Quantity $quantity")
-        Timber.d("Cart ${_cartForm.value}")
         _cartForm.update {
             it.copy(quantity = quantity)
         }

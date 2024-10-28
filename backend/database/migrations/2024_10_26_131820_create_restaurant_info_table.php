@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('favorites', function (Blueprint $table) {
+        Schema::create('restaurant_info', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->longText('description');
+            $table->longText('address');
+            $table->string('phone');
+            $table->string('email');
+            $table->string('website');
+            $table->json('opening_hours');
             $table->timestamps();
-            $table->unsignedBigInteger("client_id");
-
-            $table->foreign("client_id")->references("id")->on("users")->onDelete("cascade");
         });
     }
 
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('favorites');
+        Schema::dropIfExists('restaurant_info');
     }
 };

@@ -87,7 +87,7 @@ fun CartScreen(
             }
             item {
                 if(cartItems.isNotEmpty()){
-                    Spacer(modifier = Modifier.height(40.dp))
+                    Spacer(modifier = Modifier.height(60.dp))
                 }
             }
         }
