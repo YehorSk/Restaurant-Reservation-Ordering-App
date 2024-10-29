@@ -2,23 +2,11 @@ package com.example.mobile.auth.data.remote.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.builtins.serializer
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonTransformingSerializer
-
-object DataSerializer : JsonTransformingSerializer<Data>(Data.serializer()) {
-    override fun transformDeserialize(element: JsonElement): JsonElement {
-        return if (element is JsonArray) JsonObject(emptyMap()) else element
-    }
-}
 
 @Serializable
 data class HttpResponse(
     val status: Int? = null,
     val message: String?,
-    @Serializable(with = DataSerializer::class)
     val data: Data? = null,
     val errors: Errors? = null
 )

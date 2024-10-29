@@ -30,7 +30,7 @@ class CartController extends Controller
                     'quantity' => $exists->pivot->quantity + $request->input('quantity'),
                     'price' => $exists->pivot->price + $request->input('price')
                 ]);
-                return $this->success(data: $exists, message: "Item in Cart was updated");
+                return $this->success(data: $exists, message: "Item in Cart was updated", textStatus: "updated");
             }
             $user->menuItems()->attach($request->input('menu_item_id'), [
                 'quantity' => $request->input('quantity'),
@@ -40,7 +40,7 @@ class CartController extends Controller
                 ->wherePivot('price', $request->input('price'))
                 ->wherePivot('quantity', $request->input('quantity'))
                 ->first();
-            return $this->success(data: $newItem, message: "Item added to cart");
+            return $this->success(data: $newItem, message: "Item added to cart", textStatus: "added");
         }
         return $this->error('', 'No user', 401);
     }
@@ -53,9 +53,9 @@ class CartController extends Controller
                 ->first();
             if($exists){
                 $user->menuItems()->detach($exists);
-                return $this->success(data: $exists, message: "Item in Cart was deleted");
+                return $this->success(data: $exists, message: "Item in Cart was deleted", textStatus: "deleted");
             }
-            return $this->error('', "Item was not deleted", 400);
+            return $this->error('', "Item was not deleted", 400, textStatus: "deleted");
         }
         return $this->error('', 'No user', 401);
     }
@@ -74,9 +74,9 @@ class CartController extends Controller
                 $item = $user->menuItems()
                     ->wherePivot('id', $request->input('pivot_id'))
                     ->first();
-                return $this->success(data: $item, message: "Item in Cart was updated");
+                return $this->success(data: $item, message: "Item in Cart was updated", textStatus: "updated");
             }
-            return $this->error('', "Item in Cart was not updated", 400);
+            return $this->error('', "Item in Cart was not updated", 400, textStatus: "updated");
         }
         return $this->error('', 'No user', 401);
     }

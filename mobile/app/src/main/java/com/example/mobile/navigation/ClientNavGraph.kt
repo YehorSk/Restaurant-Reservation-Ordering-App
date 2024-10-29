@@ -19,7 +19,7 @@ import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
 
 @Composable
-fun HomeNavGraph(
+fun ClientNavGraph(
     navController: NavHostController,
     modifier: Modifier,
     onLoggedOut: () -> Unit

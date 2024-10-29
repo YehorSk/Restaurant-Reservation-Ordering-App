@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade");
             $table->foreign("menu_item_id")->references("id")->on("menu_items")->onDelete("cascade");
 
+            $table->unique(['user_id', 'menu_item_id']);
         });
     }
 

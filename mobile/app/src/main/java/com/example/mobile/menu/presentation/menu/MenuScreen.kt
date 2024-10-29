@@ -39,8 +39,6 @@ fun MenuScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
-    val cartForm by viewModel.cartForm.collectAsStateWithLifecycle()
-    val showBottomSheet by viewModel.showBottomSheet.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -82,7 +80,7 @@ fun MenuScreen(
         }
     }
 
-    if (showBottomSheet) {
+    if (uiState.showBottomSheet) {
         uiState.currentMenu?.let {
             MenuItemModal(
                 menuItem = it,
@@ -90,7 +88,7 @@ fun MenuScreen(
                     viewModel.closeBottomSheet()
                     viewModel.clearForm()
                 },
-                cartForm = cartForm,
+                cartForm = uiState.cartForm,
                 onQuantityChange = {viewModel.updateQuantity(it)},
                 onPriceChange = {viewModel.updatePrice(it)},
                 addUserCartItem = {

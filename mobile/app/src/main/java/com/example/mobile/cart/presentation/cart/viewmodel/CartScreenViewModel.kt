@@ -8,6 +8,7 @@ import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
+import com.example.mobile.cart.presentation.cart.CartScreenUiState
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,12 +41,6 @@ class CartScreenViewModel @Inject constructor(
             initialValue = listOf()
         )
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
-
-    private val _cartForm = MutableStateFlow(CartForm())
-    val cartForm: StateFlow<CartForm> = _cartForm.asStateFlow()
-
     private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
@@ -56,74 +51,82 @@ class CartScreenViewModel @Inject constructor(
 
     fun updatePrice(price: Double){
         val formattedPrice = String.format("%.2f", price).toDouble()
-        _cartForm.update {
-            it.copy(price = formattedPrice)
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(price = formattedPrice))
         }
     }
 
     fun updateQuantity(quantity: Int){
-        _cartForm.update {
-            it.copy(quantity = quantity)
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(quantity = quantity))
         }
     }
 
     fun clearForm(){
-        _cartForm.update {
-            it.copy(
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(
                 price = 0.00,
                 quantity = 1,
                 menuItemId = ""
-            )
+            ))
         }
     }
 
-    fun getItems(){
+    fun getItems() {
         viewModelScope.launch {
-            _isLoading.value = true
-            _uiState.update { state ->
-                when(val result = cartRepositoryImpl.getAllItems()){
+            _uiState.update { it.copy(isLoading = true) }
+
+            cartItemUiState.collect { localItems ->
+                when (val result = cartRepositoryImpl.getAllItems()) {
                     is NetworkResult.Error -> {
-                        if(result.code == 503){
-                            state.copy(internetError = true)
-                        }else{
-                            state.copy(error = result.message.toString())
+                        _uiState.update {
+                            it.copy(
+                                internetError = result.code == 503,
+                                error = result.message ?: "Unknown error"
+                            )
                         }
                     }
                     is NetworkResult.Success -> {
+                        Timber.d("Items from server: ${result.data}")
                         val serverItemIds = result.data.map { it.id }.toSet()
-                        val itemsToDelete = cartItemUiState.value.filter { it.id !in serverItemIds }
+                        val itemsToDelete = localItems.filter { it.id !in serverItemIds }
+
                         cartDao.runInTransaction {
                             cartDao.insertItems(result.data.map { it.toCartItemEntity() })
                             cartDao.deleteItems(itemsToDelete)
                         }
-                        state.copy(
-                            internetError = false
-                        )
+
+                        _uiState.update {
+                            it.copy(internetError = false, error = "")
+                        }
                     }
                 }
+
+                _uiState.update { it.copy(isLoading = false) }
+
+                return@collect
             }
-            _isLoading.value = false
         }
     }
+
 
     fun setItem(item: CartItemEntity){
         _uiState.update {
             it.copy(cartItem = item)
         }
-        _cartForm.update {
-            Timber.d("Item $item")
-            it.copy(
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(
                 pivotId = item.pivot.id,
                 quantity = item.pivot.quantity,
                 price = item.pivot.price,
                 menuItemId = item.pivot.menuItemId,
-            )
+            ))
         }
     }
 
     fun updateItem(){
         viewModelScope.launch {
-            when(val result = cartRepositoryImpl.updateUserCartItem(_cartForm.value)){
+            when(val result = cartRepositoryImpl.updateUserCartItem(_uiState.value.cartForm)){
                 is NetworkResult.Error -> {
                     if(result.code == 503){
                         _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
@@ -141,7 +144,7 @@ class CartScreenViewModel @Inject constructor(
 
     fun deleteItem(){
         viewModelScope.launch {
-            when(val result = cartRepositoryImpl.deleteUserCartItem(_cartForm.value)){
+            when(val result = cartRepositoryImpl.deleteUserCartItem(_uiState.value.cartForm)){
                 is NetworkResult.Error -> {
                     if(result.code == 503){
                         _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!", code = 503))
@@ -164,10 +167,3 @@ class CartScreenViewModel @Inject constructor(
     }
 
 }
-
-data class CartScreenUiState(
-    val internetError: Boolean = false,
-    val error: String = "",
-    val currentItem: MenuItemEntity? = null,
-    val cartItem: CartItemEntity? = null
-)

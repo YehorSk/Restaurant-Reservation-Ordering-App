@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import androidx.compose.foundation.lazy.items
@@ -26,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.toMenuItem
 import com.example.mobile.core.data.repository.SideEffect
@@ -45,7 +43,6 @@ fun CartScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
-    val cartForm by viewModel.cartForm.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -119,7 +116,7 @@ fun CartScreen(
                     showBottomSheet = false
                     viewModel.clearForm()
                 },
-                cartForm = cartForm,
+                cartForm = uiState.cartForm,
                 onQuantityChange = {value -> viewModel.updateQuantity(value)},
                 onPriceChange = {value -> viewModel.updatePrice(value)},
                 addUserCartItem = {

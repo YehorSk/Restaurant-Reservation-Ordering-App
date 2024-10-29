@@ -10,6 +10,7 @@ import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
+import com.example.mobile.menu.presentation.menu.MenuScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -18,7 +19,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -33,8 +36,8 @@ class MenuScreenViewModel @Inject constructor(
     val menuDao: MenuDao
 ) : ViewModel(){
 
-    private val _uiState = MutableStateFlow(ClientMainUiState())
-    val uiState: StateFlow<ClientMainUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(MenuScreenUiState())
+    val uiState: StateFlow<MenuScreenUiState> = _uiState.asStateFlow()
 
     val menuUiState: StateFlow<List<MenuWithMenuItems>> = menuDao.getMenuWithMenuItems()
         .stateIn(
@@ -42,15 +45,6 @@ class MenuScreenViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = listOf()
         )
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
-
-    private val _showBottomSheet = MutableStateFlow(false)
-    val showBottomSheet = _showBottomSheet.asStateFlow()
-
-    private val _cartForm = MutableStateFlow(CartForm())
-    val cartForm: StateFlow<CartForm> = _cartForm.asStateFlow()
 
     private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>
@@ -60,11 +54,10 @@ class MenuScreenViewModel @Inject constructor(
         getMenus()
     }
 
-    private val _searchText = MutableStateFlow("")
-    val searchText = _searchText.asStateFlow()
-
     @OptIn(ExperimentalCoroutinesApi::class)
-    val searchUiState: StateFlow<List<MenuItemEntity>> = _searchText
+    val searchUiState: StateFlow<List<MenuItemEntity>> = _uiState
+        .map { it.searchText }
+        .distinctUntilChanged()
         .flatMapLatest { query ->
             menuDao.searchItems("%$query%")
         }
@@ -75,63 +68,56 @@ class MenuScreenViewModel @Inject constructor(
         )
 
     fun showBottomSheet(){
-        _showBottomSheet.update {
-            true
+        _uiState.update {
+            it.copy(showBottomSheet = true)
         }
     }
 
     fun closeBottomSheet(){
-        _showBottomSheet.update {
-            false
+        _uiState.update {
+            it.copy(showBottomSheet = false)
         }
     }
 
     fun onSearchValueChange(value: String){
-        _searchText.update {
-            value
+        _uiState.update {
+            it.copy(searchText = value)
         }
     }
 
     fun updatePrice(price: Double){
-        Timber.d("price $price")
-        Timber.d("Cart ${_cartForm.value}")
-        _cartForm.update {
-            it.copy(price = price)
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(price = price))
         }
     }
 
     fun updateQuantity(quantity: Int){
-        Timber.d("Quantity $quantity")
-        Timber.d("Cart ${_cartForm.value}")
-        _cartForm.update {
-            it.copy(quantity = quantity)
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(quantity = quantity))
         }
     }
 
     fun setMenuItemId(id: String){
-        _cartForm.update {
-            it.copy(
-                menuItemId = id
-            )
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(menuItemId = id))
         }
     }
 
     fun clearForm(){
-        _cartForm.update {
-            it.copy(
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(
                 price = 0.00,
                 quantity = 1,
                 menuItemId = ""
-            )
+            ))
         }
     }
 
     fun addUserCartItem(){
         viewModelScope.launch {
-            _isLoading.value = true
+            _uiState.update { it.copy(isLoading = true) }
             _uiState.update { state ->
-                Timber.d(_cartForm.value.toString())
-                when(val result = cartRepositoryImpl.addUserCartItem(cartForm = _cartForm.value)){
+                when(val result = cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)){
                     is NetworkResult.Error -> {
                         if(result.code == 503){
                             _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
@@ -148,14 +134,14 @@ class MenuScreenViewModel @Inject constructor(
                     }
                 }
             }
-            _isLoading.value = false
+            _uiState.update { it.copy(isLoading = false) }
             clearForm()
         }
     }
 
     fun getMenus(){
         viewModelScope.launch {
-            _isLoading.value = true
+            _uiState.update { it.copy(isLoading = true) }
             _uiState.update { state ->
                 when(val result = menuRepositoryImpl.getAllMenus()){
                     is NetworkResult.Error -> {
@@ -177,7 +163,7 @@ class MenuScreenViewModel @Inject constructor(
 
                 }
             }
-            _isLoading.value = false
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
@@ -186,15 +172,4 @@ class MenuScreenViewModel @Inject constructor(
             it.copy(currentMenu = menu)
         }
     }
-
-    override fun onCleared() {
-        super.onCleared()
-        Timber.d("MenuScreenViewModel cleared")
-    }
 }
-
-data class ClientMainUiState(
-    val currentMenu: MenuItemEntity? = null,
-    val internetError: Boolean = false,
-)
-

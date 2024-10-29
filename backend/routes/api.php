@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\UserController;
 use App\Models\Menu;
@@ -69,3 +70,9 @@ Route::controller(CartController::class)->group(function (){
     Route::post('delete-user-cart-item','deleteUserCartItem');
     Route::post('update-user-cart-item','updateUserCartItem');
 })->middleware('auth:sanctum');
+
+Route::controller(FavoriteController::class)->group(function (){
+    Route::get('user-favorite-items','getUserFavoriteItems');
+    Route::post('add-user-favorite-item','addUserFavoriteItem');
+});
+
