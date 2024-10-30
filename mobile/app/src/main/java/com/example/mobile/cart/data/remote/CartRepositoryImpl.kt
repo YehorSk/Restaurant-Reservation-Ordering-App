@@ -6,7 +6,7 @@ import com.example.mobile.cart.data.repository.CartRepository
 import com.example.mobile.cart.data.service.CartService
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.presentation.components.CartForm
-import com.example.mobile.cart.data.remote.dto.CartItem
+import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.utils.ConnectivityRepository
 import retrofit2.HttpException
@@ -21,7 +21,7 @@ class CartRepositoryImpl @Inject constructor(
 )
     : CartRepository {
 
-    override suspend fun getAllItems(): NetworkResult<List<CartItem>> {
+    override suspend fun getAllItems(): NetworkResult<List<CartItemDto>> {
         Timber.d("Cart getAllItems")
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
@@ -43,7 +43,7 @@ class CartRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<CartItem> {
+    override suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
             try {
@@ -63,7 +63,7 @@ class CartRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<CartItem> {
+    override suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
             try {
@@ -83,7 +83,7 @@ class CartRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<CartItem> {
+    override suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
         val isOnline = connectivityRepository.isInternetConnected()
         return if(isOnline){
             try {

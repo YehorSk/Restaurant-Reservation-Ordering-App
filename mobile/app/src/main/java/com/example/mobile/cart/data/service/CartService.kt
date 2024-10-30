@@ -1,7 +1,7 @@
 package com.example.mobile.cart.data.service
 
 import com.example.mobile.core.presentation.components.CartForm
-import com.example.mobile.cart.data.remote.dto.CartItem
+import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.cart.data.remote.dto.CartItemResponseDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -11,7 +11,7 @@ import retrofit2.http.POST
 interface CartService {
 
     @GET("user-cart-items")
-    suspend fun getUserCartItems() : List<CartItem>
+    suspend fun getUserCartItems() : List<CartItemDto>
 
     @Headers(
         "Accept: application/vnd.api+json",

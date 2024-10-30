@@ -8,7 +8,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CartItem(
+data class CartItemDto(
     val id: String,
     @SerialName("created_at")
     val createdAt: String,
@@ -24,7 +24,8 @@ data class CartItem(
     val recipe: String,
     val picture: String,
     val price: String,
-    val pivot: Pivot
+    val pivot: Pivot,
+    val isFavorite: Boolean
 )
 
 @Serializable
@@ -43,7 +44,7 @@ data class Pivot(
     val updatedAt: String,
 )
 
-fun CartItem.toMenuItem() = MenuItem(
+fun CartItemDto.toMenuItem() = MenuItem(
     id = this.id,
     createdAt = this.createdAt,
     updatedAt = this.updatedAt,
@@ -53,10 +54,11 @@ fun CartItem.toMenuItem() = MenuItem(
     longDescription = this.longDescription,
     recipe = this.recipe,
     picture = this.picture,
-    price = this.price
+    price = this.price,
+    isFavorite = this.isFavorite
 )
 
-fun CartItem.toCartItemEntity() = CartItemEntity(
+fun CartItemDto.toCartItemEntity() = CartItemEntity(
     id = id,
     menuId = menuId,
     name = name,
@@ -67,7 +69,8 @@ fun CartItem.toCartItemEntity() = CartItemEntity(
     createdAt = createdAt,
     updatedAt = updatedAt,
     price = price.toDouble(),
-    pivot = pivot.toPivotEntity()
+    pivot = pivot.toPivotEntity(),
+    isFavorite = isFavorite
 )
 
 fun Pivot.toPivotEntity() = PivotCartItemEntity(

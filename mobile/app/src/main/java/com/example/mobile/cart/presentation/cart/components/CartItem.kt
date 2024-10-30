@@ -132,8 +132,9 @@ fun MenuItemPreview(){
                     quantity = 20,
                     createdAt = "",
                     updatedAt = "",
-                    id=""
-                )
+                    id="",
+                ),
+                isFavorite = false
             ),
             onClick = {}
         )

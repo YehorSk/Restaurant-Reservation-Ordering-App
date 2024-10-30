@@ -9,5 +9,5 @@ data class CartItemResponseDto(
     @SerialName("text_status")
     val textStatus: String?,
     val message: String?,
-    val data: CartItem,
+    val data: CartItemDto,
 )
