@@ -22,6 +22,9 @@ interface MenuDao {
     @Query("SELECT * FROM menu_table")
     fun getMenuWithMenuItems(): Flow<List<MenuWithMenuItems>>
 
+    @Query("SELECT * FROM menu_item_table WHERE isFavorite")
+    fun getFavoriteItems(): Flow<List<MenuItemEntity>>
+
     @Query("SELECT * FROM menu_item_table WHERE name LIKE :text OR short_description LIKE :text OR long_description LIKE :text")
     fun searchItems(text: String): Flow<List<MenuItemEntity>>
 
