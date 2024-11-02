@@ -49,7 +49,7 @@ class CartRepositoryImpl @Inject constructor(
             try {
                 val result = cartService.addUserCartItem(cartForm)
                 Timber.d(result.toString())
-                cartDao.insertItem(result.data.toCartItemEntity())
+                cartDao.insertItem(result.data!!.toCartItemEntity())
                 NetworkResult.Success(data = result.data, message = result.message)
             }catch (e: HttpException){
                 if(e.code() == 401){
@@ -69,7 +69,7 @@ class CartRepositoryImpl @Inject constructor(
             try {
                 val result = cartService.deleteUserCartItem(cartForm)
                 Timber.d(result.toString())
-                cartDao.deleteItem(result.data.toCartItemEntity())
+                cartDao.deleteItem(result.data!!.toCartItemEntity())
                 NetworkResult.Success(data = result.data, message = result.message)
             }catch (e: HttpException){
                 if(e.code() == 401){
@@ -89,7 +89,7 @@ class CartRepositoryImpl @Inject constructor(
             try {
                 val result = cartService.updateUserCartItem(cartForm)
                 Timber.d(result.toString())
-                cartDao.updateItem(result.data.toCartItemEntity())
+                cartDao.updateItem(result.data!!.toCartItemEntity())
                 NetworkResult.Success(data = result.data, message = result.message)
             }catch (e: HttpException){
                 if(e.code() == 401){

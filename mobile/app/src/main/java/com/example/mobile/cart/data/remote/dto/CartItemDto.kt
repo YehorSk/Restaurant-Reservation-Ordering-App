@@ -3,19 +3,19 @@ package com.example.mobile.cart.data.remote.dto
 
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.PivotCartItemEntity
-import com.example.mobile.menu.data.remote.dto.MenuItem
+import com.example.mobile.menu.data.remote.dto.MenuItemDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CartItemDto(
-    val id: String,
+    val id: Int,
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("updated_at")
     val updatedAt: String,
     @SerialName("menu_id")
-    val menuId: String,
+    val menuId: Int,
     val name: String,
     @SerialName("short_description")
     val shortDescription: String,
@@ -23,20 +23,20 @@ data class CartItemDto(
     val longDescription: String,
     val recipe: String,
     val picture: String,
-    val price: String,
+    val price: Double,
     val pivot: Pivot,
     val isFavorite: Boolean
 )
 
 @Serializable
 data class Pivot(
-    val id: String,
+    val id: Int,
     @SerialName("user_id")
-    val userId: String,
+    val userId: Int,
     @SerialName("menu_item_id")
-    val menuItemId: String,
-    val quantity: String,
-    val price: String,
+    val menuItemId: Int,
+    val quantity: Int,
+    val price: Double,
     val note: String = "",
     @SerialName("created_at")
     val createdAt: String,
@@ -44,7 +44,7 @@ data class Pivot(
     val updatedAt: String,
 )
 
-fun CartItemDto.toMenuItem() = MenuItem(
+fun CartItemDto.toMenuItem() = MenuItemDto(
     id = this.id,
     createdAt = this.createdAt,
     updatedAt = this.updatedAt,

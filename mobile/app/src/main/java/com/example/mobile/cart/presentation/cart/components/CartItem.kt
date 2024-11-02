@@ -115,8 +115,8 @@ fun MenuItemPreview(){
     MobileTheme {
         CartItem(
             cartItem = CartItemEntity(
-                id = "0",
-                menuId = "",
+                id = 0,
+                menuId = 0,
                 name = "Pancakes",
                 longDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 shortDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
@@ -126,13 +126,13 @@ fun MenuItemPreview(){
                 createdAt = "",
                 updatedAt = "",
                 pivot = PivotCartItemEntity(
-                    userId = "0",
-                    menuItemId = "0",
+                    userId = 0,
+                    menuItemId = 0,
                     price = 100.0,
                     quantity = 20,
                     createdAt = "",
                     updatedAt = "",
-                    id="",
+                    id=0,
                 ),
                 isFavorite = false
             ),

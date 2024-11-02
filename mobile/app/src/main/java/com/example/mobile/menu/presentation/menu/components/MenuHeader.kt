@@ -11,18 +11,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mobile.menu.data.remote.dto.Menu
+import com.example.mobile.menu.data.remote.dto.MenuDto
 
 @Composable
 fun MenuHeader(
-    menu: Menu,
+    menuDto: MenuDto,
     modifier: Modifier = Modifier
 ){
     Column(
         modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
     ) {
         Text(
-            text = menu.name,
+            text = menuDto.name,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             modifier = modifier
@@ -30,7 +30,7 @@ fun MenuHeader(
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
         )
         Text(
-            text = menu.description,
+            text = menuDto.description,
             maxLines = 1,
             fontSize = 14.sp,
             modifier = modifier

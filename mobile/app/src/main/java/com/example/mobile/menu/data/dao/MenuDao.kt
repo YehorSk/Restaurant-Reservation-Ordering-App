@@ -10,7 +10,7 @@ import androidx.room.Update
 import com.example.mobile.menu.data.db.model.MenuEntity
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
-import com.example.mobile.menu.data.remote.dto.Menu
+import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.menu.data.remote.dto.toMenuEntity
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import kotlinx.coroutines.flow.Flow
@@ -25,12 +25,18 @@ interface MenuDao {
     @Query("SELECT * FROM menu_item_table WHERE isFavorite")
     fun getFavoriteItems(): Flow<List<MenuItemEntity>>
 
+    @Query("UPDATE menu_item_table SET isFavorite = 1 WHERE id = :menuItemId")
+    suspend fun addFavorite(menuItemId: String)
+
+    @Query("UPDATE menu_item_table SET isFavorite = 0 WHERE id = :menuItemId")
+    suspend fun deleteFavorite(menuItemId: String)
+
     @Query("SELECT * FROM menu_item_table WHERE name LIKE :text OR short_description LIKE :text OR long_description LIKE :text")
     fun searchItems(text: String): Flow<List<MenuItemEntity>>
 
     @Transaction
-    suspend fun insert(menus: List<Menu>){
-        for(item in menus){
+    suspend fun insert(menuDtos: List<MenuDto>){
+        for(item in menuDtos){
             insertMenu(item.toMenuEntity())
             for(menuItem in item.items){
                 insertMenuItem(menuItem.toMenuItemEntity())
@@ -57,12 +63,12 @@ interface MenuDao {
     suspend fun updateMenuItem(menuItem: MenuItemEntity)
 
     @Transaction
-    suspend fun syncMenusWithServer(serverMenus: List<Menu>) {
+    suspend fun syncMenusWithServer(serverMenuDtos: List<MenuDto>) {
         val localMenus = getMenuWithMenuItemsOnce()
 
-        val serverMenuIds = serverMenus.map { it.id }.toSet()
+        val serverMenuIds = serverMenuDtos.map { it.id }.toSet()
 
-        val serverMenuItemsIds = serverMenus.flatMap { menu -> menu.items.map { it.id } }.toSet()
+        val serverMenuItemsIds = serverMenuDtos.flatMap { menu -> menu.items.map { it.id } }.toSet()
 
         val menusToDelete = localMenus.filter { it.menu.id !in serverMenuIds }
 
@@ -77,7 +83,7 @@ interface MenuDao {
 
         deleteMenuItems(menuItemsToDelete.map { it })
 
-        insert(serverMenus)
+        insert(serverMenuDtos)
     }
 
 

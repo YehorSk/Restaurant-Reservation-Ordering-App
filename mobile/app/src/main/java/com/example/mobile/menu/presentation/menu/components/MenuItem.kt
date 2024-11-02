@@ -25,6 +25,7 @@ import coil.compose.AsyncImage
 import com.example.mobile.R
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.ui.theme.MobileTheme
+import com.example.mobile.utils.formattedPrice
 
 @Composable
 fun MenuItem(
@@ -67,7 +68,7 @@ fun MenuItem(
                 color = contentColor
             )
             Text(
-                text = "€"+menuItem.price,
+                text = "€"+ formattedPrice(menuItem.price.toDouble()),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
@@ -97,16 +98,16 @@ fun MenuItemPreview(){
     MobileTheme {
         MenuItem(
             menuItem = MenuItemEntity(
-                id = "0",
+                id = 0,
                 createdAt = "",
                 updatedAt = "",
-                menuId = "",
+                menuId = 123,
                 name = "Pancakes",
                 longDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 shortDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 recipe = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 picture = "",
-                price = "5.99"
+                price = 5.99
             ),
             onClick = {}
         )

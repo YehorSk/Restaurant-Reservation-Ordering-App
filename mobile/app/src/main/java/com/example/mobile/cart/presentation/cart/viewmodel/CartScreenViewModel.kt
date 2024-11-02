@@ -67,7 +67,7 @@ class CartScreenViewModel @Inject constructor(
             it.copy(cartForm = it.cartForm.copy(
                 price = 0.00,
                 quantity = 1,
-                menuItemId = ""
+                menuItemId = 0
             ))
         }
     }

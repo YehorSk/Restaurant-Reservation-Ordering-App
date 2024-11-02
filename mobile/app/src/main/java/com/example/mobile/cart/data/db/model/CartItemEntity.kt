@@ -3,17 +3,17 @@ package com.example.mobile.cart.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import com.example.mobile.menu.data.remote.dto.MenuItem
+import com.example.mobile.menu.data.remote.dto.MenuItemDto
 
 @Entity(
     tableName = "cart_table",
     primaryKeys = ["pivot_id"]
 )
 data class CartItemEntity(
-    val id: String,
+    val id: Int,
     @ColumnInfo("created_at") val createdAt: String,
     @ColumnInfo("updated_at") val updatedAt: String,
-    @ColumnInfo(name = "menu_id") val menuId: String,
+    @ColumnInfo(name = "menu_id") val menuId: Int,
     val name: String,
     @ColumnInfo(name = "short_description") val shortDescription: String,
     @ColumnInfo(name = "long_description") val longDescription: String,
@@ -25,16 +25,16 @@ data class CartItemEntity(
 )
 
 data class PivotCartItemEntity(
-    @ColumnInfo(name = "pivot_id") val id: String,
-    @ColumnInfo(name = "user_id") val userId: String,
-    @ColumnInfo(name = "menu_item_id") val menuItemId: String,
+    @ColumnInfo(name = "pivot_id") val id: Int,
+    @ColumnInfo(name = "user_id") val userId: Int,
+    @ColumnInfo(name = "menu_item_id") val menuItemId: Int,
     val quantity: Int,
     @ColumnInfo(name = "pivot_price") val price: Double,
     @ColumnInfo(name = "pivot_created_at") val createdAt: String,
     @ColumnInfo(name = "pivot_updated_at") val updatedAt: String
 )
 
-fun CartItemEntity.toMenuItem() = MenuItem(
+fun CartItemEntity.toMenuItem() = MenuItemDto(
     id = this.id,
     createdAt = this.createdAt,
     updatedAt = this.updatedAt,
@@ -44,6 +44,6 @@ fun CartItemEntity.toMenuItem() = MenuItem(
     longDescription = this.longDescription,
     recipe = this.recipe,
     picture = this.picture,
-    price = this.price.toString(),
+    price = this.price,
     isFavorite = this.isFavorite
 )

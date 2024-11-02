@@ -15,7 +15,6 @@ import com.example.mobile.menu.presentation.menu.MenuScreen
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
-import com.example.mobile.menu.presentation.favorites.viewmodel.FavoritesScreenViewModel
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
 
@@ -27,7 +26,6 @@ fun ClientNavGraph(
 ){
     val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
     val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
-    val favoritesScreenViewModel: FavoritesScreenViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -59,7 +57,7 @@ fun ClientNavGraph(
         composable(HomeScreen.Favorites.route) {
             FavoritesScreen(
                 modifier = modifier,
-                viewModel = favoritesScreenViewModel
+                viewModel = menuScreenViewModel
             )
         }
         composable(HomeScreen.Cart.route) {

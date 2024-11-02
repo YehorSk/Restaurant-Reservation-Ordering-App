@@ -62,7 +62,7 @@ fun MenuScreen(
         ) {
             menuUiState.forEach { menu ->
                 stickyHeader {
-                    MenuHeader(menu = menu.menu.toMenu(menu.menuItems.map { it.toMenuItem() }))
+                    MenuHeader(menuDto = menu.menu.toMenu(menu.menuItems.map { it.toMenuItem() }))
                 }
                 items(menu.menuItems.map { it }){ item ->
                     MenuItem(
@@ -71,6 +71,7 @@ fun MenuScreen(
                             viewModel.setMenu(menuItem)
                             viewModel.updatePrice(menuItem.price.toDouble())
                             viewModel.setMenuItemId(menuItem.id)
+                            viewModel.setMenuItemFavorite(menuItem.isFavorite)
                             viewModel.showBottomSheet()
                         }
                     )
@@ -95,7 +96,15 @@ fun MenuScreen(
                     viewModel.closeBottomSheet()
                     viewModel.addUserCartItem()
                 },
-                buttonText = R.string.Add
+                buttonText = R.string.Add,
+                addFavoriteItem = {
+                    viewModel.addUserFavoriteItem()
+                    viewModel.setMenuItemFavorite(true)
+                },
+                deleteFavoriteItem = {
+                    viewModel.deleteUserFavoriteItem()
+                    viewModel.setMenuItemFavorite(false)
+                }
             )
         }
     }

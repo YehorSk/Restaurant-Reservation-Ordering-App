@@ -52,7 +52,7 @@ class User extends Authenticatable
     public function menuItems()
     {
         return $this->belongsToMany(MenuItem::class)
-            ->withPivot('id','quantity', 'price')
+            ->withPivot('id','quantity', 'price','menu_item_id')
             ->withTimestamps();
     }
 

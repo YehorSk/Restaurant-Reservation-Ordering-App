@@ -46,6 +46,13 @@ class MenuScreenViewModel @Inject constructor(
             initialValue = listOf()
         )
 
+    val favoriteUiState: StateFlow<List<MenuItemEntity>> = menuDao.getFavoriteItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = listOf()
+        )
+
     private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
@@ -67,6 +74,10 @@ class MenuScreenViewModel @Inject constructor(
             initialValue = listOf()
         )
 
+    private fun setLoadingState(isLoading: Boolean) {
+        _uiState.update { it.copy(isLoading = isLoading) }
+    }
+
     fun showBottomSheet(){
         _uiState.update {
             it.copy(showBottomSheet = true)
@@ -86,6 +97,7 @@ class MenuScreenViewModel @Inject constructor(
     }
 
     fun updatePrice(price: Double){
+        Timber.d("Price $price")
         _uiState.update {
             it.copy(cartForm = it.cartForm.copy(price = price))
         }
@@ -97,9 +109,15 @@ class MenuScreenViewModel @Inject constructor(
         }
     }
 
-    fun setMenuItemId(id: String){
+    fun setMenuItemId(id: Int){
         _uiState.update {
             it.copy(cartForm = it.cartForm.copy(menuItemId = id))
+        }
+    }
+
+    fun setMenuItemFavorite(favorite: Boolean){
+        _uiState.update {
+            it.copy(cartForm = it.cartForm.copy(isFavorite = favorite))
         }
     }
 
@@ -108,14 +126,15 @@ class MenuScreenViewModel @Inject constructor(
             it.copy(cartForm = it.cartForm.copy(
                 price = 0.00,
                 quantity = 1,
-                menuItemId = ""
+                menuItemId = 0,
+                isFavorite = false
             ))
         }
     }
 
     fun addUserCartItem(){
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            setLoadingState(true)
             _uiState.update { state ->
                 when(val result = cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)){
                     is NetworkResult.Error -> {
@@ -134,14 +153,58 @@ class MenuScreenViewModel @Inject constructor(
                     }
                 }
             }
-            _uiState.update { it.copy(isLoading = false) }
+            setLoadingState(false)
+            clearForm()
+        }
+    }
+
+    fun addUserFavoriteItem(){
+        Timber.d("addUserFavoriteItem")
+        viewModelScope.launch {
+            setLoadingState(true)
+            when(val result = menuRepositoryImpl.addFavorite(_uiState.value.currentMenu!!.id.toString())){
+                is NetworkResult.Error -> {
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                    _uiState.update { state ->
+                        state.copy(
+                            internetError = true
+                        )
+                    }
+                }
+                is NetworkResult.Success -> {
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
+                }
+            }
+            setLoadingState(false)
+            clearForm()
+        }
+    }
+
+    fun deleteUserFavoriteItem(){
+        Timber.d("deleteUserFavoriteItem")
+        viewModelScope.launch {
+            setLoadingState(true)
+            when(val result = menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenu!!.id.toString())){
+                is NetworkResult.Error -> {
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                    _uiState.update { state ->
+                        state.copy(
+                            internetError = true
+                        )
+                    }
+                }
+                is NetworkResult.Success -> {
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
+                }
+            }
+            setLoadingState(false)
             clearForm()
         }
     }
 
     fun getMenus(){
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            setLoadingState(true)
             _uiState.update { state ->
                 when(val result = menuRepositoryImpl.getAllMenus()){
                     is NetworkResult.Error -> {
@@ -163,7 +226,7 @@ class MenuScreenViewModel @Inject constructor(
 
                 }
             }
-            _uiState.update { it.copy(isLoading = false) }
+            setLoadingState(false)
         }
     }
 

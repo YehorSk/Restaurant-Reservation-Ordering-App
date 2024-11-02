@@ -3,8 +3,8 @@ package com.example.mobile.menu.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.mobile.menu.data.remote.dto.Menu
-import com.example.mobile.menu.data.remote.dto.MenuItem
+import com.example.mobile.menu.data.remote.dto.MenuDto
+import com.example.mobile.menu.data.remote.dto.MenuItemDto
 
 @Entity("menu_table")
 data class MenuEntity(
@@ -19,8 +19,8 @@ data class MenuEntity(
     val availability: String
 )
 
-fun MenuEntity.toMenu(items: List<MenuItem>): Menu {
-    return Menu(
+fun MenuEntity.toMenu(items: List<MenuItemDto>): MenuDto {
+    return MenuDto(
         id = this.id,
         createdAt = this.createdAt,
         updatedAt = this.updatedAt,

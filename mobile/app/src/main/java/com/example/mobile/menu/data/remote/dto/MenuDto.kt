@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Menu(
+data class MenuDto(
     val id: String,
     @SerialName("created_at")
     val createdAt: String,
@@ -14,10 +14,10 @@ data class Menu(
     val name: String,
     val description: String,
     val availability: String,
-    val items: List<MenuItem>
+    val items: List<MenuItemDto>
 )
 
-fun Menu.toMenuEntity(): MenuEntity {
+fun MenuDto.toMenuEntity(): MenuEntity {
     return MenuEntity(
         id = this.id,
         createdAt = this.createdAt,

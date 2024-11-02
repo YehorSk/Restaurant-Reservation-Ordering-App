@@ -2,6 +2,7 @@ package com.example.mobile.core.presentation.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,8 @@ import coil.compose.AsyncImage
 import com.example.mobile.R
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.ui.theme.MobileTheme
+import com.example.mobile.utils.formattedPrice
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,6 +61,8 @@ fun MenuItemModal(
     onQuantityChange: (Int) -> Unit,
     onPriceChange: (Double) -> Unit,
     addUserCartItem: () -> Unit,
+    addFavoriteItem: () -> Unit,
+    deleteFavoriteItem: () -> Unit,
     @StringRes buttonText: Int
 ){
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -74,7 +79,9 @@ fun MenuItemModal(
                 onQuantityChange = onQuantityChange,
                 onPriceChange = onPriceChange,
                 addUserCartItem = addUserCartItem,
-                buttonText = buttonText
+                buttonText = buttonText,
+                addFavoriteItem = addFavoriteItem,
+                deleteFavoriteItem = deleteFavoriteItem
             )
         }
     )
@@ -89,6 +96,8 @@ fun MenuItemModalContent(
     onQuantityChange: (Int) -> Unit,
     onPriceChange: (Double) -> Unit,
     addUserCartItem: () -> Unit,
+    addFavoriteItem: () -> Unit,
+    deleteFavoriteItem: () -> Unit,
     @StringRes buttonText: Int
 ){
     val contentColor = if(isSystemInDarkTheme()){
@@ -121,20 +130,25 @@ fun MenuItemModalContent(
                 horizontalArrangement = Arrangement.End
             ){
                 IconButton(
-                    onClick = {},
+                    onClick = {
+                        if(cartForm.isFavorite) deleteFavoriteItem()
+                        else addFavoriteItem()
+                    },
                     modifier = Modifier.background(Color.White),
                 ) {
-                    if(menuItem.isFavorite){
+                    if(cartForm.isFavorite){
                         Icon(
                             imageVector = Icons.Filled.Favorite,
                             contentDescription = "",
-                            modifier = Modifier.size(30.dp)
+                            modifier = Modifier
+                                .size(30.dp)
                         )
                     }else{
                         Icon(
                             imageVector = Icons.Filled.FavoriteBorder,
                             contentDescription = "",
-                            modifier = Modifier.size(30.dp)
+                            modifier = Modifier
+                                .size(30.dp)
                         )
                     }
                 }
@@ -163,7 +177,7 @@ fun MenuItemModalContent(
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
                 fontSize = 16.sp,
-                text = "€"+menuItem.price,
+                text = "€"+formattedPrice(cartForm.price),
                 color = contentColor
             )
             Text(
@@ -198,7 +212,7 @@ fun MenuItemModalContent(
                                 if(cartForm.quantity>1){
                                     val newQuantity = cartForm.quantity - 1
                                     onQuantityChange(newQuantity)
-                                    onPriceChange((menuItem.price.toFloat() * newQuantity).toDouble())
+                                    onPriceChange((menuItem.price.toDouble() * newQuantity).toDouble())
                                 }
                             }
                         ) {
@@ -216,8 +230,7 @@ fun MenuItemModalContent(
                             onClick = {
                                 val newQuantity = cartForm.quantity + 1
                                 onQuantityChange(newQuantity)
-                                val price = String.format("%.2f", menuItem.price.toDouble() * newQuantity).toDouble()
-                                onPriceChange(price)
+                                onPriceChange((menuItem.price.toDouble() * newQuantity).toDouble())
                             }
                         ) {
                             Text(
@@ -244,7 +257,7 @@ fun MenuItemModalContent(
                         )
                         Text(
                             fontSize = 20.sp,
-                            text = "€"+String.format("%.2f", cartForm.price.toFloat())
+                            text = "€"+ formattedPrice(cartForm.price)
                         )
                     }
                 }
@@ -258,16 +271,16 @@ fun MenuItemModalContent(
 fun PreviewMenuItemModal() {
     MobileTheme {
         val menuItem = MenuItemEntity(
-            id = "1",
+            id = 1,
             createdAt = "2023-01-01",
             updatedAt = "2023-01-02",
-            menuId = "123",
+            menuId = 123,
             name = "Delicious Pizza",
             shortDescription = "A short description of the pizza.",
             longDescription = "A delicious pizza topped with fresh ingredients, including tomatoes, cheese, and basil.",
             recipe = "Tomatoes, cheese, basil, dough",
             picture = "https://example.com/pizza.jpg",
-            price = "9.99",
+            price = 9.99,
             isFavorite = false
         )
 
@@ -278,7 +291,9 @@ fun PreviewMenuItemModal() {
             onPriceChange = {value -> },
             cartForm = CartForm(),
             addUserCartItem = {},
-            buttonText = R.string.Add
+            buttonText = R.string.Add,
+            deleteFavoriteItem = {},
+            addFavoriteItem = {}
         )
     }
 }

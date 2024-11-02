@@ -33,15 +33,19 @@ class CartController extends Controller
                     'quantity' => $exists->pivot->quantity + $request->input('quantity'),
                     'price' => $exists->pivot->price + $request->input('price')
                 ]);
-                return $this->success(data: $exists, message: "Item in Cart was updated", textStatus: "updated");
+                $newItem = $user->menuItems()->where('menu_item_id', $request->input('menu_item_id'))
+                    ->first();
+
+                if ($newItem) {
+                    $newItem->isFavorite = (bool) $user->favoriteItems()->where('menu_item_id', $newItem->id)->exists();
+                }
+                return $this->success(data: $newItem, message: "Item in Cart was updated", textStatus: "updated");
             }
             $user->menuItems()->attach($request->input('menu_item_id'), [
                 'quantity' => $request->input('quantity'),
                 'price' => $request->input('price')
             ]);
             $newItem = $user->menuItems()->where('menu_item_id', $request->input('menu_item_id'))
-                ->wherePivot('price', $request->input('price'))
-                ->wherePivot('quantity', $request->input('quantity'))
                 ->first();
 
             if ($newItem) {
@@ -56,17 +60,17 @@ class CartController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $exists = $user->menuItems()
-                ->wherePivot('id', $request->input('pivot_id'))
+                ->wherePivot('menu_item_id', $request->input('menu_item_id'))
                 ->first();
             if($exists){
-                $user->menuItems()->detach($exists);
                 $item = $user->menuItems()
-                    ->wherePivot('id', $request->input('pivot_id'))
+                    ->wherePivot('menu_item_id', $request->input('menu_item_id'))
                     ->first();
 
                 if ($item) {
                     $item->isFavorite = (bool) $user->favoriteItems()->where('menu_item_id', $item->id)->exists();
                 }
+                $user->menuItems()->detach($exists);
                 return $this->success(data: $item, message: "Item in Cart was deleted", textStatus: "deleted");
             }
             return $this->error('', "Item was not deleted", 400, textStatus: "deleted");

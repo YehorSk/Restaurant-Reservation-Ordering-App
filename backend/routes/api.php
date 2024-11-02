@@ -74,5 +74,6 @@ Route::controller(CartController::class)->group(function (){
 Route::controller(FavoriteController::class)->group(function (){
     Route::get('user-favorite-items','getUserFavoriteItems');
     Route::post('add-user-favorite-item','addUserFavoriteItem');
+    Route::post('delete-user-favorite-item','deleteUserFavoriteItem');
 });
 

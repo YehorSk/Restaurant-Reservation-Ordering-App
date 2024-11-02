@@ -16,13 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.mobile.menu.presentation.favorites.viewmodel.FavoritesScreenViewModel
 import com.example.mobile.menu.presentation.menu.components.MenuItem
+import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 
 @Composable
 fun FavoritesScreen(
     modifier: Modifier = Modifier,
-    viewModel: FavoritesScreenViewModel
+    viewModel: MenuScreenViewModel
 ){
 
     val favoriteUiState by viewModel.favoriteUiState.collectAsStateWithLifecycle()

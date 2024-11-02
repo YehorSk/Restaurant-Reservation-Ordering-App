@@ -123,7 +123,9 @@ fun CartScreen(
                     showBottomSheet = false
                     viewModel.updateItem()
                 },
-                buttonText = R.string.UPDATE
+                buttonText = R.string.UPDATE,
+                addFavoriteItem = {},
+                deleteFavoriteItem = {}
             )
         }
     }
