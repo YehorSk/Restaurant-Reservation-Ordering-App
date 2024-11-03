@@ -56,6 +56,14 @@ fun NavGraphBuilder.authNavGraph(
                         }
                     }
                 },
+                onSuccessAdmin= {
+                    Timber.d("Navigating to admin screen")
+                    navController.navigate(Graph.ADMIN) {
+                        popUpTo(Graph.ROOT) {
+                            inclusive = true
+                        }
+                    }
+                },
             )
         }
 

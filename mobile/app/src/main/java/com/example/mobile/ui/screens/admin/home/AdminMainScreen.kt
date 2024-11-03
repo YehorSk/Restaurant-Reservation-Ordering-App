@@ -1,4 +1,4 @@
-package com.example.mobile.ui.screens.waiter.home
+package com.example.mobile.ui.screens.admin.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,14 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier){
+fun AdminMainScreen(modifier: Modifier = Modifier){
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Hello Waiter",
+            text = "Hello Admin",
             textAlign = TextAlign.Center
         )
     }

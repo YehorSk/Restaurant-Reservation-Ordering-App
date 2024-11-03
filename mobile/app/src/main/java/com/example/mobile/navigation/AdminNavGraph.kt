@@ -9,10 +9,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mobile.core.presentation.settings.SettingsScreen
+import com.example.mobile.ui.screens.admin.home.AdminMainScreen
 import com.example.mobile.ui.screens.waiter.home.WaiterMainScreen
 
 @Composable
-fun WaiterNavGraph(
+fun AdminNavGraph(
     modifier:Modifier = Modifier,
     navController: NavHostController,
     onLoggedOut: () -> Unit
@@ -21,14 +22,14 @@ fun WaiterNavGraph(
         NavHost(
             navController = navController,
             route = Graph.WAITER,
-            startDestination = WaiterScreen.Home.route
+            startDestination = AdminScreen.Home.route
         ){
-            composable(WaiterScreen.Home.route) {
-                WaiterMainScreen(
+            composable(AdminScreen.Home.route) {
+                AdminMainScreen(
                     modifier = Modifier.padding(padding)
                 )
             }
-            composable(WaiterScreen.Settings.route) {
+            composable(AdminScreen.Settings.route) {
                 SettingsScreen(
                     modifier = modifier.fillMaxSize().padding(padding),
                     onSuccessLoggedOut = onLoggedOut
@@ -38,7 +39,7 @@ fun WaiterNavGraph(
     }
 }
 
-sealed class WaiterScreen(val route: String){
-    object Home: WaiterScreen(route = "HOME")
-    object Settings: WaiterScreen(route = "SETTINGS")
+sealed class AdminScreen(val route: String){
+    object Home: AdminScreen(route = "HOME")
+    object Settings: AdminScreen(route = "SETTINGS")
 }

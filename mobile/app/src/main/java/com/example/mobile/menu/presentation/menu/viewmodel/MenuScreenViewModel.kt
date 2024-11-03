@@ -176,7 +176,6 @@ class MenuScreenViewModel @Inject constructor(
                 }
             }
             setLoadingState(false)
-            clearForm()
         }
     }
 
@@ -198,7 +197,6 @@ class MenuScreenViewModel @Inject constructor(
                 }
             }
             setLoadingState(false)
-            clearForm()
         }
     }
 

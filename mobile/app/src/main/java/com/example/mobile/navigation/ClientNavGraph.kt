@@ -30,44 +30,44 @@ fun ClientNavGraph(
     NavHost(
         navController = navController,
         route = Graph.HOME,
-        startDestination = HomeScreen.Home.route
+        startDestination = ClientScreen.Home.route
     ){
         composable(
-            route = HomeScreen.Home.route,
+            route = ClientScreen.Home.route,
         ) {
             MenuScreen(
                 modifier = modifier,
                 onSearchClicked = {
-                    navController.navigate(HomeScreen.Search.route)
+                    navController.navigate(ClientScreen.Search.route)
                 },
                 viewModel = menuScreenViewModel
             )
         }
-        composable(HomeScreen.Settings.route) {
+        composable(ClientScreen.Settings.route) {
             SettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onSuccessLoggedOut = onLoggedOut
             )
         }
-        composable(HomeScreen.Orders.route) {
+        composable(ClientScreen.Orders.route) {
             OrdersScreen(
                 modifier = modifier
             )
         }
-        composable(HomeScreen.Favorites.route) {
+        composable(ClientScreen.Favorites.route) {
             FavoritesScreen(
                 modifier = modifier,
                 viewModel = menuScreenViewModel
             )
         }
-        composable(HomeScreen.Cart.route) {
+        composable(ClientScreen.Cart.route) {
             CartScreen(
                 modifier = modifier,
                 viewModel = cartScreenViewModel
             )
         }
         composable(
-            route = HomeScreen.Search.route,
+            route = ClientScreen.Search.route,
             enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
@@ -76,8 +76,8 @@ fun ClientNavGraph(
             SearchScreen(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(HomeScreen.Home.route){
-                        popUpTo(HomeScreen.Home.route){
+                    navController.navigate(ClientScreen.Home.route){
+                        popUpTo(ClientScreen.Home.route){
                             inclusive = true
                         }
                     }
@@ -89,11 +89,11 @@ fun ClientNavGraph(
 }
 
 
-sealed class HomeScreen(val route: String){
-    data object Home: HomeScreen(route = "HOME")
-    data object Cart: HomeScreen(route = "CART")
-    data object Orders: HomeScreen(route = "ORDERS")
-    data object Settings: HomeScreen(route = "SETTINGS")
-    data object Favorites: HomeScreen(route = "FAVORITES")
-    data object Search: HomeScreen(route = "SEARCH")
+sealed class ClientScreen(val route: String){
+    data object Home: ClientScreen(route = "HOME")
+    data object Cart: ClientScreen(route = "CART")
+    data object Orders: ClientScreen(route = "ORDERS")
+    data object Settings: ClientScreen(route = "SETTINGS")
+    data object Favorites: ClientScreen(route = "FAVORITES")
+    data object Search: ClientScreen(route = "SEARCH")
 }

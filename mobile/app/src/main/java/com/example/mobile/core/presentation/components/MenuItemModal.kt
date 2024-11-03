@@ -63,6 +63,7 @@ fun MenuItemModal(
     addUserCartItem: () -> Unit,
     addFavoriteItem: () -> Unit,
     deleteFavoriteItem: () -> Unit,
+    showFavorite: Boolean = true,
     @StringRes buttonText: Int
 ){
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -81,7 +82,8 @@ fun MenuItemModal(
                 addUserCartItem = addUserCartItem,
                 buttonText = buttonText,
                 addFavoriteItem = addFavoriteItem,
-                deleteFavoriteItem = deleteFavoriteItem
+                deleteFavoriteItem = deleteFavoriteItem,
+                showFavorite = showFavorite
             )
         }
     )
@@ -98,6 +100,7 @@ fun MenuItemModalContent(
     addUserCartItem: () -> Unit,
     addFavoriteItem: () -> Unit,
     deleteFavoriteItem: () -> Unit,
+    showFavorite: Boolean = true,
     @StringRes buttonText: Int
 ){
     val contentColor = if(isSystemInDarkTheme()){
@@ -129,27 +132,29 @@ fun MenuItemModalContent(
                     .padding(20.dp),
                 horizontalArrangement = Arrangement.End
             ){
-                IconButton(
-                    onClick = {
-                        if(cartForm.isFavorite) deleteFavoriteItem()
-                        else addFavoriteItem()
-                    },
-                    modifier = Modifier.background(Color.White),
-                ) {
-                    if(cartForm.isFavorite){
-                        Icon(
-                            imageVector = Icons.Filled.Favorite,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(30.dp)
-                        )
-                    }else{
-                        Icon(
-                            imageVector = Icons.Filled.FavoriteBorder,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(30.dp)
-                        )
+                if(showFavorite){
+                    IconButton(
+                        onClick = {
+                            if(cartForm.isFavorite) deleteFavoriteItem()
+                            else addFavoriteItem()
+                        },
+                        modifier = Modifier.background(Color.White),
+                    ) {
+                        if(cartForm.isFavorite){
+                            Icon(
+                                imageVector = Icons.Filled.Favorite,
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .size(30.dp)
+                            )
+                        }else{
+                            Icon(
+                                imageVector = Icons.Filled.FavoriteBorder,
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .size(30.dp)
+                            )
+                        }
                     }
                 }
                 IconButton(

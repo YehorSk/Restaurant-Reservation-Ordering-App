@@ -56,6 +56,7 @@ fun LoginScreen(
     loginViewModel: LoginViewModel = hiltViewModel(),
     onSuccessClient: () -> Unit,
     onSuccessWaiter: () -> Unit,
+    onSuccessAdmin: () -> Unit,
     onRegClick: () -> Unit,
     onForgotPwdClick: () -> Unit,
 ) {
@@ -108,6 +109,10 @@ fun LoginScreen(
                     "waiter" -> {
                         Timber.d("Navigating to home screen from Login Waiter")
                         onSuccessWaiter()
+                    }
+                    "admin" -> {
+                        Timber.d("Navigating to home screen from Login Admin")
+                        onSuccessAdmin()
                     }
                     else -> {
 

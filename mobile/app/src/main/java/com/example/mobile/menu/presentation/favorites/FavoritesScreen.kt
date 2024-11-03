@@ -1,5 +1,6 @@
 package com.example.mobile.menu.presentation.favorites
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mobile.R
+import com.example.mobile.core.data.repository.SideEffect
+import com.example.mobile.core.presentation.components.MenuItemModal
+import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.menu.presentation.menu.components.MenuItem
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 
@@ -24,8 +30,15 @@ fun FavoritesScreen(
     modifier: Modifier = Modifier,
     viewModel: MenuScreenViewModel
 ){
-
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val favoriteUiState by viewModel.favoriteUiState.collectAsStateWithLifecycle()
+
+    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+        when(sideEffect){
+            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Column(
         modifier = modifier
@@ -44,12 +57,43 @@ fun FavoritesScreen(
                 MenuItem(
                     menuItem = item,
                     onClick = { menuItem ->
-
+                        viewModel.setMenu(menuItem)
+                        viewModel.updatePrice(menuItem.price.toDouble())
+                        viewModel.setMenuItemId(menuItem.id)
+                        viewModel.setMenuItemFavorite(menuItem.isFavorite)
+                        viewModel.showBottomSheet()
                     }
                 )
                 HorizontalDivider()
             }
 
+        }
+    }
+    if (uiState.showBottomSheet) {
+        uiState.currentMenu?.let {
+            MenuItemModal(
+                menuItem = it,
+                onDismiss = {
+                    viewModel.closeBottomSheet()
+                    viewModel.clearForm()
+                },
+                cartForm = uiState.cartForm,
+                onQuantityChange = {viewModel.updateQuantity(it)},
+                onPriceChange = {viewModel.updatePrice(it)},
+                addUserCartItem = {
+                    viewModel.closeBottomSheet()
+                    viewModel.addUserCartItem()
+                },
+                buttonText = R.string.Add,
+                addFavoriteItem = {
+                    viewModel.addUserFavoriteItem()
+                    viewModel.setMenuItemFavorite(true)
+                },
+                deleteFavoriteItem = {
+                    viewModel.deleteUserFavoriteItem()
+                    viewModel.setMenuItemFavorite(false)
+                }
+            )
         }
     }
 }

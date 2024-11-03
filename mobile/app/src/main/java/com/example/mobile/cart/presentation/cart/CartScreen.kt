@@ -29,10 +29,13 @@ import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.toMenuItem
 import com.example.mobile.core.data.repository.SideEffect
 import com.example.mobile.cart.presentation.cart.components.CartItem
+import com.example.mobile.core.presentation.components.CartCheckoutModal
+import com.example.mobile.core.presentation.components.CartCheckoutModalContent
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
+import com.example.mobile.utils.formattedPrice
 
 @Composable
 fun CartScreen(
@@ -43,6 +46,7 @@ fun CartScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
+    var showCheckoutBottomSheet by remember { mutableStateOf(false) }
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -98,11 +102,14 @@ fun CartScreen(
                     .fillMaxWidth()
                     .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
                     .align(Alignment.BottomCenter),
-                onClick = {}
+                onClick = {
+                    showCheckoutBottomSheet = true
+                }
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
-                    text = "Go to checkout ${String.format("%.2f", checkout)} €"
+                    text = "Go to checkout € ${formattedPrice(checkout)}"
+
                 )
             }
         }
@@ -125,8 +132,15 @@ fun CartScreen(
                 },
                 buttonText = R.string.UPDATE,
                 addFavoriteItem = {},
-                deleteFavoriteItem = {}
+                deleteFavoriteItem = {},
+                showFavorite = false
             )
         }
+    }
+
+    if(showCheckoutBottomSheet){
+        CartCheckoutModal(
+            onDismiss = {showCheckoutBottomSheet = false}
+        )
     }
 }
