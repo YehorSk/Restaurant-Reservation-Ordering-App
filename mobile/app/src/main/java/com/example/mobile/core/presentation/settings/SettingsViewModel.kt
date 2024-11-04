@@ -2,7 +2,7 @@ package com.example.mobile.core.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.auth.data.remote.AuthPreferencesRepository
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     val authRepository: AuthRepository,
-    val preferencesRepository: AuthPreferencesRepository
+    val preferencesRepository: MainPreferencesRepository
 ): ViewModel() {
 
     val _uiState = MutableStateFlow(SettingsState())

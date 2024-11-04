@@ -1,16 +1,16 @@
-package com.example.mobile.navigation
+package com.example.mobile.core.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mobile.core.presentation.settings.SettingsScreen
-import com.example.mobile.ui.screens.admin.home.AdminMainScreen
-import com.example.mobile.ui.screens.waiter.home.WaiterMainScreen
 
 @Composable
 fun AdminNavGraph(
@@ -25,9 +25,11 @@ fun AdminNavGraph(
             startDestination = AdminScreen.Home.route
         ){
             composable(AdminScreen.Home.route) {
-                AdminMainScreen(
+                Box(
                     modifier = Modifier.padding(padding)
-                )
+                ){
+                    Text(text = "Admin page")
+                }
             }
             composable(AdminScreen.Settings.route) {
                 SettingsScreen(

@@ -1,6 +1,6 @@
 package com.example.mobile.cart.data.remote
 
-import com.example.mobile.auth.data.remote.AuthPreferencesRepository
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.data.repository.CartRepository
 import com.example.mobile.cart.data.service.CartService
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(
     private val cartService: CartService,
-    private val prefs: AuthPreferencesRepository,
+    private val prefs: MainPreferencesRepository,
     private val connectivityRepository: ConnectivityRepository,
     private val cartDao: CartDao
 )

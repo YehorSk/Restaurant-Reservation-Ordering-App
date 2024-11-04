@@ -1,6 +1,6 @@
 package com.example.mobile.menu.data.remote
 
-import com.example.mobile.auth.data.remote.AuthPreferencesRepository
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.menu.data.service.MenuService
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class MenuRepositoryImpl @Inject constructor(
     private val menuService: MenuService,
-    private val prefs: AuthPreferencesRepository,
+    private val prefs: MainPreferencesRepository,
     private val menuDao: MenuDao,
     private val connectivityRepository: ConnectivityRepository
 ) : MenuRepository {

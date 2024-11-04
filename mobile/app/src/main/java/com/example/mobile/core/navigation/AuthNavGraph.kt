@@ -1,4 +1,4 @@
-package com.example.mobile.navigation
+package com.example.mobile.core.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -48,7 +48,7 @@ fun NavGraphBuilder.authNavGraph(
                         }
                     }
                 },
-                onSuccessWaiter= {
+                onSuccessWaiter = {
                     Timber.d("Navigating to waiter screen")
                     navController.navigate(Graph.WAITER) {
                         popUpTo(Graph.ROOT) {
@@ -56,7 +56,7 @@ fun NavGraphBuilder.authNavGraph(
                         }
                     }
                 },
-                onSuccessAdmin= {
+                onSuccessAdmin = {
                     Timber.d("Navigating to admin screen")
                     navController.navigate(Graph.ADMIN) {
                         popUpTo(Graph.ROOT) {

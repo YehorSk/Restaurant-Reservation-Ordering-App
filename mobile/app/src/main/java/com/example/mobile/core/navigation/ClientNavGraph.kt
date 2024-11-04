@@ -1,4 +1,4 @@
-package com.example.mobile.navigation
+package com.example.mobile.core.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween

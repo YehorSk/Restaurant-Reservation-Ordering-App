@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import com.example.mobile.auth.data.remote.AuthInterceptor
-import com.example.mobile.auth.data.remote.AuthPreferencesRepository
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.data.remote.AuthRepositoryImpl
 import com.example.mobile.auth.data.service.AuthService
@@ -53,8 +53,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthInterceptor(authPreferencesRepository: AuthPreferencesRepository): AuthInterceptor {
-        return AuthInterceptor(authPreferencesRepository)
+    fun provideAuthInterceptor(mainPreferencesRepository: MainPreferencesRepository): AuthInterceptor {
+        return AuthInterceptor(mainPreferencesRepository)
     }
 
     @Provides
@@ -111,7 +111,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesAuthPreferences(@ApplicationContext applicationContext: Context) : AuthPreferencesRepository = AuthPreferencesRepository(dataStore = applicationContext.dataStore)
+    fun providesAuthPreferences(@ApplicationContext applicationContext: Context) : MainPreferencesRepository = MainPreferencesRepository(dataStore = applicationContext.dataStore)
 
     @Provides
     @Singleton
@@ -119,15 +119,15 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepositoryImpl(authService: AuthService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository,mainRoomDatabase: MainRoomDatabase) : AuthRepository = AuthRepositoryImpl(authService,authPreferencesRepository,connectivityRepository, mainRoomDatabase)
+    fun provideAuthRepositoryImpl(authService: AuthService, mainPreferencesRepository: MainPreferencesRepository, connectivityRepository: ConnectivityRepository, mainRoomDatabase: MainRoomDatabase) : AuthRepository = AuthRepositoryImpl(authService,mainPreferencesRepository,connectivityRepository, mainRoomDatabase)
 
     @Provides
     @Singleton
-    fun provideCartRepositoryImpl(cartService: CartService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository, cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService,authPreferencesRepository,connectivityRepository, cartDao)
+    fun provideCartRepositoryImpl(cartService: CartService, mainPreferencesRepository: MainPreferencesRepository, connectivityRepository: ConnectivityRepository, cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService,mainPreferencesRepository,connectivityRepository, cartDao)
 
     @Provides
     @Singleton
-    fun provideMenuRepositoryImpl(menuService: MenuService, authPreferencesRepository: AuthPreferencesRepository, connectivityRepository: ConnectivityRepository, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService,authPreferencesRepository,menuDao,connectivityRepository)
+    fun provideMenuRepositoryImpl(menuService: MenuService, mainPreferencesRepository: MainPreferencesRepository, connectivityRepository: ConnectivityRepository, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService,mainPreferencesRepository,menuDao,connectivityRepository)
 
 
 }

@@ -4,9 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.core.data.remote.dto.NetworkResult
-import com.example.mobile.core.data.repository.SideEffect
+import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
-import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems

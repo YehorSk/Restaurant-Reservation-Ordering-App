@@ -1,4 +1,4 @@
-package com.example.mobile.auth.data.remote
+package com.example.mobile.core.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class AuthPreferencesRepository @Inject constructor(
+class MainPreferencesRepository @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ){
     private companion object {
@@ -18,7 +18,6 @@ class AuthPreferencesRepository @Inject constructor(
         val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
         val JWT_TOKEN = stringPreferencesKey("JWT_TOKEN")
         val USER_ROLE = stringPreferencesKey("USER_ROLE")
-        val USER_DATA_FLOW = stringPreferencesKey("USER_DATA")
     }
 
     private val json = Json { ignoreUnknownKeys = true }

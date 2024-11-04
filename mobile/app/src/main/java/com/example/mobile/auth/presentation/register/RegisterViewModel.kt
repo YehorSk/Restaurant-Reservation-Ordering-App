@@ -3,7 +3,7 @@ package com.example.mobile.auth.presentation.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.auth.data.remote.model.AuthResult
-import com.example.mobile.auth.data.remote.AuthPreferencesRepository
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.utils.ConnectivityRepository
 import com.example.mobile.utils.cleanError
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     val authRepository: AuthRepository,
-    val preferencesRepository: AuthPreferencesRepository,
+    val preferencesRepository: MainPreferencesRepository,
     val connectivityRepository: ConnectivityRepository
 ) : ViewModel() {
 

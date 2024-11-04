@@ -1,12 +1,11 @@
-package com.example.mobile.navigation
+package com.example.mobile.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.mobile.ui.screens.admin.graph.AdminScreen
-import com.example.mobile.ui.screens.client.graph.ClientScreenGraph
-import com.example.mobile.ui.screens.waiter.graph.WaiterScreen
+import com.example.mobile.core.data.remote.UserRoles
+import com.example.mobile.ui.screens.graph.MainScreenGraph
 
 @Composable
 fun MainNavigation(
@@ -24,38 +23,41 @@ fun MainNavigation(
         )
 
         composable(route = Graph.HOME) {
-            ClientScreenGraph(
+            MainScreenGraph(
                 onLoggedOut = {
                     navController.navigate(Graph.AUTHENTICATION) {
                         popUpTo(Graph.ROOT) {
                             inclusive = true
                         }
                     }
-                }
+                },
+                userRoles = UserRoles.USER
             )
         }
 
         composable(route = Graph.WAITER) {
-            WaiterScreen(
+            MainScreenGraph(
                 onLoggedOut = {
                     navController.navigate(Graph.AUTHENTICATION) {
                         popUpTo(Graph.ROOT) {
                             inclusive = true
                         }
                     }
-                }
+                },
+                userRoles = UserRoles.WAITER
             )
         }
 
         composable(route = Graph.ADMIN) {
-            AdminScreen(
+            MainScreenGraph(
                 onLoggedOut = {
                     navController.navigate(Graph.AUTHENTICATION) {
                         popUpTo(Graph.ROOT) {
                             inclusive = true
                         }
                     }
-                }
+                },
+                userRoles = UserRoles.ADMIN
             )
         }
 

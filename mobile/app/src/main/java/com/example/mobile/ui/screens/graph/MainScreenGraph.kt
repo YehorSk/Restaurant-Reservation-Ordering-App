@@ -1,4 +1,4 @@
-package com.example.mobile.ui.screens.client.graph
+package com.example.mobile.ui.screens.graph
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -15,36 +15,91 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.mobile.navigation.ClientNavGraph
+import com.example.mobile.core.data.remote.UserRoles
+import com.example.mobile.core.navigation.AdminNavGraph
+import com.example.mobile.core.navigation.ClientNavGraph
+import com.example.mobile.core.navigation.WaiterNavGraph
 import com.example.mobile.ui.screens.BottomBarScreen
 
 @Composable
-fun ClientScreenGraph(
+fun MainScreenGraph(
     navController: NavHostController = rememberNavController(),
+    userRoles: UserRoles,
     onLoggedOut:() -> Unit
 ){
     Scaffold(
         bottomBar = {
-            BottomBar(navController = navController)
+            BottomBar(
+                navController = navController,
+                userRoles = userRoles
+            )
         }
     ) { contentPadding ->
-        ClientNavGraph(
-            navController = navController,
-            modifier = Modifier.padding(contentPadding),
-            onLoggedOut = onLoggedOut
-        )
+        when(userRoles){
+            UserRoles.ADMIN -> {
+                AdminNavGraph(
+                    navController = navController,
+                    modifier = Modifier.padding(contentPadding),
+                    onLoggedOut = onLoggedOut
+                )
+            }
+            UserRoles.CHEF -> {
+
+            }
+            UserRoles.USER -> {
+                ClientNavGraph(
+                    navController = navController,
+                    modifier = Modifier.padding(contentPadding),
+                    onLoggedOut = onLoggedOut
+                )
+            }
+            UserRoles.WAITER -> {
+                WaiterNavGraph(
+                    navController = navController,
+                    modifier = Modifier.padding(contentPadding),
+                    onLoggedOut = onLoggedOut
+                )
+            }
+        }
     }
 }
 
 @Composable
-fun BottomBar(navController: NavHostController){
-    val screens = listOf(
-        BottomBarScreen.Home,
-        BottomBarScreen.Cart,
-        BottomBarScreen.Orders,
-        BottomBarScreen.Favorites,
-        BottomBarScreen.Settings,
-    )
+fun BottomBar(
+    navController: NavHostController,
+    userRoles: UserRoles
+){
+    var screens = listOf<BottomBarScreen>()
+
+    when(userRoles){
+        UserRoles.USER -> {
+            screens = listOf(
+                BottomBarScreen.Home,
+                BottomBarScreen.Cart,
+                BottomBarScreen.Orders,
+                BottomBarScreen.Favorites,
+                BottomBarScreen.Settings
+            )
+        }
+        UserRoles.ADMIN -> {
+            screens = listOf(
+                BottomBarScreen.Home,
+                BottomBarScreen.Settings
+            )
+        }
+        UserRoles.CHEF -> {
+            screens = listOf(
+                BottomBarScreen.Home,
+                BottomBarScreen.Settings
+            )
+        }
+        UserRoles.WAITER -> {
+            screens = listOf(
+                BottomBarScreen.Home,
+                BottomBarScreen.Settings
+            )
+        }
+    }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

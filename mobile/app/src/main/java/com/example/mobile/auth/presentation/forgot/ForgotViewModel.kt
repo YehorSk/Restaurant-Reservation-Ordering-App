@@ -1,10 +1,9 @@
 package com.example.mobile.auth.presentation.forgot
 
 import androidx.lifecycle.ViewModel
-import com.example.mobile.auth.data.remote.AuthPreferencesRepository
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
-import com.example.mobile.auth.presentation.login.LoginState
-import com.example.mobile.core.data.repository.SideEffect
+import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.utils.ConnectivityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -18,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ForgotViewModel @Inject constructor(
     val authRepository: AuthRepository,
-    val preferencesRepository: AuthPreferencesRepository,
+    val preferencesRepository: MainPreferencesRepository,
     val connectivityRepository: ConnectivityRepository
 ): ViewModel() {
 

@@ -1,5 +1,6 @@
 package com.example.mobile.auth.data.remote
 
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -7,7 +8,7 @@ import okhttp3.Response
 import timber.log.Timber
 
 class AuthInterceptor(
-    private val prefs: AuthPreferencesRepository
+    private val prefs: MainPreferencesRepository
 ): Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {

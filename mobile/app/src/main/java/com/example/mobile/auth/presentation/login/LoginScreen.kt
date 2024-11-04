@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
-import com.example.mobile.core.data.repository.SideEffect
+import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -113,6 +113,10 @@ fun LoginScreen(
                     "admin" -> {
                         Timber.d("Navigating to home screen from Login Admin")
                         onSuccessAdmin()
+                    }
+                    "chef" -> {
+                        Timber.d("Navigating to home screen from Login Chef")
+
                     }
                     else -> {
 

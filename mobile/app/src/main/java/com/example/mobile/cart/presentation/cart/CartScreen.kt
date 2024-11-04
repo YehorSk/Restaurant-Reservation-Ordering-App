@@ -27,10 +27,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.toMenuItem
-import com.example.mobile.core.data.repository.SideEffect
+import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.cart.presentation.cart.components.CartItem
 import com.example.mobile.core.presentation.components.CartCheckoutModal
-import com.example.mobile.core.presentation.components.CartCheckoutModalContent
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.components.SwipeToDeleteContainer

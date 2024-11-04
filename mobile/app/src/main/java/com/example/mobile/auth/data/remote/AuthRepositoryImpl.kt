@@ -7,6 +7,7 @@ import com.example.mobile.auth.data.service.AuthService
 import com.example.mobile.auth.presentation.login.LoginForm
 import com.example.mobile.auth.presentation.register.RegisterForm
 import com.example.mobile.core.data.db.MainRoomDatabase
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.utils.ConnectivityRepository
 import com.example.mobile.utils.parseHttpResponse
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,7 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,
-    private val prefs: AuthPreferencesRepository,
+    private val prefs: MainPreferencesRepository,
     private val connectivityRepository: ConnectivityRepository,
     private val mainRoomDatabase: MainRoomDatabase
 ) : AuthRepository {
