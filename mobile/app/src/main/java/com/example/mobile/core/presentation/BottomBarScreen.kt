@@ -1,4 +1,4 @@
-package com.example.mobile.ui.screens
+package com.example.mobile.core.presentation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite

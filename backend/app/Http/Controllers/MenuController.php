@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\User;
+use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
 {
+    use HttpResponses;
+
     public function index(){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
@@ -19,6 +22,23 @@ class MenuController extends Controller
                 return $menu;
             });
             return response()->json($menus);
+        }
+    }
+
+    public function store(Request $request){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $data = $request->validate([
+                'name' => 'required|unique:menus',
+                'description' => 'required',
+                'availability' => 'nullable'
+            ]);
+            $menu = new Menu($data);
+            $menu->save();
+            if(!$menu->exists){
+                return $this->error('', 'Item was not added', 409);
+            }
+            return $this->success(data: $menu, message: "Item added to menu", textStatus: "added");
         }
     }
 

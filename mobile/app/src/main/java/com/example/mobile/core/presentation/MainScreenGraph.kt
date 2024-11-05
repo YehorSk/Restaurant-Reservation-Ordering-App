@@ -1,4 +1,4 @@
-package com.example.mobile.ui.screens.graph
+package com.example.mobile.core.presentation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -19,7 +19,6 @@ import com.example.mobile.core.data.remote.UserRoles
 import com.example.mobile.core.navigation.AdminNavGraph
 import com.example.mobile.core.navigation.ClientNavGraph
 import com.example.mobile.core.navigation.WaiterNavGraph
-import com.example.mobile.ui.screens.BottomBarScreen
 
 @Composable
 fun MainScreenGraph(

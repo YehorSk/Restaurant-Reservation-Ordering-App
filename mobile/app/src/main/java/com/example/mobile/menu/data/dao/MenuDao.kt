@@ -34,16 +34,6 @@ interface MenuDao {
     @Query("SELECT * FROM menu_item_table WHERE name LIKE :text OR short_description LIKE :text OR long_description LIKE :text")
     fun searchItems(text: String): Flow<List<MenuItemEntity>>
 
-    @Transaction
-    suspend fun insert(menuDtos: List<MenuDto>){
-        for(item in menuDtos){
-            insertMenu(item.toMenuEntity())
-            for(menuItem in item.items){
-                insertMenuItem(menuItem.toMenuItemEntity())
-            }
-        }
-    }
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMenu(menu: MenuEntity)
 
@@ -63,40 +53,9 @@ interface MenuDao {
     suspend fun updateMenuItem(menuItem: MenuItemEntity)
 
     @Transaction
-    suspend fun syncMenusWithServer(serverMenuDtos: List<MenuDto>) {
-        val localMenus = getMenuWithMenuItemsOnce()
-
-        val serverMenuIds = serverMenuDtos.map { it.id }.toSet()
-
-        val serverMenuItemsIds = serverMenuDtos.flatMap { menu -> menu.items.map { it.id } }.toSet()
-
-        val menusToDelete = localMenus.filter { it.menu.id !in serverMenuIds }
-
-        val menuItemsToDelete = localMenus.flatMap { localMenu ->
-            localMenu.menuItems.filter { it.id !in serverMenuItemsIds }
-        }
-
-        for (menu in menusToDelete) {
-            deleteMenu(menu.menu)
-            deleteMenuItems(menu.menuItems.map { it })
-        }
-
-        deleteMenuItems(menuItemsToDelete.map { it })
-
-        insert(serverMenuDtos)
-    }
-
-
-    @Transaction
     @Query("SELECT * FROM menu_table")
     suspend fun getMenuWithMenuItemsOnce(): List<MenuWithMenuItems>
 
-    @Transaction
-    suspend fun deleteMenuItems(menuItems: List<MenuItemEntity>) {
-        for (item in menuItems) {
-            deleteMenuItem(item)
-        }
-    }
 
     @Transaction
     suspend fun runInTransaction(block: suspend () -> Unit) {

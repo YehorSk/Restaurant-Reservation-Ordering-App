@@ -127,7 +127,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMenuRepositoryImpl(menuService: MenuService, mainPreferencesRepository: MainPreferencesRepository, connectivityRepository: ConnectivityRepository, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService,mainPreferencesRepository,menuDao,connectivityRepository)
+    fun provideMenuRepositoryImpl(menuService: MenuService, connectivityRepository: ConnectivityRepository, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService,menuDao,connectivityRepository)
 
 
 }

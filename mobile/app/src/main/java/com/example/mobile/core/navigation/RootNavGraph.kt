@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mobile.core.data.remote.UserRoles
-import com.example.mobile.ui.screens.graph.MainScreenGraph
+import com.example.mobile.core.presentation.MainScreenGraph
 
 @Composable
 fun MainNavigation(

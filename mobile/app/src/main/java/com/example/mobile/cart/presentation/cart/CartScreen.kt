@@ -139,7 +139,8 @@ fun CartScreen(
 
     if(showCheckoutBottomSheet){
         CartCheckoutModal(
-            onDismiss = {showCheckoutBottomSheet = false}
+            onDismiss = {showCheckoutBottomSheet = false},
+            modifier = modifier
         )
     }
 }

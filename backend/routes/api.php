@@ -44,9 +44,8 @@ Route::controller(AuthController::class)->group(function (){
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::get('/logout',[AuthController::class,'logout']);
+    Route::apiResource('menu', MenuController::class);
 });
-
-Route::apiResource('menu', MenuController::class);
 
 Route::post('/forgot-password', function (Request $request) {
     $request->validate(['email' => 'required|email']);
@@ -76,4 +75,3 @@ Route::controller(FavoriteController::class)->group(function (){
     Route::post('add-user-favorite-item','addUserFavoriteItem');
     Route::post('delete-user-favorite-item','deleteUserFavoriteItem');
 });
-

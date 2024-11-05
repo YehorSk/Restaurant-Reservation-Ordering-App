@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.menu.data.remote.dto.MenuDto
@@ -32,6 +33,7 @@ fun MenuHeader(
         Text(
             text = menuDto.description,
             maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
             fontSize = 14.sp,
             modifier = modifier
                 .fillMaxWidth()
