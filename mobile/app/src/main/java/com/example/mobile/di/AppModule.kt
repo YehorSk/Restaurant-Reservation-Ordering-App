@@ -44,12 +44,8 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-// Home
     @Provides
     fun provideBaseUrl():  String = Constants.BASE_URL
-
-//    @Provides
-//    fun provideBaseUrl():  String = "http://192.168.102.5/SavchukBachelor/backend/public/api/"
 
     @Provides
     @Singleton
@@ -128,6 +124,5 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMenuRepositoryImpl(menuService: MenuService, connectivityRepository: ConnectivityRepository, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService,menuDao,connectivityRepository)
-
 
 }

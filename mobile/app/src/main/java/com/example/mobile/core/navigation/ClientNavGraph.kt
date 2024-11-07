@@ -17,6 +17,7 @@ import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
+import com.example.mobile.orders.presentation.create_order.CreateOrderScreen
 
 @Composable
 fun ClientNavGraph(
@@ -51,6 +52,11 @@ fun ClientNavGraph(
         }
         composable(ClientScreen.Orders.route) {
             OrdersScreen(
+                modifier = modifier
+            )
+        }
+        composable(ClientScreen.CreateOrder.route) {
+            CreateOrderScreen(
                 modifier = modifier
             )
         }
@@ -93,6 +99,7 @@ sealed class ClientScreen(val route: String){
     data object Home: ClientScreen(route = "HOME")
     data object Cart: ClientScreen(route = "CART")
     data object Orders: ClientScreen(route = "ORDERS")
+    data object CreateOrder: ClientScreen(route = "CREATE_ORDER")
     data object Settings: ClientScreen(route = "SETTINGS")
     data object Favorites: ClientScreen(route = "FAVORITES")
     data object Search: ClientScreen(route = "SEARCH")

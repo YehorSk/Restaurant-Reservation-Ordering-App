@@ -1,5 +1,6 @@
 package com.example.mobile.menu.presentation.menu_admin.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import com.example.mobile.ui.theme.MobileTheme
 fun EditMenuModal(
     onDismiss:()->Unit,
     modifier: Modifier = Modifier,
+    buttonRes: StringRes
 ){
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -49,14 +51,14 @@ fun EditMenuModalContent(
         OutlinedTextField(
             value = "",
             onValueChange = { },
-            label = { Text(text = "Menu Name") },
+            label = { Text(text = "Name") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
         OutlinedTextField(
             value = "",
             onValueChange = { },
-            label = { Text(text = "Menu Description") },
+            label = { Text(text = "Description") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = false
         )

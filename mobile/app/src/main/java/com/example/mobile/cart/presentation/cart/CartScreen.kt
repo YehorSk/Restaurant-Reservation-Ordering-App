@@ -123,8 +123,12 @@ fun CartScreen(
                     viewModel.clearForm()
                 },
                 cartForm = uiState.cartForm,
-                onQuantityChange = {value -> viewModel.updateQuantity(value)},
-                onPriceChange = {value -> viewModel.updatePrice(value)},
+                onQuantityChange = { value ->
+                                    viewModel.updateQuantity(value)
+                                   },
+                onPriceChange = {value ->
+                                    viewModel.updatePrice(value)
+                                },
                 addUserCartItem = {
                     showBottomSheet = false
                     viewModel.updateItem()

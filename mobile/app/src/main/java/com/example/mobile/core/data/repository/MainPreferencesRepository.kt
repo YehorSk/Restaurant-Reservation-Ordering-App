@@ -20,9 +20,6 @@ class MainPreferencesRepository @Inject constructor(
         val USER_ROLE = stringPreferencesKey("USER_ROLE")
     }
 
-    private val json = Json { ignoreUnknownKeys = true }
-
-
     val userNameFlow: Flow<String?> = dataStore.data
         .map { preferences -> preferences[USER_NAME]}
 

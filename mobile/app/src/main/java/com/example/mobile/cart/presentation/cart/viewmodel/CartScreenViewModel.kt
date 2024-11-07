@@ -10,6 +10,7 @@ import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.cart.presentation.cart.CartScreenUiState
 import com.example.mobile.menu.data.db.model.MenuItemEntity
+import com.example.mobile.utils.formattedPrice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -31,7 +32,7 @@ class CartScreenViewModel @Inject constructor(
 ) : ViewModel(){
 
     private val _uiState = MutableStateFlow(CartScreenUiState())
-    val uiState: StateFlow<CartScreenUiState> = _uiState.asStateFlow()
+    val uiState = _uiState.asStateFlow()
 
     val cartItemUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
         .stateIn(
@@ -49,9 +50,8 @@ class CartScreenViewModel @Inject constructor(
     }
 
     fun updatePrice(price: Double){
-        val formattedPrice = String.format("%.2f", price).toDouble()
         _uiState.update {
-            it.copy(cartForm = it.cartForm.copy(price = formattedPrice))
+            it.copy(cartForm = it.cartForm.copy(price = formattedPrice(price).toDouble()))
         }
     }
 
@@ -96,7 +96,10 @@ class CartScreenViewModel @Inject constructor(
                         }
 
                         _uiState.update {
-                            it.copy(internetError = false, error = "")
+                            it.copy(
+                                internetError = false,
+                                error = ""
+                            )
                         }
                     }
                 }

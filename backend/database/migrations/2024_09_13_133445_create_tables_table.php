@@ -16,7 +16,6 @@ return new class extends Migration
             $table->timestamps();
             $table->string('number');
             $table->integer('capacity');
-            $table->string('status');
         });
     }
 
