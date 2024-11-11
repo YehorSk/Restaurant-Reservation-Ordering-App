@@ -9,6 +9,7 @@ use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 Route::get('/user', function (Request $request) {
     $user = $request->user();
@@ -75,3 +76,5 @@ Route::controller(FavoriteController::class)->group(function (){
     Route::post('add-user-favorite-item','addUserFavoriteItem');
     Route::post('delete-user-favorite-item','deleteUserFavoriteItem');
 });
+
+Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);

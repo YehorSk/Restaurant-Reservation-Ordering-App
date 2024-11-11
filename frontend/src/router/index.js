@@ -13,7 +13,8 @@ async function checkAuth(roleCheck, next) {
   }
 }
 
-const adminGuard = (to, from, next) => checkAuth(user => user.is_admin === 1, next);
+const adminGuard = (to, from, next) => checkAuth(user => user.role === 'admin', next);
+const userGuard = (to, from, next) => checkAuth(user => !user.id, next);
 
 
 const router = createRouter({
@@ -28,7 +29,8 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: LoginView
+      component: LoginView,
+      beforeEnter: userGuard
     }
   ]
 })

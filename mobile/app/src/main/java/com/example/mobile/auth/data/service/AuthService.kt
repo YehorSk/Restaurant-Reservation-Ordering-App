@@ -21,7 +21,7 @@ interface AuthService {
     @POST("login")
     suspend fun login(@Body loginForm: LoginForm) : HttpResponse
 
-    @GET("logout")
+    @POST("logout")
     suspend fun logout() : HttpResponse
 
     @GET("user")

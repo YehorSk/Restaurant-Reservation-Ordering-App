@@ -57,8 +57,8 @@
               required
           >
           <i style="color: #FF6600" class="input-icon uil uil-lock-alt"></i>
-          <div v-if="authStore.errors['password']" class="invalid-feedback">
-            <p v-if="authStore.errors['password']">{{ authStore.errors['password'][0] }}</p>
+          <div v-if="authStore.errors['message']" class="invalid-feedback">
+            <p v-if="authStore.errors['message']">{{ authStore.errors['message'][0] }}</p>
           </div>
           <a href="#" class="text-xs text-gray-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Forgot Password?</a>
         </div>

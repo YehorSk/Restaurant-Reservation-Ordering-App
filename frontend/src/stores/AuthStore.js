@@ -1,6 +1,7 @@
 import axios from "axios";
 import {defineStore} from "pinia";
 import {useStorage} from "@vueuse/core";
+import router from "@/router/index.js";
 
 axios.defaults.baseURL = "http://localhost/SavchukBachelor/backend/public/api/";
 
@@ -17,11 +18,8 @@ export const UseAuthStore = defineStore("auth",{
             await axios.get('/sanctum/csrf-cookie');
         },
         async login(email,password){
-            console.log("Login sent")
+            await this.getToken();
             try {
-                console.log(
-                    "Pwd " +password + " email " + email
-                )
                 const response = await axios.post('login', {
                     email: email,
                     password: password,
@@ -29,7 +27,9 @@ export const UseAuthStore = defineStore("auth",{
                 console.log(response)
                 this.user = response.data.data.user;
                 this.token = response.data.data.token;
-                // window.location.reload();
+                await router.push({name: 'home'});
+
+                window.location.reload();
             } catch (error) {
                 console.log(error.response);
                 if(error.response.status === 422){
@@ -57,9 +57,9 @@ export const UseAuthStore = defineStore("auth",{
                 this.token = null;
                 window.location.reload();
             } catch (error) {
-                console.log(error.response.data.errors);
+                console.log(error.response.data.message);
                 if (error.response.status === 422) {
-                    this.errors = error.response.data.errors;
+                    this.errors = error.response.data.message;
                 }
             }
         },
