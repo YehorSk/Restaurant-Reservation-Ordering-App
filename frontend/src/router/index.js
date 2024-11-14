@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
 import {UseAuthStore} from "@/stores/AuthStore.js";
 import MenuView from "@/views/MenuView.vue";
+import MenuItemsView from "@/views/MenuItemsView.vue";
 
 async function checkAuth(roleCheck, next) {
   const authStore = UseAuthStore();
@@ -37,6 +38,12 @@ const router = createRouter({
       path: '/menu',
       name: 'menu',
       component: MenuView,
+      beforeEnter: adminGuard
+    },
+    {
+      path: '/menu/:id',
+      name: 'menuItems',
+      component: MenuItemsView,
       beforeEnter: adminGuard
     }
   ]

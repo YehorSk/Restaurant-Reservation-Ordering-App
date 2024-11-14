@@ -1,5 +1,4 @@
 <script>
-import NavComponent from "@/components/NavComponent.vue";
 import {UseMenuStore} from "@/stores/MenuStore.js";
 
 export default{
@@ -15,12 +14,15 @@ export default{
 </script>
 
 <template>
-  <NavComponent />
   <div class="p-4 sm:ml-64">
 
 
     <div class="relative overflow-x-auto">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <h2 class="text-4xl font-extrabold dark:text-white">All Menu's</h2>
+      <div v-if="menuStore.isLoading" class="text-center text-gray-500 py-6">
+        <RingLoader/>
+      </div>
+      <table v-else class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 my-6">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3">
@@ -31,6 +33,12 @@ export default{
           </th>
           <th scope="col" class="px-6 py-3">
             Description
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Edit
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Items
           </th>
         </tr>
         </thead>
@@ -44,6 +52,16 @@ export default{
           </td>
           <td class="px-6 py-4">
             {{ menu.description }}
+          </td>
+          <td>
+            <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+              Edit
+            </button>
+          </td>
+          <td>
+            <RouterLink :to="'/menu/'+menu.id" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+              Items
+            </RouterLink>
           </td>
         </tr>
         </tbody>

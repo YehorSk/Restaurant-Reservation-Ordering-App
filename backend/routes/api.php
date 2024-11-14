@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\UserController;
 use App\Models\Menu;
 use Illuminate\Http\Request;
@@ -41,6 +42,10 @@ Route::controller(AuthController::class)->group(function (){
     Route::get('/reset-password/{token}/{email}','reset_password')->name('password.reset');
     Route::post('/update-password', 'update_password');
 });
+
+Route::controller(MenuItemController::class)->group(function (){
+    Route::get('menuItems/{id}', 'index');
+})->middleware('auth:sanctum');
 
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){

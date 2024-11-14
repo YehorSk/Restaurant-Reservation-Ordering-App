@@ -9,11 +9,16 @@ export const UseMenuStore = defineStore("menu",{
         user: useStorage('user',{}),
         token: useStorage('token',{}),
         menus: [],
-        errors: ''
+        menuItems: [],
+        errors: '',
+        isLoading: true,
     }),
     getters: {
         getMenus(){
             return this.menus;
+        },
+        getMenuItems(){
+            return this.menuItems;
         }
     },
     actions: {
@@ -21,6 +26,7 @@ export const UseMenuStore = defineStore("menu",{
             await axios.get('/sanctum/csrf-cookie');
         },
         async fetchMenus() {
+            this.isLoading = true;
             await this.getToken();
             try {
                 const response = await axios.get('menu',{
@@ -37,7 +43,32 @@ export const UseMenuStore = defineStore("menu",{
                 if (error.response.status === 422) {
                     this.errors.value = error.response.data.errors;
                 }
+            }finally {
+                this.isLoading = false;
             }
         },
+        async fetchMenuItems($id){
+            this.menuItems = [];
+            this.isLoading = true;
+            await this.getToken();
+            try{
+                const response = await axios.get('menuItems/'+$id,{
+                    headers: {
+                        'Accept': 'application/vnd.api+json',
+                            "Content-Type": "application/json",
+                            "Access-Control-Allow-Origin":"*",
+                            'Authorization': `Bearer ${this.token}`
+                    }
+                });
+                console.log(response.data)
+                this.menuItems = response.data;
+            } catch (error) {
+                if (error.response.status === 422) {
+                    this.errors.value = error.response.data.errors;
+                }
+            }finally {
+                this.isLoading = false;
+            }
+        }
     },
 });
