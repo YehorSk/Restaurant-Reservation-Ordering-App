@@ -4,7 +4,9 @@ import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
-import 'primeicons/primeicons.css'
+import 'primeicons/primeicons.css';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
 
 
 import App from './App.vue'
@@ -21,6 +23,7 @@ const vuetify = createVuetify({
 });
 
 app.use(vuetify);
+app.use(Toast)
 
 
 app.mount('#app');

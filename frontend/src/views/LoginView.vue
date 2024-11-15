@@ -1,6 +1,7 @@
 <script>
   import {UseAuthStore} from "@/stores/AuthStore.js";
-  import {watch} from "vue";
+  import { watch,reactive } from "vue";
+  import { useToast } from "vue-toastification";
 
   export default {
     data(){
@@ -8,7 +9,8 @@
         email:  '',
         password: '',
         authStore:  UseAuthStore(),
-        success_dialog:false
+        success_dialog:false,
+        toast: useToast()
       }
     },
     methods:{
@@ -20,6 +22,24 @@
       clearErrors(){
         this.authStore.credentials= '';
         this.authStore.errors = [];
+      }
+    },
+    watch:{
+        'authStore.getCredentials'(newValue){
+          if(newValue){
+            this.toast.error(newValue);
+            this.authStore.credentials = "";
+          }
+        },
+      'authStore.successLoggedOut':{
+        handler(newValue){
+          if (newValue) {
+            const toast = useToast();
+            toast.success(newValue);
+            this.authStore.success = "";
+          }
+        },
+        immediate: true,
       }
     }
   }
@@ -40,10 +60,6 @@
               placeholder="your@email.com"
               required
           >
-          <i style="color: #FF6600" class="input-icon uil uil-at"></i>
-          <div v-if="authStore.errors['email']" class="invalid-feedback">
-            {{authStore.errors['email'][0]}}
-          </div>
         </div>
         <div class="mb-4">
           <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password</label>

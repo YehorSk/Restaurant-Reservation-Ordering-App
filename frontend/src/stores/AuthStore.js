@@ -11,8 +11,20 @@ export const UseAuthStore = defineStore("auth",{
         token: useStorage('token',{}),
         errors:'',
         credentials:'',
-        success: ''
+        success: '',
+        loggedOut: ''
     }),
+    getters: {
+          getSuccess(){
+              return this.success;
+          },
+          getCredentials(){
+              return this.credentials;
+          },
+          getSuccessLoggedOut(){
+              return this.loggedOut;
+          }
+    },
     actions:{
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
@@ -25,11 +37,10 @@ export const UseAuthStore = defineStore("auth",{
                     password: password,
                 });
                 console.log(response)
+                this.success = response.data.data.message;
                 this.user = response.data.data.user;
                 this.token = response.data.data.token;
-                await router.push({name: 'home'});
-
-                window.location.reload();
+                await router.push('/');
             } catch (error) {
                 console.log(error.response);
                 if(error.response.status === 422){
@@ -53,6 +64,7 @@ export const UseAuthStore = defineStore("auth",{
                         'Authorization': `Bearer ${this.token}`
                     }
                 });
+                this.successLoggedOut = response.data.data.message;
                 this.user = {};
                 this.token = null;
                 window.location.reload();
