@@ -1,14 +1,13 @@
 package com.example.mobile.menu.data.remote
 
-import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.menu.data.remote.dto.MenuDto
-import com.example.mobile.menu.data.service.MenuService
+import com.example.mobile.menu.domain.service.MenuService
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.remote.dto.toMenuEntity
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
-import com.example.mobile.menu.data.repository.MenuRepository
+import com.example.mobile.menu.domain.repository.MenuRepository
 import com.example.mobile.utils.ConnectivityRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -2,8 +2,8 @@ package com.example.mobile.cart.data.remote
 
 import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.cart.data.dao.CartDao
-import com.example.mobile.cart.data.repository.CartRepository
-import com.example.mobile.cart.data.service.CartService
+import com.example.mobile.cart.domain.repository.CartRepository
+import com.example.mobile.cart.domain.service.CartService
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.cart.data.remote.dto.CartItemDto

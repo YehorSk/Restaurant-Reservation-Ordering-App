@@ -1,4 +1,4 @@
-package com.example.mobile.cart.data.service
+package com.example.mobile.cart.domain.service
 
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.cart.data.remote.dto.CartItemDto

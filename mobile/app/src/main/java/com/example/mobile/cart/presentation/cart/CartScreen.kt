@@ -39,7 +39,8 @@ import com.example.mobile.utils.formattedPrice
 @Composable
 fun CartScreen(
     modifier: Modifier = Modifier,
-    viewModel: CartScreenViewModel
+    viewModel: CartScreenViewModel,
+    onGoToCheckoutClick: () -> Unit
 ){
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -102,13 +103,13 @@ fun CartScreen(
                     .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
                     .align(Alignment.BottomCenter),
                 onClick = {
-                    showCheckoutBottomSheet = true
+//                    showCheckoutBottomSheet = true
+                    onGoToCheckoutClick()
                 }
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
                     text = "Go to checkout € ${formattedPrice(checkout)}"
-
                 )
             }
         }
@@ -136,15 +137,19 @@ fun CartScreen(
                 buttonText = R.string.UPDATE,
                 addFavoriteItem = {},
                 deleteFavoriteItem = {},
+                deleteCartItem = {
+                    showBottomSheet = false
+                    viewModel.deleteItem()
+                },
                 showFavorite = false
             )
         }
     }
 
-    if(showCheckoutBottomSheet){
-        CartCheckoutModal(
-            onDismiss = {showCheckoutBottomSheet = false},
-            modifier = modifier
-        )
-    }
+//    if(showCheckoutBottomSheet){
+//        CartCheckoutModal(
+//            onDismiss = {showCheckoutBottomSheet = false},
+//            modifier = modifier
+//        )
+//    }
 }

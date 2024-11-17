@@ -1,4 +1,4 @@
-package com.example.mobile.menu.data.service
+package com.example.mobile.menu.domain.service
 
 import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.menu.data.remote.dto.MenuDto

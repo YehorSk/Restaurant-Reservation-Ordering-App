@@ -37,7 +37,6 @@ data class Pivot(
     val menuItemId: Int,
     val quantity: Int,
     val price: Double,
-    val note: String = "",
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("updated_at")

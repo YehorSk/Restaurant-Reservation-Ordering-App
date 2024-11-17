@@ -63,6 +63,7 @@ fun MenuItemModal(
     addUserCartItem: () -> Unit,
     addFavoriteItem: () -> Unit,
     deleteFavoriteItem: () -> Unit,
+    deleteCartItem: () -> Unit = {},
     showFavorite: Boolean = true,
     @StringRes buttonText: Int
 ){

@@ -57,7 +57,14 @@ fun ClientNavGraph(
         }
         composable(ClientScreen.CreateOrder.route) {
             CreateOrderScreen(
-                modifier = modifier
+                modifier = modifier,
+                onGoBack = {
+                    navController.navigate(ClientScreen.Cart.route){
+                        popUpTo(ClientScreen.Cart.route){
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
         composable(ClientScreen.Favorites.route) {
@@ -66,10 +73,17 @@ fun ClientNavGraph(
                 viewModel = menuScreenViewModel
             )
         }
-        composable(ClientScreen.Cart.route) {
+        composable(
+            route = ClientScreen.Cart.route,
+//            enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+//            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+//            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+//            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+        ) {
             CartScreen(
                 modifier = modifier,
-                viewModel = cartScreenViewModel
+                viewModel = cartScreenViewModel,
+                onGoToCheckoutClick = { navController.navigate(ClientScreen.CreateOrder.route) }
             )
         }
         composable(

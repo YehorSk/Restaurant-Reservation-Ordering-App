@@ -6,4 +6,8 @@
     <string name="UPDATE">Update</string>
     <string name="DELETE">Delete</string>
     <string name="Add">Add</string>
+    <string name="btn_yes">Yes</string>
+    <string name="btn_no">No</string>
+    <string name="delete_confirmation">Delete this item?</string>
+    <string name="pickup_option">Pickup\n</string>
 </resources>

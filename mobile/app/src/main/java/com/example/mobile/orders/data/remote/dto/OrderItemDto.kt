@@ -3,6 +3,7 @@ package com.example.mobile.orders.data.remote.dto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Serializable
 data class OrderMenuItemDto(
     val id: Int,
     @SerialName("created_at")
@@ -32,7 +33,6 @@ data class Pivot(
     val menuItemId: Int,
     val quantity: Int,
     val price: Double,
-    val note: String = "",
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("updated_at")
