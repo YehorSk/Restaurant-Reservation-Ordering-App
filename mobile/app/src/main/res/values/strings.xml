@@ -10,4 +10,7 @@
     <string name="btn_no">No</string>
     <string name="delete_confirmation">Delete this item?</string>
     <string name="pickup_option">Pickup\n</string>
+    <string name="delivery_option">Delivery</string>
+    <string name="reservation_option">Make Reservation</string>
+    <string name="complete_order_navbar_title">Finish Your Order\n</string>
 </resources>
