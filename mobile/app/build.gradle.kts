@@ -52,6 +52,9 @@ android {
 
 dependencies {
 
+    //Google Maps
+    implementation("com.google.maps.android:maps-compose:6.2.1")
+
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.ui.text.google.fonts)

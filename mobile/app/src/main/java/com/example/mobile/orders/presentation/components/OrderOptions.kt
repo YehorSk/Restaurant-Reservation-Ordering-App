@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeliveryDining
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Restaurant
+import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -23,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
@@ -52,30 +54,33 @@ fun OrderOptions(
         OrderOption(id = 2, icon = Icons.Filled.Restaurant, text = R.string.reservation_option)
     )
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(options[1] ) }
-    Column(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
+    Card(
     ) {
-        Text(
-            modifier = Modifier
-                .padding(
-                    start = 20.dp,
-                    top = 15.dp,
-                    bottom = 10.dp
-                ),
-            text = "Order Preferences",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-        )
-        for(option in options){
-            OrderRadioOption(
-                option = option,
-                selected = (option.text == selectedOption.text),
-                onSelect = {
-                    onOptionSelected(it)
-                }
+        Column(
+            modifier = modifier
+                .background(Color.White)
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = 20.dp,
+                        top = 15.dp,
+                        bottom = 10.dp
+                    ),
+                text = "Order Preferences",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
             )
-            if(option.id !=2) HorizontalDivider()
+            for(option in options){
+                OrderRadioOption(
+                    option = option,
+                    selected = (option.text == selectedOption.text),
+                    onSelect = {
+                        onOptionSelected(it)
+                    }
+                )
+                if(option.id !=2) HorizontalDivider()
+            }
         }
     }
 }
@@ -135,6 +140,14 @@ fun OrderRadioOption(
                 onSelect(option)
             }
         )
+    }
+}
+
+@Preview
+@Composable
+fun OrderOptionsPreview(){
+    MobileTheme {
+        OrderOptions()
     }
 }
 

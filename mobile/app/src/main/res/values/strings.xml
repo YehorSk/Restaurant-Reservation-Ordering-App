@@ -13,4 +13,5 @@
     <string name="delivery_option">Delivery</string>
     <string name="reservation_option">Make Reservation</string>
     <string name="complete_order_navbar_title">Finish Your Order\n</string>
+    <string name="notes_for_order">Optional: Add special notes for your order.</string>
 </resources>
