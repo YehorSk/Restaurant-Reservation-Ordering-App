@@ -11,7 +11,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,6 +41,7 @@ fun MenuScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
+    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -53,7 +56,8 @@ fun MenuScreen(
         SearchBar(
             onClick = onSearchClicked,
             enabled = false,
-            onValueChange = {}
+            onValueChange = {},
+            isConnected = isConnected.value
         )
         LazyColumn(
             modifier = Modifier
@@ -73,7 +77,8 @@ fun MenuScreen(
                             viewModel.setMenuItemId(menuItem.id)
                             viewModel.setMenuItemFavorite(menuItem.isFavorite)
                             viewModel.showBottomSheet()
-                        }
+                        },
+                        isConnected = isConnected.value
                     )
                     HorizontalDivider()
                 }

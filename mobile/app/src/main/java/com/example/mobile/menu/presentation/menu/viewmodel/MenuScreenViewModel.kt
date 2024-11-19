@@ -8,6 +8,8 @@ import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.presentation.BaseMenuViewModel
+import com.example.mobile.utils.ConnectivityObserver
+import com.example.mobile.utils.NetworkConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +23,9 @@ import javax.inject.Inject
 class MenuScreenViewModel @Inject constructor(
     menuRepositoryImpl: MenuRepositoryImpl,
     cartRepositoryImpl: CartRepositoryImpl,
+    networkConnectivityObserver: ConnectivityObserver,
     menuDao: MenuDao
-) : BaseMenuViewModel(menuRepositoryImpl, cartRepositoryImpl, menuDao){
+) : BaseMenuViewModel(menuRepositoryImpl, cartRepositoryImpl, networkConnectivityObserver, menuDao){
 
     val favoriteUiState: StateFlow<List<MenuItemEntity>> = menuDao.getFavoriteItems()
         .stateIn(
@@ -30,11 +33,6 @@ class MenuScreenViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = listOf()
         )
-
-
-    init {
-        getMenus()
-    }
 
     fun showBottomSheet(){
         _uiState.update {
@@ -92,9 +90,7 @@ class MenuScreenViewModel @Inject constructor(
                     is NetworkResult.Error -> {
                         if(result.code == 503){
                             _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                            state.copy(
-                                internetError = true
-                            )
+                            state.copy()
                         }else{
                             state.copy()
                         }
@@ -117,11 +113,6 @@ class MenuScreenViewModel @Inject constructor(
             when(val result = menuRepositoryImpl.addFavorite(_uiState.value.currentMenu!!.id.toString())){
                 is NetworkResult.Error -> {
                     _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                    _uiState.update { state ->
-                        state.copy(
-                            internetError = true
-                        )
-                    }
                 }
                 is NetworkResult.Success -> {
                     _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
@@ -138,11 +129,6 @@ class MenuScreenViewModel @Inject constructor(
             when(val result = menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenu!!.id.toString())){
                 is NetworkResult.Error -> {
                     _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                    _uiState.update { state ->
-                        state.copy(
-                            internetError = true
-                        )
-                    }
                 }
                 is NetworkResult.Success -> {
                     _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))

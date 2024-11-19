@@ -21,7 +21,9 @@ import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.domain.repository.MenuRepository
 import com.example.mobile.menu.domain.service.MenuService
+import com.example.mobile.utils.ConnectivityObserver
 import com.example.mobile.utils.ConnectivityRepository
+import com.example.mobile.utils.NetworkConnectivityObserver
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -87,6 +89,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideNetworkConnectivityObserver(@ApplicationContext context: Context): ConnectivityObserver = NetworkConnectivityObserver(context)
+
+    @Provides
+    @Singleton
     fun provideCartDao(database: MainRoomDatabase): CartDao = database.cartDao
 
     @Provides
@@ -115,14 +121,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepositoryImpl(authService: AuthService, mainPreferencesRepository: MainPreferencesRepository, connectivityRepository: ConnectivityRepository, mainRoomDatabase: MainRoomDatabase) : AuthRepository = AuthRepositoryImpl(authService,mainPreferencesRepository,connectivityRepository, mainRoomDatabase)
+    fun provideAuthRepositoryImpl(authService: AuthService, mainPreferencesRepository: MainPreferencesRepository, connectivityRepository: ConnectivityRepository, mainRoomDatabase: MainRoomDatabase) : AuthRepository = AuthRepositoryImpl(authService, mainPreferencesRepository, connectivityRepository, mainRoomDatabase)
 
     @Provides
     @Singleton
-    fun provideCartRepositoryImpl(cartService: CartService, mainPreferencesRepository: MainPreferencesRepository, connectivityRepository: ConnectivityRepository, cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService,mainPreferencesRepository,connectivityRepository, cartDao)
+    fun provideCartRepositoryImpl(cartService: CartService, mainPreferencesRepository: MainPreferencesRepository, networkConnectivityObserver: ConnectivityObserver, cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService, mainPreferencesRepository, networkConnectivityObserver, cartDao)
 
     @Provides
     @Singleton
-    fun provideMenuRepositoryImpl(menuService: MenuService, connectivityRepository: ConnectivityRepository, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService,menuDao,connectivityRepository)
+    fun provideMenuRepositoryImpl(menuService: MenuService, connectivityRepository: ConnectivityRepository, networkConnectivityObserver: ConnectivityObserver, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService, menuDao, networkConnectivityObserver)
 
 }

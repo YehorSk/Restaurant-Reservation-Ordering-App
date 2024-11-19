@@ -8,7 +8,15 @@ import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
+import com.example.mobile.utils.ConnectivityObserver
 import com.example.mobile.utils.ConnectivityRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -16,15 +24,26 @@ import javax.inject.Inject
 class CartRepositoryImpl @Inject constructor(
     private val cartService: CartService,
     private val prefs: MainPreferencesRepository,
-    private val connectivityRepository: ConnectivityRepository,
+    private val networkConnectivityObserver: ConnectivityObserver,
     private val cartDao: CartDao
 )
     : CartRepository {
 
+    private val isOnlineFlow: StateFlow<Boolean> = networkConnectivityObserver.observe()
+        .distinctUntilChanged()
+        .stateIn(
+            scope = CoroutineScope(Dispatchers.IO),
+            started = SharingStarted.Eagerly,
+            initialValue = false
+        )
+
+    private suspend fun isOnline(): Boolean {
+        return isOnlineFlow.first()
+    }
+
     override suspend fun getAllItems(): NetworkResult<List<CartItemDto>> {
         Timber.d("Cart getAllItems")
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
+        return if(isOnline()){
             try {
                 Timber.d("Calling getUserCartItems")
                 val result = cartService.getUserCartItems()
@@ -44,8 +63,7 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
+        return if(isOnline()){
             try {
                 val result = cartService.addUserCartItem(cartForm)
                 Timber.d(result.toString())
@@ -64,8 +82,7 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
+        return if(isOnline()){
             try {
                 val result = cartService.deleteUserCartItem(cartForm)
                 Timber.d(result.toString())
@@ -84,8 +101,7 @@ class CartRepositoryImpl @Inject constructor(
     }
 
     override suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
+        return if(isOnline()){
             try {
                 val result = cartService.updateUserCartItem(cartForm)
                 Timber.d(result.toString())

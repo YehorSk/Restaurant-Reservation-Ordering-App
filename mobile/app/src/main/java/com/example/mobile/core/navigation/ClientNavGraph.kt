@@ -58,9 +58,16 @@ fun ClientNavGraph(
         composable(ClientScreen.CreateOrder.route) {
             CreateOrderScreen(
                 modifier = modifier,
-                onGoBack = {
+                onGoToCart = {
                     navController.navigate(ClientScreen.Cart.route){
                         popUpTo(ClientScreen.Cart.route){
+                            inclusive = true
+                        }
+                    }
+                },
+                onGoToMenu = {
+                    navController.navigate(ClientScreen.Home.route){
+                        popUpTo(ClientScreen.Home.route){
                             inclusive = true
                         }
                     }

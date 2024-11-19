@@ -46,7 +46,7 @@ fun CartScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
-    var showCheckoutBottomSheet by remember { mutableStateOf(false) }
+    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -69,7 +69,7 @@ fun CartScreen(
                 key = {it.pivot.id}
             ) { item ->
                 SwipeToDeleteContainer(
-                    isInternetError = uiState.internetError,
+                    isInternetError = isConnected.value,
                     item = item,
                     onDelete = {
                         viewModel.setItem(item)
@@ -96,7 +96,7 @@ fun CartScreen(
         val checkout = cartItems.sumOf {
             it.pivot.price
         }
-        if(cartItems.isNotEmpty()){
+        if(cartItems.isNotEmpty() && isConnected.value){
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -104,7 +104,9 @@ fun CartScreen(
                     .align(Alignment.BottomCenter),
                 onClick = {
 //                    showCheckoutBottomSheet = true
-                    onGoToCheckoutClick()
+                    if(isConnected.value){
+                        onGoToCheckoutClick()
+                    }
                 }
             ) {
                 Text(

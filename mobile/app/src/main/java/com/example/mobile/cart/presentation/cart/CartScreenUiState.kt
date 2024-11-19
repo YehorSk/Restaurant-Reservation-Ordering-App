@@ -5,7 +5,6 @@ import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 
 data class CartScreenUiState(
-    val internetError: Boolean = false,
     val error: String = "",
     val currentItem: MenuItemEntity? = null,
     val cartItem: CartItemEntity? = null,

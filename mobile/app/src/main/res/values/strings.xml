@@ -14,4 +14,6 @@
     <string name="reservation_option">Make Reservation</string>
     <string name="complete_order_navbar_title">Finish Your Order\n</string>
     <string name="notes_for_order">Optional: Add special notes for your order.</string>
+    <string name="go_to_cart">Go to Cart</string>
+    <string name="add_to_cart">Add More</string>
 </resources>

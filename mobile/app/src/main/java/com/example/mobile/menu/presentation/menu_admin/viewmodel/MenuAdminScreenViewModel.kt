@@ -4,6 +4,8 @@ import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.presentation.BaseMenuViewModel
+import com.example.mobile.utils.ConnectivityObserver
+import com.example.mobile.utils.NetworkConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -11,8 +13,9 @@ import javax.inject.Inject
 class MenuAdminScreenViewModel @Inject constructor(
     menuRepositoryImpl: MenuRepositoryImpl,
     cartRepositoryImpl: CartRepositoryImpl,
+    networkConnectivityObserver: ConnectivityObserver,
     menuDao: MenuDao
-) : BaseMenuViewModel(menuRepositoryImpl, cartRepositoryImpl, menuDao) {
+) : BaseMenuViewModel(menuRepositoryImpl, cartRepositoryImpl, networkConnectivityObserver, menuDao){
 
 
 }

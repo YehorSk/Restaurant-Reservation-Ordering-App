@@ -10,6 +10,7 @@ import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.cart.presentation.cart.CartScreenUiState
 import com.example.mobile.menu.data.db.model.MenuItemEntity
+import com.example.mobile.utils.ConnectivityObserver
 import com.example.mobile.utils.formattedPrice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -28,11 +29,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CartScreenViewModel @Inject constructor(
     val cartRepositoryImpl: CartRepositoryImpl,
+    val networkConnectivityObserver: ConnectivityObserver,
     val cartDao: CartDao
 ) : ViewModel(){
 
     private val _uiState = MutableStateFlow(CartScreenUiState())
     val uiState = _uiState.asStateFlow()
+
+    val isNetwork = networkConnectivityObserver.observe()
 
     val cartItemUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
         .stateIn(
@@ -73,40 +77,44 @@ class CartScreenViewModel @Inject constructor(
 
     fun getItems() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            isNetwork.collect { available ->
+                if (available) {
+                    _uiState.update { it.copy(isLoading = true) }
 
-            cartItemUiState.collect { localItems ->
-                when (val result = cartRepositoryImpl.getAllItems()) {
-                    is NetworkResult.Error -> {
-                        _uiState.update {
-                            it.copy(
-                                internetError = result.code == 503,
-                                error = result.message ?: "Unknown error"
-                            )
+                    cartItemUiState.collect { localItems ->
+                        when (val result = cartRepositoryImpl.getAllItems()) {
+                            is NetworkResult.Error -> {
+                                _uiState.update {
+                                    it.copy(
+                                        error = result.message ?: "Unknown error"
+                                    )
+                                }
+                            }
+                            is NetworkResult.Success -> {
+                                Timber.d("Items from server: ${result.data}")
+                                val serverItemIds = result.data.map { it.id }.toSet()
+                                val itemsToDelete = localItems.filter { it.id !in serverItemIds }
+
+                                cartDao.runInTransaction {
+                                    cartDao.insertItems(result.data.map { it.toCartItemEntity() })
+                                    cartDao.deleteItems(itemsToDelete)
+                                }
+
+                                _uiState.update {
+                                    it.copy(
+                                        error = ""
+                                    )
+                                }
+                            }
                         }
+
+                        _uiState.update { it.copy(isLoading = false) }
+
+                        return@collect
                     }
-                    is NetworkResult.Success -> {
-                        Timber.d("Items from server: ${result.data}")
-                        val serverItemIds = result.data.map { it.id }.toSet()
-                        val itemsToDelete = localItems.filter { it.id !in serverItemIds }
-
-                        cartDao.runInTransaction {
-                            cartDao.insertItems(result.data.map { it.toCartItemEntity() })
-                            cartDao.deleteItems(itemsToDelete)
-                        }
-
-                        _uiState.update {
-                            it.copy(
-                                internetError = false,
-                                error = ""
-                            )
-                        }
-                    }
+                }else {
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
                 }
-
-                _uiState.update { it.copy(isLoading = false) }
-
-                return@collect
             }
         }
     }

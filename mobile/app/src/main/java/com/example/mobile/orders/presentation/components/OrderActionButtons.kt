@@ -1,34 +1,71 @@
 package com.example.mobile.orders.presentation.components
 
+import android.graphics.drawable.Icon
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.AddShoppingCart
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.ui.theme.MobileTheme
+import com.example.mobile.R
 
 @Composable
 fun OrderAddMore(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onGoToCart: () -> Unit,
+    onGoToMenu: () -> Unit,
+){
+    Column{
+        OrderButton(
+            icon = Icons.Filled.AddShoppingCart,
+            text = R.string.add_to_cart,
+        ) {
+            onGoToMenu()
+        }
+        HorizontalDivider()
+        OrderButton(
+            icon = Icons.Filled.ShoppingCart,
+            text = R.string.go_to_cart
+        ) {
+            onGoToCart()
+        }
+    }
+}
+
+@Composable
+fun OrderButton(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    @StringRes text: Int,
+    onClick: () -> Unit
 ){
     Row(
         modifier = modifier
+            .clickable{
+                onClick()
+            }
             .background(Color.White)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -41,7 +78,7 @@ fun OrderAddMore(
                     top = 20.dp,
                     bottom = 20.dp
                 ),
-            imageVector = Icons.Filled.Add,
+            imageVector = icon,
             contentDescription = "",
             tint = MaterialTheme.colorScheme.primary,
         )
@@ -52,7 +89,7 @@ fun OrderAddMore(
                     top = 20.dp,
                     bottom = 20.dp
                 ),
-            text = "Add more",
+            text = stringResource(id = text),
             color = MaterialTheme.colorScheme.primary,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
@@ -64,6 +101,9 @@ fun OrderAddMore(
 @Composable
 fun OrderAddMorePreview(){
     MobileTheme {
-        OrderAddMore()
+        OrderAddMore(
+            onGoToCart = {},
+            onGoToMenu = {}
+        )
     }
 }

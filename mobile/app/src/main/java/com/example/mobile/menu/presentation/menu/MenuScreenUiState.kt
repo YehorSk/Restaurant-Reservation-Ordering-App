@@ -5,7 +5,6 @@ import com.example.mobile.menu.data.db.model.MenuItemEntity
 
 data class MenuScreenUiState(
     val currentMenu: MenuItemEntity? = null,
-    val internetError: Boolean = false,
     val isLoading: Boolean = false,
     val showBottomSheet: Boolean = false,
     val searchText: String = "",

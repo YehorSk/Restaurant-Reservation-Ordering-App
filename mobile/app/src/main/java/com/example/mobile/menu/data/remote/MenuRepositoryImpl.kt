@@ -1,5 +1,6 @@
 package com.example.mobile.menu.data.remote
 
+import androidx.compose.runtime.collectAsState
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.menu.domain.service.MenuService
@@ -8,17 +9,38 @@ import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.remote.dto.toMenuEntity
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import com.example.mobile.menu.domain.repository.MenuRepository
+import com.example.mobile.utils.ConnectivityObserver
 import com.example.mobile.utils.ConnectivityRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 class MenuRepositoryImpl @Inject constructor(
     private val menuService: MenuService,
     private val menuDao: MenuDao,
-    private val connectivityRepository: ConnectivityRepository
+    private val networkConnectivityObserver: ConnectivityObserver,
 ) : MenuRepository {
+
+    private val isOnlineFlow: StateFlow<Boolean> = networkConnectivityObserver.observe()
+        .distinctUntilChanged()
+        .stateIn(
+            scope = CoroutineScope(Dispatchers.IO),
+            started = SharingStarted.Eagerly,
+            initialValue = false
+        )
+
+    private suspend fun isOnline(): Boolean {
+        return isOnlineFlow.first()
+    }
 
     suspend fun syncMenusWithServer(serverMenuDtos: List<MenuDto>) = withContext(Dispatchers.IO) {
         val localMenus = menuDao.getMenuWithMenuItemsOnce()
@@ -37,7 +59,6 @@ class MenuRepositoryImpl @Inject constructor(
                 deleteMenuItems(menu.menuItems.map { it })
             }
             deleteMenuItems(menuItemsToDelete)
-
             insert(serverMenuDtos)
         }
     }
@@ -58,8 +79,8 @@ class MenuRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllMenus(): NetworkResult<List<MenuDto>> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
+        Timber.d("getAllMenus Wifi status = ${isOnline()}")
+        return if(isOnline()){
             try {
                 val result = menuService.getAllMenus()
                 syncMenusWithServer(result)
@@ -77,8 +98,8 @@ class MenuRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addFavorite(menuItemId: String): NetworkResult<String> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
+        Timber.d("addFavorite Wifi status = ${isOnline()}")
+        return if(isOnline()){
             try {
                 val result = menuService.addFavoriteItem(menuItemId = menuItemId)
                 menuDao.addFavorite(menuItemId = menuItemId)
@@ -96,8 +117,8 @@ class MenuRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteFavorite(menuItemId: String): NetworkResult<String> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
+        Timber.d("deleteFavorite Wifi status = ${isOnline()}")
+        return if(isOnline()){
             try {
                 val result = menuService.deleteFavoriteItem(menuItemId = menuItemId)
                 menuDao.deleteFavorite(menuItemId = menuItemId)

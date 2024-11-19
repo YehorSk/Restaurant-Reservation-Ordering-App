@@ -50,7 +50,8 @@ fun MenuAdminScreen(
         SearchBar(
             onClick = onSearchClicked,
             enabled = false,
-            onValueChange = {}
+            onValueChange = {},
+            isConnected = true
         )
         LazyColumn(
             modifier = Modifier
@@ -66,7 +67,8 @@ fun MenuAdminScreen(
                         menuItem = item,
                         onClick = { menuItem ->
 
-                        }
+                        },
+                        isConnected = true
                     )
                     HorizontalDivider()
                 }

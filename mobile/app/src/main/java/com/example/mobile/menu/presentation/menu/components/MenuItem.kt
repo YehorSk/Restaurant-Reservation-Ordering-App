@@ -32,6 +32,7 @@ import com.example.mobile.utils.formattedPrice
 fun MenuItem(
     menuItem: MenuItemEntity,
     modifier: Modifier = Modifier,
+    isConnected: Boolean,
     onClick: (MenuItemEntity) -> Unit
 ){
     val contentColor = if(isSystemInDarkTheme()){
@@ -110,7 +111,8 @@ fun MenuItemPreview(){
                 picture = "",
                 price = 5.99
             ),
-            onClick = {}
+            onClick = {},
+            isConnected = true
         )
     }
 }

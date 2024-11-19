@@ -69,7 +69,8 @@ fun SearchScreen(
             SearchBar(
                 onClick = {},
                 onValueChange = {value -> viewModel.onSearchValueChange(value = value)},
-                text = uiState.searchText
+                text = uiState.searchText,
+                isConnected = true
             )
         }
         LazyColumn {
@@ -82,7 +83,8 @@ fun SearchScreen(
                         viewModel.setMenuItemId(menuItem.id)
                         viewModel.showBottomSheet()
                         onGoBack()
-                    }
+                    },
+                    isConnected = true
                 )
                 HorizontalDivider()
             }
