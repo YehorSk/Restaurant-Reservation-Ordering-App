@@ -4,11 +4,18 @@ import {UseMenuStore} from "@/stores/MenuStore.js";
 export default{
   data(){
     return{
-      menuStore: UseMenuStore()
+      menuStore: UseMenuStore(),
+      dialog: false,
+      current_menu: []
     }
   },
   beforeMount(){
     this.menuStore.fetchMenus()
+  },
+  methods:{
+    setMenu(menu){
+      this.current_menu = menu;
+    }
   }
 }
 </script>
@@ -56,7 +63,7 @@ export default{
             {{ menu.description }}
           </td>
           <td>
-            <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+            <button @click="dialog = true, setMenu(menu)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
               Edit
             </button>
           </td>
@@ -70,6 +77,21 @@ export default{
       </table>
     </div>
   </div>
+  <v-dialog v-model="dialog" width="auto" persistent>
+    <v-card min-width="600" prepend-icon="mdi-update" title="Update Lecture">
+      <h1>Hello</h1>
+      <v-text-field
+          v-model="current_menu.name"
+          hide-details="auto"
+          label="Main input"
+      ></v-text-field>
+      <v-checkbox v-model="current_menu.availability" label="Checkbox"></v-checkbox>
+      <template v-slot:actions>
+        <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Add" @click="dialog = false"></v-btn>
+      </template>
+    </v-card>
+  </v-dialog>
 </template>
 
 <style scoped>

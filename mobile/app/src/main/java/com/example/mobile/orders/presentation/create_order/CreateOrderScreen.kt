@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.data.remote.dto.Pivot
@@ -31,10 +34,14 @@ import com.example.mobile.orders.presentation.components.TotalPrice
 
 @Composable
 fun CreateOrderScreen(
+    viewModel: CreateOrderViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
 ){
+
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+
     val fakeItems = listOf(
         OrderMenuItemDto(
             id = 1,
@@ -164,27 +171,45 @@ fun CreateOrderScreen(
             onGoToMenu = onGoToMenu
         )
         HorizontalDivider()
-        OrderSpecialRequest()
+        OrderSpecialRequest(
+            request = uiState.value.request,
+            onRequestChange = {request -> viewModel.updateRequest(request)}
+        )
         Spacer(modifier = Modifier.height(10.dp))
-        OrderOptions()
+        OrderOptions(
+            selected = uiState.value.orderType,
+            onSelectedChange = { type -> viewModel.updateOrderType(type) }
+        )
         Spacer(modifier = Modifier.height(10.dp))
         TotalPrice()
+        Button(
+            onClick = {}
+        ) {
+            Text(
+                text = uiState.value.orderType.toString()
+            )
+        }
     }
 }
 
 @Composable
-fun OrderSpecialRequest(){
+fun OrderSpecialRequest(
+    request: String,
+    onRequestChange: (String) -> Unit
+){
     TextField(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Color.White),
-        value = "",
+        value = request,
         placeholder = {
             Text(
                 text = stringResource(R.string.notes_for_order)
             )
         },
-        onValueChange = {},
+        onValueChange = {
+            onRequestChange(it)
+        },
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,

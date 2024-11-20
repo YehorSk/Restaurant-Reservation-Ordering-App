@@ -46,14 +46,16 @@ data class OrderOption(
 
 @Composable
 fun OrderOptions(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selected: Int,
+    onSelectedChange: (Int) -> Unit
 ){
     val options = listOf<OrderOption>(
         OrderOption(id = 0, icon = Icons.Filled.DirectionsWalk, text = R.string.pickup_option),
         OrderOption(id = 1, icon = Icons.Filled.DeliveryDining, text = R.string.delivery_option),
         OrderOption(id = 2, icon = Icons.Filled.Restaurant, text = R.string.reservation_option)
     )
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(options[1] ) }
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(options[selected] ) }
     Card(
     ) {
         Column(
@@ -75,8 +77,9 @@ fun OrderOptions(
                 OrderRadioOption(
                     option = option,
                     selected = (option.text == selectedOption.text),
-                    onSelect = {
-                        onOptionSelected(it)
+                    onSelect = { option ->
+                        onOptionSelected(option)
+                        onSelectedChange(option.id)
                     }
                 )
                 if(option.id !=2) HorizontalDivider()
@@ -147,7 +150,10 @@ fun OrderRadioOption(
 @Composable
 fun OrderOptionsPreview(){
     MobileTheme {
-        OrderOptions()
+        OrderOptions(
+            selected = 0,
+            onSelectedChange = {}
+        )
     }
 }
 
