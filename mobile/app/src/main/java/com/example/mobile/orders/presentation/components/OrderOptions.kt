@@ -48,7 +48,7 @@ data class OrderOption(
 fun OrderOptions(
     modifier: Modifier = Modifier,
     selected: Int,
-    onSelectedChange: (Int) -> Unit
+    onSelectedChange: (Int,String) -> Unit
 ){
     val options = listOf<OrderOption>(
         OrderOption(id = 0, icon = Icons.Filled.DirectionsWalk, text = R.string.pickup_option),
@@ -74,12 +74,16 @@ fun OrderOptions(
                 fontWeight = FontWeight.Bold,
             )
             for(option in options){
+                val text = stringResource(option.text)
                 OrderRadioOption(
                     option = option,
                     selected = (option.text == selectedOption.text),
                     onSelect = { option ->
                         onOptionSelected(option)
-                        onSelectedChange(option.id)
+                        onSelectedChange(
+                            option.id,
+                            text
+                        )
                     }
                 )
                 if(option.id !=2) HorizontalDivider()
@@ -152,7 +156,9 @@ fun OrderOptionsPreview(){
     MobileTheme {
         OrderOptions(
             selected = 0,
-            onSelectedChange = {}
+            onSelectedChange = {
+                id,text ->
+            }
         )
     }
 }

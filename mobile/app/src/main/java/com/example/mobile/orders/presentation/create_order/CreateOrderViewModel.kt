@@ -19,9 +19,12 @@ class CreateOrderViewModel @Inject constructor(
 
     val isNetwork = networkConnectivityObserver.observe()
 
-    fun updateOrderType(type: Int){
+    fun updateOrderType(type: Int, text: String){
         _uiState.update {
-            it.copy(orderType = type)
+            it.copy(
+                orderType = type,
+                orderText = text
+                )
         }
     }
 

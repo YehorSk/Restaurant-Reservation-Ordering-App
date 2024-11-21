@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -18,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
@@ -28,6 +31,7 @@ import com.example.mobile.orders.data.remote.dto.Pivot
 import com.example.mobile.orders.presentation.components.NavBar
 import com.example.mobile.orders.presentation.components.OrderAddMore
 import com.example.mobile.orders.presentation.components.OrderItemList
+import com.example.mobile.orders.presentation.components.OrderMap
 import com.example.mobile.ui.theme.MobileTheme
 import com.example.mobile.orders.presentation.components.OrderOptions
 import com.example.mobile.orders.presentation.components.TotalPrice
@@ -41,6 +45,7 @@ fun CreateOrderScreen(
 ){
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
     val fakeItems = listOf(
         OrderMenuItemDto(
@@ -154,6 +159,7 @@ fun CreateOrderScreen(
             isFavorite = true
         )
     )
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -178,15 +184,29 @@ fun CreateOrderScreen(
         Spacer(modifier = Modifier.height(10.dp))
         OrderOptions(
             selected = uiState.value.orderType,
-            onSelectedChange = { type -> viewModel.updateOrderType(type) }
+            onSelectedChange = { type,text -> viewModel.updateOrderType(type,text) }
         )
         Spacer(modifier = Modifier.height(10.dp))
         TotalPrice()
+        Spacer(modifier = Modifier.height(10.dp))
+        if (uiState.value.orderType == 1 && isConnected.value){
+            OrderMap()
+        }
         Button(
+            modifier = Modifier
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    top = 10.dp,
+                    bottom = 10.dp
+                )
+                .fillMaxWidth(),
             onClick = {}
         ) {
             Text(
-                text = uiState.value.orderType.toString()
+                text = "Order ${uiState.value.orderText}",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
             )
         }
     }
