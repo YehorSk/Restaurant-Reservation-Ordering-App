@@ -21,7 +21,7 @@ class MenuController extends Controller
                 });
                 return $menu;
             });
-            return response()->json($menus);
+            return $this->success(data: $menus, message: "");
         }
     }
 
@@ -38,7 +38,7 @@ class MenuController extends Controller
             if(!$menu->exists){
                 return $this->error('', 'Item was not added', 409);
             }
-            return $this->success(data: $menu, message: "Item added to menu", textStatus: "added");
+            return $this->success(data: [$menu], message: "Item added to menu", textStatus: "added");
         }
     }
 

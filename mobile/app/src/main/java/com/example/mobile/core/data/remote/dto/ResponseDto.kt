@@ -10,5 +10,5 @@ data class ResponseDto<T>(
     @SerialName("text_status")
     val textStatus: String?,
     val message: String?,
-    val data: T? = null,
+    val data: List<T>? = null,
 )

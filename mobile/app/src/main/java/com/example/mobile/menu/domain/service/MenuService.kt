@@ -11,7 +11,7 @@ import retrofit2.http.POST
 interface MenuService {
 
     @GET("menu")
-    suspend fun getAllMenus(): List<MenuDto>
+    suspend fun getAllMenus(): ResponseDto<MenuDto>
 
     @FormUrlEncoded
     @POST("add-user-favorite-item")

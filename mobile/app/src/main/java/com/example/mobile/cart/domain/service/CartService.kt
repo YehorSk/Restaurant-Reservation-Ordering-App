@@ -11,12 +11,8 @@ import retrofit2.http.POST
 interface CartService {
 
     @GET("user-cart-items")
-    suspend fun getUserCartItems() : List<CartItemDto>
+    suspend fun getUserCartItems() : ResponseDto<CartItemDto>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @POST("delete-user-cart-item")
     suspend fun deleteUserCartItem(@Body cartForm: CartForm): ResponseDto<CartItemDto>
 

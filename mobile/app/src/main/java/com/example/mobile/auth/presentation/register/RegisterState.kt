@@ -7,7 +7,6 @@ data class RegisterState(
     val registerForm: RegisterForm = RegisterForm(),
     val registerFormErrors: RegisterFormErrors = RegisterFormErrors(),
     val isEntryValid: Boolean = false,
-    val internetError: Boolean = false,
     val isLoading: Boolean = false,
     val isLoggedIn: Boolean = false
 )

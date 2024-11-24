@@ -1,5 +1,3 @@
 package com.example.mobile.core.data.remote
 
-//suspend inline fun <reified T> safeCall(
-//    execute: () -> HttpResponse
-//): Result<T, Networ
+import com.example.mobile.core.data.remote.dto.NetworkResult

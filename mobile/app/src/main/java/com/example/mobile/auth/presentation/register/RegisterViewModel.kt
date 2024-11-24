@@ -5,12 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
+import com.example.mobile.auth.presentation.BaseAuthViewModel
+import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.utils.ConnectivityObserver
 import com.example.mobile.utils.ConnectivityRepository
 import com.example.mobile.utils.cleanError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -18,23 +22,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    val authRepository: AuthRepository,
-    val preferencesRepository: MainPreferencesRepository,
-    val connectivityRepository: ConnectivityRepository
-) : ViewModel() {
+    authRepository: AuthRepository,
+    preferencesRepository: MainPreferencesRepository,
+    networkConnectivityObserver: ConnectivityObserver,
+): BaseAuthViewModel(authRepository, preferencesRepository, networkConnectivityObserver) {
 
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState.asStateFlow()
 
     init {
-        val isOnline = connectivityRepository.isInternetConnected()
-        if (!isOnline) {
-            _uiState.update { currentState ->
-                currentState.copy(internetError = true)
-            }
-        }else{
-            _uiState.update { currentState ->
-                currentState.copy(internetError = false)
+        viewModelScope.launch{
+            isNetwork.collect{ available ->
+                if (!available) {
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                }
             }
         }
     }

@@ -63,6 +63,7 @@ fun LoginScreen(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
+    val isConnected by loginViewModel.isNetwork.collectAsStateWithLifecycle(false)
 
     SingleEventEffect(loginViewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -93,7 +94,8 @@ fun LoginScreen(
                     .verticalScroll(rememberScrollState())
                     .fillMaxWidth(),
                 onRegClick = onRegClick,
-                onForgotPwdClick = onForgotPwdClick
+                onForgotPwdClick = onForgotPwdClick,
+                isConnected = isConnected
             )
         }
         val role = loginViewModel.userRole.collectAsStateWithLifecycle().value
@@ -124,11 +126,6 @@ fun LoginScreen(
                 }
             }
         }
-        LaunchedEffect(uiState.internetError) {
-            if(uiState.internetError){
-                Toast.makeText(context,"No internet connection!",Toast.LENGTH_LONG).show()
-            }
-        }
 
         if (uiState.isLoading) {
             Box(
@@ -150,6 +147,7 @@ fun LogBody(
     onLogClick: () -> Unit,
     onRegClick: () -> Unit,
     onForgotPwdClick: () -> Unit,
+    isConnected: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -172,7 +170,7 @@ fun LogBody(
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = onLogClick,
-            enabled = itemUiState.isEntryValid,
+            enabled = itemUiState.isEntryValid && isConnected,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "LogIn")

@@ -96,11 +96,6 @@ fun RegisterScreen(
                 onSuccess()
             }
         }
-        LaunchedEffect(uiState.internetError) {
-            if(uiState.internetError){
-                Toast.makeText(context,"No internet connection!", Toast.LENGTH_LONG).show()
-            }
-        }
         if (uiState.isLoading) {
             Box(
                 modifier = Modifier
@@ -304,7 +299,6 @@ fun RegBodyPreview(){
             message = ""
         ),
         isEntryValid = true,
-        internetError = false,
         isLoading = false,
         isLoggedIn = false
     )

@@ -83,8 +83,8 @@ class MenuRepositoryImpl @Inject constructor(
         return if(isOnline()){
             try {
                 val result = menuService.getAllMenus()
-                syncMenusWithServer(result)
-                NetworkResult.Success(data = result, message = "")
+                syncMenusWithServer(result.data!!)
+                NetworkResult.Success(data = result.data, message = "")
             }catch (e: HttpException){
                 if(e.code() == 401){
                     NetworkResult.Error(code = 401, message = "No User")

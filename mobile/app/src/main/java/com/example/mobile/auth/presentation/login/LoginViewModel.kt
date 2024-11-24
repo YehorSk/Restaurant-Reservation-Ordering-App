@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
+import com.example.mobile.auth.presentation.BaseAuthViewModel
 import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.utils.ConnectivityObserver
 import com.example.mobile.utils.ConnectivityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -23,10 +26,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    val authRepository: AuthRepository,
-    val preferencesRepository: MainPreferencesRepository,
-    val connectivityRepository: ConnectivityRepository
-): ViewModel() {
+    authRepository: AuthRepository,
+    preferencesRepository: MainPreferencesRepository,
+    networkConnectivityObserver: ConnectivityObserver,
+): BaseAuthViewModel(authRepository, preferencesRepository, networkConnectivityObserver) {
 
     private val _uiState = MutableStateFlow(LoginState())
     val uiState: StateFlow<LoginState> = _uiState.asStateFlow()
@@ -34,21 +37,15 @@ class LoginViewModel @Inject constructor(
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
-    val sideEffectFlow: Flow<SideEffect>
-        get() = _sideEffectChannel.receiveAsFlow()
-
     init {
-        val isOnline = connectivityRepository.isInternetConnected()
-        if (isOnline){
-            authenticate()
-            _uiState.update { currentState ->
-                currentState.copy(internetError = false)
-            }
-        }else{
-            checkIfLoggedIn()
-            _uiState.update { currentState ->
-                currentState.copy(internetError = true)
+        viewModelScope.launch{
+            isNetwork.collect{ available ->
+                if (available){
+                    authenticate()
+                }else{
+                    checkIfLoggedIn()
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                }
             }
         }
     }
@@ -144,6 +141,7 @@ class LoginViewModel @Inject constructor(
                     }
                     is AuthResult.UnknownError -> {
                         Timber.tag("UnknownError").v(result.data.toString())
+                        _sideEffectChannel.send(SideEffect.ShowToast(result.data!!.message!!))
                         state.copy(isLoading = false)
                     }
                 }
