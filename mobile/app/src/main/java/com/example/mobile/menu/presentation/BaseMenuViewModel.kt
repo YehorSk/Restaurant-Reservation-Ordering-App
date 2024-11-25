@@ -11,11 +11,10 @@ import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.presentation.menu.MenuScreenUiState
 import com.example.mobile.utils.ConnectivityObserver
-import com.example.mobile.utils.NetworkConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +22,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -50,8 +48,7 @@ open class BaseMenuViewModel @Inject constructor(
         )
 
     protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
-    val sideEffectFlow: Flow<SideEffect>
-        get() = _sideEffectChannel.receiveAsFlow()
+    val sideEffect: ReceiveChannel<SideEffect> = _sideEffectChannel
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -86,21 +83,15 @@ open class BaseMenuViewModel @Inject constructor(
             isNetwork.collect{ available ->
                 if(available){
                     setLoadingState(true)
-                    _uiState.update { state ->
-                        when(val result = menuRepositoryImpl.getAllMenus()){
-                            is NetworkResult.Error -> {
-                                if(result.code == 503){
-                                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                                    state.copy()
-                                }else{
-                                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                                    state.copy()
-                                }
+                    when(val result = menuRepositoryImpl.getAllMenus()){
+                        is NetworkResult.Error -> {
+                            if(result.code == 503){
+                                _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                            }else{
+                                _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                             }
-                            is NetworkResult.Success ->{
-                                state.copy()
-                            }
-
+                        }
+                        is NetworkResult.Success ->{
                         }
                     }
                     setLoadingState(false)

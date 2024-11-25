@@ -13,11 +13,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
+import com.example.mobile.core.EventConsumer
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.menu.presentation.menu.components.MenuHeader
 import com.example.mobile.menu.presentation.menu.components.MenuItem
@@ -27,6 +27,8 @@ import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.menu.data.db.model.toMenu
 import com.example.mobile.menu.data.db.model.toMenuItem
 import com.example.mobile.menu.presentation.menu.components.SearchBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class
@@ -43,7 +45,7 @@ fun MenuScreen(
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
     val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
-    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+    EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
             is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }

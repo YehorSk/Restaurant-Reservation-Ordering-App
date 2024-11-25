@@ -15,7 +15,7 @@ class MenuItemController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $menuItems = MenuItem::where('menu_id', $id)->get();
-            return response()->json($menuItems);
+            return $this->success(data: $menuItems, message: "");
         }
         return $this->error('', 'No user', 401);
     }

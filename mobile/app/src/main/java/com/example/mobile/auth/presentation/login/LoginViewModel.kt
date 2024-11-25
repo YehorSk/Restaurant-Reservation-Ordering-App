@@ -40,7 +40,7 @@ class LoginViewModel @Inject constructor(
     init {
         viewModelScope.launch{
             isNetwork.collect{ available ->
-                if (available){
+                if (available == true){
                     authenticate()
                 }else{
                     checkIfLoggedIn()

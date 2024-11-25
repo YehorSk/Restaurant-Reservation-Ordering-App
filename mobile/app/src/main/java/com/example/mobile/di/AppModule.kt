@@ -21,6 +21,9 @@ import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.domain.repository.MenuRepository
 import com.example.mobile.menu.domain.service.MenuService
+import com.example.mobile.orders.data.remote.OrderRepositoryImpl
+import com.example.mobile.orders.domain.repository.OrderRepository
+import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.utils.ConnectivityObserver
 import com.example.mobile.utils.ConnectivityRepository
 import com.example.mobile.utils.NetworkConnectivityObserver
@@ -113,6 +116,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideOrderApiService(retrofit: Retrofit): OrderService = retrofit.create(OrderService::class.java)
+
+    @Provides
+    @Singleton
     fun providesAuthPreferences(@ApplicationContext applicationContext: Context) : MainPreferencesRepository = MainPreferencesRepository(dataStore = applicationContext.dataStore)
 
     @Provides
@@ -129,6 +136,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMenuRepositoryImpl(menuService: MenuService, connectivityRepository: ConnectivityRepository, networkConnectivityObserver: ConnectivityObserver, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService, menuDao, networkConnectivityObserver)
+    fun provideMenuRepositoryImpl(menuService: MenuService, networkConnectivityObserver: ConnectivityObserver, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService, menuDao, networkConnectivityObserver)
 
+    @Provides
+    @Singleton
+    fun providesOrderRepositoryImpl(orderService: OrderService, networkConnectivityObserver: ConnectivityObserver) : OrderRepository = OrderRepositoryImpl(orderService, networkConnectivityObserver)
 }

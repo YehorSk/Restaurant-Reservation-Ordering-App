@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mobile.core.EventConsumer
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.menu.data.db.model.toMenu
@@ -37,7 +38,7 @@ fun MenuAdminScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
 
-    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+    EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
             is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }

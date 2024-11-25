@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
+import com.example.mobile.core.EventConsumer
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
@@ -31,7 +32,7 @@ fun FavoritesScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val favoriteUiState by viewModel.favoriteUiState.collectAsStateWithLifecycle()
 
-    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+    EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
             is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }

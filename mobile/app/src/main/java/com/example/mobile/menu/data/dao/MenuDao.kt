@@ -56,7 +56,6 @@ interface MenuDao {
     @Query("SELECT * FROM menu_table")
     suspend fun getMenuWithMenuItemsOnce(): List<MenuWithMenuItems>
 
-
     @Transaction
     suspend fun runInTransaction(block: suspend () -> Unit) {
         block()

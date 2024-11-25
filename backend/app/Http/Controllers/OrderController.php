@@ -17,7 +17,7 @@ class OrderController extends Controller
                 $item->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $item->id)->exists();
                 return $item;
             });
-            return response()->json($items);
+            return $this->success(data: $items, message: "");
         }
         return $this->error('', 'No user', 401);
     }

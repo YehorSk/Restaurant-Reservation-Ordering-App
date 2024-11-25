@@ -79,7 +79,6 @@ Route::controller(CartController::class)->group(function (){
 
 Route::controller(OrderController::class)->group(function (){
     Route::get('user-order-items','getUserOrderItems');
-
 })->middleware('auth:sanctum');
 
 Route::controller(FavoriteController::class)->group(function (){

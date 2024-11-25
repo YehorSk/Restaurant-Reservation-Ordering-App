@@ -18,6 +18,7 @@ import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
 fun TotalPrice(
+    price: String,
     modifier: Modifier = Modifier
 ){
     Card {
@@ -48,7 +49,7 @@ fun TotalPrice(
                             bottom = 15.dp
                         )
                         .weight(1f),
-                    text = "€8.20",
+                    text = "€ $price",
                     textAlign = TextAlign.End,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
@@ -62,6 +63,8 @@ fun TotalPrice(
 @Composable
 fun TotalPricePreview(){
     MobileTheme {
-        TotalPrice()
+        TotalPrice(
+            price = "8.20"
+        )
     }
 }

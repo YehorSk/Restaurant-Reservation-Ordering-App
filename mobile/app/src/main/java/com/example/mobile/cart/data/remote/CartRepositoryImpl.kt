@@ -25,8 +25,7 @@ class CartRepositoryImpl @Inject constructor(
     private val prefs: MainPreferencesRepository,
     private val networkConnectivityObserver: ConnectivityObserver,
     private val cartDao: CartDao
-)
-    : CartRepository {
+) : CartRepository {
 
     private val isOnlineFlow: StateFlow<Boolean> = networkConnectivityObserver.observe()
         .distinctUntilChanged()
