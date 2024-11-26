@@ -29,6 +29,11 @@ android {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"http://192.168.1.18/SavchukBachelor/backend/public/api/\"")
         }
+        create("university"){
+            isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2/SavchukBachelor/backend/public/api/\"")
+            signingConfig = signingConfigs.getByName("debug")
+        }
         release {
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"http://192.168.1.18/SavchukBachelor/backend/public/api/\"")
