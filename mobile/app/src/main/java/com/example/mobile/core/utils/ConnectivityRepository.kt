@@ -1,4 +1,4 @@
-package com.example.mobile.utils
+package com.example.mobile.core.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

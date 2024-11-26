@@ -8,8 +8,8 @@ import com.example.mobile.auth.presentation.login.LoginForm
 import com.example.mobile.auth.presentation.register.RegisterForm
 import com.example.mobile.core.data.db.MainRoomDatabase
 import com.example.mobile.core.data.repository.MainPreferencesRepository
-import com.example.mobile.utils.ConnectivityRepository
-import com.example.mobile.utils.parseHttpResponse
+import com.example.mobile.core.utils.ConnectivityRepository
+import com.example.mobile.core.utils.parseHttpResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext

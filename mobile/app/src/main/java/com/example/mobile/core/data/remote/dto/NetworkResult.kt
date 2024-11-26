@@ -1,6 +1,6 @@
 package com.example.mobile.core.data.remote.dto
 
-sealed class NetworkResult<T : Any> {
-    class Success<T: Any>(val data: T, val message: String?) : NetworkResult<T>()
-    class Error<T: Any>(val code: Int, val message: String?) : NetworkResult<T>()
+sealed class NetworkResult<out T> {
+    class Success<out T>(val data: T, val message: String?) : NetworkResult<T>()
+    class Error<out T>(val code: Int, val message: String?) : NetworkResult<T>()
 }

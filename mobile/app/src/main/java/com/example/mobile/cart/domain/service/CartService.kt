@@ -10,24 +10,24 @@ import retrofit2.http.POST
 
 interface CartService {
 
-    @GET("user-cart-items")
+    @GET("cart/user")
     suspend fun getUserCartItems() : ResponseDto<CartItemDto>
 
-    @POST("delete-user-cart-item")
+    @POST("cart/user/delete")
     suspend fun deleteUserCartItem(@Body cartForm: CartForm): ResponseDto<CartItemDto>
 
     @Headers(
         "Accept: application/vnd.api+json",
         "Content-Type: application/vnd.api+json"
     )
-    @POST("add-user-cart-item")
+    @POST("cart/user/add")
     suspend fun addUserCartItem(@Body cartForm: CartForm): ResponseDto<CartItemDto>
 
     @Headers(
         "Accept: application/vnd.api+json",
         "Content-Type: application/vnd.api+json"
     )
-    @POST("update-user-cart-item")
+    @POST("cart/user/update")
     suspend fun updateUserCartItem(
         @Body cartForm: CartForm
     ): ResponseDto<CartItemDto>

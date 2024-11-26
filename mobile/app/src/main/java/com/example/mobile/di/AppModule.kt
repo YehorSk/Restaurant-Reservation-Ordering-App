@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
+import com.example.mobile.BuildConfig
 import com.example.mobile.auth.data.remote.AuthInterceptor
 import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
@@ -15,7 +16,6 @@ import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.domain.repository.CartRepository
 import com.example.mobile.cart.domain.service.CartService
-import com.example.mobile.core.Constants
 import com.example.mobile.core.data.db.MainRoomDatabase
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
@@ -24,9 +24,9 @@ import com.example.mobile.menu.domain.service.MenuService
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
-import com.example.mobile.utils.ConnectivityObserver
-import com.example.mobile.utils.ConnectivityRepository
-import com.example.mobile.utils.NetworkConnectivityObserver
+import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.core.utils.ConnectivityRepository
+import com.example.mobile.core.utils.NetworkConnectivityObserver
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -50,7 +50,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
 object AppModule {
 
     @Provides
-    fun provideBaseUrl():  String = Constants.BASE_URL
+    fun provideBaseUrl():  String = BuildConfig.BASE_URL
 
     @Provides
     @Singleton

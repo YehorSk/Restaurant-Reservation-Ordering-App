@@ -4,7 +4,7 @@ import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
-import com.example.mobile.utils.ConnectivityObserver
+import com.example.mobile.core.utils.ConnectivityObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted

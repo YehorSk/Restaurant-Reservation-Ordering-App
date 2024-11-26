@@ -1,6 +1,5 @@
-package com.example.mobile.utils
+package com.example.mobile.core.utils
 
-import android.util.Log
 import com.example.mobile.auth.data.remote.model.HttpResponse
 import kotlinx.serialization.json.Json
 import timber.log.Timber

@@ -10,8 +10,8 @@ import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.cart.presentation.cart.CartScreenUiState
 import com.example.mobile.menu.data.db.model.MenuItemEntity
-import com.example.mobile.utils.ConnectivityObserver
-import com.example.mobile.utils.formattedPrice
+import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.core.utils.formattedPrice
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

@@ -1,20 +1,17 @@
 package com.example.mobile.auth.presentation.register
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.presentation.BaseAuthViewModel
 import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.utils.ConnectivityObserver
-import com.example.mobile.utils.ConnectivityRepository
-import com.example.mobile.utils.cleanError
+import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.core.utils.cleanError
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber

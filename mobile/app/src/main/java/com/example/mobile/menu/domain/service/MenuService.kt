@@ -14,11 +14,11 @@ interface MenuService {
     suspend fun getAllMenus(): ResponseDto<MenuDto>
 
     @FormUrlEncoded
-    @POST("add-user-favorite-item")
+    @POST("favorite/user/add")
     suspend fun addFavoriteItem(@Field("menu_item_id") menuItemId: String): ResponseDto<String>
 
     @FormUrlEncoded
-    @POST("delete-user-favorite-item")
+    @POST("favorite/user/delete")
     suspend fun deleteFavoriteItem(@Field("menu_item_id") menuItemId: String): ResponseDto<String>
 
 }

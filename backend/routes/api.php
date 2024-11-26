@@ -70,21 +70,21 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-Route::controller(CartController::class)->group(function (){
-    Route::get('user-cart-items','getUserCartItems');
-    Route::post('add-user-cart-item','addUserCartItem');
-    Route::post('delete-user-cart-item','deleteUserCartItem');
-    Route::post('update-user-cart-item','updateUserCartItem');
+Route::prefix("cart")->controller(CartController::class)->group(function (){
+    Route::get('/user','getUserCartItems');
+    Route::post('/user/add','addUserCartItem');
+    Route::post('/user/delete','deleteUserCartItem');
+    Route::post('/user/update','updateUserCartItem');
 })->middleware('auth:sanctum');
 
-Route::controller(OrderController::class)->group(function (){
-    Route::get('user-order-items','getUserOrderItems');
+Route::prefix("order")->controller(OrderController::class)->group(function (){
+    Route::get('/user','getUserOrderItems');
 })->middleware('auth:sanctum');
 
-Route::controller(FavoriteController::class)->group(function (){
-    Route::get('user-favorite-items','getUserFavoriteItems');
-    Route::post('add-user-favorite-item','addUserFavoriteItem');
-    Route::post('delete-user-favorite-item','deleteUserFavoriteItem');
+Route::prefix("favorite")->controller(FavoriteController::class)->group(function (){
+    Route::get('/user','getUserFavoriteItems');
+    Route::post('/user/add','addUserFavoriteItem');
+    Route::post('/user/delete','deleteUserFavoriteItem');
 });
 
 Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);

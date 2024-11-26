@@ -14,7 +14,7 @@ class FavoriteController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $items = $user->favoriteItems()->get();
-            return response()->json($items);
+            return $this->success(data: $items, message: "");
         }
         return $this->error('', 'No user', 401);
     }
@@ -23,7 +23,7 @@ class FavoriteController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $user->favoriteItems()->attach($request->input('menu_item_id'));
-            return $this->success(data: "", message: "Item added to favorites");
+            return $this->success(data: [""], message: "Item added to favorites");
         }
         return $this->error('', 'No user', 401);
     }
@@ -32,7 +32,7 @@ class FavoriteController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $user->favoriteItems()->detach($request->input('menu_item_id'));
-            return $this->success(data: "", message: "Item removed from favorites");
+            return $this->success(data: [""], message: "Item removed from favorites");
         }
         return $this->error('', 'No user', 401);
     }

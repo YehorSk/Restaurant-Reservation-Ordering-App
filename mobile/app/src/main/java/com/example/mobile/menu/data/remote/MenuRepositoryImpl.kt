@@ -1,6 +1,5 @@
 package com.example.mobile.menu.data.remote
 
-import androidx.compose.runtime.collectAsState
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.menu.domain.service.MenuService
@@ -9,13 +8,11 @@ import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.remote.dto.toMenuEntity
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import com.example.mobile.menu.domain.repository.MenuRepository
-import com.example.mobile.utils.ConnectivityObserver
-import com.example.mobile.utils.ConnectivityRepository
+import com.example.mobile.core.utils.ConnectivityObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn

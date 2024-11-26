@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface OrderService {
 
-    @GET("user-order-items")
+    @GET("order/user")
     suspend fun getUserOrderItems() : ResponseDto<OrderMenuItemDto>
 
 }

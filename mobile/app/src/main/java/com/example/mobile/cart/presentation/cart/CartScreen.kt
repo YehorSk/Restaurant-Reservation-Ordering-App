@@ -29,12 +29,11 @@ import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.toMenuItem
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.cart.presentation.cart.components.CartItem
-import com.example.mobile.core.presentation.components.CartCheckoutModal
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
-import com.example.mobile.utils.formattedPrice
+import com.example.mobile.core.utils.formattedPrice
 
 @Composable
 fun CartScreen(

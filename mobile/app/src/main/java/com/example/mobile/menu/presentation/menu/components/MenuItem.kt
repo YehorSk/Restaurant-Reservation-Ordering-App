@@ -1,6 +1,5 @@
 package com.example.mobile.menu.presentation.menu.components
 
-import android.view.MenuItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -26,7 +25,7 @@ import coil.compose.AsyncImage
 import com.example.mobile.R
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.ui.theme.MobileTheme
-import com.example.mobile.utils.formattedPrice
+import com.example.mobile.core.utils.formattedPrice
 
 @Composable
 fun MenuItem(

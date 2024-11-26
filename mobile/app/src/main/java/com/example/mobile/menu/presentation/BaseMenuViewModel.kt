@@ -10,7 +10,7 @@ import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.presentation.menu.MenuScreenUiState
-import com.example.mobile.utils.ConnectivityObserver
+import com.example.mobile.core.utils.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel

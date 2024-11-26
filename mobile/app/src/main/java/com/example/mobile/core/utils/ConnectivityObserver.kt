@@ -1,4 +1,4 @@
-package com.example.mobile.utils
+package com.example.mobile.core.utils
 
 import kotlinx.coroutines.flow.Flow
 

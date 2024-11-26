@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,16 +20,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.mobile.R
-import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.data.remote.dto.Pivot
 import com.example.mobile.ui.theme.MobileTheme
-import com.example.mobile.utils.formattedPrice
+import com.example.mobile.core.utils.formattedPrice
 
 @Composable
 fun OrderListItem(
@@ -76,7 +75,7 @@ fun OrderListItem(
                 color = contentColor
             )
             Text(
-                text = "€"+ formattedPrice(menuItem.price.toDouble()),
+                text =  menuItem.pivot.quantity.toString() +"x "+ " €"+ formattedPrice(menuItem.pivot.price.toDouble()),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
@@ -89,7 +88,7 @@ fun OrderListItem(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 fun OrderListItemPreview(){
     MobileTheme {

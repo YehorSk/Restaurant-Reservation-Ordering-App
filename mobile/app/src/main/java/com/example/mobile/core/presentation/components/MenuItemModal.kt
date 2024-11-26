@@ -2,7 +2,6 @@ package com.example.mobile.core.presentation.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,8 +47,7 @@ import coil.compose.AsyncImage
 import com.example.mobile.R
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.ui.theme.MobileTheme
-import com.example.mobile.utils.formattedPrice
-import timber.log.Timber
+import com.example.mobile.core.utils.formattedPrice
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

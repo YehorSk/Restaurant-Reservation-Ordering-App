@@ -25,8 +25,13 @@ android {
     }
 
     buildTypes {
+        debug{
+            isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", "\"http://192.168.1.18/SavchukBachelor/backend/public/api/\"")
+        }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", "\"http://192.168.1.18/SavchukBachelor/backend/public/api/\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -42,6 +47,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     packaging {
         resources {

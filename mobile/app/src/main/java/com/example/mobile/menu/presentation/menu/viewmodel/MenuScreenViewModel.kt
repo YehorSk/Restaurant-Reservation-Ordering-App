@@ -8,8 +8,7 @@ import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.presentation.BaseMenuViewModel
-import com.example.mobile.utils.ConnectivityObserver
-import com.example.mobile.utils.NetworkConnectivityObserver
+import com.example.mobile.core.utils.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -112,7 +111,7 @@ class MenuScreenViewModel @Inject constructor(
             setLoadingState(true)
             when(val result = menuRepositoryImpl.addFavorite(_uiState.value.currentMenu!!.id.toString())){
                 is NetworkResult.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
                 }
                 is NetworkResult.Success -> {
                     _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
