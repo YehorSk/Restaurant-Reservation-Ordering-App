@@ -23,7 +23,7 @@ class CreateOrderViewModel @Inject constructor(
     val orderRepositoryImpl: OrderRepositoryImpl
 ): ViewModel(){
 
-    val _uiState = MutableStateFlow(CreateOrderUiState())
+    private val _uiState = MutableStateFlow(CreateOrderUiState())
     val uiState = _uiState.asStateFlow()
 
     val isNetwork = networkConnectivityObserver.observe()
@@ -53,7 +53,11 @@ class CreateOrderViewModel @Inject constructor(
 
     fun updateRequest(request: String){
         _uiState.update {
-            it.copy(request = request)
+            it.copy(
+                orderForm = OrderForm(
+                    specialRequest = request
+                )
+            )
         }
     }
 

@@ -35,8 +35,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.SingleEventEffect
-import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
-import com.example.mobile.orders.data.remote.dto.Pivot
 import com.example.mobile.orders.presentation.components.NavBar
 import com.example.mobile.orders.presentation.components.OrderAddMore
 import com.example.mobile.orders.presentation.components.OrderItemList
@@ -90,7 +88,7 @@ fun CreateOrderScreen(
             )
             HorizontalDivider()
             OrderSpecialRequest(
-                request = uiState.value.request,
+                request = uiState.value.orderForm.specialRequest,
                 onRequestChange = {request -> viewModel.updateRequest(request)}
             )
             Spacer(modifier = Modifier.height(10.dp))

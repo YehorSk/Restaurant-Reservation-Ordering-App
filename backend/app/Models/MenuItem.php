@@ -29,6 +29,13 @@ class MenuItem extends Model
         return $this->belongsToMany(User::class);
     }
 
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'menu_items_orders')
+            ->withPivot('quantity', 'price', 'order_id')
+            ->withTimestamps();
+    }
+
     public function favoritedByUsers()
     {
         return $this->belongsToMany(User::class, 'user_favorite_items');
