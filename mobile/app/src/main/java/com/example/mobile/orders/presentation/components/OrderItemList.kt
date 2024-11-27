@@ -45,14 +45,13 @@ fun OrderItemListPreview(){
             price = 8.99,
             pivot = Pivot(
                 id = 1,
-                userId = 10,
+                orderId = 10,
                 menuItemId = 1,
                 quantity = 2,
                 price = 17.98,
                 createdAt = "2024-01-01T10:00:00Z",
                 updatedAt = "2024-01-01T10:05:00Z"
-            ),
-            isFavorite = true
+            )
         ),
         OrderMenuItemDto(
             id = 2,
@@ -67,14 +66,13 @@ fun OrderItemListPreview(){
             price = 12.99,
             pivot = Pivot(
                 id = 2,
-                userId = 15,
+                orderId = 15,
                 menuItemId = 2,
                 quantity = 1,
                 price = 12.99,
                 createdAt = "2024-01-03T15:30:00Z",
                 updatedAt = "2024-01-03T15:35:00Z"
             ),
-            isFavorite = false
         ),
         OrderMenuItemDto(
             id = 3,
@@ -89,14 +87,13 @@ fun OrderItemListPreview(){
             price = 7.50,
             pivot = Pivot(
                 id = 3,
-                userId = 20,
+                orderId = 20,
                 menuItemId = 3,
                 quantity = 1,
                 price = 7.50,
                 createdAt = "2024-01-05T09:10:00Z",
                 updatedAt = "2024-01-05T09:15:00Z"
             ),
-            isFavorite = true
         ),
         OrderMenuItemDto(
             id = 4,
@@ -111,14 +108,13 @@ fun OrderItemListPreview(){
             price = 10.50,
             pivot = Pivot(
                 id = 4,
-                userId = 25,
+                orderId = 25,
                 menuItemId = 4,
                 quantity = 1,
                 price = 10.50,
                 createdAt = "2024-01-06T14:10:00Z",
                 updatedAt = "2024-01-06T14:20:00Z"
             ),
-            isFavorite = false
         ),
         OrderMenuItemDto(
             id = 5,
@@ -133,14 +129,13 @@ fun OrderItemListPreview(){
             price = 6.99,
             pivot = Pivot(
                 id = 5,
-                userId = 30,
+                orderId = 30,
                 menuItemId = 5,
                 quantity = 3,
                 price = 20.97,
                 createdAt = "2024-01-08T08:30:00Z",
                 updatedAt = "2024-01-08T08:35:00Z"
             ),
-            isFavorite = true
         )
     )
     MobileTheme {

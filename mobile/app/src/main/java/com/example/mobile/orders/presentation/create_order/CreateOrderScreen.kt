@@ -93,12 +93,13 @@ fun CreateOrderScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             OrderOptions(
-                selected = uiState.value.orderType,
+                selected = uiState.value.orderForm.orderType,
                 onSelectedChange = { type,text -> viewModel.updateOrderType(type,text) }
             )
             Spacer(modifier = Modifier.height(10.dp))
-            if (uiState.value.orderType == 1 && isConnected.value){
+            if (uiState.value.orderForm.orderType == 1 && isConnected.value){
                 OrderMap()
+                Spacer(modifier = Modifier.height(10.dp))
             }
             if (isConnected.value  && uiState.value.items != null){
                 val checkout = uiState.value.items!!.sumOf {
@@ -117,10 +118,16 @@ fun CreateOrderScreen(
                             bottom = 10.dp
                         )
                         .fillMaxWidth(),
-                    onClick = {}
+                    onClick = {
+                        if(uiState.value.orderForm.orderType==0){
+                            viewModel.makePickupOrder()
+                        }else{
+                            println("")
+                        }
+                    }
                 ) {
                     Text(
-                        text = "Order ${uiState.value.orderText}",
+                        text = "Order ${uiState.value.orderForm.orderText}",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                     )

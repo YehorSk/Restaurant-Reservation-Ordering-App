@@ -17,9 +17,7 @@ class Order extends Model
         'price',
         'status',
         'special_request',
-        'pickup',
-        'home_delivery',
-        'dine_in',
+        'order_type'
     ];
 
     public function users()
@@ -30,7 +28,7 @@ class Order extends Model
     public function orderItems()
     {
         return $this->belongsToMany(MenuItem::class, 'menu_items_orders')
-            ->withPivot('order_id','quantity', 'price','menu_item_id')
+            ->withPivot('id','order_id','quantity', 'price','menu_item_id')
             ->withTimestamps();
     }
 

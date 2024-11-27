@@ -53,6 +53,7 @@ fun MenuItem(
                 text = menuItem.name,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
+                maxLines = 1,
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp),

@@ -44,9 +44,10 @@ class CreateOrderViewModel @Inject constructor(
 
     fun updateOrderType(type: Int, text: String){
         _uiState.update {
-            it.copy(
-                orderType = type,
-                orderText = text
+            it.copy(orderForm = it.orderForm.copy(
+                                    orderType = type,
+                                    orderText = text
+                                )
                 )
         }
     }
@@ -54,7 +55,7 @@ class CreateOrderViewModel @Inject constructor(
     fun updateRequest(request: String){
         _uiState.update {
             it.copy(
-                orderForm = OrderForm(
+                orderForm = it.orderForm.copy(
                     specialRequest = request
                 )
             )
@@ -79,6 +80,31 @@ class CreateOrderViewModel @Inject constructor(
                             _uiState.update {
                                 it.copy(items = result.data)
                             }
+                        }
+                    }
+                } else {
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                }
+            }
+        }
+    }
+
+    fun makePickupOrder(){
+        Timber.d("makePickupOrder")
+        viewModelScope.launch{
+            isNetwork.collect{ available ->
+                if(available){
+                    val result = orderRepositoryImpl.makeUserPickUpOrder(uiState.value.orderForm)
+                    when(result){
+                        is NetworkResult.Error ->{
+                            if(result.code == 503){
+                                _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                            }else{
+                                _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                            }
+                        }
+                        is NetworkResult.Success ->{
+                            _sideEffectChannel.send(SideEffect.ShowToast("Pickup order was created"))
                         }
                     }
                 } else {

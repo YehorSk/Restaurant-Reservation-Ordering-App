@@ -106,14 +106,13 @@ fun OrderListItemPreview(){
                 price = 5.99,
                 pivot = Pivot(
                     id = 1,
-                    userId = 10,
+                    orderId = 10,
                     menuItemId = 1,
                     quantity = 2,
                     price = 17.98,
                     createdAt = "2024-01-01T10:00:00Z",
                     updatedAt = "2024-01-01T10:05:00Z"
-                ),
-                isFavorite = true
+                )
             ),
             onClick = {}
         )

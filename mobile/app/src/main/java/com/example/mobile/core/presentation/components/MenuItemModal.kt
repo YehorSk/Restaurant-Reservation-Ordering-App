@@ -137,7 +137,6 @@ fun MenuItemModalContent(
                             if(cartForm.isFavorite) deleteFavoriteItem()
                             else addFavoriteItem()
                         },
-                        modifier = Modifier.background(Color.White),
                     ) {
                         if(cartForm.isFavorite){
                             Icon(

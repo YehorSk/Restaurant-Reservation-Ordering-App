@@ -11,20 +11,19 @@ data class OrderDto(
     @SerialName("updated_at")
     val updatedAt: String,
     @SerialName("client_id")
-    val clientId: Int,
+    val clientId: Int? = null,
     @SerialName("table_id")
-    val tableId: Int,
+    val tableId: Int? = null,
     @SerialName("waiter_id")
-    val waiterId: Int,
+    val waiterId: Int? = null,
     @SerialName("reservation_id")
-    val reservationId: Int,
+    val reservationId: Int? = null,
     val price: Double,
     val status: String,
     @SerialName("special_request")
-    val specialRequest: String,
-    val pickup: Boolean,
-    @SerialName("home_delivery")
-    val homeDelivery: Boolean,
-    @SerialName("dine_in")
-    val dineIn: Boolean
+    val specialRequest: String = "",
+    @SerialName("order_type")
+    val orderType: Int,
+    @SerialName("order_items")
+    val orderItems: List<OrderMenuItemDto>
 )

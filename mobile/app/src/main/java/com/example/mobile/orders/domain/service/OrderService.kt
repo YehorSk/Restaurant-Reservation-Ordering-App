@@ -4,6 +4,7 @@ import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.presentation.create_order.OrderForm
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -16,6 +17,6 @@ interface OrderService {
     suspend fun getUserOrders() : ResponseDto<OrderDto>
 
     @POST("order/user/pickup")
-    suspend fun makeUserPickUpOrder(orderForm: OrderForm) : ResponseDto<OrderDto>
+    suspend fun makeUserPickUpOrder(@Body orderForm: OrderForm) : ResponseDto<OrderDto>
 
 }

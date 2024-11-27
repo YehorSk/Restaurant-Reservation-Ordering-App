@@ -27,7 +27,7 @@ class OrderController extends Controller
     public function getUserOrders(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $orders = $user->orders()->get();
+            $orders = Order::with('orderItems')->get();
             return $this->success(data: $orders, message: "");
         }
         return $this->error('', 'No user', 401);
@@ -40,7 +40,7 @@ class OrderController extends Controller
             $order = new Order();
             $order->price = $total_price;
             $order->special_request = $request->input("special_request");
-            $order->pickup = true;
+            $order->order_type = 1;
             $order->client_id = $user->id;
             $order->status = "new";
             $order->save();
@@ -52,7 +52,8 @@ class OrderController extends Controller
                 ]);
                 $user->menuItems()->detach($item->id);
             }
-            return $this->success(data: $order, message: "");
+            $order = Order::with('orderItems')->find($order->id);
+            return $this->success(data: [$order], message: "");
         }
         return $this->error('', 'No user', 401);
     }

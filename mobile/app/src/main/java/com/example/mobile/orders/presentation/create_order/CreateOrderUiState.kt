@@ -5,11 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 data class CreateOrderUiState(
-    val orderType: Int = 0,
-    val orderText: String = "Pickup",
     val items: List<OrderMenuItemDto>? = null,
-    val address: String = "",
-    val instructions: String = "",
     val orderForm: OrderForm = OrderForm()
 )
 
@@ -17,4 +13,10 @@ data class CreateOrderUiState(
 data class OrderForm(
     @SerialName("special_request")
     val specialRequest: String = "",
+    @SerialName("order_type")
+    val orderType: Int = 0,
+    @SerialName("order_text")
+    val orderText: String = "Pickup",
+    val address: String = "",
+    val instructions: String = "",
 )

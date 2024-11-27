@@ -20,15 +20,16 @@ data class OrderMenuItemDto(
     val recipe: String,
     val picture: String,
     val price: Double,
-    val pivot: Pivot,
-    val isFavorite: Boolean
+    val pivot: Pivot
 )
 
 @Serializable
 data class Pivot(
     val id: Int,
+    @SerialName("order_id")
+    val orderId: Int?=null,
     @SerialName("user_id")
-    val userId: Int,
+    val userId: Int?=null,
     @SerialName("menu_item_id")
     val menuItemId: Int,
     val quantity: Int,
