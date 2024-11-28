@@ -18,6 +18,7 @@ import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.CreateOrderScreen
+import com.example.mobile.orders.presentation.orders.viewmodel.OrdersViewModel
 
 @Composable
 fun ClientNavGraph(

@@ -1,5 +1,6 @@
 package com.example.mobile.orders.data.remote.dto
 
+import com.example.mobile.orders.data.db.model.OrderEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -27,3 +28,19 @@ data class OrderDto(
     @SerialName("order_items")
     val orderItems: List<OrderMenuItemDto>
 )
+
+fun OrderDto.toOrderEntity(): OrderEntity{
+    return OrderEntity(
+        id = this.id,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt,
+        clientId = this.clientId,
+        tableId = this.tableId,
+        waiterId = this.waiterId,
+        reservationId = this.reservationId,
+        price = this.price,
+        status = this.status,
+        specialRequest = this.specialRequest,
+        orderType = this.orderType,
+    )
+}

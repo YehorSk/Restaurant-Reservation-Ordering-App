@@ -6,7 +6,9 @@ import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.remote.dto.OrderDto
+import com.example.mobile.orders.data.remote.dto.toOrderEntity
 import com.example.mobile.orders.presentation.create_order.OrderForm
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +25,7 @@ import kotlin.collections.first
 class OrderRepositoryImpl @Inject constructor(
     private val orderService: OrderService,
     private val networkConnectivityObserver: ConnectivityObserver,
+    private val orderDao: OrderDao
     ) : OrderRepository{
 
     private val isOnlineFlow: StateFlow<Boolean> = networkConnectivityObserver.observe()
@@ -35,6 +38,10 @@ class OrderRepositoryImpl @Inject constructor(
 
     private suspend fun isOnline(): Boolean {
         return isOnlineFlow.first()
+    }
+
+    fun syncOrdersWithDb(){
+
     }
 
     override suspend fun getUserOrderItems(): NetworkResult<List<OrderMenuItemDto>> {
