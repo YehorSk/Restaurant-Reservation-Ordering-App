@@ -2,10 +2,12 @@ package com.example.mobile.orders.data.remote
 
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.core.data.remote.dto.NetworkResult
+import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.toOrderEntity
@@ -45,55 +47,33 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserOrderItems(): NetworkResult<List<OrderMenuItemDto>> {
-        Timber.d("Repo getUserOrderItems")
-        return if(isOnline()){
-            try {
-                val result = orderService.getUserOrderItems()
-                NetworkResult.Success(data = result.data!!, message = "")
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
+        Timber.d("Order getUserOrders")
+        return safeCall<OrderMenuItemDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                orderService.getUserOrderItems()
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
 
     override suspend fun getUserOrders(): NetworkResult<List<OrderDto>> {
-        return if(isOnline()){
-            try {
-                val result = orderService.getUserOrders()
-                NetworkResult.Success(data = result.data!!, message = result.message)
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
+        Timber.d("Order getUserOrders")
+        return safeCall<OrderDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                orderService.getUserOrders()
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
 
-    override suspend fun makeUserPickUpOrder(orderForm: OrderForm): NetworkResult<OrderDto> {
-        return if(isOnline()){
-            try {
-                val result = orderService.makeUserPickUpOrder(orderForm)
-                NetworkResult.Success(data = result.data!!.first(), message = result.message)
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
+    override suspend fun makeUserPickUpOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
+        Timber.d("Order makeUserPickUpOrder")
+        return safeCall<OrderDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                orderService.makeUserPickUpOrder(orderForm)
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
 
 }

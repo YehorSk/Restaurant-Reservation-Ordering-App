@@ -1,6 +1,8 @@
 package com.example.mobile.menu.data.remote
 
+import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.core.data.remote.dto.NetworkResult
+import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.menu.domain.service.MenuService
 import com.example.mobile.menu.data.dao.MenuDao
@@ -76,60 +78,41 @@ class MenuRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllMenus(): NetworkResult<List<MenuDto>> {
-        Timber.d("getAllMenus Wifi status = ${isOnline()}")
-        return if(isOnline()){
-            try {
-                val result = menuService.getAllMenus()
-                syncMenusWithServer(result.data!!)
-                NetworkResult.Success(data = result.data, message = "")
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
+        Timber.d("Menu getAllMenus")
+        return safeCall<MenuDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                menuService.getAllMenus()
+            },
+            onSuccess = { data ->
+                syncMenusWithServer(data)
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
 
-    override suspend fun addFavorite(menuItemId: String): NetworkResult<String> {
-        Timber.d("addFavorite Wifi status = ${isOnline()}")
-        return if(isOnline()){
-            try {
-                val result = menuService.addFavoriteItem(menuItemId = menuItemId)
+    override suspend fun addFavorite(menuItemId: String): NetworkResult<List<String>> {
+        Timber.d("Menu addFavorite")
+        return safeCall<String>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                menuService.addFavoriteItem(menuItemId = menuItemId)
+            },
+            onSuccess = { data ->
                 menuDao.addFavorite(menuItemId = menuItemId)
-                NetworkResult.Success(data = "", message = result.message)
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
 
-    override suspend fun deleteFavorite(menuItemId: String): NetworkResult<String> {
-        Timber.d("deleteFavorite Wifi status = ${isOnline()}")
-        return if(isOnline()){
-            try {
-                val result = menuService.deleteFavoriteItem(menuItemId = menuItemId)
+    override suspend fun deleteFavorite(menuItemId: String): NetworkResult<List<String>> {
+        Timber.d("Menu deleteFavorite")
+        return safeCall<String>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                menuService.deleteFavoriteItem(menuItemId = menuItemId)
+            },
+            onSuccess = { data ->
                 menuDao.deleteFavorite(menuItemId = menuItemId)
-                NetworkResult.Success(data = "", message = result.message)
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
-
 }

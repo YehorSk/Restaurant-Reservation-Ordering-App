@@ -8,15 +8,14 @@ import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
+import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.core.utils.ConnectivityObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,85 +34,52 @@ class CartRepositoryImpl @Inject constructor(
             initialValue = false
         )
 
-    private suspend fun isOnline(): Boolean {
-        return isOnlineFlow.first()
-    }
-
     override suspend fun getAllItems(): NetworkResult<List<CartItemDto>> {
         Timber.d("Cart getAllItems")
-        return if(isOnline()){
-            try {
-                Timber.d("Calling getUserCartItems")
-                val result = cartService.getUserCartItems()
-                Timber.d("items: $result.")
-                NetworkResult.Success(data = result.data!!, message = "")
-            }catch (e: HttpException){
-                Timber.d("Error $e")
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
+        return safeCall<CartItemDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                cartService.getUserCartItems()
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
 
-    override suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
-        return if(isOnline()){
-            try {
-                val result = cartService.addUserCartItem(cartForm)
-                Timber.d(result.toString())
-                cartDao.insertItem(result.data!!.first().toCartItemEntity())
-                NetworkResult.Success(data = result.data.first(), message = result.message)
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
+    override suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>> {
+        Timber.d("Cart addUserCartItem")
+        return safeCall<CartItemDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                cartService.addUserCartItem(cartForm)
+            },
+            onSuccess = { data ->
+                cartDao.insertItem(data.first().toCartItemEntity())
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
 
-    override suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
-        return if(isOnline()){
-            try {
-                val result = cartService.deleteUserCartItem(cartForm)
-                Timber.d(result.toString())
-                cartDao.deleteItem(result.data!!.first().toCartItemEntity())
-                NetworkResult.Success(data = result.data.first(), message = result.message)
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
+    override suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>> {
+        Timber.d("Cart deleteUserCartItem")
+        return safeCall<CartItemDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                cartService.deleteUserCartItem(cartForm)
+            },
+            onSuccess = { data ->
+                cartDao.deleteItem(data.first().toCartItemEntity())
             }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+        )
     }
 
-    override suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto> {
-        return if(isOnline()){
-            try {
-                val result = cartService.updateUserCartItem(cartForm)
-                Timber.d(result.toString())
-                cartDao.updateItem(result.data!!.first().toCartItemEntity())
-                NetworkResult.Success(data = result.data.first(), message = result.message)
-            }catch (e: HttpException){
-                if(e.code() == 401){
-                    NetworkResult.Error(code = 401, message = "No User")
-                }else{
-                    NetworkResult.Error(code = 520, message = e.message())
-                }
-            }
-        }else{
-            NetworkResult.Error(code = 503, message = "No internet connection!")
-        }
+    override suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>> {
+        Timber.d("Cart updateUserCartItem")
+        return safeCall<CartItemDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                cartService.updateUserCartItem(cartForm)
+            },
+            onSuccess = { data ->
+                cartDao.updateItem(data.first().toCartItemEntity())
+            },
+        )
     }
 }

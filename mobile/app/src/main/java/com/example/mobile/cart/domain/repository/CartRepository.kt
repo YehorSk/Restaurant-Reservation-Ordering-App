@@ -8,10 +8,10 @@ interface CartRepository {
 
     suspend fun getAllItems(): NetworkResult<List<CartItemDto>>
 
-    suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto>
+    suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>>
 
-    suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto>
+    suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>>
 
-    suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<CartItemDto>
+    suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>>
 
 }

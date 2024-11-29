@@ -7,8 +7,8 @@ interface MenuRepository {
 
     suspend fun getAllMenus(): NetworkResult<List<MenuDto>>
 
-    suspend fun addFavorite(menuItemId: String): NetworkResult<String>
+    suspend fun addFavorite(menuItemId: String): NetworkResult<List<String>>
 
-    suspend fun deleteFavorite(menuItemId: String): NetworkResult<String>
+    suspend fun deleteFavorite(menuItemId: String): NetworkResult<List<String>>
 
 }

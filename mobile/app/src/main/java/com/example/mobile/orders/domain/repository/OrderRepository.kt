@@ -12,6 +12,6 @@ interface OrderRepository {
 
     suspend fun getUserOrders() : NetworkResult<List<OrderDto>>
 
-    suspend fun makeUserPickUpOrder(orderForm: OrderForm) : NetworkResult<OrderDto>
+    suspend fun makeUserPickUpOrder(orderForm: OrderForm) : NetworkResult<List<OrderDto>>
 
 }
