@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.orders.presentation.orders.viewmodel.OrdersViewModel
+import androidx.compose.runtime.getValue
 
 @Composable
 fun OrdersScreen(
@@ -26,10 +27,7 @@ fun OrdersScreen(
     val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-
-    LaunchedEffect(Unit) {
-        viewModel.getUserOrders()
-    }
+    val orders by viewModel.orderItemsUiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -38,7 +36,7 @@ fun OrdersScreen(
     ) {
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "ORDERS SCREEN",
+            text = orders.toString(),
             textAlign = TextAlign.Center
         )
     }

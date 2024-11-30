@@ -50,4 +50,8 @@ interface OrderDao {
     @Transaction
     @Query("SELECT * FROM order_table")
     fun getOrderWithOrderItems(): Flow<List<OrderWithOrderItems>>
+
+    @Transaction
+    @Query("SELECT * FROM order_table")
+    fun getOrderWithOrderItemsOnce(): List<OrderWithOrderItems>
 }

@@ -1,5 +1,7 @@
 package com.example.mobile.orders.data.remote.dto
 
+import com.example.mobile.orders.data.db.model.OrderItemEntity
+import com.example.mobile.orders.data.db.model.PivotOrderItemEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -38,4 +40,30 @@ data class Pivot(
     val createdAt: String,
     @SerialName("updated_at")
     val updatedAt: String,
+)
+
+fun OrderMenuItemDto.toOrderMenuItemEntity(): OrderItemEntity{
+    return OrderItemEntity(
+        id = this.id,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt,
+        menuId = this.menuId,
+        name = this.name,
+        shortDescription = this.shortDescription,
+        longDescription = this.longDescription,
+        recipe = this.recipe,
+        picture = this.picture,
+        price = this.price,
+        pivot = this.pivot.toPivotEntity()
+    )
+}
+
+fun Pivot.toPivotEntity() = PivotOrderItemEntity(
+    id = this.id,
+    orderId = this.orderId!!.toInt(),
+    menuItemId = this.menuItemId,
+    quantity = this.quantity,
+    price = this.price,
+    createdAt = this.createdAt,
+    updatedAt = this.updatedAt
 )
