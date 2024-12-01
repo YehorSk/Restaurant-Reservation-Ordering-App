@@ -27,7 +27,7 @@ class OrderController extends Controller
     public function getUserOrders(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $orders = Order::with('orderItems')->get();
+            $orders = $user->orders()->with('orderItems')->get();
             return $this->success(data: $orders, message: "");
         }
         return $this->error('', 'No user', 401);
@@ -42,7 +42,16 @@ class OrderController extends Controller
             $order->special_request = $request->input("special_request");
             $order->order_type = 1;
             $order->client_id = $user->id;
+            $code = "";
+            while(true){
+                $code = $this->generate_code();
+                $check = Order::where('code', $code)->first();
+                if(!$check){
+                    break;
+                }
+            }
             $order->status = "new";
+            $order->code = $code;
             $order->save();
             $items = $user->menuItems()->get();
             foreach ($items as $item) {
@@ -57,4 +66,15 @@ class OrderController extends Controller
         }
         return $this->error('', 'No user', 401);
     }
+
+    private function generate_code(): String
+    {
+        $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $code='';
+        for($i=0;$i<6;$i++){
+            $code .= $chars[rand(0, 35)];
+        }
+        return $code;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.mobile.orders.data.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
@@ -18,7 +19,7 @@ interface OrderDao {
     @Query("SELECT * FROM order_table")
     fun getUserOrders(): Flow<List<OrderEntity>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrder(order: OrderEntity)
 
     @Update
@@ -27,10 +28,10 @@ interface OrderDao {
     @Delete
     suspend fun deleteOrder(order: OrderEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrders(orders: List<OrderEntity>)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrderItem(item: OrderItemEntity)
 
     @Update
@@ -39,7 +40,7 @@ interface OrderDao {
     @Delete
     suspend fun deleteOrderItem(item: OrderItemEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrderItems(items: List<OrderItemEntity>)
 
     @Transaction

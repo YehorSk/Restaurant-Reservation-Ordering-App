@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("table_id")->nullable();
             $table->unsignedBigInteger("waiter_id")->nullable();
             $table->unsignedBigInteger("reservation_id")->nullable();
+            $table->string("code");
             $table->float("price");
             $table->string("status");
             $table->longText("special_request");

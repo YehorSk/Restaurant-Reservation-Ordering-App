@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class OrderDto(
     val id: String,
+    val code: String,
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("updated_at")
@@ -42,5 +43,6 @@ fun OrderDto.toOrderEntity(): OrderEntity{
         status = this.status,
         specialRequest = this.specialRequest,
         orderType = this.orderType,
+        code = this.code
     )
 }

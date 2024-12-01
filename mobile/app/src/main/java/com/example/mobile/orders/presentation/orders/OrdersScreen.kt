@@ -17,6 +17,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.orders.presentation.orders.viewmodel.OrdersViewModel
 import androidx.compose.runtime.getValue
+import com.example.mobile.orders.presentation.orders.components.OrdersList
 
 @Composable
 fun OrdersScreen(
@@ -34,10 +35,8 @@ fun OrdersScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = orders.toString(),
-            textAlign = TextAlign.Center
+        OrdersList(
+            orders = orders
         )
     }
 

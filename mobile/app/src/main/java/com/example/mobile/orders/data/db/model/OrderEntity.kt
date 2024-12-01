@@ -10,6 +10,7 @@ import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 data class OrderEntity(
     @PrimaryKey
     val id: String,
+    val code: String,
     @ColumnInfo("created_at")
     val createdAt: String,
     @ColumnInfo("updated_at")
@@ -43,6 +44,7 @@ fun OrderEntity.toOrderDto(items: List<OrderMenuItemDto>): OrderDto{
         status = this.status,
         specialRequest = this.specialRequest,
         orderType = this.orderType,
-        orderItems = items
+        orderItems = items,
+        code = this.code
     )
 }

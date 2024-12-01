@@ -29,7 +29,7 @@ class OrdersViewModel @Inject constructor(
 
     val isNetwork = networkConnectivityObserver.observe()
 
-    val orderItemsUiState: StateFlow<List<OrderWithOrderItems>> = orderDao.getOrderWithOrderItems()
+    val orderItemsUiState: StateFlow<List<OrderEntity>> = orderDao.getUserOrders()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

@@ -1,0 +1,40 @@
+package com.example.mobile.orders.presentation.orders.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.mobile.orders.data.db.model.OrderEntity
+import com.example.mobile.ui.theme.MobileTheme
+import androidx.compose.foundation.lazy.items
+
+
+@Composable
+fun OrdersList(
+    modifier: Modifier = Modifier,
+    orders: List<OrderEntity>
+){
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        items(orders){ order ->
+            OrderListItem(
+                orderEntity = order
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun OrdersListPreview(){
+    MobileTheme {
+
+    }
+}
