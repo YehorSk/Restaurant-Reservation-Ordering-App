@@ -23,7 +23,7 @@ data class OrderDto(
     val price: Double,
     val status: String,
     @SerialName("special_request")
-    val specialRequest: String = "",
+    val specialRequest: String? = null,
     @SerialName("order_type")
     val orderType: Int,
     @SerialName("order_items")

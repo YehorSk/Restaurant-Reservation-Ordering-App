@@ -48,6 +48,9 @@ interface OrderDao {
         block()
     }
 
+    @Query("DELETE FROM cart_table")
+    suspend fun deleteAllCartItems()
+
     @Transaction
     @Query("SELECT * FROM order_table")
     fun getOrderWithOrderItems(): Flow<List<OrderWithOrderItems>>

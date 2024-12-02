@@ -43,6 +43,8 @@ import com.example.mobile.ui.theme.MobileTheme
 import com.example.mobile.orders.presentation.components.OrderOptions
 import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.core.utils.formattedPrice
+import com.example.mobile.orders.presentation.components.OrderAddress
+import com.example.mobile.orders.presentation.components.OrderSpecialRequest
 
 @Composable
 fun CreateOrderScreen(
@@ -99,6 +101,12 @@ fun CreateOrderScreen(
             Spacer(modifier = Modifier.height(10.dp))
             if (uiState.value.orderForm.orderType == 1 && isConnected.value){
                 OrderMap()
+                OrderAddress(
+                    address = uiState.value.orderForm.address,
+                    instructions = uiState.value.orderForm.instructions,
+                    onAddressChange = {address -> viewModel.updateAddress(address)},
+                    onInstructionsChange = {instructions -> viewModel.updateInstructions(instructions)}
+                )
                 Spacer(modifier = Modifier.height(10.dp))
             }
             if (isConnected.value  && uiState.value.items != null){
@@ -146,34 +154,6 @@ fun CreateOrderScreen(
             CircularProgressIndicator()
         }
     }
-}
-
-@Composable
-fun OrderSpecialRequest(
-    request: String,
-    onRequestChange: (String) -> Unit
-){
-    TextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Color.White),
-        value = request,
-        placeholder = {
-            Text(
-                text = stringResource(R.string.notes_for_order)
-            )
-        },
-        onValueChange = {
-            onRequestChange(it)
-        },
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White
-        )
-    )
 }
 
 

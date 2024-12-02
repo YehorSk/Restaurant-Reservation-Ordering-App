@@ -4,6 +4,9 @@ import com.example.mobile.auth.data.remote.model.HttpResponse
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.text.NumberFormat
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 fun cleanError(error: String?) = error?.replace("[", "")?.replace("]", "").orEmpty()
@@ -34,4 +37,13 @@ fun formattedPrice(price: Double): String{
         minimumFractionDigits = 0
     }
     return formatter.format(price)
+}
+
+fun formatDateTime(input: String): String {
+    val zonedDateTime = ZonedDateTime.parse(input)
+
+    val localDateTime = zonedDateTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+
+    val formatter = DateTimeFormatter.ofPattern("dd-MMM., yyy HH:mm")
+    return localDateTime.format(formatter)
 }

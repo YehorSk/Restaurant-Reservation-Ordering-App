@@ -39,7 +39,11 @@ class OrderController extends Controller
             $total_price = $user->menuItems()->get()->sum('pivot.price');
             $order = new Order();
             $order->price = $total_price;
-            $order->special_request = $request->input("special_request");
+            if($request->has("special_request")){
+                $order->special_request = $request->input("special_request");
+            }else{
+                $order->special_request = "";
+            }
             $order->order_type = 1;
             $order->client_id = $user->id;
             $code = "";
@@ -50,7 +54,7 @@ class OrderController extends Controller
                     break;
                 }
             }
-            $order->status = "new";
+            $order->status = "Pending";
             $order->code = $code;
             $order->save();
             $items = $user->menuItems()->get();

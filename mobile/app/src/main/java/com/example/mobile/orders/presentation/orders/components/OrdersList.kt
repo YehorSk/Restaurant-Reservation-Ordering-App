@@ -10,12 +10,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.ui.theme.MobileTheme
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 
 
 @Composable
 fun OrdersList(
     modifier: Modifier = Modifier,
-    orders: List<OrderEntity>
+    orders: List<OrderEntity>,
+    onGoToOrderDetails: () -> Unit,
 ){
 
     LazyColumn(
@@ -25,8 +27,10 @@ fun OrdersList(
     ) {
         items(orders){ order ->
             OrderListItem(
-                orderEntity = order
+                orderEntity = order,
+                onGoToOrderDetails = onGoToOrderDetails
             )
+            HorizontalDivider()
         }
     }
 }

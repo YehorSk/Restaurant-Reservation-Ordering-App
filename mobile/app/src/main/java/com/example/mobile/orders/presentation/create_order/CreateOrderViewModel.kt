@@ -62,6 +62,26 @@ class CreateOrderViewModel @Inject constructor(
         }
     }
 
+    fun updateAddress(address: String){
+        _uiState.update {
+            it.copy(
+                orderForm = it.orderForm.copy(
+                    address = address
+                )
+            )
+        }
+    }
+
+    fun updateInstructions(instructions: String){
+        _uiState.update {
+            it.copy(
+                orderForm = it.orderForm.copy(
+                    instructions = instructions
+                )
+            )
+        }
+    }
+
     fun getUserOrderItems(){
         Timber.d("getUserOrderItems")
         viewModelScope.launch{

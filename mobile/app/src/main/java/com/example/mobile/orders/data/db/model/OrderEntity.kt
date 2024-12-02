@@ -26,7 +26,7 @@ data class OrderEntity(
     val price: Double,
     val status: String,
     @ColumnInfo("special_request")
-    val specialRequest: String = "",
+    val specialRequest: String? = null,
     @ColumnInfo("order_type")
     val orderType: Int,
 )

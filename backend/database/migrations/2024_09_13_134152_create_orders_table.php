@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string("code");
             $table->float("price");
             $table->string("status");
-            $table->longText("special_request");
+            $table->longText("special_request")->nullable();
 //            $table->boolean("pickup")->default(false);
 //            $table->boolean("home_delivery")->default(false);
 //            $table->boolean("dine_in")->default(false);

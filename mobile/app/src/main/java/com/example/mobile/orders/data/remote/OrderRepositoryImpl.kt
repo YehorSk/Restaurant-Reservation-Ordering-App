@@ -110,6 +110,9 @@ class OrderRepositoryImpl @Inject constructor(
             isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.makeUserPickUpOrder(orderForm)
+            },
+            onSuccess = {
+                orderDao.deleteAllCartItems()
             }
         )
     }

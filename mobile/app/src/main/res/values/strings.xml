@@ -16,4 +16,7 @@
     <string name="notes_for_order">Optional: Add special notes for your order.</string>
     <string name="go_to_cart">Go to Cart</string>
     <string name="add_to_cart">Add More</string>
+    <string name="required_fields">*Required fields</string>
+    <string name="delivery_address">123 Main St, Apt 4B</string>
+    <string name="instructions_for_the_courier">Instructions for the courier</string>
 </resources>
