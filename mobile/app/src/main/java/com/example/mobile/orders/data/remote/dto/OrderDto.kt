@@ -24,6 +24,8 @@ data class OrderDto(
     val status: String,
     @SerialName("special_request")
     val specialRequest: String? = null,
+    val address: String? = null,
+    val instructions: String? = null,
     @SerialName("order_type")
     val orderType: Int,
     @SerialName("order_items")
@@ -42,7 +44,9 @@ fun OrderDto.toOrderEntity(): OrderEntity{
         price = this.price,
         status = this.status,
         specialRequest = this.specialRequest,
+        address = this.address,
         orderType = this.orderType,
+        instructions = this.instructions,
         code = this.code
     )
 }

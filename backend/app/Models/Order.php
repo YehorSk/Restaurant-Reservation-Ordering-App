@@ -18,6 +18,7 @@ class Order extends Model
         'price',
         'status',
         'special_request',
+        'instructions',
         'order_type'
     ];
 

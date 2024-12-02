@@ -22,9 +22,8 @@ return new class extends Migration
             $table->float("price");
             $table->string("status");
             $table->longText("special_request")->nullable();
-//            $table->boolean("pickup")->default(false);
-//            $table->boolean("home_delivery")->default(false);
-//            $table->boolean("dine_in")->default(false);
+            $table->longText("address")->nullable();
+            $table->longText("instructions")->nullable();
             $table->integer("order_type")->default(false);
             $table->foreign("client_id")->references("id")->on("users")->onDelete("cascade");
             $table->foreign("table_id")->references("id")->on("tables")->onDelete("cascade");

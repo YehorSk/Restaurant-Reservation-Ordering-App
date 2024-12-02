@@ -27,6 +27,8 @@ data class OrderEntity(
     val status: String,
     @ColumnInfo("special_request")
     val specialRequest: String? = null,
+    val address: String? = null,
+    val instructions: String? = null,
     @ColumnInfo("order_type")
     val orderType: Int,
 )
@@ -45,6 +47,8 @@ fun OrderEntity.toOrderDto(items: List<OrderMenuItemDto>): OrderDto{
         specialRequest = this.specialRequest,
         orderType = this.orderType,
         orderItems = items,
-        code = this.code
+        code = this.code,
+        address = this.address,
+        instructions = this.instructions
     )
 }

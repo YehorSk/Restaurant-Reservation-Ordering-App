@@ -37,25 +37,43 @@ class OrderController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $total_price = $user->menuItems()->get()->sum('pivot.price');
-            $order = new Order();
-            $order->price = $total_price;
-            if($request->has("special_request")){
-                $order->special_request = $request->input("special_request");
-            }else{
-                $order->special_request = "";
+            $order = new Order([
+                'price' => $total_price,
+                'special_request' => $request->input('special_request', ''),
+                'order_type' =>  $request->input('order_type'),
+                'client_id' => $user->id,
+                'code' => $this->generate_code(),
+                'status' => 'Pending'
+            ]);
+            $order->save();
+            $items = $user->menuItems()->get();
+            foreach ($items as $item) {
+                $order->orderItems()->attach($item->id, [
+                    'quantity' => $item->pivot->quantity,
+                    'price' => $item->pivot->price,
+                ]);
+                $user->menuItems()->detach($item->id);
             }
-            $order->order_type = 1;
-            $order->client_id = $user->id;
-            $code = "";
-            while(true){
-                $code = $this->generate_code();
-                $check = Order::where('code', $code)->first();
-                if(!$check){
-                    break;
-                }
-            }
-            $order->status = "Pending";
-            $order->code = $code;
+            $order = Order::with('orderItems')->find($order->id);
+            return $this->success(data: [$order], message: "");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function makeUserDeliveryOrder(Request $request){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $total_price = $user->menuItems()->get()->sum('pivot.price');
+            $order = new Order([
+                'price' => $total_price,
+                'special_request' => $request->input('special_request', ''),
+                'order_type' =>  $request->input('order_type'),
+                'address' =>  $request->input('address'),
+                'instructions' =>  $request->input('instructions'),
+                'client_id' => $user->id,
+                'code' => $this->generate_code(),
+                'status' => 'Pending'
+            ]);
             $order->save();
             $items = $user->menuItems()->get();
             foreach ($items as $item) {
@@ -74,10 +92,14 @@ class OrderController extends Controller
     private function generate_code(): String
     {
         $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $code='';
-        for($i=0;$i<6;$i++){
-            $code .= $chars[rand(0, 35)];
-        }
+
+        do {
+            $code='';
+            for($i=0;$i<6;$i++){
+                $code .= $chars[rand(0, 35)];
+            }
+        } while (Order::where('code', $code)->exists());
+
         return $code;
     }
 
