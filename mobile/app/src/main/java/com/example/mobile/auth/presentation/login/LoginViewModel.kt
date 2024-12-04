@@ -34,11 +34,11 @@ class LoginViewModel @Inject constructor(
     init {
         viewModelScope.launch{
             isNetwork.collect{ available ->
+                Timber.tag("NetworkCheck").v("Network status: $available")
                 if (available == true){
                     authenticate()
                 }else{
                     checkIfLoggedIn()
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
                 }
             }
         }

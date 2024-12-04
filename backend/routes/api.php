@@ -81,6 +81,7 @@ Route::prefix("order")->controller(OrderController::class)->group(function (){
     Route::get('/user/cartItems','getUserCartItems');
     Route::get('/user/orders','getUserOrders');
     Route::post('/user/pickup','makeUserPickUpOrder');
+    Route::post('/user/delivery','makeUserDeliveryOrder');
 })->middleware('auth:sanctum');
 
 Route::prefix("favorite")->controller(FavoriteController::class)->group(function (){

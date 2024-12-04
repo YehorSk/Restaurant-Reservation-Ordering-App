@@ -42,6 +42,7 @@ fun ForgotPasswordScreen(
     SingleEventEffect(forgotViewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            SideEffect.NavigateToNextScreen -> {}
         }
     }
     LaunchedEffect(uiState.internetError) {

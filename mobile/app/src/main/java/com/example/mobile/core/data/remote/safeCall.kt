@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
-import java.nio.channels.UnresolvedAddressException
 import kotlin.coroutines.coroutineContext
 
 suspend inline fun <reified T> safeCall(

@@ -19,6 +19,7 @@ class Order extends Model
         'status',
         'special_request',
         'instructions',
+        'address',
         'order_type'
     ];
 

@@ -8,6 +8,7 @@ import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.core.utils.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -82,6 +83,34 @@ class CreateOrderViewModel @Inject constructor(
         }
     }
 
+    fun validateForm(): Boolean{
+        with(_uiState.value.orderForm){
+            return if(orderType == 0){
+                true
+            }else if(orderType == 1){
+                instructions.isNotBlank() && address.isNotBlank()
+            }else if(orderType == 2){
+                true
+            }else{
+                false
+            }
+        }
+    }
+
+    fun makeOrder(){
+        with(_uiState.value.orderForm){
+            if(orderType == 0){
+                makePickupOrder()
+            }else if(orderType == 1){
+                makeDeliveryOrder()
+            }else if(orderType == 2){
+                null
+            }else{
+                null
+            }
+        }
+    }
+
     fun getUserOrderItems(){
         Timber.d("getUserOrderItems")
         viewModelScope.launch{
@@ -90,11 +119,7 @@ class CreateOrderViewModel @Inject constructor(
                     val result = orderRepositoryImpl.getUserOrderItems()
                     when(result){
                         is NetworkResult.Error ->{
-                            if(result.code == 503){
-                                _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                            }else{
-                                _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                            }
+                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                         }
                         is NetworkResult.Success ->{
                             _uiState.update {
@@ -117,14 +142,33 @@ class CreateOrderViewModel @Inject constructor(
                     val result = orderRepositoryImpl.makeUserPickUpOrder(uiState.value.orderForm)
                     when(result){
                         is NetworkResult.Error ->{
-                            if(result.code == 503){
-                                _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                            }else{
-                                _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                            }
+                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                         }
                         is NetworkResult.Success ->{
                             _sideEffectChannel.send(SideEffect.ShowToast("Pickup order was created"))
+                            _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                        }
+                    }
+                } else {
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                }
+            }
+        }
+    }
+
+    fun makeDeliveryOrder(){
+        Timber.d("makeDeliveryOrder")
+        viewModelScope.launch{
+            isNetwork.collect{ available ->
+                if(available){
+                    val result = orderRepositoryImpl.makeUserDeliveryOrder(uiState.value.orderForm)
+                    when(result){
+                        is NetworkResult.Error ->{
+                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                        }
+                        is NetworkResult.Success ->{
+                            _sideEffectChannel.send(SideEffect.ShowToast("Delivery order was created"))
+
                         }
                     }
                 } else {

@@ -76,6 +76,13 @@ fun ClientNavGraph(
                             inclusive = true
                         }
                     }
+                },
+                onGoToOrders = {
+                    navController.navigate(ClientScreen.Orders.route){
+                        popUpTo(ClientScreen.Orders.route){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }

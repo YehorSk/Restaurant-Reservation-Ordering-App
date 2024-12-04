@@ -52,6 +52,7 @@ fun CreateOrderScreen(
     modifier: Modifier = Modifier,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
+    onGoToOrders: () -> Unit
 ){
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -66,6 +67,7 @@ fun CreateOrderScreen(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            SideEffect.NavigateToNextScreen -> onGoToOrders()
         }
     }
     if(uiState.value.items != null){
@@ -126,12 +128,9 @@ fun CreateOrderScreen(
                             bottom = 10.dp
                         )
                         .fillMaxWidth(),
+                    enabled = viewModel.validateForm(),
                     onClick = {
-                        if(uiState.value.orderForm.orderType==0){
-                            viewModel.makePickupOrder()
-                        }else{
-                            println("")
-                        }
+                        viewModel.makeOrder()
                     }
                 ) {
                     Text(
@@ -165,7 +164,8 @@ fun CreateOrderScreenPreview(
     MobileTheme {
         CreateOrderScreen(
             onGoToMenu = {},
-            onGoToCart = {}
+            onGoToCart = {},
+            onGoToOrders = {}
         )
     }
 }

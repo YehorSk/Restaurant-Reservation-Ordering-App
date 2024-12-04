@@ -19,4 +19,7 @@ interface OrderService {
     @POST("order/user/pickup")
     suspend fun makeUserPickUpOrder(@Body orderForm: OrderForm) : ResponseDto<OrderDto>
 
+    @POST("order/user/delivery")
+    suspend fun makeUserDeliveryOrder(@Body orderForm: OrderForm) : ResponseDto<OrderDto>
+
 }

@@ -48,6 +48,9 @@ fun MenuScreen(
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
             is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            SideEffect.NavigateToNextScreen -> {
+
+            }
         }
     }
 

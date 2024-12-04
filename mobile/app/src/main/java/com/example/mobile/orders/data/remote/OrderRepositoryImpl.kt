@@ -117,4 +117,17 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun makeUserDeliveryOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
+        Timber.d("Order makeUserDeliveryOrder")
+        return safeCall<OrderDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                orderService.makeUserDeliveryOrder(orderForm)
+            },
+            onSuccess = {
+                orderDao.deleteAllCartItems()
+            }
+        )
+    }
+
 }
