@@ -21,13 +21,7 @@ open class BaseAuthViewModel @Inject constructor(
     val networkConnectivityObserver: ConnectivityObserver,
 ) : ViewModel(){
 
-    val isNetwork = networkConnectivityObserver
-        .observe()
-        .stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000L),
-        false
-    )
+    val isNetwork = networkConnectivityObserver.observe()
 
     val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>

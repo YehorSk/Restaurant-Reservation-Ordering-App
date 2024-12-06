@@ -145,7 +145,7 @@ class CreateOrderViewModel @Inject constructor(
                         }
                         is NetworkResult.Success ->{
                             _sideEffectChannel.send(SideEffect.ShowToast("Delivery order was created"))
-
+                            _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                         }
                     }
                 } else {

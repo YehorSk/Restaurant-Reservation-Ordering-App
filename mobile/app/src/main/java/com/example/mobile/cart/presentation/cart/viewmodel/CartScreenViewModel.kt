@@ -138,11 +138,7 @@ class CartScreenViewModel @Inject constructor(
         viewModelScope.launch {
             when(val result = cartRepositoryImpl.updateUserCartItem(_uiState.value.cartForm)){
                 is NetworkResult.Error -> {
-                    if(result.code == 503){
-                        _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                    }else{
-                        _sideEffectChannel.send(SideEffect.ShowToast("Unknown error"))
-                    }
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
                 }
                 is NetworkResult.Success -> {
                     _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
@@ -156,11 +152,7 @@ class CartScreenViewModel @Inject constructor(
         viewModelScope.launch {
             when(val result = cartRepositoryImpl.deleteUserCartItem(_uiState.value.cartForm)){
                 is NetworkResult.Error -> {
-                    if(result.code == 503){
-                        _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!", code = 503))
-                    }else{
-                        _sideEffectChannel.send(SideEffect.ShowToast("Unknown error", code = 400))
-                    }
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
                 }
                 is NetworkResult.Success -> {
                     _sideEffectChannel.send(SideEffect.ShowToast(result.message?:"", code = 200))

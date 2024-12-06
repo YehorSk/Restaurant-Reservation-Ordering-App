@@ -14,42 +14,26 @@ suspend inline fun <reified T> safeCall(
     execute: () -> ResponseDto<T>,
     onSuccess: (List<T>) -> Unit = {},
     onFailure: () -> Unit = {}
-): NetworkResult<List<T>>{
-    if(!isOnlineFlow.first()){
+): NetworkResult<List<T>> {
+    if (!isOnlineFlow.first()) {
         return NetworkResult.Error(code = 503, message = "No internet connection!")
     }
-    val response = try{
-        execute()
-    }catch (e: SerializationException){
-        return NetworkResult.Error(message = "NetworkError.SERIALIZATION_ERROR")
-    }catch (e: Exception){
-        coroutineContext.ensureActive()
-        return NetworkResult.Error(message = "NetworkError.UNKNOWN")
-    }
-    return responseToResult(
-        isOnlineFlow = isOnlineFlow,
-        response = response,
-        onFailure = onFailure,
-        onSuccess = onSuccess
-    )
-}
 
-suspend inline fun<reified T> responseToResult(
-    isOnlineFlow: StateFlow<Boolean>,
-    response: ResponseDto<T>,
-    onSuccess: (List<T>) -> Unit = {},
-    onFailure: () -> Unit = {}
-): NetworkResult<List<T>>{
     return try {
+        val response = execute()
         onSuccess(response.data!!)
         NetworkResult.Success(data = response.data, message = response.message)
+    } catch (e: SerializationException) {
+        NetworkResult.Error(message = "We encountered an issue while processing your request. Please try again later.")
     } catch (e: HttpException) {
         onFailure()
         when (e.code()) {
-            401 -> NetworkResult.Error(code = 401, message = "No User")
-            408 -> NetworkResult.Error(code = 408, message = "Request Timeout")
-            else -> NetworkResult.Error(code = 520, message = e.message())
+            401 -> NetworkResult.Error(code = 401, message = "You are not authorized. Please log in again.")
+            408 -> NetworkResult.Error(code = 408, message = "The request timed out. Please try again.")
+            else -> NetworkResult.Error(code = e.code(), message = "HTTP error: ${e.message()}. Please try again later.")
         }
+    } catch (e: Exception) {
+        coroutineContext.ensureActive()
+        NetworkResult.Error(message = "An unknown error occurred. Please try again.")
     }
-
 }

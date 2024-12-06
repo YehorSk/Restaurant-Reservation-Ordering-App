@@ -8,6 +8,7 @@ import com.example.mobile.auth.presentation.BaseAuthViewModel
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.utils.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -34,10 +35,12 @@ class LoginViewModel @Inject constructor(
     init {
         viewModelScope.launch{
             isNetwork.collect{ available ->
-                Timber.tag("NetworkCheck").v("Network status: $available")
+                Timber.tag("NetworkCheck 1").v("Network status: $available")
                 if (available == true){
+                    Timber.tag("NetworkCheck 2").v("Network status: $available")
                     authenticate()
                 }else{
+                    Timber.tag("NetworkCheck 3").v("Network status: $available")
                     checkIfLoggedIn()
                 }
             }
@@ -56,7 +59,7 @@ class LoginViewModel @Inject constructor(
     private fun checkIfLoggedIn(){
         viewModelScope.launch {
             preferencesRepository.jwtTokenFlow.collect { token ->
-                Timber.tag("Check ").v("Token received: $token")
+                Timber.tag("NetworkCheck ").v("checkIfLoggedIn Token received: $token")
                 val isLoggedIn = token != null
                 Timber.tag("Check ").v(isLoggedIn.toString())
                 _uiState.update { currentState ->
@@ -73,6 +76,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun authenticate(){
+        Timber.tag("NetworkCheck 2-1").v("authenticate")
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
@@ -81,8 +85,10 @@ class LoginViewModel @Inject constructor(
             }
             val result = authRepository.authenticate()
             _uiState.update { currentState ->
+                Timber.tag("NetworkCheck 2-1").v("result $result")
                 when(result){
                     is AuthResult.Authorized -> {
+                        Timber.tag("NetworkCheck 2-1").v("Authorized")
                         result.data?.let { preferencesRepository.saveUser(it) }
                         currentState.copy(
                             isLoading = false,
@@ -90,6 +96,7 @@ class LoginViewModel @Inject constructor(
                         )
                     }
                     is AuthResult.Unauthorized -> {
+                        Timber.tag("NetworkCheck 2-1").v("Unauthorized")
                         preferencesRepository.clearAllTokens()
                         currentState.copy(
                             isLoading = false,
@@ -97,6 +104,7 @@ class LoginViewModel @Inject constructor(
                         )
                     }
                     is AuthResult.UnknownError -> {
+                        Timber.tag("NetworkCheck 2-1").v("UnknownError")
                         currentState.copy(
                             isLoading = false,
                             isLoggedIn = false

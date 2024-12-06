@@ -16,6 +16,9 @@ interface OrderService {
     @GET("order/user/orders")
     suspend fun getUserOrders() : ResponseDto<OrderDto>
 
+    @GET("order/user/orders/:id")
+    suspend fun getUserOrderDetails(id: String) : ResponseDto<OrderDto>
+
     @POST("order/user/pickup")
     suspend fun makeUserPickUpOrder(@Body orderForm: OrderForm) : ResponseDto<OrderDto>
 

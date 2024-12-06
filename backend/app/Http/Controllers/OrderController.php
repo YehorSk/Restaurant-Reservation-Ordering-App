@@ -33,6 +33,18 @@ class OrderController extends Controller
         return $this->error('', 'No user', 401);
     }
 
+    public function getUserOrderDetails($id){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $order = $user->orders()->find($id);
+            if ($order) {
+                return $this->success(data: $order, message: "Order retrieved successfully.");
+            }
+            return $this->error('', 'Order not found', 404);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     public function makeUserPickUpOrder(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){

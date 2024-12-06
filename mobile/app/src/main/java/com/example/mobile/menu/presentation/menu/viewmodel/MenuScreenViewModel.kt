@@ -84,20 +84,12 @@ class MenuScreenViewModel @Inject constructor(
     fun addUserCartItem(){
         viewModelScope.launch {
             setLoadingState(true)
-            _uiState.update { state ->
-                when(val result = cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)){
-                    is NetworkResult.Error -> {
-                        if(result.code == 503){
-                            _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                            state.copy()
-                        }else{
-                            state.copy()
-                        }
-                    }
-                    is NetworkResult.Success -> {
-                        _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
-                        state.copy()
-                    }
+            when(val result = cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)){
+                is NetworkResult.Error -> {
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
+                }
+                is NetworkResult.Success -> {
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
                 }
             }
             setLoadingState(false)
@@ -127,7 +119,7 @@ class MenuScreenViewModel @Inject constructor(
             setLoadingState(true)
             when(val result = menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenu!!.id.toString())){
                 is NetworkResult.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
                 }
                 is NetworkResult.Success -> {
                     _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
