@@ -88,7 +88,14 @@ fun ClientNavGraph(
         }
         composable(ClientScreen.OrderDetails.route){
             OrderDetailsScreen(
-
+                modifier = modifier,
+                onGoToOrders = {
+                    navController.navigate(ClientScreen.Orders.route){
+                        popUpTo(ClientScreen.Orders.route){
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
         composable(ClientScreen.Favorites.route) {

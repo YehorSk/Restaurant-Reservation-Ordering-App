@@ -18,7 +18,6 @@ suspend inline fun <reified T> safeCall(
     if (!isOnlineFlow.first()) {
         return NetworkResult.Error(code = 503, message = "No internet connection!")
     }
-
     return try {
         val response = execute()
         onSuccess(response.data!!)

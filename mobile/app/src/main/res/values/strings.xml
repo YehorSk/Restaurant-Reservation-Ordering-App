@@ -19,4 +19,5 @@
     <string name="required_fields">*Required fields</string>
     <string name="delivery_address">123 Main St, Apt 4B</string>
     <string name="instructions_for_the_courier">Instructions for the courier</string>
+    <string name="go_back">Go Back</string>
 </resources>
