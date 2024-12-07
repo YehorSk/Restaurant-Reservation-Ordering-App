@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,6 +33,15 @@ class OrdersViewModel @Inject constructor(
 
     init {
         getUserOrders()
+    }
+
+    fun setCurrentOrder(order: OrderEntity){
+        _uiState.update {
+            it.copy(
+                selectedItem = order
+            )
+        }
+        Timber.d("setCurrentOrder ${_uiState.value.selectedItem}")
     }
 
     fun getUserOrders(){

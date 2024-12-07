@@ -30,6 +30,7 @@ fun OrderListItem(
     modifier: Modifier = Modifier,
     orderEntity: OrderEntity,
     onGoToOrderDetails: () -> Unit,
+    onOrderClick: (OrderEntity) -> Unit
 ){
     val contentColor = if(isSystemInDarkTheme()){
         Color.White
@@ -41,6 +42,7 @@ fun OrderListItem(
             .height(120.dp)
             .fillMaxWidth()
             .clickable {
+                onOrderClick(orderEntity)
                 onGoToOrderDetails()
             }
     ){
@@ -99,7 +101,8 @@ fun OrderItemPreview(){
     MobileTheme {
         OrderListItem(
             orderEntity = fakeOrder,
-            onGoToOrderDetails = {}
+            onGoToOrderDetails = {},
+            onOrderClick = {}
         )
     }
 }

@@ -12,6 +12,8 @@ interface OrderRepository {
 
     suspend fun getUserOrders() : NetworkResult<List<OrderDto>>
 
+    suspend fun getUserOrderDetails(id: String) : NetworkResult<List<OrderDto>>
+
     suspend fun makeUserPickUpOrder(orderForm: OrderForm) : NetworkResult<List<OrderDto>>
 
     suspend fun makeUserDeliveryOrder(orderForm: OrderForm) : NetworkResult<List<OrderDto>>

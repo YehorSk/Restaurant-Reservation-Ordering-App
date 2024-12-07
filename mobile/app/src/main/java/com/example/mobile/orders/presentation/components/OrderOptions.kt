@@ -69,7 +69,7 @@ fun OrderOptions(
                         top = 15.dp,
                         bottom = 10.dp
                     ),
-                text = "Order Preferences",
+                text = stringResource(R.string.order_preferences),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -104,7 +104,7 @@ fun OrderRadioOption(
         modifier = modifier
             .fillMaxWidth()
             .height(60.dp)
-            .clickable{
+            .clickable {
                 onSelect(option)
             }
         ,

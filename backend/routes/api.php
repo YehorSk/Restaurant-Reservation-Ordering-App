@@ -80,7 +80,7 @@ Route::prefix("cart")->controller(CartController::class)->group(function (){
 Route::prefix("order")->controller(OrderController::class)->group(function (){
     Route::get('/user/cartItems','getUserCartItems');
     Route::get('/user/orders','getUserOrders');
-    Route::get('/user/orders/{id}','getUserOrders');
+    Route::get('/user/orders/{id}','getUserOrderDetails');
     Route::post('/user/pickup','makeUserPickUpOrder');
     Route::post('/user/delivery','makeUserDeliveryOrder');
 })->middleware('auth:sanctum');

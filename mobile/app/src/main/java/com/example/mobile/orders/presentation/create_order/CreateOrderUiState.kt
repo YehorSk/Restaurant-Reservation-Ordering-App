@@ -8,7 +8,8 @@ import kotlinx.serialization.Serializable
 data class CreateOrderUiState(
     val items: List<OrderMenuItemDto>? = null,
     val selectedItem: OrderEntity? = null,
-    val orderForm: OrderForm = OrderForm()
+    val orderForm: OrderForm = OrderForm(),
+    val isLoading: Boolean = false
 )
 
 @Serializable

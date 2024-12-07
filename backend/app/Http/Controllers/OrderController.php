@@ -36,7 +36,7 @@ class OrderController extends Controller
     public function getUserOrderDetails($id){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $order = $user->orders()->find($id);
+            $order = $user->orders()->with('orderItems')->find($id);
             if ($order) {
                 return $this->success(data: $order, message: "Order retrieved successfully.");
             }

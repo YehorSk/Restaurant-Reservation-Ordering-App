@@ -20,6 +20,7 @@ import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.CreateOrderScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreen
 import com.example.mobile.orders.presentation.orders.viewmodel.OrdersViewModel
+import kotlinx.serialization.Serializable
 
 @Composable
 fun ClientNavGraph(

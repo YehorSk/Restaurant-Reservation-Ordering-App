@@ -18,6 +18,7 @@ fun OrdersList(
     modifier: Modifier = Modifier,
     orders: List<OrderEntity>,
     onGoToOrderDetails: () -> Unit,
+    onOrderClick: (OrderEntity) -> Unit
 ){
 
     LazyColumn(
@@ -28,7 +29,8 @@ fun OrdersList(
         items(orders){ order ->
             OrderListItem(
                 orderEntity = order,
-                onGoToOrderDetails = onGoToOrderDetails
+                onGoToOrderDetails = onGoToOrderDetails,
+                onOrderClick = { onOrderClick(it) }
             )
             HorizontalDivider()
         }

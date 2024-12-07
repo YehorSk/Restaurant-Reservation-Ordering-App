@@ -104,6 +104,23 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getUserOrderDetails(id: String): NetworkResult<List<OrderDto>> {
+        Timber.d("Order getUserOrderDetails $id")
+        return safeCall<OrderDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                orderService.getUserOrderDetails(id)
+            },
+            onSuccess = { data ->
+                orderDao.insertOrder(data.first().toOrderEntity())
+                orderDao.insertOrderItems(data.first().orderItems.map {
+                    it.toOrderMenuItemEntity()
+                })
+            }
+        )
+    }
+
+
     override suspend fun makeUserPickUpOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
         Timber.d("Order makeUserPickUpOrder")
         return safeCall<OrderDto>(

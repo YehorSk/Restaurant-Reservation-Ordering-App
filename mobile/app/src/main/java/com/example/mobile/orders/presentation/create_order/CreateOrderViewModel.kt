@@ -5,6 +5,7 @@ import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update

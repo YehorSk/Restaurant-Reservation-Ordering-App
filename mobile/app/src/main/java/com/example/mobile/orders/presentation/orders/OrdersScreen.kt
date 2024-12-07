@@ -38,7 +38,8 @@ fun OrdersScreen(
     ) {
         OrdersList(
             orders = orders,
-            onGoToOrderDetails = onGoToOrderDetails
+            onGoToOrderDetails = onGoToOrderDetails,
+            onOrderClick = { viewModel.setCurrentOrder(it) }
         )
     }
 
