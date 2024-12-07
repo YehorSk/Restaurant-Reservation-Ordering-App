@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreen
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.menu.presentation.menu.MenuScreen
@@ -17,6 +18,7 @@ import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
+import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.orders.presentation.create_order.CreateOrderScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreen
 import com.example.mobile.orders.presentation.orders.viewmodel.OrdersViewModel
@@ -56,8 +58,8 @@ fun ClientNavGraph(
         composable(ClientScreen.Orders.route) {
             OrdersScreen(
                 modifier = modifier,
-                onGoToOrderDetails = {
-                    navController.navigate(ClientScreen.OrderDetails.route)
+                onGoToOrderDetails = { id ->
+                    navController.navigate(ClientScreen.OrderDetails(id))
                 }
             )
         }
@@ -87,7 +89,8 @@ fun ClientNavGraph(
                 }
             )
         }
-        composable(ClientScreen.OrderDetails.route){
+        composable<ClientScreen.OrderDetails>{
+            val args = it.toRoute<ClientScreen.OrderDetails>()
             OrderDetailsScreen(
                 modifier = modifier,
                 onGoToOrders = {
@@ -96,7 +99,8 @@ fun ClientNavGraph(
                             inclusive = true
                         }
                     }
-                }
+                },
+                id = args.id
             )
         }
         composable(ClientScreen.Favorites.route) {
@@ -140,13 +144,14 @@ fun ClientNavGraph(
     }
 }
 
-
+@Serializable
 sealed class ClientScreen(val route: String){
     data object Home: ClientScreen(route = "HOME")
     data object Cart: ClientScreen(route = "CART")
     data object Orders: ClientScreen(route = "ORDERS")
     data object CreateOrder: ClientScreen(route = "CREATE_ORDER")
-    data object OrderDetails: ClientScreen(route = "ORDER_DETAILS")
+    @Serializable
+    data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")
     data object Settings: ClientScreen(route = "SETTINGS")
     data object Favorites: ClientScreen(route = "FAVORITES")
     data object Search: ClientScreen(route = "SEARCH")

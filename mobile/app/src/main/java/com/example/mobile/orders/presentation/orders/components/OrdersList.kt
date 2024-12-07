@@ -17,7 +17,7 @@ import androidx.compose.material3.HorizontalDivider
 fun OrdersList(
     modifier: Modifier = Modifier,
     orders: List<OrderEntity>,
-    onGoToOrderDetails: () -> Unit,
+    onGoToOrderDetails: (Int) -> Unit,
     onOrderClick: (OrderEntity) -> Unit
 ){
 
@@ -29,7 +29,7 @@ fun OrdersList(
         items(orders){ order ->
             OrderListItem(
                 orderEntity = order,
-                onGoToOrderDetails = onGoToOrderDetails,
+                onGoToOrderDetails = { onGoToOrderDetails(it) },
                 onOrderClick = { onOrderClick(it) }
             )
             HorizontalDivider()

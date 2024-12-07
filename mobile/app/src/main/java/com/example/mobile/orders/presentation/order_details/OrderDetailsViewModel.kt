@@ -19,7 +19,7 @@ class OrderDetailsViewModel @Inject constructor(
     orderRepositoryImpl: OrderRepositoryImpl
 ): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl){
 
-    fun getOrderDetails(){
+    fun getOrderDetails(id: String){
         Timber.d("getOrderDetails ${_uiState.value.selectedItem}")
         viewModelScope.launch{
             isNetwork.collect{ available ->
@@ -27,13 +27,13 @@ class OrderDetailsViewModel @Inject constructor(
                     it.copy(isLoading = true)
                 }
                 if(available){
-                    val result = orderRepositoryImpl.getUserOrderDetails(_uiState.value.selectedItem!!.id)
+                    val result = orderRepositoryImpl.getUserOrderDetails(id)
+                    Timber.tag("Result Details: ${result}")
                     when(result){
                         is NetworkResult.Error ->{
                             _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                         }
                         is NetworkResult.Success ->{
-                            Timber.tag("Result Details: ${result.data}")
                             _uiState.update {
                                 it.copy(selectedItem = result.data.first().toOrderEntity())
                             }

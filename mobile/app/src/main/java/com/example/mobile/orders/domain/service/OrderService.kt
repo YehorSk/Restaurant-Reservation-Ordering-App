@@ -7,6 +7,7 @@ import com.example.mobile.orders.presentation.create_order.OrderForm
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface OrderService {
 
@@ -16,8 +17,8 @@ interface OrderService {
     @GET("order/user/orders")
     suspend fun getUserOrders() : ResponseDto<OrderDto>
 
-    @GET("order/user/orders/:id")
-    suspend fun getUserOrderDetails(id: String) : ResponseDto<OrderDto>
+    @GET("order/user/orders/{id}")
+    suspend fun getUserOrderDetails(@Path("id") id: String) : ResponseDto<OrderDto>
 
     @POST("order/user/pickup")
     suspend fun makeUserPickUpOrder(@Body orderForm: OrderForm) : ResponseDto<OrderDto>

@@ -38,7 +38,7 @@ class OrderController extends Controller
         if($user instanceof User){
             $order = $user->orders()->with('orderItems')->find($id);
             if ($order) {
-                return $this->success(data: $order, message: "Order retrieved successfully.");
+                return $this->success(data: [$order], message: "Order retrieved successfully.");
             }
             return $this->error('', 'Order not found', 404);
         }

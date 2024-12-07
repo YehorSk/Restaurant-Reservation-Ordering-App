@@ -17,12 +17,13 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.orders.presentation.orders.viewmodel.OrdersViewModel
 import androidx.compose.runtime.getValue
+import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.orders.presentation.orders.components.OrdersList
 
 @Composable
 fun OrdersScreen(
     modifier:Modifier = Modifier,
-    onGoToOrderDetails: () -> Unit,
+    onGoToOrderDetails: (Int) -> Unit,
     viewModel: OrdersViewModel = hiltViewModel()
 ){
 
@@ -38,7 +39,7 @@ fun OrdersScreen(
     ) {
         OrdersList(
             orders = orders,
-            onGoToOrderDetails = onGoToOrderDetails,
+            onGoToOrderDetails = { onGoToOrderDetails(it) },
             onOrderClick = { viewModel.setCurrentOrder(it) }
         )
     }

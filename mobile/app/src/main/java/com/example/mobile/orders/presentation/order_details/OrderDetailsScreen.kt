@@ -33,12 +33,14 @@ import com.example.mobile.orders.presentation.order_details.components.OrderStat
 import com.example.mobile.ui.theme.MobileTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import com.example.mobile.orders.data.db.model.OrderEntity
 
 @Composable
 fun OrderDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: OrderDetailsViewModel = hiltViewModel(),
-    onGoToOrders: () -> Unit
+    onGoToOrders: () -> Unit,
+    id: Int
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
@@ -53,7 +55,7 @@ fun OrderDetailsScreen(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getOrderDetails()
+        viewModel.getOrderDetails(id.toString())
     }
 
     val fakeItems = listOf(
@@ -212,7 +214,8 @@ fun OrderDetailsScreen(
 fun OrderDetailsScreenPreview(){
     MobileTheme {
         OrderDetailsScreen(
-            onGoToOrders = {}
+            onGoToOrders = {},
+            id = 1
         )
     }
 }
