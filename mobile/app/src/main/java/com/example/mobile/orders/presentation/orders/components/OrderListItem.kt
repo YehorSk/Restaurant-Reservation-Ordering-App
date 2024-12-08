@@ -29,8 +29,7 @@ import java.text.SimpleDateFormat
 fun OrderListItem(
     modifier: Modifier = Modifier,
     orderEntity: OrderEntity,
-    onGoToOrderDetails: (Int) -> Unit,
-    onOrderClick: (OrderEntity) -> Unit
+    onGoToOrderDetails: (Int) -> Unit
 ){
     val contentColor = if(isSystemInDarkTheme()){
         Color.White
@@ -42,7 +41,6 @@ fun OrderListItem(
             .height(120.dp)
             .fillMaxWidth()
             .clickable {
-                onOrderClick(orderEntity)
                 onGoToOrderDetails(orderEntity.id.toInt())
             }
     ){
@@ -101,8 +99,7 @@ fun OrderItemPreview(){
     MobileTheme {
         OrderListItem(
             orderEntity = fakeOrder,
-            onGoToOrderDetails = {},
-            onOrderClick = {}
+            onGoToOrderDetails = {}
         )
     }
 }

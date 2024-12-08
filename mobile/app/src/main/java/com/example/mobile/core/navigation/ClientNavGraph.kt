@@ -18,10 +18,8 @@ import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
-import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.orders.presentation.create_order.CreateOrderScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreen
-import com.example.mobile.orders.presentation.orders.viewmodel.OrdersViewModel
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -32,6 +30,7 @@ fun ClientNavGraph(
 ){
     val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
     val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
+    val ordersScreenViewModel: CartScreenViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,

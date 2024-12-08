@@ -8,6 +8,7 @@ import com.example.mobile.auth.presentation.BaseAuthViewModel
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.utils.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -33,7 +34,7 @@ class LoginViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     init {
-        viewModelScope.launch{
+        viewModelScope.launch(Dispatchers.Main){
             isNetwork.collect{ available ->
                 Timber.tag("NetworkCheck 1").v("Network status: $available")
                 if (available == true){

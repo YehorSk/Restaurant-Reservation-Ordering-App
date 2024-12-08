@@ -1,4 +1,4 @@
-package com.example.mobile.orders.presentation.orders.viewmodel
+package com.example.mobile.orders.presentation.orders
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.data.remote.dto.NetworkResult
@@ -12,7 +12,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -22,7 +21,7 @@ class OrdersViewModel @Inject constructor(
         networkConnectivityObserver: ConnectivityObserver,
         orderRepositoryImpl: OrderRepositoryImpl,
         orderDao: OrderDao
-    ): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl){
+    ): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao){
 
     val orderItemsUiState: StateFlow<List<OrderEntity>> = orderDao.getUserOrders()
         .stateIn(
@@ -33,15 +32,6 @@ class OrdersViewModel @Inject constructor(
 
     init {
         getUserOrders()
-    }
-
-    fun setCurrentOrder(order: OrderEntity){
-        _uiState.update {
-            it.copy(
-                selectedItem = order
-            )
-        }
-        Timber.d("setCurrentOrder ${_uiState.value.selectedItem}")
     }
 
     fun getUserOrders(){
@@ -59,8 +49,6 @@ class OrdersViewModel @Inject constructor(
                             }
                         }
                         is NetworkResult.Success -> {
-                            Timber.d("Result: ${result.data}")
-                            _sideEffectChannel.send(SideEffect.ShowToast("Your orders are here"))
                         }
                     }
                 }else{

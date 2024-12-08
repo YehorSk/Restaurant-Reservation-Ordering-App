@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface OrderDao {
 
-    @Query("SELECT * FROM order_table")
+    @Query("SELECT * FROM order_table ORDER BY created_at DESC")
     fun getUserOrders(): Flow<List<OrderEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -56,6 +56,10 @@ interface OrderDao {
     fun getOrderWithOrderItems(): Flow<List<OrderWithOrderItems>>
 
     @Transaction
-    @Query("SELECT * FROM order_table")
+    @Query("SELECT * FROM order_table WHERE id = :id")
+    fun getOrderWithOrderItemsById(id: String): Flow<OrderWithOrderItems>
+
+    @Transaction
+    @Query("SELECT * FROM order_table ORDER BY created_at DESC")
     fun getOrderWithOrderItemsOnce(): List<OrderWithOrderItems>
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mobile.core.utils.formatDateTime
 import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
@@ -36,7 +37,7 @@ fun OrderStatus(
                         start = 20.dp,
                         top = 15.dp
                     ),
-                    text = "Order $code",
+                    text = "Order #$code",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -63,7 +64,7 @@ fun OrderStatus(
                         top = 15.dp,
                         bottom = 10.dp
                     ),
-                    text = date,
+                    text = formatDateTime(date),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )

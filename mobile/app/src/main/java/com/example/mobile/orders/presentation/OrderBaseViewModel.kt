@@ -12,17 +12,31 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.menu.data.db.model.MenuWithMenuItems
+import com.example.mobile.orders.data.dao.OrderDao
+import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 open class OrderBaseViewModel @Inject constructor(
     val networkConnectivityObserver: ConnectivityObserver,
-    val orderRepositoryImpl: OrderRepositoryImpl
+    val orderRepositoryImpl: OrderRepositoryImpl,
+    val orderDao: OrderDao
 ): ViewModel(){
 
     protected val _uiState = MutableStateFlow(CreateOrderUiState())
     val uiState = _uiState.asStateFlow()
+
+    val ordersUiState: StateFlow<List<OrderWithOrderItems>> = orderDao.getOrderWithOrderItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = listOf()
+        )
 
     val isNetwork = networkConnectivityObserver.observe()
 

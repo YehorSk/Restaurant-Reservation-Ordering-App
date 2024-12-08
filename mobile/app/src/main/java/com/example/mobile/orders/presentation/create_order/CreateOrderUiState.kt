@@ -1,13 +1,13 @@
 package com.example.mobile.orders.presentation.create_order
 
 import com.example.mobile.orders.data.db.model.OrderEntity
+import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 data class CreateOrderUiState(
     val items: List<OrderMenuItemDto>? = null,
-    val selectedItem: OrderEntity? = null,
     val orderForm: OrderForm = OrderForm(),
     val isLoading: Boolean = false
 )

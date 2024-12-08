@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.orders.data.remote.dto.toOrderEntity
 import com.example.mobile.orders.presentation.OrderBaseViewModel
@@ -16,11 +17,11 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
-    orderRepositoryImpl: OrderRepositoryImpl
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl){
+    orderRepositoryImpl: OrderRepositoryImpl,
+    orderDao: OrderDao
+): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao){
 
     fun getOrderDetails(id: String){
-        Timber.d("getOrderDetails ${_uiState.value.selectedItem}")
         viewModelScope.launch{
             isNetwork.collect{ available ->
                 _uiState.update {
@@ -34,9 +35,6 @@ class OrderDetailsViewModel @Inject constructor(
                             _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                         }
                         is NetworkResult.Success ->{
-                            _uiState.update {
-                                it.copy(selectedItem = result.data.first().toOrderEntity())
-                            }
                         }
                     }
                 } else {

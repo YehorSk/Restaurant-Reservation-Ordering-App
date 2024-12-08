@@ -17,8 +17,7 @@ import androidx.compose.material3.HorizontalDivider
 fun OrdersList(
     modifier: Modifier = Modifier,
     orders: List<OrderEntity>,
-    onGoToOrderDetails: (Int) -> Unit,
-    onOrderClick: (OrderEntity) -> Unit
+    onGoToOrderDetails: (Int) -> Unit
 ){
 
     LazyColumn(
@@ -29,8 +28,7 @@ fun OrdersList(
         items(orders){ order ->
             OrderListItem(
                 orderEntity = order,
-                onGoToOrderDetails = { onGoToOrderDetails(it) },
-                onOrderClick = { onOrderClick(it) }
+                onGoToOrderDetails = { onGoToOrderDetails(it) }
             )
             HorizontalDivider()
         }

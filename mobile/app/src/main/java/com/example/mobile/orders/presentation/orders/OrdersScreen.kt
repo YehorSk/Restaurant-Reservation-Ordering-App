@@ -1,23 +1,19 @@
 package com.example.mobile.orders.presentation.orders
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.mobile.orders.presentation.orders.viewmodel.OrdersViewModel
 import androidx.compose.runtime.getValue
-import com.example.mobile.orders.data.db.model.OrderEntity
+import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.orders.presentation.orders.components.OrdersList
 
 @Composable
@@ -32,6 +28,13 @@ fun OrdersScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val orders by viewModel.orderItemsUiState.collectAsStateWithLifecycle()
 
+    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+        when(sideEffect){
+            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            SideEffect.NavigateToNextScreen -> {}
+        }
+    }
+
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -39,8 +42,7 @@ fun OrdersScreen(
     ) {
         OrdersList(
             orders = orders,
-            onGoToOrderDetails = { onGoToOrderDetails(it) },
-            onOrderClick = { viewModel.setCurrentOrder(it) }
+            onGoToOrderDetails = { onGoToOrderDetails(it) }
         )
     }
 
