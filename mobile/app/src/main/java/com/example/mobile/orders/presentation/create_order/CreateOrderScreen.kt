@@ -52,7 +52,8 @@ fun CreateOrderScreen(
     modifier: Modifier = Modifier,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
-    onGoToOrders: () -> Unit
+    onGoToOrders: () -> Unit,
+    onGoToMakeReservation: () -> Unit
 ){
 
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
@@ -130,7 +131,11 @@ fun CreateOrderScreen(
                         .fillMaxWidth(),
                     enabled = viewModel.validateForm(),
                     onClick = {
-                        viewModel.makeOrder()
+                        if (uiState.value.orderForm.orderType==2){
+                            onGoToMakeReservation()
+                        }else{
+                            viewModel.makeOrder()
+                        }
                     }
                 ) {
                     Text(
@@ -165,7 +170,8 @@ fun CreateOrderScreenPreview(
         CreateOrderScreen(
             onGoToMenu = {},
             onGoToCart = {},
-            onGoToOrders = {}
+            onGoToOrders = {},
+            onGoToMakeReservation = {}
         )
     }
 }

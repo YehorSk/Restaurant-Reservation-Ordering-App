@@ -47,4 +47,16 @@ class OrderDetailsViewModel @Inject constructor(
         }
     }
 
+    fun repeatOrder(){
+        viewModelScope.launch{
+
+        }
+    }
+
+    fun deleteOrder(){
+        viewModelScope.launch{
+
+        }
+    }
+
 }

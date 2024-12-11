@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">PLATEA</string>
     <string name="retry">Retry</string>
+    <string name="operation_success">Action completed successfully!</string>
+    <string name="operation_failed">Please try again.</string>
     <string name="loading">Loading</string>
     <string name="loading_failed">Failed to load</string>
     <string name="UPDATE">Update</string>
@@ -22,4 +24,7 @@
     <string name="order_preferences">Order Preferences</string>
     <string name="go_back">Go Back</string>
     <string name="delivery_details">Delivery details</string>
+    <string name="cancel_order">Cancel order</string>
+    <string name="repeat_order">Repeat order</string>
+    <string name="party_size">Party size</string>
 </resources>

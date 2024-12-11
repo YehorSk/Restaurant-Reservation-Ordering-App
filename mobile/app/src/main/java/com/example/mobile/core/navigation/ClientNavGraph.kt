@@ -19,6 +19,7 @@ import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.CreateOrderScreen
+import com.example.mobile.orders.presentation.create_reservation.CreateReservationScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreen
 import kotlinx.serialization.Serializable
 
@@ -62,6 +63,18 @@ fun ClientNavGraph(
                 }
             )
         }
+        composable(ClientScreen.MakeReservation.route) {
+            CreateReservationScreen(
+                modifier = modifier,
+                goBack = {
+                    navController.navigate(ClientScreen.CreateOrder.route){
+                        popUpTo(ClientScreen.CreateOrder.route){
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
         composable(ClientScreen.CreateOrder.route) {
             CreateOrderScreen(
                 modifier = modifier,
@@ -85,6 +98,9 @@ fun ClientNavGraph(
                             inclusive = true
                         }
                     }
+                },
+                onGoToMakeReservation = {
+                    navController.navigate(ClientScreen.MakeReservation.route){}
                 }
             )
         }
@@ -149,6 +165,7 @@ sealed class ClientScreen(val route: String){
     data object Cart: ClientScreen(route = "CART")
     data object Orders: ClientScreen(route = "ORDERS")
     data object CreateOrder: ClientScreen(route = "CREATE_ORDER")
+    data object MakeReservation: ClientScreen(route = "MAKE_RESERVATION")
     @Serializable
     data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")
     data object Settings: ClientScreen(route = "SETTINGS")
