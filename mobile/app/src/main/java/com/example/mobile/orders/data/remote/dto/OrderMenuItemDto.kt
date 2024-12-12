@@ -1,5 +1,7 @@
 package com.example.mobile.orders.data.remote.dto
 
+import com.example.mobile.cart.data.db.model.CartItemEntity
+import com.example.mobile.cart.data.db.model.PivotCartItemEntity
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.db.model.PivotOrderItemEntity
 import kotlinx.serialization.SerialName

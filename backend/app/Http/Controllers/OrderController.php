@@ -101,6 +101,39 @@ class OrderController extends Controller
         return $this->error('', 'No user', 401);
     }
 
+    public function cancelOrder($id){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $order = $user->orders()->with('orderItems')->find($id);
+            if ($order) {
+                if($order->status == 'Pending'){
+                    $order->update(['status' => 'Canceled']);
+                    $order = $user->orders()->with('orderItems')->find($id);
+                    return $this->success(data: [$order], message: "Order canceled successfully.");
+                }else{
+                    return $this->error('', 'Order cannot be canceled.', 409);
+                }
+            }
+            return $this->error('', 'Order not found', 404);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function repeatOrder($id){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $order = $user->orders()->with('orderItems')->find($id);
+            foreach ($order->orderItems as $item){
+                $user->menuItems()->attach($item->id, [
+                    'quantity' => $item->pivot->quantity,
+                    'price' => $item->pivot->price,
+                ]);
+            }
+            return $this->success(data: [$order], message: "Items added to cart successfully.");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     private function generate_code(): String
     {
         $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";

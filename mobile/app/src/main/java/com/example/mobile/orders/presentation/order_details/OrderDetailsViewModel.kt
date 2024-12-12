@@ -29,7 +29,6 @@ class OrderDetailsViewModel @Inject constructor(
                 }
                 if(available){
                     val result = orderRepositoryImpl.getUserOrderDetails(id)
-                    Timber.tag("Result Details: ${result}")
                     when(result){
                         is NetworkResult.Error ->{
                             _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
@@ -47,15 +46,55 @@ class OrderDetailsViewModel @Inject constructor(
         }
     }
 
-    fun repeatOrder(){
+    fun repeatOrder(id: String){
         viewModelScope.launch{
-
+            isNetwork.collect{ available ->
+                _uiState.update {
+                    it.copy(isLoading = true)
+                }
+                if(available){
+                    val result = orderRepositoryImpl.repeatUserOrder(id)
+                    when(result){
+                        is NetworkResult.Error ->{
+                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                        }
+                        is NetworkResult.Success ->{
+                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                        }
+                    }
+                } else {
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                }
+                _uiState.update {
+                    it.copy(isLoading = false)
+                }
+            }
         }
     }
 
-    fun deleteOrder(){
+    fun cancelOrder(id: String){
         viewModelScope.launch{
-
+            isNetwork.collect{ available ->
+                _uiState.update {
+                    it.copy(isLoading = true)
+                }
+                if(available){
+                    val result = orderRepositoryImpl.cancelUserOrder(id)
+                    when(result){
+                        is NetworkResult.Error ->{
+                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                        }
+                        is NetworkResult.Success ->{
+                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                        }
+                    }
+                } else {
+                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                }
+                _uiState.update {
+                    it.copy(isLoading = false)
+                }
+            }
         }
     }
 

@@ -19,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,6 +47,10 @@ fun CartScreen(
     val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
     var showBottomSheet by remember { mutableStateOf(false) }
     val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
+
+    LaunchedEffect(Unit) {
+        viewModel.getItems()
+    }
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){

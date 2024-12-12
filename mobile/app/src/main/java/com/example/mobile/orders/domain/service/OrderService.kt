@@ -20,6 +20,12 @@ interface OrderService {
     @GET("order/user/orders/{id}")
     suspend fun getUserOrderDetails(@Path("id") id: String) : ResponseDto<OrderDto>
 
+    @GET("order/user/orders/cancel/{id}")
+    suspend fun cancelUserOrder(@Path("id") id: String) : ResponseDto<OrderDto>
+
+    @GET("order/user/orders/repeat/{id}")
+    suspend fun repeatUserOrder(@Path("id") id: String) : ResponseDto<OrderDto>
+
     @POST("order/user/pickup")
     suspend fun makeUserPickUpOrder(@Body orderForm: OrderForm) : ResponseDto<OrderDto>
 

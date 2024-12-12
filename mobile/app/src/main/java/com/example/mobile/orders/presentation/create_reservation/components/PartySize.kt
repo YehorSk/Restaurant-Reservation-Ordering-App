@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,8 +17,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,16 +28,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.ui.theme.MobileTheme
 import com.example.mobile.R
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 
 @Composable
 fun PartySize(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    partySize: Int,
+    onPartySizeChanged:(Int) -> Unit
 ){
 
     val items = (1..10).toList()
-    var selected by remember { mutableStateOf(1) }
 
     Column {
         Text(
@@ -73,12 +69,12 @@ fun PartySize(
                         .clip(CircleShape)
                         .border(
                             width = 2.dp,
-                            color = if (item == selected) MaterialTheme.colorScheme.primary else Color.LightGray,
+                            color = if (item == partySize) MaterialTheme.colorScheme.primary else Color.LightGray,
                             shape = CircleShape)
                         .size(50.dp)
                         .background(Color.White)
                         .clickable{
-                            selected = item.toInt()
+                            onPartySizeChanged(item.toInt())
                         },
                     contentAlignment = Alignment.Center
                 ){
@@ -98,6 +94,9 @@ fun PartySize(
 @Composable
 fun PartySizePreview(){
     MobileTheme {
-        PartySize()
+        PartySize(
+            onPartySizeChanged = {},
+            partySize = 1
+        )
     }
 }

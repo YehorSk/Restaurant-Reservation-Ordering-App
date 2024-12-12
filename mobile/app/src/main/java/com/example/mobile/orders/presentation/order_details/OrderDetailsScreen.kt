@@ -108,8 +108,8 @@ fun OrderDetailsScreen(
             }
             Spacer(modifier = Modifier.height(10.dp))
             ActionButtons(
-                onRepeatOrder = {},
-                onCancelOrder = {},
+                onRepeatOrder = { viewModel.repeatOrder(data.order.id) },
+                onCancelOrder = { viewModel.cancelOrder(data.order.id) },
                 allowCancel = data.order.status == "Pending"
             )
         }

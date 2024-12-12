@@ -22,4 +22,6 @@ data class OrderForm(
     val orderText: String = "Pickup",
     val address: String = "",
     val instructions: String = "",
+    @SerialName("party_size")
+    val partySize:Int = 1
 )
