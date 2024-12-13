@@ -95,6 +95,9 @@ fun BottomBar(
         UserRoles.WAITER -> {
             screens = listOf(
                 BottomBarScreen.Home,
+                BottomBarScreen.Cart,
+                BottomBarScreen.Orders,
+                BottomBarScreen.Favorites,
                 BottomBarScreen.Settings
             )
         }

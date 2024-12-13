@@ -38,9 +38,15 @@ fun CustomCalendar(
         Spacer(
             modifier = Modifier.height(20.dp)
         )
-        
 
     }
+}
+
+@Composable
+fun CalendarContent(
+
+){
+
 }
 
 @Preview

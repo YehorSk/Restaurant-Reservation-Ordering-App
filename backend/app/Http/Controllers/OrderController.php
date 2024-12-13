@@ -72,6 +72,34 @@ class OrderController extends Controller
         return $this->error('', 'No user', 401);
     }
 
+    public function makeWaiterOrder(Request $request){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $total_price = $user->menuItems()->get()->sum('pivot.price');
+            $order = new Order([
+                'price' => $total_price,
+                'special_request' => $request->input('special_request', ''),
+                'order_type' =>  $request->input('order_type'),
+                'client_id' => $user->id,
+                'code' => $this->generate_code(),
+                'status' => 'Pending',
+                'table_id' => $request->input('table_number')
+            ]);
+            $order->save();
+            $items = $user->menuItems()->get();
+            foreach ($items as $item) {
+                $order->orderItems()->attach($item->id, [
+                    'quantity' => $item->pivot->quantity,
+                    'price' => $item->pivot->price,
+                ]);
+                $user->menuItems()->detach($item->id);
+            }
+            $order = Order::with('orderItems')->find($order->id);
+            return $this->success(data: [$order], message: "");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     public function makeUserDeliveryOrder(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){

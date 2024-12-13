@@ -1,7 +1,5 @@
 package com.example.mobile.orders.presentation.create_order
 
-import com.example.mobile.orders.data.db.model.OrderEntity
-import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -23,5 +21,7 @@ data class OrderForm(
     val address: String = "",
     val instructions: String = "",
     @SerialName("party_size")
-    val partySize:Int = 1
+    val partySize:Int = 1,
+    @SerialName("table_number")
+    val tableNumber:Int = 0
 )

@@ -1,7 +1,6 @@
 package com.example.mobile.orders.domain.repository
 
 import com.example.mobile.core.data.remote.dto.NetworkResult
-import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.presentation.create_order.OrderForm
@@ -21,5 +20,7 @@ interface OrderRepository {
     suspend fun makeUserPickUpOrder(orderForm: OrderForm) : NetworkResult<List<OrderDto>>
 
     suspend fun makeUserDeliveryOrder(orderForm: OrderForm) : NetworkResult<List<OrderDto>>
+
+    suspend fun makeWaiterOrder(orderForm: OrderForm) : NetworkResult<List<OrderDto>>
 
 }

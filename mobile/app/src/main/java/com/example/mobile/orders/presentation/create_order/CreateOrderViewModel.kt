@@ -6,7 +6,6 @@ import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
-import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -57,6 +56,16 @@ class CreateOrderViewModel @Inject constructor(
             it.copy(
                 orderForm = it.orderForm.copy(
                     instructions = instructions
+                )
+            )
+        }
+    }
+
+    fun updateTableNumber(number: Int){
+        _uiState.update {
+            it.copy(
+                orderForm = it.orderForm.copy(
+                    tableNumber = number
                 )
             )
         }

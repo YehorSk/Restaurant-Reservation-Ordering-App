@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import com.example.mobile.core.utils.ConnectivityObserver
-import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl

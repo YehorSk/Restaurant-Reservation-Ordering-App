@@ -18,7 +18,7 @@ import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
-import com.example.mobile.orders.presentation.create_order.CreateOrderScreen
+import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreen
 import com.example.mobile.orders.presentation.create_reservation.CreateReservationScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreen
 import kotlinx.serialization.Serializable
@@ -76,7 +76,7 @@ fun ClientNavGraph(
             )
         }
         composable(ClientScreen.CreateOrder.route) {
-            CreateOrderScreen(
+            UserCreateOrderScreen(
                 modifier = modifier,
                 onGoToCart = {
                     navController.navigate(ClientScreen.Cart.route){
@@ -126,10 +126,6 @@ fun ClientNavGraph(
         }
         composable(
             route = ClientScreen.Cart.route,
-//            enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-//            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-//            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-//            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
         ) {
             CartScreen(
                 modifier = modifier,

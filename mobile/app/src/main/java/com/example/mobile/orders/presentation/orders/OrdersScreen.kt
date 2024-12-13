@@ -23,9 +23,7 @@ fun OrdersScreen(
     viewModel: OrdersViewModel = hiltViewModel()
 ){
 
-    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
     val orders by viewModel.orderItemsUiState.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->

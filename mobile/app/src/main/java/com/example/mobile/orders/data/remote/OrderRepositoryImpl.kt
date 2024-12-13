@@ -1,13 +1,11 @@
 package com.example.mobile.orders.data.remote
 
-import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.core.utils.ConnectivityObserver
-import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.remote.dto.OrderDto
@@ -19,11 +17,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.collections.first
@@ -178,5 +174,19 @@ class OrderRepositoryImpl @Inject constructor(
             }
         )
     }
+
+    override suspend fun makeWaiterOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
+        Timber.d("Order makeWaiterOrder")
+        return safeCall<OrderDto>(
+            isOnlineFlow = isOnlineFlow,
+            execute = {
+                orderService.makeWaiterOrder(orderForm)
+            },
+            onSuccess = {
+                orderDao.deleteAllCartItems()
+            }
+        )
+    }
+
 
 }

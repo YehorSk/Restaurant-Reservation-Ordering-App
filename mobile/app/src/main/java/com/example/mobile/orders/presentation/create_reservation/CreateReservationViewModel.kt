@@ -1,6 +1,5 @@
 package com.example.mobile.orders.presentation.create_reservation
 
-import androidx.lifecycle.ViewModel
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
