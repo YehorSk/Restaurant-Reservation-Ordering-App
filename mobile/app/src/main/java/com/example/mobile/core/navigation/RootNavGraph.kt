@@ -61,6 +61,19 @@ fun MainNavigation(
             )
         }
 
+        composable(route = Graph.CHEF) {
+            MainScreenGraph(
+                onLoggedOut = {
+                    navController.navigate(Graph.AUTHENTICATION) {
+                        popUpTo(Graph.ROOT) {
+                            inclusive = true
+                        }
+                    }
+                },
+                userRoles = UserRoles.CHEF
+            )
+        }
+
     }
 }
 

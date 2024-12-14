@@ -145,5 +145,5 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesOrderRepositoryImpl(orderService: OrderService, networkConnectivityObserver: ConnectivityObserver, orderDao: OrderDao) : OrderRepository = OrderRepositoryImpl(orderService, networkConnectivityObserver, orderDao)
+    fun providesOrderRepositoryImpl(orderService: OrderService, networkConnectivityObserver: ConnectivityObserver, orderDao: OrderDao, cartDao: CartDao) : OrderRepository = OrderRepositoryImpl(orderService, networkConnectivityObserver, orderDao, cartDao)
 }

@@ -1,5 +1,6 @@
 package com.example.mobile.orders.data.remote
 
+import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
@@ -9,6 +10,7 @@ import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.remote.dto.OrderDto
+import com.example.mobile.orders.data.remote.dto.toCartItemEntity
 import com.example.mobile.orders.data.remote.dto.toOrderEntity
 import com.example.mobile.orders.data.remote.dto.toOrderMenuItemEntity
 import com.example.mobile.orders.presentation.create_order.OrderForm
@@ -27,7 +29,8 @@ import kotlin.collections.first
 class OrderRepositoryImpl @Inject constructor(
     private val orderService: OrderService,
     private val networkConnectivityObserver: ConnectivityObserver,
-    private val orderDao: OrderDao
+    private val orderDao: OrderDao,
+    private val cartDao: CartDao
     ) : OrderRepository{
 
     private val isOnlineFlow: StateFlow<Boolean> = networkConnectivityObserver.observe()
@@ -140,10 +143,9 @@ class OrderRepositoryImpl @Inject constructor(
                 orderService.repeatUserOrder(id)
             },
             onSuccess = { data ->
-//                orderDao.insertOrder(data.first().toOrderEntity())
-//                orderDao.insertOrderItems(data.first().orderItems.map {
-//                    it.toOrderMenuItemEntity()
-//                })
+                cartDao.insertItems(data.first().orderItems.map {
+                    it.toCartItemEntity()
+                })
             }
         )
     }

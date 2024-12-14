@@ -83,7 +83,7 @@ Route::prefix("order")->controller(OrderController::class)->group(function (){
     Route::get('/user/orders/{id}','getUserOrderDetails');
     Route::get('/user/orders/cancel/{id}','cancelOrder');
     Route::get('/user/orders/repeat/{id}','repeatOrder');
-    Route::get('/waiter/order','makeWaiterOrder');
+    Route::post('/waiter/order','makeWaiterOrder');
     Route::post('/user/pickup','makeUserPickUpOrder');
     Route::post('/user/delivery','makeUserDeliveryOrder');
 })->middleware('auth:sanctum');

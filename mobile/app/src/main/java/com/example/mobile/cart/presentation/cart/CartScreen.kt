@@ -48,10 +48,6 @@ fun CartScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
     val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
-    LaunchedEffect(Unit) {
-        viewModel.getItems()
-    }
-
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.ShowToast -> {

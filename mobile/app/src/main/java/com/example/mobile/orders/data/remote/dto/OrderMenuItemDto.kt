@@ -69,3 +69,28 @@ fun Pivot.toPivotEntity() = PivotOrderItemEntity(
     createdAt = this.createdAt,
     updatedAt = this.updatedAt
 )
+
+fun OrderMenuItemDto.toCartItemEntity() = CartItemEntity(
+    id = this.id,
+    createdAt = this.createdAt,
+    updatedAt = this.updatedAt,
+    menuId = this.menuId,
+    name = this.name,
+    shortDescription = this.shortDescription,
+    longDescription = this.longDescription,
+    recipe = this.recipe,
+    picture = this.picture,
+    price = this.price,
+    pivot = this.pivot.toPivotCartItemEntity(),
+    isFavorite = false
+)
+
+fun Pivot.toPivotCartItemEntity() = PivotCartItemEntity(
+    id = this.id,
+    userId = this.userId!!.toInt(),
+    menuItemId = this.menuItemId,
+    quantity = this.quantity,
+    price = this.price,
+    createdAt = this.createdAt,
+    updatedAt = this.updatedAt
+)

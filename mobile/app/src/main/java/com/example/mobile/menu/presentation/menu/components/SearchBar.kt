@@ -25,15 +25,10 @@ fun SearchBar(
     onValueChange: (String) -> Unit,
     isConnected: Boolean
 ){
-    val bg = if(isConnected){
-        Color.White
-    }else{
-        Color.Red
-    }
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
-            .background(bg)
+            .background(Color.White)
             .padding(8.dp)
             .clickable { onClick() },
         value = text,

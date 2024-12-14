@@ -74,16 +74,16 @@ class OrderController extends Controller
 
     public function makeWaiterOrder(Request $request){
         $user = auth('sanctum')->user();
-        if($user instanceof User){
+        if($user instanceof User && $user->role === "waiter"){
             $total_price = $user->menuItems()->get()->sum('pivot.price');
             $order = new Order([
                 'price' => $total_price,
                 'special_request' => $request->input('special_request', ''),
                 'order_type' =>  $request->input('order_type'),
-                'client_id' => $user->id,
                 'code' => $this->generate_code(),
                 'status' => 'Pending',
-                'table_id' => $request->input('table_number')
+                'table_id' => $request->input('table_number'),
+                'waiter_id' => $user->id
             ]);
             $order->save();
             $items = $user->menuItems()->get();
