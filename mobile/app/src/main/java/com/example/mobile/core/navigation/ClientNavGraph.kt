@@ -10,9 +10,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.mobile.cart.presentation.cart.CartScreen
+import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
-import com.example.mobile.menu.presentation.menu.MenuScreen
+import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
@@ -41,7 +41,7 @@ fun ClientNavGraph(
         composable(
             route = ClientScreen.Home.route,
         ) {
-            MenuScreen(
+            MenuScreenRoot(
                 modifier = modifier,
                 onSearchClicked = {
                     navController.navigate(ClientScreen.Search.route)
@@ -127,7 +127,7 @@ fun ClientNavGraph(
         composable(
             route = ClientScreen.Cart.route,
         ) {
-            CartScreen(
+            CartScreenRoot(
                 modifier = modifier,
                 viewModel = cartScreenViewModel,
                 onGoToCheckoutClick = { navController.navigate(ClientScreen.CreateOrder.route) }

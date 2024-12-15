@@ -19,7 +19,6 @@ import com.example.mobile.R
 import com.example.mobile.core.EventConsumer
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.MenuItemModal
-import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.menu.presentation.menu.components.MenuItem
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 
@@ -70,7 +69,7 @@ fun FavoritesScreen(
         }
     }
     if (uiState.showBottomSheet) {
-        uiState.currentMenu?.let {
+        uiState.currentMenuItem?.let {
             MenuItemModal(
                 menuItem = it,
                 onDismiss = {

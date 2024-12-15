@@ -19,14 +19,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.mobile.R
+import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.toMenuItem
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.cart.presentation.cart.components.CartItem
@@ -37,7 +34,7 @@ import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import com.example.mobile.core.utils.formattedPrice
 
 @Composable
-fun CartScreen(
+fun CartScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: CartScreenViewModel,
     onGoToCheckoutClick: () -> Unit
@@ -45,8 +42,7 @@ fun CartScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
-    var showBottomSheet by remember { mutableStateOf(false) }
-    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
+    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -57,6 +53,25 @@ fun CartScreen(
         }
     }
 
+    CartScreen(
+        modifier = modifier,
+        uiState = uiState,
+        cartItems = cartItems,
+        isConnected = isConnected,
+        onGoToCheckoutClick = onGoToCheckoutClick,
+        onAction = viewModel::onAction
+    )
+}
+
+@Composable
+fun CartScreen(
+    modifier: Modifier = Modifier,
+    uiState: CartScreenUiState,
+    cartItems: List<CartItemEntity>,
+    isConnected: Boolean,
+    onGoToCheckoutClick: () -> Unit,
+    onAction: (CartAction) -> Unit
+){
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -70,19 +85,19 @@ fun CartScreen(
                 key = {it.pivot.id}
             ) { item ->
                 SwipeToDeleteContainer(
-                    isInternetError = isConnected.value,
+                    isInternetError = isConnected,
                     item = item,
                     onDelete = {
-                        viewModel.setItem(item)
-                        viewModel.deleteItem()
+                        onAction(CartAction.SetItem(item))
+                        onAction(CartAction.DeleteItem)
                     }
                 ) {
                     CartItem(
                         cartItem = item,
                         onClick = { cartItem ->
-                            viewModel.setItem(cartItem)
-                            viewModel.setMenuItem(cartItem.toMenuItem().toMenuItemEntity())
-                            showBottomSheet = true
+                            onAction(CartAction.SetItem(cartItem))
+                            onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
+                            onAction(CartAction.ShowBottomSheet)
                         },
                     )
                 }
@@ -97,17 +112,14 @@ fun CartScreen(
         val checkout = cartItems.sumOf {
             it.pivot.price
         }
-        if(cartItems.isNotEmpty() && isConnected.value){
+        if(cartItems.isNotEmpty() && isConnected){
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
                     .align(Alignment.BottomCenter),
                 onClick = {
-//                    showCheckoutBottomSheet = true
-                    if(isConnected.value){
-                        onGoToCheckoutClick()
-                    }
+                    onGoToCheckoutClick()
                 }
             ) {
                 Text(
@@ -118,41 +130,31 @@ fun CartScreen(
         }
     }
 
-    if (showBottomSheet) {
+    if (uiState.showBottomSheet) {
         uiState.currentItem?.let {
             MenuItemModal(
                 menuItem = it,
                 onDismiss = {
-                    showBottomSheet = false
-                    viewModel.clearForm()
+                    onAction(CartAction.ClearForm)
                 },
                 cartForm = uiState.cartForm,
                 onQuantityChange = { value ->
-                                    viewModel.updateQuantity(value)
-                                   },
+                    onAction(CartAction.UpdateQuantity(value))
+                },
                 onPriceChange = {value ->
-                                    viewModel.updatePrice(value)
-                                },
+                    onAction(CartAction.UpdatePrice(value))
+                },
                 addUserCartItem = {
-                    showBottomSheet = false
-                    viewModel.updateItem()
+                    onAction(CartAction.UpdateItem)
                 },
                 buttonText = R.string.UPDATE,
                 addFavoriteItem = {},
                 deleteFavoriteItem = {},
                 deleteCartItem = {
-                    showBottomSheet = false
-                    viewModel.deleteItem()
+                    onAction(CartAction.DeleteItem)
                 },
                 showFavorite = false
             )
         }
     }
-
-//    if(showCheckoutBottomSheet){
-//        CartCheckoutModal(
-//            onDismiss = {showCheckoutBottomSheet = false},
-//            modifier = modifier
-//        )
-//    }
 }

@@ -1,6 +1,7 @@
 package com.example.mobile.menu.presentation.menu.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,15 +13,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mobile.menu.data.db.model.MenuEntity
 import com.example.mobile.menu.data.remote.dto.MenuDto
 
 @Composable
 fun MenuHeader(
-    menuDto: MenuDto,
-    modifier: Modifier = Modifier
+    menuDto: MenuEntity,
+    modifier: Modifier = Modifier,
+    onMenuClick: () -> Unit
 ){
     Column(
-        modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .clickable{
+                onMenuClick()
+            }
     ) {
         Text(
             text = menuDto.name,

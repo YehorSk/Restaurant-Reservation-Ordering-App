@@ -8,6 +8,7 @@ import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
+import com.example.mobile.cart.presentation.cart.CartAction
 import com.example.mobile.cart.presentation.cart.CartScreenUiState
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.core.utils.ConnectivityObserver
@@ -51,6 +52,41 @@ class CartScreenViewModel @Inject constructor(
 
     init {
         getItems()
+    }
+
+    fun onAction(action: CartAction){
+        when(action){
+            CartAction.CloseBottomSheet -> closeBottomSheet()
+            CartAction.DeleteItem -> {
+                deleteItem()
+                closeBottomSheet()
+            }
+            CartAction.ShowBottomSheet -> showBottomSheet()
+            CartAction.UpdateItem -> {
+                updateItem()
+                closeBottomSheet()
+            }
+            CartAction.ClearForm -> {
+                clearForm()
+                closeBottomSheet()
+            }
+            is CartAction.UpdatePrice -> updatePrice(action.price)
+            is CartAction.UpdateQuantity -> updateQuantity(action.quantity)
+            is CartAction.SetItem -> setItem(action.item)
+            is CartAction.SetMenuItem -> setMenuItem(action.item)
+        }
+    }
+
+    fun showBottomSheet(){
+        _uiState.update {
+            it.copy(showBottomSheet = true)
+        }
+    }
+
+    fun closeBottomSheet(){
+        _uiState.update {
+            it.copy(showBottomSheet = false)
+        }
     }
 
     fun updatePrice(price: Double){

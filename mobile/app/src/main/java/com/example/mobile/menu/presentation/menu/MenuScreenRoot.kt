@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,19 +21,17 @@ import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.menu.presentation.menu.components.MenuHeader
 import com.example.mobile.menu.presentation.menu.components.MenuItem
 import com.example.mobile.core.presentation.components.MenuItemModal
+import com.example.mobile.menu.data.db.model.MenuWithMenuItems
+import com.example.mobile.menu.presentation.MenuAction
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
-import com.example.mobile.core.presentation.components.SingleEventEffect
-import com.example.mobile.menu.data.db.model.toMenu
-import com.example.mobile.menu.data.db.model.toMenuItem
+import com.example.mobile.menu.presentation.menu.components.MenuDetailsDialog
 import com.example.mobile.menu.presentation.menu.components.SearchBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class
 )
 @Composable
-fun MenuScreen(
+fun MenuScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: MenuScreenViewModel,
     onSearchClicked: () -> Unit
@@ -43,7 +40,7 @@ fun MenuScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
-    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
+    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
@@ -53,6 +50,28 @@ fun MenuScreen(
             }
         }
     }
+    
+    MenuScreen(
+        modifier = modifier,
+        uiState = uiState,
+        menuUiState = menuUiState,
+        isConnected = isConnected,
+        onSearchClicked = { onSearchClicked() },
+        onAction = viewModel::onAction
+    )
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun MenuScreen(
+    modifier: Modifier = Modifier,
+    uiState: MenuScreenUiState,
+    menuUiState: List<MenuWithMenuItems>,
+    isConnected: Boolean,
+    onSearchClicked: () -> Unit,
+    onAction: (MenuAction) -> Unit
+){
 
     Column(
         modifier = modifier
@@ -62,7 +81,7 @@ fun MenuScreen(
             onClick = onSearchClicked,
             enabled = false,
             onValueChange = {},
-            isConnected = isConnected.value
+            isConnected = isConnected
         )
         LazyColumn(
             modifier = Modifier
@@ -71,19 +90,18 @@ fun MenuScreen(
         ) {
             menuUiState.forEach { menu ->
                 stickyHeader {
-                    MenuHeader(menuDto = menu.menu.toMenu(menu.menuItems.map { it.toMenuItem() }))
+                    MenuHeader(
+                        menuDto = menu.menu,
+                        onMenuClick = { onAction(MenuAction.ShowMenuDetails(menu.menu)) }
+                    )
                 }
                 items(menu.menuItems.map { it }){ item ->
                     MenuItem(
                         menuItem = item,
                         onClick = { menuItem ->
-                            viewModel.setMenu(menuItem)
-                            viewModel.updatePrice(menuItem.price.toDouble())
-                            viewModel.setMenuItemId(menuItem.id)
-                            viewModel.setMenuItemFavorite(menuItem.isFavorite)
-                            viewModel.showBottomSheet()
+                            onAction(MenuAction.OnMenuItemClick(menuItem))
                         },
-                        isConnected = isConnected.value
+                        isConnected = isConnected
                     )
                     HorizontalDivider()
                 }
@@ -92,32 +110,44 @@ fun MenuScreen(
     }
 
     if (uiState.showBottomSheet) {
-        uiState.currentMenu?.let {
+        uiState.currentMenuItem?.let {
             MenuItemModal(
                 menuItem = it,
                 onDismiss = {
-                    viewModel.closeBottomSheet()
-                    viewModel.clearForm()
+                    onAction(MenuAction.CloseBottomSheet)
+                    onAction(MenuAction.ClearForm)
                 },
                 cartForm = uiState.cartForm,
-                onQuantityChange = {viewModel.updateQuantity(it)},
-                onPriceChange = {viewModel.updatePrice(it)},
+                onQuantityChange = {
+                    onAction(MenuAction.UpdateQuantity(it))
+                                   },
+                onPriceChange = {
+                    onAction(MenuAction.UpdatePrice(it))
+                                },
                 addUserCartItem = {
-                    viewModel.closeBottomSheet()
-                    viewModel.addUserCartItem()
+                    onAction(MenuAction.CloseBottomSheet)
+                    onAction(MenuAction.AddCartItem)
                 },
                 buttonText = R.string.Add,
                 addFavoriteItem = {
-                    viewModel.addUserFavoriteItem()
-                    viewModel.setMenuItemFavorite(true)
+                    onAction(MenuAction.AddFavoriteItem)
+                    onAction(MenuAction.SetMenuFavoriteItem(true))
                 },
                 deleteFavoriteItem = {
-                    viewModel.deleteUserFavoriteItem()
-                    viewModel.setMenuItemFavorite(false)
+                    onAction(MenuAction.DeleteFavoriteItem)
+                    onAction(MenuAction.SetMenuFavoriteItem(false))
                 }
             )
         }
     }
 
+    if(uiState.showMenuDialog){
+        MenuDetailsDialog(
+            menu = uiState.currentMenu!!,
+            onDismissRequest = {
+                onAction(MenuAction.HideMenuDetails)
+            }
+        )
+    }
 }
 

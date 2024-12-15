@@ -38,7 +38,13 @@ open class BaseMenuViewModel @Inject constructor(
     protected val _uiState = MutableStateFlow(MenuScreenUiState())
     val uiState: StateFlow<MenuScreenUiState> = _uiState.asStateFlow()
 
-    val isNetwork = networkConnectivityObserver.observe()
+    val isNetwork = networkConnectivityObserver
+        .observe()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            false
+        )
 
     val menuUiState: StateFlow<List<MenuWithMenuItems>> = menuDao.getMenuWithMenuItems()
         .stateIn(

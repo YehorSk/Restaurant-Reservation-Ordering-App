@@ -64,7 +64,10 @@ fun MenuAdminScreen(
         ) {
             menuUiState.forEach { menu ->
                 stickyHeader {
-                    MenuHeader(menuDto = menu.menu.toMenu(menu.menuItems.map { it.toMenuItem() }))
+                    MenuHeader(
+                        menuDto = menu.menu,
+                        onMenuClick = { }
+                    )
                 }
                 items(menu.menuItems.map { it }){ item ->
                     MenuItem(

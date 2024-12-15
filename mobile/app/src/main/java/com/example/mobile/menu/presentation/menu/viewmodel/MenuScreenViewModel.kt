@@ -9,6 +9,8 @@ import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.presentation.BaseMenuViewModel
 import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.menu.data.db.model.MenuEntity
+import com.example.mobile.menu.presentation.MenuAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -32,6 +34,43 @@ class MenuScreenViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = listOf()
         )
+
+    fun onAction(action: MenuAction){
+        when(action){
+            MenuAction.AddCartItem -> addUserCartItem()
+            MenuAction.AddFavoriteItem -> addUserFavoriteItem()
+            MenuAction.ClearForm -> clearForm()
+            MenuAction.CloseBottomSheet -> closeBottomSheet()
+            MenuAction.DeleteFavoriteItem -> deleteUserFavoriteItem()
+            MenuAction.HideMenuDetails -> hideMenuDetails()
+            is MenuAction.OnMenuItemClick -> {
+                setMenu(action.item)
+                updatePrice(action.item.price.toDouble())
+                setMenuItemId(action.item.id)
+                setMenuItemFavorite(action.item.isFavorite)
+                showBottomSheet()
+            }
+            is MenuAction.SetMenuFavoriteItem -> setMenuItemFavorite(action.value)
+            is MenuAction.ShowMenuDetails -> showMenuDetails(action.menu)
+            is MenuAction.UpdatePrice -> updatePrice(action.price)
+            is MenuAction.UpdateQuantity -> updateQuantity(action.quantity)
+        }
+    }
+
+    fun showMenuDetails(menu: MenuEntity){
+        _uiState.update {
+            it.copy(
+                showMenuDialog = true,
+                currentMenu = menu
+            )
+        }
+    }
+
+    fun hideMenuDetails(){
+        _uiState.update {
+            it.copy(showMenuDialog = false)
+        }
+    }
 
     fun showBottomSheet(){
         _uiState.update {
@@ -101,7 +140,7 @@ class MenuScreenViewModel @Inject constructor(
         Timber.d("addUserFavoriteItem")
         viewModelScope.launch {
             setLoadingState(true)
-            when(val result = menuRepositoryImpl.addFavorite(_uiState.value.currentMenu!!.id.toString())){
+            when(val result = menuRepositoryImpl.addFavorite(_uiState.value.currentMenuItem!!.id.toString())){
                 is NetworkResult.Error -> {
                     _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
                 }
@@ -117,7 +156,7 @@ class MenuScreenViewModel @Inject constructor(
         Timber.d("deleteUserFavoriteItem")
         viewModelScope.launch {
             setLoadingState(true)
-            when(val result = menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenu!!.id.toString())){
+            when(val result = menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenuItem!!.id.toString())){
                 is NetworkResult.Error -> {
                     _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
                 }
@@ -131,7 +170,7 @@ class MenuScreenViewModel @Inject constructor(
 
     fun setMenu(menu: MenuItemEntity){
         _uiState.update {
-            it.copy(currentMenu = menu)
+            it.copy(currentMenuItem = menu)
         }
     }
 }
