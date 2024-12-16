@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.domain.SideEffect
@@ -32,11 +31,13 @@ import com.example.mobile.ui.theme.MobileTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.presentation.components.OrderDetailsItemList
+import com.example.mobile.orders.presentation.create_order.CreateOrderUiState
 import com.example.mobile.orders.presentation.order_details.components.ActionButtons
 
 @Composable
-fun OrderDetailsScreen(
+fun OrderDetailsScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: OrderDetailsViewModel = hiltViewModel(),
     onGoToOrders: () -> Unit,
@@ -44,9 +45,7 @@ fun OrderDetailsScreen(
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val ordersUiState by viewModel.ordersUiState.collectAsStateWithLifecycle()
-    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -59,6 +58,26 @@ fun OrderDetailsScreen(
         viewModel.getOrderDetails(id.toString())
     }
 
+    OrderDetailsScreen(
+        modifier = modifier,
+        ordersUiState = ordersUiState,
+        uiState = uiState,
+        onGoToOrders = onGoToOrders,
+        id = id,
+        onAction = viewModel::onAction
+    )
+
+}
+
+@Composable
+fun OrderDetailsScreen(
+    modifier: Modifier = Modifier,
+    ordersUiState: List<OrderWithOrderItems>,
+    uiState: CreateOrderUiState,
+    onGoToOrders: () -> Unit,
+    id: Int,
+    onAction: (OrderDetailsAction) -> Unit
+){
     val data = ordersUiState.find { it.order.id == id.toString() }
     if(uiState.isLoading){
         Column(
@@ -102,20 +121,19 @@ fun OrderDetailsScreen(
             }
             Spacer(modifier = Modifier.height(10.dp))
             ActionButtons(
-                onRepeatOrder = { viewModel.repeatOrder(data.order.id) },
-                onCancelOrder = { viewModel.cancelOrder(data.order.id) },
+                onRepeatOrder = { onAction(OrderDetailsAction.RepeatOrder((data.order.id))) },
+                onCancelOrder = { onAction(OrderDetailsAction.CancelOrder((data.order.id))) },
                 allowCancel = data.order.status == "Pending"
             )
         }
     }
-
 }
 
 @Preview
 @Composable
 fun OrderDetailsScreenPreview(){
     MobileTheme {
-        OrderDetailsScreen(
+        OrderDetailsScreenRoot(
             onGoToOrders = {},
             id = 1
         )

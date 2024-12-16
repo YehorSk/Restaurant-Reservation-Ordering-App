@@ -18,9 +18,9 @@ import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
-import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreen
+import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreenRoot
 import com.example.mobile.orders.presentation.create_reservation.CreateReservationScreen
-import com.example.mobile.orders.presentation.order_details.OrderDetailsScreen
+import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -76,7 +76,7 @@ fun ClientNavGraph(
             )
         }
         composable(ClientScreen.CreateOrder.route) {
-            UserCreateOrderScreen(
+            UserCreateOrderScreenRoot(
                 modifier = modifier,
                 onGoToCart = {
                     navController.navigate(ClientScreen.Cart.route){
@@ -106,7 +106,7 @@ fun ClientNavGraph(
         }
         composable<ClientScreen.OrderDetails>{
             val args = it.toRoute<ClientScreen.OrderDetails>()
-            OrderDetailsScreen(
+            OrderDetailsScreenRoot(
                 modifier = modifier,
                 onGoToOrders = {
                     navController.navigate(ClientScreen.Orders.route){

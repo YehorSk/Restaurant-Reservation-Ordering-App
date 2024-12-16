@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.domain.SideEffect
@@ -41,10 +40,13 @@ import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.orders.presentation.components.OrderAddress
 import com.example.mobile.orders.presentation.components.OrderSpecialRequest
+import com.example.mobile.orders.presentation.create_order.CreateOrderAction
+import com.example.mobile.orders.presentation.create_order.CreateOrderUiState
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
+import androidx.compose.runtime.getValue
 
 @Composable
-fun UserCreateOrderScreen(
+fun UserCreateOrderScreenRoot(
     viewModel: CreateOrderViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     onGoToCart: () -> Unit,
@@ -53,10 +55,9 @@ fun UserCreateOrderScreen(
     onGoToMakeReservation: () -> Unit
 ){
 
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
         viewModel.getUserOrderItems()
@@ -68,7 +69,34 @@ fun UserCreateOrderScreen(
             SideEffect.NavigateToNextScreen -> onGoToOrders()
         }
     }
-    if(uiState.value.items != null){
+
+    UserCreateOrderScreen(
+        modifier = modifier,
+        uiState = uiState,
+        isConnected = isConnected,
+        onGoToCart = onGoToCart,
+        onGoToMenu = onGoToMenu,
+        onGoToOrders = onGoToOrders,
+        onGoToMakeReservation = onGoToMakeReservation,
+        validateForm = viewModel.validateForm(),
+        onAction = viewModel::onAction
+    )
+
+}
+
+@Composable
+fun UserCreateOrderScreen(
+    modifier: Modifier = Modifier,
+    uiState: CreateOrderUiState,
+    isConnected: Boolean,
+    onGoToCart: () -> Unit,
+    onGoToMenu: () -> Unit,
+    onGoToOrders: () -> Unit,
+    onGoToMakeReservation: () -> Unit,
+    validateForm: Boolean,
+    onAction: (CreateOrderAction) -> Unit
+){
+    if(uiState.items != null){
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -80,8 +108,8 @@ fun UserCreateOrderScreen(
                 onGoBack = onGoToCart,
                 title = R.string.complete_order_navbar_title
             )
-            if (isConnected.value && uiState.value.items != null){
-                OrderItemList(items = uiState.value.items!!)
+            if (isConnected){
+                OrderItemList(items = uiState.items)
                 HorizontalDivider()
             }
             OrderAddMore(
@@ -90,27 +118,27 @@ fun UserCreateOrderScreen(
             )
             HorizontalDivider()
             OrderSpecialRequest(
-                request = uiState.value.orderForm.specialRequest,
-                onRequestChange = {request -> viewModel.updateRequest(request)}
+                request = uiState.orderForm.specialRequest,
+                onRequestChange = {request -> onAction(CreateOrderAction.UpdateRequest(request)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
             OrderOptions(
-                selected = uiState.value.orderForm.orderType,
-                onSelectedChange = { type,text -> viewModel.updateOrderType(type,text) }
+                selected = uiState.orderForm.orderType,
+                onSelectedChange = { type,text -> onAction(CreateOrderAction.UpdateOrderType(type,text)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
-            if (uiState.value.orderForm.orderType == 1 && isConnected.value){
+            if (uiState.orderForm.orderType == 1 && isConnected){
                 OrderMap()
                 OrderAddress(
-                    address = uiState.value.orderForm.address,
-                    instructions = uiState.value.orderForm.instructions,
-                    onAddressChange = {address -> viewModel.updateAddress(address)},
-                    onInstructionsChange = {instructions -> viewModel.updateInstructions(instructions)}
+                    address = uiState.orderForm.address,
+                    instructions = uiState.orderForm.instructions,
+                    onAddressChange = {address -> onAction(CreateOrderAction.UpdateAddress(address)) },
+                    onInstructionsChange = {instructions -> onAction(CreateOrderAction.UpdateInstructions(instructions)) }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
             }
-            if (isConnected.value  && uiState.value.items != null){
-                val checkout = uiState.value.items!!.sumOf {
+            if (isConnected){
+                val checkout = uiState.items.sumOf {
                     it.pivot.price
                 }
                 TotalPrice(
@@ -126,17 +154,17 @@ fun UserCreateOrderScreen(
                             bottom = 10.dp
                         )
                         .fillMaxWidth(),
-                    enabled = viewModel.validateForm(),
+                    enabled = validateForm,
                     onClick = {
-                        if (uiState.value.orderForm.orderType==2){
+                        if (uiState.orderForm.orderType==2){
                             onGoToMakeReservation()
                         }else{
-                            viewModel.makeOrder()
+                            onAction(CreateOrderAction.MakeOrder)
                         }
                     }
                 ) {
                     Text(
-                        text = "Order ${uiState.value.orderForm.orderText}",
+                        text = "Order ${uiState.orderForm.orderText}",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                     )
@@ -160,11 +188,9 @@ fun UserCreateOrderScreen(
 
 @Preview
 @Composable
-fun CreateOrderScreenPreview(
-    modifier: Modifier = Modifier
-){
+fun CreateOrderScreenPreview(){
     MobileTheme {
-        UserCreateOrderScreen(
+        UserCreateOrderScreenRoot(
             onGoToMenu = {},
             onGoToCart = {},
             onGoToOrders = {},

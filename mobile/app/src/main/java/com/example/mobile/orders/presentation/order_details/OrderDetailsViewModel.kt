@@ -19,6 +19,13 @@ class OrderDetailsViewModel @Inject constructor(
     orderDao: OrderDao
 ): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao){
 
+    fun onAction(action: OrderDetailsAction){
+        when(action){
+            is OrderDetailsAction.CancelOrder -> cancelOrder(action.id)
+            is OrderDetailsAction.RepeatOrder -> repeatOrder(action.id)
+        }
+    }
+
     fun getOrderDetails(id: String){
         viewModelScope.launch{
             isNetwork.collect{ available ->

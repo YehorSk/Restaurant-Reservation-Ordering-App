@@ -20,7 +20,7 @@ import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.waiter.WaiterCreateOrderScreen
-import com.example.mobile.orders.presentation.order_details.OrderDetailsScreen
+import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import kotlinx.serialization.Serializable
 
@@ -127,7 +127,7 @@ fun WaiterNavGraph(
             }
             composable<WaiterScreen.OrderDetails>{
                 val args = it.toRoute<WaiterScreen.OrderDetails>()
-                OrderDetailsScreen(
+                OrderDetailsScreenRoot(
                     modifier = modifier,
                     onGoToOrders = {
                         navController.navigate(WaiterScreen.Orders.route){
