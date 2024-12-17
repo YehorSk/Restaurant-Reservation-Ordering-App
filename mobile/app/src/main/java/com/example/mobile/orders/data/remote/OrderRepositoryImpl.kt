@@ -6,7 +6,6 @@ import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
-import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.remote.dto.OrderDto
@@ -14,13 +13,7 @@ import com.example.mobile.orders.data.remote.dto.toCartItemEntity
 import com.example.mobile.orders.data.remote.dto.toOrderEntity
 import com.example.mobile.orders.data.remote.dto.toOrderMenuItemEntity
 import com.example.mobile.orders.presentation.create_order.OrderForm
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,22 +21,10 @@ import kotlin.collections.first
 
 class OrderRepositoryImpl @Inject constructor(
     private val orderService: OrderService,
-    private val networkConnectivityObserver: ConnectivityObserver,
     private val orderDao: OrderDao,
     private val cartDao: CartDao
     ) : OrderRepository{
 
-    private val isOnlineFlow: StateFlow<Boolean> = networkConnectivityObserver.observe()
-        .distinctUntilChanged()
-        .stateIn(
-            scope = CoroutineScope(Dispatchers.IO),
-            started = SharingStarted.Eagerly,
-            initialValue = false
-        )
-
-    private suspend fun isOnline(): Boolean {
-        return isOnlineFlow.first()
-    }
 
     suspend fun syncOrdersWithDb(items: List<OrderDto>) = withContext(Dispatchers.IO){
         val localOrders = orderDao.getOrderWithOrderItemsOnce()
@@ -83,7 +64,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun getUserOrderItems(): NetworkResult<List<OrderMenuItemDto>> {
         Timber.d("Order getUserOrders")
         return safeCall<OrderMenuItemDto>(
-            isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.getUserOrderItems()
             }
@@ -93,7 +73,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun getUserOrders(): NetworkResult<List<OrderDto>> {
         Timber.d("Order getUserOrders")
         return safeCall<OrderDto>(
-            isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.getUserOrders()
             },
@@ -106,7 +85,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun getUserOrderDetails(id: String): NetworkResult<List<OrderDto>> {
         Timber.d("Order getUserOrderDetails $id")
         return safeCall<OrderDto>(
-            isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.getUserOrderDetails(id)
             },
@@ -122,7 +100,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun cancelUserOrder(id: String): NetworkResult<List<OrderDto>> {
         Timber.d("Order cancelUserOrder $id")
         return safeCall<OrderDto>(
-            isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.cancelUserOrder(id)
             },
@@ -138,7 +115,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun repeatUserOrder(id: String): NetworkResult<List<OrderDto>> {
         Timber.d("Order repeatUserOrder $id")
         return safeCall<OrderDto>(
-            isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.repeatUserOrder(id)
             },
@@ -154,7 +130,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun makeUserPickUpOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
         Timber.d("Order makeUserPickUpOrder")
         return safeCall<OrderDto>(
-            isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.makeUserPickUpOrder(orderForm)
             },
@@ -167,7 +142,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun makeUserDeliveryOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
         Timber.d("Order makeUserDeliveryOrder")
         return safeCall<OrderDto>(
-            isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.makeUserDeliveryOrder(orderForm)
             },
@@ -180,7 +154,6 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun makeWaiterOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
         Timber.d("Order makeWaiterOrder")
         return safeCall<OrderDto>(
-            isOnlineFlow = isOnlineFlow,
             execute = {
                 orderService.makeWaiterOrder(orderForm)
             },
@@ -189,6 +162,4 @@ class OrderRepositoryImpl @Inject constructor(
             }
         )
     }
-
-
 }

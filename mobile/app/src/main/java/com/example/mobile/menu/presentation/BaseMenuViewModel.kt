@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -70,6 +71,10 @@ open class BaseMenuViewModel @Inject constructor(
             initialValue = listOf()
         )
 
+    init {
+        getMenus()
+    }
+
     protected fun setLoadingState(isLoading: Boolean) {
         _uiState.update { it.copy(isLoading = isLoading) }
     }
@@ -80,31 +85,17 @@ open class BaseMenuViewModel @Inject constructor(
         }
     }
 
-    init {
-        getMenus()
-    }
-
     fun getMenus(){
         viewModelScope.launch {
-            isNetwork.collect{ available ->
-                if(available){
-                    setLoadingState(true)
-                    when(val result = menuRepositoryImpl.getAllMenus()){
-                        is NetworkResult.Error -> {
-                            if(result.code == 503){
-                                _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                            }else{
-                                _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                            }
-                        }
-                        is NetworkResult.Success ->{
-                        }
-                    }
-                    setLoadingState(false)
-                } else {
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+            setLoadingState(true)
+            when(val result = menuRepositoryImpl.getAllMenus()){
+                is NetworkResult.Error -> {
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                }
+                is NetworkResult.Success ->{
                 }
             }
+            setLoadingState(false)
         }
     }
 

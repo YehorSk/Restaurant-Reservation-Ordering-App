@@ -6,12 +6,15 @@ import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
 import androidx.core.content.getSystemService
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 
 class NetworkConnectivityObserver(
-    private val context: Context
+    context: Context
 ): ConnectivityObserver {
 
     private val connectivityManager = context.getSystemService<ConnectivityManager>()!!
@@ -19,6 +22,7 @@ class NetworkConnectivityObserver(
     override fun observe(): Flow<Boolean> {
         return callbackFlow {
             val callback = object : NetworkCallback() {
+
                 override fun onCapabilitiesChanged(
                     network: Network,
                     networkCapabilities: NetworkCapabilities
@@ -51,7 +55,8 @@ class NetworkConnectivityObserver(
             awaitClose {
                 connectivityManager.unregisterNetworkCallback(callback)
             }
-        }
+        }.distinctUntilChanged()
+            .flowOn(Dispatchers.IO)
     }
 
 }

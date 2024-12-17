@@ -75,6 +75,14 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideRetrofit(baseUrl: String, client: OkHttpClient) : Retrofit = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .client(client)
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .build()
+
+    @Provides
+    @Singleton
     fun myRoomDatabase(application: Application): MainRoomDatabase {
         return Room.databaseBuilder(
             application,
@@ -82,14 +90,6 @@ object AppModule {
             "MobileDatabase"
         ).build()
     }
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(baseUrl: String, client: OkHttpClient) : Retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .client(client)
-        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-        .build()
 
     @Provides
     @Singleton
@@ -137,13 +137,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideCartRepositoryImpl(cartService: CartService, mainPreferencesRepository: MainPreferencesRepository, networkConnectivityObserver: ConnectivityObserver, cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService, mainPreferencesRepository, networkConnectivityObserver, cartDao)
+    fun provideCartRepositoryImpl(cartService: CartService, cartDao: CartDao) : CartRepository = CartRepositoryImpl(cartService, cartDao)
 
     @Provides
     @Singleton
-    fun provideMenuRepositoryImpl(menuService: MenuService, networkConnectivityObserver: ConnectivityObserver, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService, menuDao, networkConnectivityObserver)
+    fun provideMenuRepositoryImpl(menuService: MenuService, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService, menuDao)
 
     @Provides
     @Singleton
-    fun providesOrderRepositoryImpl(orderService: OrderService, networkConnectivityObserver: ConnectivityObserver, orderDao: OrderDao, cartDao: CartDao) : OrderRepository = OrderRepositoryImpl(orderService, networkConnectivityObserver, orderDao, cartDao)
+    fun providesOrderRepositoryImpl(orderService: OrderService, orderDao: OrderDao, cartDao: CartDao) : OrderRepository = OrderRepositoryImpl(orderService, orderDao, cartDao)
 }

@@ -34,111 +34,109 @@ fun WaiterNavGraph(
     val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
     val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
 
-    Scaffold { padding ->
-        NavHost(
-            navController = navController,
-            route = Graph.WAITER,
-            startDestination = WaiterScreen.Home.route
-        ){
-            composable(WaiterScreen.Home.route) {
-                MenuScreenRoot(
-                    modifier = modifier,
-                    onSearchClicked = {
-                        navController.navigate(WaiterScreen.Search.route)
-                    },
-                    viewModel = menuScreenViewModel
-                )
-            }
-            composable(WaiterScreen.Settings.route) {
-                SettingsScreen(
-                    modifier = modifier.fillMaxSize().padding(padding),
-                    onSuccessLoggedOut = onLoggedOut
-                )
-            }
-            composable(WaiterScreen.Orders.route) {
-                OrdersScreen(
-                    modifier = modifier,
-                    onGoToOrderDetails = { id ->
-                        navController.navigate(WaiterScreen.OrderDetails(id))
-                    }
-                )
-            }
-            composable(
-                route = WaiterScreen.Search.route,
-                enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-                exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-                popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-                popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
-            ) {
-                SearchScreen(
-                    modifier = modifier,
-                    onGoBack = {
-                        navController.navigate(WaiterScreen.Home.route){
-                            popUpTo(WaiterScreen.Home.route){
-                                inclusive = true
-                            }
-                        }
-                    },
-                    viewModel = menuScreenViewModel
-                )
-            }
-            composable(
-                route = WaiterScreen.Cart.route,
-            ) {
-                CartScreenRoot(
-                    modifier = modifier,
-                    viewModel = cartScreenViewModel,
-                    onGoToCheckoutClick = {
-                        navController.navigate(WaiterScreen.CreateOrder.route)
-                    }
-                )
-            }
-            composable(WaiterScreen.Favorites.route) {
-                FavoritesScreen(
-                    modifier = modifier,
-                    viewModel = menuScreenViewModel
-                )
-            }
-            composable(WaiterScreen.CreateOrder.route) {
-                WaiterCreateOrderScreen(
-                    modifier = modifier,
-                    onGoToCart = {
-                        navController.navigate(WaiterScreen.Cart.route){
-                            popUpTo(WaiterScreen.Cart.route){
-                                inclusive = true
-                            }
-                        }
-                    },
-                    onGoToMenu = {
-                        navController.navigate(WaiterScreen.Home.route){
-                            popUpTo(WaiterScreen.Home.route){
-                                inclusive = true
-                            }
-                        }
-                    },
-                    onGoToOrders = {
-                        navController.navigate(WaiterScreen.Orders.route){
-                            popUpTo(WaiterScreen.Orders.route){
-                                inclusive = true
-                            }
+    NavHost(
+        navController = navController,
+        route = Graph.WAITER,
+        startDestination = WaiterScreen.Home.route
+    ){
+        composable(WaiterScreen.Home.route) {
+            MenuScreenRoot(
+                modifier = modifier,
+                onSearchClicked = {
+                    navController.navigate(WaiterScreen.Search.route)
+                },
+                viewModel = menuScreenViewModel
+            )
+        }
+        composable(WaiterScreen.Settings.route) {
+            SettingsScreen(
+                modifier = modifier.fillMaxSize(),
+                onSuccessLoggedOut = onLoggedOut
+            )
+        }
+        composable(WaiterScreen.Orders.route) {
+            OrdersScreen(
+                modifier = modifier,
+                onGoToOrderDetails = { id ->
+                    navController.navigate(WaiterScreen.OrderDetails(id))
+                }
+            )
+        }
+        composable(
+            route = WaiterScreen.Search.route,
+            enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+        ) {
+            SearchScreen(
+                modifier = modifier,
+                onGoBack = {
+                    navController.navigate(WaiterScreen.Home.route){
+                        popUpTo(WaiterScreen.Home.route){
+                            inclusive = true
                         }
                     }
-                )
-            }
-            composable<WaiterScreen.OrderDetails>{
-                val args = it.toRoute<WaiterScreen.OrderDetails>()
-                OrderDetailsScreenRoot(
-                    modifier = modifier,
-                    onGoToOrders = {
-                        navController.navigate(WaiterScreen.Orders.route){
-                            popUpTo(WaiterScreen.Orders.route){
-                                inclusive = true
-                            }
+                },
+                viewModel = menuScreenViewModel
+            )
+        }
+        composable(
+            route = WaiterScreen.Cart.route,
+        ) {
+            CartScreenRoot(
+                modifier = modifier,
+                viewModel = cartScreenViewModel,
+                onGoToCheckoutClick = {
+                    navController.navigate(WaiterScreen.CreateOrder.route)
+                }
+            )
+        }
+        composable(WaiterScreen.Favorites.route) {
+            FavoritesScreen(
+                modifier = modifier,
+                viewModel = menuScreenViewModel
+            )
+        }
+        composable(WaiterScreen.CreateOrder.route) {
+            WaiterCreateOrderScreen(
+                modifier = modifier,
+                onGoToCart = {
+                    navController.navigate(WaiterScreen.Cart.route){
+                        popUpTo(WaiterScreen.Cart.route){
+                            inclusive = true
                         }
-                    },
-                    id = args.id
-                )
-            }
+                    }
+                },
+                onGoToMenu = {
+                    navController.navigate(WaiterScreen.Home.route){
+                        popUpTo(WaiterScreen.Home.route){
+                            inclusive = true
+                        }
+                    }
+                },
+                onGoToOrders = {
+                    navController.navigate(WaiterScreen.Orders.route){
+                        popUpTo(WaiterScreen.Orders.route){
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+        composable<WaiterScreen.OrderDetails>{
+            val args = it.toRoute<WaiterScreen.OrderDetails>()
+            OrderDetailsScreenRoot(
+                modifier = modifier,
+                onGoToOrders = {
+                    navController.navigate(WaiterScreen.Orders.route){
+                        popUpTo(WaiterScreen.Orders.route){
+                            inclusive = true
+                        }
+                    }
+                },
+                id = args.id
+            )
         }
     }
 }

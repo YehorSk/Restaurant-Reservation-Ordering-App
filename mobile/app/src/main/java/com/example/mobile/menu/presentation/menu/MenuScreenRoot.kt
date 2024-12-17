@@ -40,7 +40,7 @@ fun MenuScreenRoot(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
-    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
+    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle()
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){

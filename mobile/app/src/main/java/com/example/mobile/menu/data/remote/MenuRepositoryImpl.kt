@@ -26,21 +26,8 @@ import javax.inject.Inject
 class MenuRepositoryImpl @Inject constructor(
     private val menuService: MenuService,
     private val menuDao: MenuDao,
-    private val networkConnectivityObserver: ConnectivityObserver,
 ) : MenuRepository {
-
-    private val isOnlineFlow: StateFlow<Boolean> = networkConnectivityObserver.observe()
-        .distinctUntilChanged()
-        .stateIn(
-            scope = CoroutineScope(Dispatchers.IO),
-            started = SharingStarted.Eagerly,
-            initialValue = false
-        )
-
-    private suspend fun isOnline(): Boolean {
-        return isOnlineFlow.first()
-    }
-
+    
     suspend fun syncMenusWithServer(serverMenuDtos: List<MenuDto>) = withContext(Dispatchers.IO) {
         val localMenus = menuDao.getMenuWithMenuItemsOnce()
 
@@ -80,7 +67,7 @@ class MenuRepositoryImpl @Inject constructor(
     override suspend fun getAllMenus(): NetworkResult<List<MenuDto>> {
         Timber.d("Menu getAllMenus")
         return safeCall<MenuDto>(
-            isOnlineFlow = isOnlineFlow,
+            
             execute = {
                 menuService.getAllMenus()
             },
@@ -93,7 +80,7 @@ class MenuRepositoryImpl @Inject constructor(
     override suspend fun addFavorite(menuItemId: String): NetworkResult<List<String>> {
         Timber.d("Menu addFavorite")
         return safeCall<String>(
-            isOnlineFlow = isOnlineFlow,
+            
             execute = {
                 menuService.addFavoriteItem(menuItemId = menuItemId)
             },
@@ -106,7 +93,7 @@ class MenuRepositoryImpl @Inject constructor(
     override suspend fun deleteFavorite(menuItemId: String): NetworkResult<List<String>> {
         Timber.d("Menu deleteFavorite")
         return safeCall<String>(
-            isOnlineFlow = isOnlineFlow,
+            
             execute = {
                 menuService.deleteFavoriteItem(menuItemId = menuItemId)
             },

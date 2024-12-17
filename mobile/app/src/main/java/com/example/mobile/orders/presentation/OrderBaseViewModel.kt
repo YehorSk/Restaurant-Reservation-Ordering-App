@@ -43,14 +43,4 @@ open class OrderBaseViewModel @Inject constructor(
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
 
-    init{
-        viewModelScope.launch{
-            isNetwork.collect{ available ->
-                if(!available){
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                }
-            }
-        }
-    }
-
 }

@@ -113,48 +113,40 @@ class CartScreenViewModel @Inject constructor(
 
     fun getItems() {
         viewModelScope.launch {
-            isNetwork.collect { available ->
-                if (available) {
-                    _uiState.update { it.copy(isLoading = true) }
+            _uiState.update { it.copy(isLoading = true) }
 
-                    cartItemUiState.collect { localItems ->
-                        when (val result = cartRepositoryImpl.getAllItems()) {
-                            is NetworkResult.Error -> {
-                                _uiState.update {
-                                    it.copy(
-                                        error = result.message ?: "Unknown error"
-                                    )
-                                }
-                            }
-                            is NetworkResult.Success -> {
-                                Timber.d("Items from server: ${result.data}")
-                                val serverItemIds = result.data.map { it.id }.toSet()
-                                val itemsToDelete = localItems.filter { it.id !in serverItemIds }
+            cartItemUiState.collect { localItems ->
+                when (val result = cartRepositoryImpl.getAllItems()) {
+                    is NetworkResult.Error -> {
+                        _uiState.update {
+                            it.copy(
+                                error = result.message ?: "Unknown error"
+                            )
+                        }
+                    }
 
-                                cartDao.runInTransaction {
-                                    cartDao.insertItems(result.data.map { it.toCartItemEntity() })
-                                    cartDao.deleteItems(itemsToDelete)
-                                }
+                    is NetworkResult.Success -> {
+                        Timber.d("Items from server: ${result.data}")
+                        val serverItemIds = result.data.map { it.id }.toSet()
+                        val itemsToDelete = localItems.filter { it.id !in serverItemIds }
 
-                                _uiState.update {
-                                    it.copy(
-                                        error = ""
-                                    )
-                                }
-                            }
+                        cartDao.runInTransaction {
+                            cartDao.insertItems(result.data.map { it.toCartItemEntity() })
+                            cartDao.deleteItems(itemsToDelete)
                         }
 
-                        _uiState.update { it.copy(isLoading = false) }
-
-                        return@collect
+                        _uiState.update {
+                            it.copy(
+                                error = ""
+                            )
+                        }
                     }
-                }else {
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
                 }
+
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
-
 
     fun setItem(item: CartItemEntity){
         _uiState.update {

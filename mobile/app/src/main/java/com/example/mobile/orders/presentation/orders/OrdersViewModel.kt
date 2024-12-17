@@ -37,22 +37,16 @@ class OrdersViewModel @Inject constructor(
     fun getUserOrders(){
         Timber.d("getUserOrders")
         viewModelScope.launch{
-            isNetwork.collect{ available ->
-                if(available){
-                    val result = orderRepositoryImpl.getUserOrders()
-                    when(result){
-                        is NetworkResult.Error -> {
-                            if(result.code == 503){
-                                _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
-                            }else{
-                                _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                            }
-                        }
-                        is NetworkResult.Success -> {
-                        }
+            val result = orderRepositoryImpl.getUserOrders()
+            when(result){
+                is NetworkResult.Error -> {
+                    if(result.code == 503){
+                        _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                    }else{
+                        _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                     }
-                }else{
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                }
+                is NetworkResult.Success -> {
                 }
             }
         }

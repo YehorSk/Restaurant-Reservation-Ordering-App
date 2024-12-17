@@ -116,42 +116,32 @@ class CreateOrderViewModel @Inject constructor(
     fun getUserOrderItems(){
         Timber.d("getUserOrderItems")
         viewModelScope.launch{
-            val available = isNetwork.first()
-                if(available){
-                    val result = orderRepositoryImpl.getUserOrderItems()
-                    when(result){
-                        is NetworkResult.Error ->{
-                            _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                        }
-                        is NetworkResult.Success ->{
-                            _uiState.update {
-                                it.copy(items = result.data)
-                            }
-                        }
-                    }
-                } else {
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+            val result = orderRepositoryImpl.getUserOrderItems()
+            when(result){
+                is NetworkResult.Error ->{
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                 }
+                is NetworkResult.Success ->{
+                    _uiState.update {
+                        it.copy(items = result.data)
+                    }
+                }
+            }
         }
     }
 
     fun makePickupOrder(){
         Timber.d("makePickupOrder")
         viewModelScope.launch{
-            val available = isNetwork.first()
-            if(available){
-                val result = orderRepositoryImpl.makeUserPickUpOrder(uiState.value.orderForm)
-                when(result){
-                    is NetworkResult.Error ->{
-                        _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                    }
-                    is NetworkResult.Success ->{
-                        _sideEffectChannel.send(SideEffect.ShowToast("Pickup order was created"))
-                        _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
-                    }
+            val result = orderRepositoryImpl.makeUserPickUpOrder(uiState.value.orderForm)
+            when(result){
+                is NetworkResult.Error ->{
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                 }
-            } else {
-                _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                is NetworkResult.Success ->{
+                    _sideEffectChannel.send(SideEffect.ShowToast("Pickup order was created"))
+                    _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                }
             }
         }
     }
@@ -159,20 +149,15 @@ class CreateOrderViewModel @Inject constructor(
     fun makeDeliveryOrder(){
         Timber.d("makeDeliveryOrder")
         viewModelScope.launch{
-            val available = isNetwork.first()
-            if(available){
-                val result = orderRepositoryImpl.makeUserDeliveryOrder(uiState.value.orderForm)
-                when(result){
-                    is NetworkResult.Error ->{
-                        _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                    }
-                    is NetworkResult.Success ->{
-                        _sideEffectChannel.send(SideEffect.ShowToast("Delivery order was created"))
-                        _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
-                    }
+            val result = orderRepositoryImpl.makeUserDeliveryOrder(uiState.value.orderForm)
+            when(result){
+                is NetworkResult.Error ->{
+                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
                 }
-            } else {
-                _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                is NetworkResult.Success ->{
+                    _sideEffectChannel.send(SideEffect.ShowToast("Delivery order was created"))
+                    _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                }
             }
         }
     }

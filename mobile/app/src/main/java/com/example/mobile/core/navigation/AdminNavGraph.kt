@@ -22,27 +22,25 @@ fun AdminNavGraph(
 
     val menuScreenViewModel: MenuAdminScreenViewModel = hiltViewModel()
 
-    Scaffold { padding ->
-        NavHost(
-            navController = navController,
-            route = Graph.WAITER,
-            startDestination = AdminScreen.Home.route
-        ){
-            composable(AdminScreen.Home.route) {
-                MenuAdminScreen(
-                    modifier = modifier,
-                    onSearchClicked = {
-                        navController.navigate(ClientScreen.Search.route)
-                    },
-                    viewModel = menuScreenViewModel
-                )
-            }
-            composable(AdminScreen.Settings.route) {
-                SettingsScreen(
-                    modifier = modifier.fillMaxSize().padding(padding),
-                    onSuccessLoggedOut = onLoggedOut
-                )
-            }
+    NavHost(
+        navController = navController,
+        route = Graph.WAITER,
+        startDestination = AdminScreen.Home.route
+    ){
+        composable(AdminScreen.Home.route) {
+            MenuAdminScreen(
+                modifier = modifier,
+                onSearchClicked = {
+                    navController.navigate(ClientScreen.Search.route)
+                },
+                viewModel = menuScreenViewModel
+            )
+        }
+        composable(AdminScreen.Settings.route) {
+            SettingsScreen(
+                modifier = modifier.fillMaxSize(),
+                onSuccessLoggedOut = onLoggedOut
+            )
         }
     }
 }
