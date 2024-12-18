@@ -10,6 +10,9 @@ import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.cart.presentation.cart.CartAction
 import com.example.mobile.cart.presentation.cart.CartScreenUiState
+import com.example.mobile.core.domain.Result
+import com.example.mobile.core.domain.onError
+import com.example.mobile.core.domain.onSuccess
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.core.utils.formattedPrice
@@ -37,7 +40,13 @@ class CartScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CartScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    val isNetwork = networkConnectivityObserver.observe()
+    val isNetwork = networkConnectivityObserver
+        .observe()
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            false
+        )
 
     val cartItemUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
         .stateIn(
@@ -51,6 +60,7 @@ class CartScreenViewModel @Inject constructor(
         get() = _sideEffectChannel.receiveAsFlow()
 
     init {
+        Timber.d("Cart items get init")
         getItems()
     }
 
@@ -115,36 +125,28 @@ class CartScreenViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
-            cartItemUiState.collect { localItems ->
-                when (val result = cartRepositoryImpl.getAllItems()) {
-                    is NetworkResult.Error -> {
-                        _uiState.update {
-                            it.copy(
-                                error = result.message ?: "Unknown error"
-                            )
-                        }
+            val localItems = cartItemUiState.value
+
+            cartRepositoryImpl.getAllItems()
+                .onSuccess { data, message ->
+                    val serverItemIds = data.map { it.id }.toSet()
+                    val itemsToDelete = localItems.filter { it.id !in serverItemIds }
+
+                    cartDao.runInTransaction {
+                        cartDao.insertItems(data.map { it.toCartItemEntity() })
+                        cartDao.deleteItems(itemsToDelete)
                     }
 
-                    is NetworkResult.Success -> {
-                        Timber.d("Items from server: ${result.data}")
-                        val serverItemIds = result.data.map { it.id }.toSet()
-                        val itemsToDelete = localItems.filter { it.id !in serverItemIds }
-
-                        cartDao.runInTransaction {
-                            cartDao.insertItems(result.data.map { it.toCartItemEntity() })
-                            cartDao.deleteItems(itemsToDelete)
-                        }
-
-                        _uiState.update {
-                            it.copy(
-                                error = ""
-                            )
-                        }
+                    _uiState.update {
+                        it.copy(
+                            error = ""
+                        )
                     }
                 }
-
-                _uiState.update { it.copy(isLoading = false) }
-            }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
@@ -164,28 +166,26 @@ class CartScreenViewModel @Inject constructor(
 
     fun updateItem(){
         viewModelScope.launch {
-            when(val result = cartRepositoryImpl.updateUserCartItem(_uiState.value.cartForm)){
-                is NetworkResult.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
+            cartRepositoryImpl.updateUserCartItem(_uiState.value.cartForm)
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }
-                is NetworkResult.Success -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            }
         }
         clearForm()
     }
 
     fun deleteItem(){
         viewModelScope.launch {
-            when(val result = cartRepositoryImpl.deleteUserCartItem(_uiState.value.cartForm)){
-                is NetworkResult.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
+            cartRepositoryImpl.deleteUserCartItem(_uiState.value.cartForm)
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }
-                is NetworkResult.Success -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:"", code = 200))
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            }
         }
         clearForm()
     }

@@ -136,7 +136,7 @@ class LoginViewModel @Inject constructor(
                     is AuthResult.Unauthorized -> {
                         Timber.tag("Unauthorized").v(result.data.toString())
                         preferencesRepository.clearAllTokens()
-                        _sideEffectChannel.send(SideEffect.ShowToast(result.data!!.message!!))
+                        _sideEffectChannel.send(SideEffect.ShowSuccessToast(result.data!!.message!!))
                         state.copy(
                             isLoading = false,
                             isLoggedIn = false
@@ -144,7 +144,7 @@ class LoginViewModel @Inject constructor(
                     }
                     is AuthResult.UnknownError -> {
                         Timber.tag("UnknownError").v(result.data.toString())
-                        _sideEffectChannel.send(SideEffect.ShowToast(result.data!!.message!!))
+                        _sideEffectChannel.send(SideEffect.ShowSuccessToast(result.data!!.message!!))
                         state.copy(isLoading = false)
                     }
                 }

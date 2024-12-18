@@ -30,7 +30,7 @@ fun ClientNavGraph(
     onLoggedOut: () -> Unit
 ){
     val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
-    val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
+//    val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
     val ordersScreenViewModel: CartScreenViewModel = hiltViewModel()
 
     NavHost(
@@ -129,7 +129,6 @@ fun ClientNavGraph(
         ) {
             CartScreenRoot(
                 modifier = modifier,
-                viewModel = cartScreenViewModel,
                 onGoToCheckoutClick = { navController.navigate(ClientScreen.CreateOrder.route) }
             )
         }

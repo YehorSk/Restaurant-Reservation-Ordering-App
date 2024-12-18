@@ -21,6 +21,7 @@ import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.menu.presentation.menu.components.MenuHeader
 import com.example.mobile.menu.presentation.menu.components.MenuItem
 import com.example.mobile.core.presentation.components.MenuItemModal
+import com.example.mobile.core.utils.toString
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.menu.presentation.MenuAction
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
@@ -44,10 +45,9 @@ fun MenuScreenRoot(
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-            SideEffect.NavigateToNextScreen -> {
-
-            }
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.NavigateToNextScreen -> {}
         }
     }
     

@@ -40,10 +40,9 @@ fun MenuAdminScreen(
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-            SideEffect.NavigateToNextScreen -> {
-
-            }
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.NavigateToNextScreen -> {}
         }
     }
 

@@ -3,7 +3,10 @@ package com.example.mobile.menu.presentation.menu.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.core.data.remote.dto.NetworkResult
+import com.example.mobile.core.domain.Result
 import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.onError
+import com.example.mobile.core.domain.onSuccess
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
@@ -123,14 +126,13 @@ class MenuScreenViewModel @Inject constructor(
     fun addUserCartItem(){
         viewModelScope.launch {
             setLoadingState(true)
-            when(val result = cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)){
-                is NetworkResult.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
+            cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }
-                is NetworkResult.Success -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            }
             setLoadingState(false)
             clearForm()
         }
@@ -140,14 +142,13 @@ class MenuScreenViewModel @Inject constructor(
         Timber.d("addUserFavoriteItem")
         viewModelScope.launch {
             setLoadingState(true)
-            when(val result = menuRepositoryImpl.addFavorite(_uiState.value.currentMenuItem!!.id.toString())){
-                is NetworkResult.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
+            menuRepositoryImpl.addFavorite(_uiState.value.currentMenuItem!!.id.toString())
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }
-                is NetworkResult.Success -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            }
             setLoadingState(false)
         }
     }
@@ -156,14 +157,13 @@ class MenuScreenViewModel @Inject constructor(
         Timber.d("deleteUserFavoriteItem")
         viewModelScope.launch {
             setLoadingState(true)
-            when(val result = menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenuItem!!.id.toString())){
-                is NetworkResult.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message!!))
+            menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenuItem!!.id.toString())
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }
-                is NetworkResult.Success -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message?:""))
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            }
             setLoadingState(false)
         }
     }

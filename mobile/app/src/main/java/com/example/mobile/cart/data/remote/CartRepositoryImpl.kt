@@ -8,6 +8,8 @@ import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.core.data.remote.safeCall
+import com.example.mobile.core.domain.AppError
+import com.example.mobile.core.domain.Result
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,7 +18,7 @@ class CartRepositoryImpl @Inject constructor(
     private val cartDao: CartDao
 ) : CartRepository {
 
-    override suspend fun getAllItems(): NetworkResult<List<CartItemDto>> {
+    override suspend fun getAllItems(): Result<List<CartItemDto>, AppError> {
         Timber.d("Cart getAllItems")
         return safeCall<CartItemDto>(
             execute = {
@@ -25,7 +27,7 @@ class CartRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun addUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>> {
+    override suspend fun addUserCartItem(cartForm: CartForm): Result<List<CartItemDto>, AppError> {
         Timber.d("Cart addUserCartItem")
         return safeCall<CartItemDto>(
             execute = {
@@ -37,7 +39,7 @@ class CartRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun deleteUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>> {
+    override suspend fun deleteUserCartItem(cartForm: CartForm): Result<List<CartItemDto>, AppError> {
         Timber.d("Cart deleteUserCartItem")
         return safeCall<CartItemDto>(
             execute = {
@@ -49,7 +51,7 @@ class CartRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateUserCartItem(cartForm: CartForm): NetworkResult<List<CartItemDto>> {
+    override suspend fun updateUserCartItem(cartForm: CartForm): Result<List<CartItemDto>, AppError> {
         Timber.d("Cart updateUserCartItem")
         return safeCall<CartItemDto>(
             execute = {

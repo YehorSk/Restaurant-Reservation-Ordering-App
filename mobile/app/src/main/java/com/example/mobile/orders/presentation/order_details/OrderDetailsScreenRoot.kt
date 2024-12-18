@@ -31,6 +31,7 @@ import com.example.mobile.ui.theme.MobileTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.presentation.components.OrderDetailsItemList
 import com.example.mobile.orders.presentation.create_order.CreateOrderUiState
@@ -49,8 +50,9 @@ fun OrderDetailsScreenRoot(
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             SideEffect.NavigateToNextScreen -> onGoToOrders()
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -44,6 +44,7 @@ import com.example.mobile.orders.presentation.create_order.CreateOrderAction
 import com.example.mobile.orders.presentation.create_order.CreateOrderUiState
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
 import androidx.compose.runtime.getValue
+import com.example.mobile.core.utils.toString
 
 @Composable
 fun UserCreateOrderScreenRoot(
@@ -65,8 +66,9 @@ fun UserCreateOrderScreenRoot(
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-            SideEffect.NavigateToNextScreen -> onGoToOrders()
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.NavigateToNextScreen -> onGoToOrders()
         }
     }
 

@@ -30,6 +30,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.SingleEventEffect
+import com.example.mobile.core.utils.toString
 
 @Composable
 fun ForgotPasswordScreen(
@@ -41,8 +42,9 @@ fun ForgotPasswordScreen(
 
     SingleEventEffect(forgotViewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-            SideEffect.NavigateToNextScreen -> {}
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.NavigateToNextScreen -> {}
         }
     }
     LaunchedEffect(uiState.internetError) {

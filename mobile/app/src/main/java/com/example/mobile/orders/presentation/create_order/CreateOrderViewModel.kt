@@ -2,7 +2,10 @@ package com.example.mobile.orders.presentation.create_order
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.data.remote.dto.NetworkResult
+import com.example.mobile.core.domain.Result
 import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.onError
+import com.example.mobile.core.domain.onSuccess
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
@@ -116,49 +119,43 @@ class CreateOrderViewModel @Inject constructor(
     fun getUserOrderItems(){
         Timber.d("getUserOrderItems")
         viewModelScope.launch{
-            val result = orderRepositoryImpl.getUserOrderItems()
-            when(result){
-                is NetworkResult.Error ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                }
-                is NetworkResult.Success ->{
+            orderRepositoryImpl.getUserOrderItems()
+                .onSuccess { data, message ->
                     _uiState.update {
-                        it.copy(items = result.data)
+                        it.copy(items = data)
                     }
                 }
-            }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
         }
     }
 
     fun makePickupOrder(){
         Timber.d("makePickupOrder")
         viewModelScope.launch{
-            val result = orderRepositoryImpl.makeUserPickUpOrder(uiState.value.orderForm)
-            when(result){
-                is NetworkResult.Error ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                }
-                is NetworkResult.Success ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast("Pickup order was created"))
+            orderRepositoryImpl.makeUserPickUpOrder(uiState.value.orderForm)
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                 }
-            }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
         }
     }
 
     fun makeDeliveryOrder(){
         Timber.d("makeDeliveryOrder")
         viewModelScope.launch{
-            val result = orderRepositoryImpl.makeUserDeliveryOrder(uiState.value.orderForm)
-            when(result){
-                is NetworkResult.Error ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
-                }
-                is NetworkResult.Success ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast("Delivery order was created"))
+            orderRepositoryImpl.makeUserDeliveryOrder(uiState.value.orderForm)
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                 }
-            }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
         }
     }
 

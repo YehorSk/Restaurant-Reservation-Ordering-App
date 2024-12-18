@@ -19,6 +19,7 @@ import com.example.mobile.R
 import com.example.mobile.core.EventConsumer
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.MenuItemModal
+import com.example.mobile.core.utils.toString
 import com.example.mobile.menu.presentation.menu.components.MenuItem
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 
@@ -33,7 +34,8 @@ fun FavoritesScreen(
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
         }
     }

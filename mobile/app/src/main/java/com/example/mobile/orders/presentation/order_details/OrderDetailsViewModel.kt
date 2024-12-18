@@ -2,7 +2,10 @@ package com.example.mobile.orders.presentation.order_details
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.data.remote.dto.NetworkResult
+import com.example.mobile.core.domain.Result
 import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.onError
+import com.example.mobile.core.domain.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
@@ -31,14 +34,10 @@ class OrderDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            val result = orderRepositoryImpl.getUserOrderDetails(id)
-            when(result){
-                is NetworkResult.Error ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+            orderRepositoryImpl.getUserOrderDetails(id)
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-                is NetworkResult.Success ->{
-                }
-            }
             _uiState.update {
                 it.copy(isLoading = false)
             }
@@ -50,15 +49,13 @@ class OrderDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            val result = orderRepositoryImpl.repeatUserOrder(id)
-            when(result){
-                is NetworkResult.Error ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+            orderRepositoryImpl.repeatUserOrder(id)
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }
-                is NetworkResult.Success ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            }
             _uiState.update {
                 it.copy(isLoading = false)
             }
@@ -70,15 +67,13 @@ class OrderDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            val result = orderRepositoryImpl.cancelUserOrder(id)
-            when(result){
-                is NetworkResult.Error ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+            orderRepositoryImpl.cancelUserOrder(id)
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }
-                is NetworkResult.Success ->{
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            }
             _uiState.update {
                 it.copy(isLoading = false)
             }

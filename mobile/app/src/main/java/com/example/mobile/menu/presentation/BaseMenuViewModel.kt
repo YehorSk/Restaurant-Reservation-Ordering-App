@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.core.data.remote.dto.NetworkResult
+import com.example.mobile.core.domain.Result
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
@@ -89,10 +90,10 @@ open class BaseMenuViewModel @Inject constructor(
         viewModelScope.launch {
             setLoadingState(true)
             when(val result = menuRepositoryImpl.getAllMenus()){
-                is NetworkResult.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowToast(result.message.toString()))
+                is Result.Error -> {
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(result.error))
                 }
-                is NetworkResult.Success ->{
+                is Result.Success ->{
                 }
             }
             setLoadingState(false)

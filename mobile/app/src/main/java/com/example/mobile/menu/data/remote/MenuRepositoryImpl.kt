@@ -3,6 +3,8 @@ package com.example.mobile.menu.data.remote
 import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.data.remote.safeCall
+import com.example.mobile.core.domain.AppError
+import com.example.mobile.core.domain.Result
 import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.menu.domain.service.MenuService
 import com.example.mobile.menu.data.dao.MenuDao
@@ -64,7 +66,7 @@ class MenuRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllMenus(): NetworkResult<List<MenuDto>> {
+    override suspend fun getAllMenus(): Result<List<MenuDto>, AppError> {
         Timber.d("Menu getAllMenus")
         return safeCall<MenuDto>(
             
@@ -77,7 +79,7 @@ class MenuRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun addFavorite(menuItemId: String): NetworkResult<List<String>> {
+    override suspend fun addFavorite(menuItemId: String): Result<List<String>, AppError> {
         Timber.d("Menu addFavorite")
         return safeCall<String>(
             
@@ -90,7 +92,7 @@ class MenuRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun deleteFavorite(menuItemId: String): NetworkResult<List<String>> {
+    override suspend fun deleteFavorite(menuItemId: String): Result<List<String>, AppError> {
         Timber.d("Menu deleteFavorite")
         return safeCall<String>(
             

@@ -31,7 +31,7 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch{
             isNetwork.collect{ available ->
                 if (!available) {
-                    _sideEffectChannel.send(SideEffect.ShowToast("No internet connection!"))
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast("No internet connection!"))
                 }
             }
         }

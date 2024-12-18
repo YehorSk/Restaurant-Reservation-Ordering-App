@@ -67,7 +67,7 @@ class OrderController extends Controller
                 $user->menuItems()->detach($item->id);
             }
             $order = Order::with('orderItems')->find($order->id);
-            return $this->success(data: [$order], message: "");
+            return $this->success(data: [$order], message: "Pickup order was created");
         }
         return $this->error('', 'No user', 401);
     }
@@ -124,7 +124,7 @@ class OrderController extends Controller
                 $user->menuItems()->detach($item->id);
             }
             $order = Order::with('orderItems')->find($order->id);
-            return $this->success(data: [$order], message: "");
+            return $this->success(data: [$order], message: "Delivery order was created");
         }
         return $this->error('', 'No user', 401);
     }

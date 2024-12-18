@@ -3,6 +3,8 @@ package com.example.mobile.orders.data.remote
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.data.remote.safeCall
+import com.example.mobile.core.domain.AppError
+import com.example.mobile.core.domain.Result
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
@@ -61,7 +63,7 @@ class OrderRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserOrderItems(): NetworkResult<List<OrderMenuItemDto>> {
+    override suspend fun getUserOrderItems(): Result<List<OrderMenuItemDto>, AppError> {
         Timber.d("Order getUserOrders")
         return safeCall<OrderMenuItemDto>(
             execute = {
@@ -70,7 +72,7 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getUserOrders(): NetworkResult<List<OrderDto>> {
+    override suspend fun getUserOrders(): Result<List<OrderDto>, AppError> {
         Timber.d("Order getUserOrders")
         return safeCall<OrderDto>(
             execute = {
@@ -82,7 +84,7 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getUserOrderDetails(id: String): NetworkResult<List<OrderDto>> {
+    override suspend fun getUserOrderDetails(id: String): Result<List<OrderDto>, AppError> {
         Timber.d("Order getUserOrderDetails $id")
         return safeCall<OrderDto>(
             execute = {
@@ -97,7 +99,7 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun cancelUserOrder(id: String): NetworkResult<List<OrderDto>> {
+    override suspend fun cancelUserOrder(id: String): Result<List<OrderDto>, AppError> {
         Timber.d("Order cancelUserOrder $id")
         return safeCall<OrderDto>(
             execute = {
@@ -112,7 +114,7 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun repeatUserOrder(id: String): NetworkResult<List<OrderDto>> {
+    override suspend fun repeatUserOrder(id: String): Result<List<OrderDto>, AppError> {
         Timber.d("Order repeatUserOrder $id")
         return safeCall<OrderDto>(
             execute = {
@@ -127,7 +129,7 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun makeUserPickUpOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
+    override suspend fun makeUserPickUpOrder(orderForm: OrderForm): Result<List<OrderDto>, AppError> {
         Timber.d("Order makeUserPickUpOrder")
         return safeCall<OrderDto>(
             execute = {
@@ -139,7 +141,7 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun makeUserDeliveryOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
+    override suspend fun makeUserDeliveryOrder(orderForm: OrderForm): Result<List<OrderDto>, AppError> {
         Timber.d("Order makeUserDeliveryOrder")
         return safeCall<OrderDto>(
             execute = {
@@ -151,7 +153,7 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun makeWaiterOrder(orderForm: OrderForm): NetworkResult<List<OrderDto>> {
+    override suspend fun makeWaiterOrder(orderForm: OrderForm): Result<List<OrderDto>, AppError> {
         Timber.d("Order makeWaiterOrder")
         return safeCall<OrderDto>(
             execute = {

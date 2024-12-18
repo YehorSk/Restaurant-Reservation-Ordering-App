@@ -28,4 +28,12 @@
     <string name="repeat_order">Repeat order</string>
     <string name="party_size">Party size</string>
     <string name="date">Date</string>
+
+    <!--    Errors-->
+    <string name="error_no_internet">No internet connection.</string>
+    <string name="error_serialization">We encountered an issue while processing your request. Please try again later.</string>
+    <string name="error_unauthorized">You are not authorized. Please log in again.</string>
+    <string name="error_request_timeout">The request timed out. Please try again.</string>
+    <string name="error_http">An HTTP error occurred. Please try again later.</string>
+    <string name="error_unknown">An unknown error occurred. Please try again.</string>
 </resources>

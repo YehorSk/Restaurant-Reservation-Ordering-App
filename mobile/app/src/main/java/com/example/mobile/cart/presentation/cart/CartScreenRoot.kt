@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.toMenuItem
@@ -32,11 +33,12 @@ import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import com.example.mobile.core.utils.formattedPrice
+import com.example.mobile.core.utils.toString
 
 @Composable
 fun CartScreenRoot(
     modifier: Modifier = Modifier,
-    viewModel: CartScreenViewModel,
+    viewModel: CartScreenViewModel = hiltViewModel(),
     onGoToCheckoutClick: () -> Unit
 ){
     val context = LocalContext.current
@@ -46,10 +48,9 @@ fun CartScreenRoot(
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowToast -> {
-                Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-            }
-            SideEffect.NavigateToNextScreen -> {}
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.NavigateToNextScreen -> {}
         }
     }
 
