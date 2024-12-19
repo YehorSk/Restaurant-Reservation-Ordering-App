@@ -63,8 +63,11 @@ android {
 
 dependencies {
 
+    // The compose calendar library for Android
+    implementation("com.kizitonwose.calendar:compose:2.4.1")
+
     //Google Maps
-    implementation("com.google.maps.android:maps-compose:6.2.1")
+    implementation(libs.maps.compose)
 
     //Room
     implementation(libs.androidx.room.runtime)

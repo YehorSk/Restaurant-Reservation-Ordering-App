@@ -86,7 +86,6 @@ fun CartScreen(
                 key = {it.pivot.id}
             ) { item ->
                 SwipeToDeleteContainer(
-                    isInternetError = isConnected,
                     item = item,
                     onDelete = {
                         onAction(CartAction.SetItem(item))

@@ -45,12 +45,13 @@ fun OrderDetailsScreenRoot(
     id: Int
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val ordersUiState by viewModel.ordersUiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            SideEffect.NavigateToNextScreen -> onGoToOrders()
+            is SideEffect.NavigateToNextScreen -> onGoToOrders()
             is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
             is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }
@@ -66,7 +67,8 @@ fun OrderDetailsScreenRoot(
         uiState = uiState,
         onGoToOrders = onGoToOrders,
         id = id,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        isConnected = isConnected
     )
 
 }
@@ -78,6 +80,7 @@ fun OrderDetailsScreen(
     uiState: CreateOrderUiState,
     onGoToOrders: () -> Unit,
     id: Int,
+    isConnected: Boolean,
     onAction: (OrderDetailsAction) -> Unit
 ){
     val data = ordersUiState.find { it.order.id == id.toString() }
@@ -122,11 +125,13 @@ fun OrderDetailsScreen(
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            ActionButtons(
-                onRepeatOrder = { onAction(OrderDetailsAction.RepeatOrder((data.order.id))) },
-                onCancelOrder = { onAction(OrderDetailsAction.CancelOrder((data.order.id))) },
-                allowCancel = data.order.status == "Pending"
-            )
+            if(isConnected){
+                ActionButtons(
+                    onRepeatOrder = { onAction(OrderDetailsAction.RepeatOrder((data.order.id))) },
+                    onCancelOrder = { onAction(OrderDetailsAction.CancelOrder((data.order.id))) },
+                    allowCancel = data.order.status == "Pending"
+                )
+            }
         }
     }
 }

@@ -23,5 +23,6 @@ data class OrderForm(
     @SerialName("party_size")
     val partySize:Int = 1,
     @SerialName("table_number")
-    val tableNumber:Int = 0
+    val tableNumber:Int = 0,
+
 )

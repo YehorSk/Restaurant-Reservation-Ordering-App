@@ -7,6 +7,7 @@ import com.example.mobile.core.domain.Result
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.coroutineContext
 
@@ -15,10 +16,12 @@ suspend inline fun <reified T> safeCall(
     onSuccess: (List<T>) -> Unit = {},
     onFailure: () -> Unit = {}
 ): Result<List<T>, AppError> {
-
     return try {
+        Timber.d("Starting execution...")
         val response = execute()
+        Timber.d("Response received: $response")
         onSuccess(response.data!!)
+        Timber.d("onSuccess executed successfully")
         Result.Success(data = response.data, message = response.message)
     }catch (e: IOException) {
         Result.Error(error = AppError.NO_INTERNET)
@@ -33,6 +36,7 @@ suspend inline fun <reified T> safeCall(
         }
     } catch (e: Exception) {
         coroutineContext.ensureActive()
+        Timber.d("Error $e")
         Result.Error(error = AppError.UNKNOWN_ERROR)
     }
 }

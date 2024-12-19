@@ -68,13 +68,14 @@ fun MenuItemModal(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
+        modifier = modifier,
         onDismissRequest = onDismiss,
         sheetState = sheetState,
         dragHandle = null,
         content = {
             MenuItemModalContent(
-                onDismiss,
-                menuItem,
+                onDismiss = onDismiss,
+                menuItem = menuItem,
                 cartForm = cartForm,
                 onQuantityChange = onQuantityChange,
                 onPriceChange = onPriceChange,
@@ -215,7 +216,7 @@ fun MenuItemModalContent(
                                 if(cartForm.quantity>1){
                                     val newQuantity = cartForm.quantity - 1
                                     onQuantityChange(newQuantity)
-                                    onPriceChange((menuItem.price.toDouble() * newQuantity).toDouble())
+                                    onPriceChange(menuItem.price * newQuantity)
                                 }
                             }
                         ) {
@@ -233,7 +234,7 @@ fun MenuItemModalContent(
                             onClick = {
                                 val newQuantity = cartForm.quantity + 1
                                 onQuantityChange(newQuantity)
-                                onPriceChange((menuItem.price.toDouble() * newQuantity).toDouble())
+                                onPriceChange(menuItem.price * newQuantity)
                             }
                         ) {
                             Text(

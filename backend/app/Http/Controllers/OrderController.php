@@ -152,10 +152,20 @@ class OrderController extends Controller
         if($user instanceof User){
             $order = $user->orders()->with('orderItems')->find($id);
             foreach ($order->orderItems as $item){
-                $user->menuItems()->attach($item->id, [
-                    'quantity' => $item->pivot->quantity,
-                    'price' => $item->pivot->price,
-                ]);
+                $exists = $user->menuItems()
+                    ->where('menu_item_id', $item->id)
+                    ->first();
+                if($exists) {
+                    $user->menuItems()->updateExistingPivot($item->id, [
+                        'quantity' => $exists->pivot->quantity + $item->pivot->quantity,
+                        'price' => $exists->pivot->price + $item->pivot->price
+                    ]);
+                }else{
+                    $user->menuItems()->attach($item->id, [
+                        'quantity' => $item->pivot->quantity,
+                        'price' => $item->pivot->price,
+                    ]);
+                }
             }
             return $this->success(data: [$order], message: "Items added to cart successfully.");
         }

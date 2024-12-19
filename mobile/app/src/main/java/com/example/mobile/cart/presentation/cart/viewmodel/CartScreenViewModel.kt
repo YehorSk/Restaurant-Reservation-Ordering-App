@@ -101,7 +101,7 @@ class CartScreenViewModel @Inject constructor(
 
     fun updatePrice(price: Double){
         _uiState.update {
-            it.copy(cartForm = it.cartForm.copy(price = formattedPrice(price).toDouble()))
+            it.copy(cartForm = it.cartForm.copy(price = price))
         }
     }
 
