@@ -1,6 +1,5 @@
 package com.example.mobile.core.data.remote
 
-import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.core.domain.AppError
 import com.example.mobile.core.domain.Result
@@ -17,11 +16,8 @@ suspend inline fun <reified T> safeCall(
     onFailure: () -> Unit = {}
 ): Result<List<T>, AppError> {
     return try {
-        Timber.d("Starting execution...")
         val response = execute()
-        Timber.d("Response received: $response")
         onSuccess(response.data!!)
-        Timber.d("onSuccess executed successfully")
         Result.Success(data = response.data, message = response.message)
     }catch (e: IOException) {
         Result.Error(error = AppError.NO_INTERNET)

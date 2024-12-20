@@ -5,6 +5,7 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.text.NumberFormat
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.Month
 import java.time.YearMonth
 import java.time.ZoneId
@@ -43,13 +44,25 @@ fun formattedPrice(price: Double): String{
     return formatter.format(price)
 }
 
-fun formatDateTime(input: String): String {
+fun formatOrderDateTime(input: String): String {
     val zonedDateTime = ZonedDateTime.parse(input)
-
     val localDateTime = zonedDateTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
-
     val formatter = DateTimeFormatter.ofPattern("dd-MMM., yyy HH:mm")
     return localDateTime.format(formatter)
+}
+
+fun formatDateTime(input: String): String {
+    val parser = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val localDate = LocalDate.parse(input, parser)
+    val formatter = DateTimeFormatter.ofPattern("MMMM dd")
+    return localDate.format(formatter)
+}
+
+fun formatMonth(input: String): String {
+    val parser = DateTimeFormatter.ofPattern("yyyy-MM")
+    val yearMonth = YearMonth.parse(input, parser)
+    val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
+    return yearMonth.format(formatter)
 }
 
 fun YearMonth.displayText(short: Boolean = false): String {

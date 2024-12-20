@@ -1,4 +1,4 @@
-package com.example.mobile.core
+package com.example.mobile.core.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

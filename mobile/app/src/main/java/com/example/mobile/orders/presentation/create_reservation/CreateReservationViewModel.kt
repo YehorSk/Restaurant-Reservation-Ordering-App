@@ -31,4 +31,14 @@ class CreateReservationViewModel @Inject constructor(
         }
     }
 
+    fun updateReservationDate(date: String){
+        _uiState.update {
+            it.copy(
+                orderForm = it.orderForm.copy(
+                    reservationDate = date
+                )
+            )
+        }
+    }
+
 }

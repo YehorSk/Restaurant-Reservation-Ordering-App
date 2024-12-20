@@ -64,7 +64,7 @@ android {
 dependencies {
 
     // The compose calendar library for Android
-    implementation("com.kizitonwose.calendar:compose:2.4.1")
+    implementation("com.kizitonwose.calendar:compose:2.6.1")
 
     //Google Maps
     implementation(libs.maps.compose)

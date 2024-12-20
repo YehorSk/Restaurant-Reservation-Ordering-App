@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
-import com.example.mobile.core.EventConsumer
+import com.example.mobile.core.utils.EventConsumer
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.utils.toString

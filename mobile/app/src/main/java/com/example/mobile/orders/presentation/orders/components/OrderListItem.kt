@@ -1,12 +1,10 @@
 package com.example.mobile.orders.presentation.orders.components
 
-import android.widget.TextView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,11 +17,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mobile.core.utils.formatDateTime
+import com.example.mobile.core.utils.formatOrderDateTime
 import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.ui.theme.MobileTheme
-import java.text.SimpleDateFormat
 
 @Composable
 fun OrderListItem(
@@ -63,7 +60,7 @@ fun OrderListItem(
                 modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
             ) {
                 Text(
-                    text = formatDateTime(orderEntity.createdAt),
+                    text = formatOrderDateTime(orderEntity.createdAt),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.LightGray,

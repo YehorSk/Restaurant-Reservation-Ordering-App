@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,7 +21,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
-import com.example.mobile.orders.presentation.create_reservation.components.CustomCalendar
+import com.example.mobile.orders.presentation.create_reservation.components.CalendarRoot
+import com.example.mobile.orders.presentation.create_reservation.components.TimeRoot
 
 @Composable
 fun CreateReservationScreen(
@@ -56,6 +58,9 @@ fun CreateReservationScreen(
             onPartySizeChanged = { size -> viewModel.updatePartySize(size) },
             partySize = uiState.orderForm.partySize
         )
-        CustomCalendar()
+        CalendarRoot(
+            onUpdateSelectedDate = { date -> viewModel.updateReservationDate(date) }
+        )
+        TimeRoot(date = uiState.orderForm.reservationDate) { }
     }
 }

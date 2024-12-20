@@ -15,11 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.mobile.core.EventConsumer
+import com.example.mobile.core.utils.EventConsumer
 import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.core.presentation.components.SingleEventEffect
-import com.example.mobile.menu.data.db.model.toMenu
-import com.example.mobile.menu.data.db.model.toMenuItem
 import com.example.mobile.menu.presentation.menu.components.MenuHeader
 import com.example.mobile.menu.presentation.menu.components.MenuItem
 import com.example.mobile.menu.presentation.menu.components.SearchBar
