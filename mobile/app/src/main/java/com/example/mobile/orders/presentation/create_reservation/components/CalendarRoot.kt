@@ -1,5 +1,6 @@
 package com.example.mobile.orders.presentation.create_reservation.components
 
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,6 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +43,7 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,12 +51,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.R
 import com.example.mobile.core.utils.formatMonth
+import com.kizitonwose.calendar.core.nextMonth
+import com.kizitonwose.calendar.core.previousMonth
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @Composable
 fun CalendarRoot(
     onUpdateSelectedDate: (String) -> Unit
 ){
-
+    val coroutineScope = rememberCoroutineScope()
     val currentMonth = remember { YearMonth.now() }
     val startMonth = remember { currentMonth }
     val endMonth = remember { currentMonth.plusMonths(12) }
@@ -61,7 +73,6 @@ fun CalendarRoot(
         firstVisibleMonth = currentMonth,
         firstDayOfWeek = firstDayOfWeek
     )
-
     Column(
         modifier = Modifier
             .background(Color.White)
@@ -81,15 +92,53 @@ fun CalendarRoot(
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
-        Text(
+        Row(
             modifier = Modifier
-                .padding(bottom = 20.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            text = formatMonth(state.lastVisibleMonth.yearMonth.toString()),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-        )
+                .fillMaxWidth()
+                .padding(bottom = 20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        val previousMonth = state.firstVisibleMonth.yearMonth.previousMonth
+                        if (previousMonth >= startMonth) {
+                            state.scrollToMonth(previousMonth)
+                        }
+                    }
+                }
+            ) {
+                Icon(
+                    modifier = Modifier.weight(1f),
+                    imageVector = Icons.Filled.ArrowBackIosNew,
+                    contentDescription = ""
+                )
+            }
+            Text(
+                modifier = Modifier
+                    .weight(1f),
+                textAlign = TextAlign.Center,
+                text = formatMonth(state.lastVisibleMonth.yearMonth.toString()),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+            )
+            IconButton(
+                onClick = {
+                    coroutineScope.launch {
+                        val nextMonth = state.firstVisibleMonth.yearMonth.nextMonth
+                        if (nextMonth <= endMonth) {
+                            state.scrollToMonth(nextMonth)
+                        }
+                    }
+                }
+            ) {
+                Icon(
+                    modifier = Modifier.weight(1f),
+                    imageVector = Icons.Filled.ArrowForwardIos,
+                    contentDescription = ""
+                )
+            }
+        }
         Spacer(
             modifier = Modifier.height(20.dp)
         )

@@ -2,11 +2,13 @@ package com.example.mobile.menu.presentation.menu.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,22 +27,27 @@ fun SearchBar(
     onValueChange: (String) -> Unit,
     isConnected: Boolean
 ){
-    OutlinedTextField(
-        modifier = modifier
+    Box(
+        modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
             .padding(8.dp)
-            .clickable { onClick() },
-        value = text,
-        onValueChange = onValueChange,
-        enabled = enabled,
-        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
-        placeholder = {
-            Text(
-                text = "Search"
-            )
-        }
-    )
+    ){
+        OutlinedTextField(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .clickable { onClick() },
+            value = text,
+            onValueChange = onValueChange,
+            enabled = enabled,
+            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
+            placeholder = {
+                Text(
+                    text = "Search"
+                )
+            }
+        )
+    }
 }
 
 @PreviewLightDark
