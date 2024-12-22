@@ -1,7 +1,6 @@
 package com.example.mobile.orders.data.remote
 
 import com.example.mobile.cart.data.dao.CartDao
-import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.core.domain.AppError
 import com.example.mobile.core.domain.Result
@@ -12,10 +11,11 @@ import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.TableDto
+import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.orders.data.remote.dto.toCartItemEntity
 import com.example.mobile.orders.data.remote.dto.toOrderEntity
 import com.example.mobile.orders.data.remote.dto.toOrderMenuItemEntity
-import com.example.mobile.orders.presentation.create_order.OrderForm
+import com.example.mobile.orders.presentation.OrderForm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -174,4 +174,12 @@ class OrderRepositoryImpl @Inject constructor(
             }
         )
     }
+
+    override suspend fun getAvailableTimeSlots(): Result<List<TimeSlotDto>, AppError> {
+        Timber.d("Order getTables")
+        return safeCall<TimeSlotDto>(
+            execute = {
+                orderService.getAvailableTimeSlots()
+            }
+        )    }
 }

@@ -31,10 +31,11 @@ import com.example.mobile.ui.theme.MobileTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.presentation.components.OrderDetailsItemList
-import com.example.mobile.orders.presentation.create_order.CreateOrderUiState
+import com.example.mobile.orders.presentation.CreateOrderUiState
 import com.example.mobile.orders.presentation.order_details.components.ActionButtons
 
 @Composable
@@ -85,16 +86,7 @@ fun OrderDetailsScreen(
 ){
     val data = ordersUiState.find { it.order.id == id.toString() }
     if(uiState.isLoading){
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            CircularProgressIndicator()
-        }
+        LoadingPart()
     }else if(data!=null){
 
         Column(

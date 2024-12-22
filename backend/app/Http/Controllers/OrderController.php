@@ -95,7 +95,7 @@ class OrderController extends Controller
                 'order_type' =>  $request->input('order_type'),
                 'code' => $this->generate_code(),
                 'status' => 'Pending',
-                'table_id' => $request->input('selected_table'),
+                'table_id' => $request->input('table_id'),
                 'waiter_id' => $user->id
             ]);
             $order->save();

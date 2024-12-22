@@ -4,7 +4,8 @@ import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.data.remote.dto.TableDto
-import com.example.mobile.orders.presentation.create_order.OrderForm
+import com.example.mobile.orders.data.remote.dto.TimeSlotDto
+import com.example.mobile.orders.presentation.OrderForm
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -38,5 +39,8 @@ interface OrderService {
 
     @GET("table/waiter/tables")
     suspend fun getTables() : ResponseDto<TableDto>
+
+    @GET("reservation/user/getTimeSlots")
+    suspend fun getAvailableTimeSlots() : ResponseDto<TimeSlotDto>
 
 }

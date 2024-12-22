@@ -1,8 +1,6 @@
 package com.example.mobile.orders.presentation.order_details
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.core.data.remote.dto.NetworkResult
-import com.example.mobile.core.domain.Result
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.domain.onError
 import com.example.mobile.core.domain.onSuccess

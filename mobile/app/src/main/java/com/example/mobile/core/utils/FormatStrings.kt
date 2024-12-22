@@ -6,6 +6,7 @@ import timber.log.Timber
 import java.text.NumberFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.Month
 import java.time.YearMonth
 import java.time.ZoneId
@@ -49,6 +50,13 @@ fun formatOrderDateTime(input: String): String {
     val localDateTime = zonedDateTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
     val formatter = DateTimeFormatter.ofPattern("dd-MMM., yyy HH:mm")
     return localDateTime.format(formatter)
+}
+
+fun formatSlotTime(input: String): String {
+    val parser = DateTimeFormatter.ofPattern("HH:mm:ss")
+    val localDate = LocalTime.parse(input, parser)
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+    return localDate.format(formatter)
 }
 
 fun formatDateTime(input: String): String {

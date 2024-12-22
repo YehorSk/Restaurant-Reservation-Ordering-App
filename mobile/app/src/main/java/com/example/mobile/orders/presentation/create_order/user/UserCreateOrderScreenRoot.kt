@@ -41,7 +41,7 @@ import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.orders.presentation.components.OrderAddress
 import com.example.mobile.orders.presentation.components.OrderSpecialRequest
 import com.example.mobile.orders.presentation.create_order.CreateOrderAction
-import com.example.mobile.orders.presentation.create_order.CreateOrderUiState
+import com.example.mobile.orders.presentation.CreateOrderUiState
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
 import androidx.compose.runtime.getValue
 import com.example.mobile.core.utils.toString

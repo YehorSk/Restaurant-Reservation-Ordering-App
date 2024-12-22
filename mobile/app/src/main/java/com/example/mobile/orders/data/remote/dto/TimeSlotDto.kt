@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class TimeSlotDto(
     val id: Int,
     @SerialName("start_time")
-    val startTime: Long,
+    val startTime: String,
     @SerialName("end_time")
-    val endTime: Long
+    val endTime: String
 )

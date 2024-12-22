@@ -27,6 +27,7 @@
     <string name="cancel_order">Cancel order</string>
     <string name="repeat_order">Repeat order</string>
     <string name="party_size">Party size</string>
+    <string name="your_number">What\'s your number?</string>
     <string name="date">Date</string>
 
     <!--    Errors-->

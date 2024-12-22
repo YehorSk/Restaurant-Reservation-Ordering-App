@@ -6,6 +6,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use App\Models\Menu;
@@ -97,6 +98,10 @@ Route::prefix("favorite")->controller(FavoriteController::class)->group(function
 
 Route::prefix("table")->controller(TableController::class)->group(function (){
     Route::get('/waiter/tables','getTables');
+});
+
+Route::prefix("reservation")->controller(ReservationController::class)->group(function (){
+    Route::get('/user/getTimeSlots','getAvailableTimeSlots');
 });
 
 Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);

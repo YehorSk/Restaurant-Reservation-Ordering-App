@@ -2,14 +2,12 @@ package com.example.mobile.orders.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.orders.presentation.create_order.CreateOrderUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao

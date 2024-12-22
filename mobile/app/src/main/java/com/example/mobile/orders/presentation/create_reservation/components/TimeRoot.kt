@@ -30,15 +30,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.R
 import com.example.mobile.core.utils.formatDateTime
+import com.example.mobile.core.utils.formatSlotTime
+import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
 fun TimeRoot(
     modifier: Modifier = Modifier,
+    selectedSlot: Int,
     date: String,
-    onTimeChanged: (String) -> Unit
+    slots: List<TimeSlotDto>,
+    onTimeChanged: (Int) -> Unit
 ){
-    val items = listOf<String>("10:15","10:30","10:45","11:00","11:15","11:30","11:45","12:00","12:15")
     Column(
         modifier = Modifier
             .background(Color.White)
@@ -62,18 +65,18 @@ fun TimeRoot(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(items){ item ->
+            items(slots){ item ->
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(5.dp))
                         .border(
                             width = 2.dp,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = if (item.id == selectedSlot) MaterialTheme.colorScheme.primary else Color.LightGray,
                             shape = CircleShape)
                         .width(80.dp)
                         .background(Color.White)
                         .clickable{
-                            onTimeChanged(item)
+                            onTimeChanged(item.id)
                         },
                     contentAlignment = Alignment.Center
                 ){
@@ -81,7 +84,7 @@ fun TimeRoot(
                         modifier = Modifier.padding(10.dp),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        text = item.toString()
+                        text = formatSlotTime(item.startTime.toString())
                     )
                 }
             }
@@ -92,10 +95,24 @@ fun TimeRoot(
 @Preview
 @Composable
 fun TimeRootPreview(){
+    val timeSlots = listOf(
+        TimeSlotDto(id = 1, startTime = "08:00:00", endTime = "09:00:00"),
+        TimeSlotDto(id = 2, startTime = "09:00:00", endTime = "10:00:00"),
+        TimeSlotDto(id = 3, startTime = "10:00:00", endTime = "11:00:00"),
+        TimeSlotDto(id = 4, startTime = "11:00:00", endTime = "12:00:00"),
+        TimeSlotDto(id = 5, startTime = "12:00:00", endTime = "13:00:00"),
+        TimeSlotDto(id = 6, startTime = "13:00:00", endTime = "14:00:00"),
+        TimeSlotDto(id = 7, startTime = "14:00:00", endTime = "15:00:00"),
+        TimeSlotDto(id = 8, startTime = "15:00:00", endTime = "16:00:00"),
+        TimeSlotDto(id = 9, startTime = "16:00:00", endTime = "17:00:00"),
+        TimeSlotDto(id = 10, startTime = "17:00:00", endTime = "18:00:00")
+    )
     MobileTheme {
         TimeRoot(
             date = "2024-12-20",
-            onTimeChanged = {}
+            slots = timeSlots,
+            onTimeChanged = {},
+            selectedSlot = 0
         )
     }
 }

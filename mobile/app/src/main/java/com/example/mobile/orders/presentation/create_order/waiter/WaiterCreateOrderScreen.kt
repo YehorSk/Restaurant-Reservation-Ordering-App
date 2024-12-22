@@ -40,7 +40,6 @@ import com.example.mobile.orders.presentation.components.OrderSpecialRequest
 import com.example.mobile.orders.presentation.components.SelectTable
 import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 
 @Composable
