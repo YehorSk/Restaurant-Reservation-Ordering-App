@@ -18,6 +18,7 @@ import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,4 +44,7 @@ open class OrderBaseViewModel @Inject constructor(
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
 
+    protected fun setLoadingState(isLoading: Boolean) {
+        _uiState.update { it.copy(isLoading = isLoading) }
+    }
 }

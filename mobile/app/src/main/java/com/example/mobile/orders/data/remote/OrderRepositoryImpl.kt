@@ -11,6 +11,7 @@ import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.remote.dto.OrderDto
+import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.data.remote.dto.toCartItemEntity
 import com.example.mobile.orders.data.remote.dto.toOrderEntity
 import com.example.mobile.orders.data.remote.dto.toOrderMenuItemEntity
@@ -161,6 +162,15 @@ class OrderRepositoryImpl @Inject constructor(
             },
             onSuccess = {
                 orderDao.deleteAllCartItems()
+            }
+        )
+    }
+
+    override suspend fun getTables(): Result<List<TableDto>, AppError> {
+        Timber.d("Order getTables")
+        return safeCall<TableDto>(
+            execute = {
+                orderService.getTables()
             }
         )
     }

@@ -61,8 +61,13 @@ class User extends Authenticatable
         return $this->belongsToMany(MenuItem::class, 'user_favorite_items');
     }
 
-    public function orders()
+    public function clientOrders()
     {
         return $this->hasMany(Order::class, 'client_id');
+    }
+
+    public function waiterOrders()
+    {
+        return $this->hasMany(Order::class, 'waiter_id');
     }
 }

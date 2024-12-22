@@ -36,11 +36,12 @@ import com.example.mobile.orders.presentation.components.OrderAddMore
 import com.example.mobile.orders.presentation.components.OrderAddress
 import com.example.mobile.orders.presentation.components.OrderItemList
 import com.example.mobile.orders.presentation.components.OrderMap
-import com.example.mobile.orders.presentation.components.OrderOptions
 import com.example.mobile.orders.presentation.components.OrderSpecialRequest
 import com.example.mobile.orders.presentation.components.SelectTable
 import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 
 @Composable
 fun WaiterCreateOrderScreen(
@@ -51,13 +52,14 @@ fun WaiterCreateOrderScreen(
     onGoToOrders: () -> Unit,
 ){
 
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-    val isConnected = viewModel.isNetwork.collectAsStateWithLifecycle(false)
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
         viewModel.getUserOrderItems()
+        viewModel.getTables()
     }
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
@@ -68,7 +70,7 @@ fun WaiterCreateOrderScreen(
         }
     }
 
-    if(uiState.value.items != null){
+    if(uiState.items != null && !uiState.isLoading){
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -80,8 +82,8 @@ fun WaiterCreateOrderScreen(
                 onGoBack = onGoToCart,
                 title = R.string.complete_order_navbar_title
             )
-            if (isConnected.value && uiState.value.items != null){
-                OrderItemList(items = uiState.value.items!!)
+            if (isConnected){
+                OrderItemList(items = uiState.items!!)
                 HorizontalDivider()
             }
             OrderAddMore(
@@ -90,7 +92,7 @@ fun WaiterCreateOrderScreen(
             )
             HorizontalDivider()
             OrderSpecialRequest(
-                request = uiState.value.orderForm.specialRequest,
+                request = uiState.orderForm.specialRequest,
                 onRequestChange = {request -> viewModel.updateRequest(request)}
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -98,25 +100,26 @@ fun WaiterCreateOrderScreen(
 //                selected = uiState.value.orderForm.orderType,
 //                onSelectedChange = { type,text -> viewModel.updateOrderType(type,text) }
 //            )
-            val tables = listOf<Int>(1,2,3,4,5,6,7,8,9,10)
-            SelectTable(
-                tables = tables,
-                selectedTable = uiState.value.orderForm.tableNumber,
-                onTableNumberChanged = { viewModel.updateTableNumber(it) }
-            )
+            if(uiState.tables !=null){
+                SelectTable(
+                    tables = uiState.tables!!,
+                    selectedTable = uiState.orderForm.selectedTable,
+                    onTableNumberChanged = { viewModel.updateTableNumber(it) }
+                )
+            }
             Spacer(modifier = Modifier.height(10.dp))
-            if (uiState.value.orderForm.orderType == 1 && isConnected.value){
+            if (uiState.orderForm.orderType == 1 && isConnected){
                 OrderMap()
                 OrderAddress(
-                    address = uiState.value.orderForm.address,
-                    instructions = uiState.value.orderForm.instructions,
+                    address = uiState.orderForm.address,
+                    instructions = uiState.orderForm.instructions,
                     onAddressChange = {address -> viewModel.updateAddress(address)},
                     onInstructionsChange = {instructions -> viewModel.updateInstructions(instructions)}
                 )
                 Spacer(modifier = Modifier.height(10.dp))
             }
-            if (isConnected.value  && uiState.value.items != null){
-                val checkout = uiState.value.items!!.sumOf {
+            if (isConnected){
+                val checkout = uiState.items!!.sumOf {
                     it.pivot.price
                 }
                 TotalPrice(
@@ -134,7 +137,7 @@ fun WaiterCreateOrderScreen(
                         .fillMaxWidth(),
                     enabled = viewModel.validateForm(),
                     onClick = {
-                        viewModel.makeOrder()
+                        viewModel.makeWaiterOrder()
                     }
                 ) {
                     Text(

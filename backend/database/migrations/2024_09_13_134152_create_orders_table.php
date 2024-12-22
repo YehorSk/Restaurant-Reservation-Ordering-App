@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger("client_id");
+            $table->unsignedBigInteger("client_id")->nullable();
             $table->unsignedBigInteger("table_id")->nullable();
             $table->unsignedBigInteger("waiter_id")->nullable();
             $table->unsignedBigInteger("reservation_id")->nullable();

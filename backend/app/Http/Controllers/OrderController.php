@@ -27,7 +27,13 @@ class OrderController extends Controller
     public function getUserOrders(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $orders = $user->orders()->with('orderItems')->get();
+            if ($user->role === 'user') {
+                $orders = $user->clientOrders()->with('orderItems')->get();
+            } elseif ($user->role === 'waiter') {
+                $orders = $user->waiterOrders()->with('orderItems')->get();
+            } else {
+                return $this->error('', 'Invalid role', 403);
+            }
             return $this->success(data: $orders, message: "");
         }
         return $this->error('', 'No user', 401);
@@ -36,7 +42,14 @@ class OrderController extends Controller
     public function getUserOrderDetails($id){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $order = $user->orders()->with('orderItems')->find($id);
+            if ($user->role === 'user') {
+                $order = $user->clientOrders()->with('orderItems')->find($id);
+            } elseif ($user->role === 'waiter') {
+                $order = $user->waiterOrders()->with('orderItems')->find($id);
+            } else {
+                return $this->error('', 'Invalid role', 403);
+            }
+//            $order = $user->clientOrders()->with('orderItems')->find($id);
             if ($order) {
                 return $this->success(data: [$order], message: "Order retrieved successfully.");
             }
@@ -82,7 +95,7 @@ class OrderController extends Controller
                 'order_type' =>  $request->input('order_type'),
                 'code' => $this->generate_code(),
                 'status' => 'Pending',
-                'table_id' => $request->input('table_number'),
+                'table_id' => $request->input('selected_table'),
                 'waiter_id' => $user->id
             ]);
             $order->save();
@@ -95,7 +108,7 @@ class OrderController extends Controller
                 $user->menuItems()->detach($item->id);
             }
             $order = Order::with('orderItems')->find($order->id);
-            return $this->success(data: [$order], message: "");
+            return $this->success(data: [$order], message: "Order was created");
         }
         return $this->error('', 'No user', 401);
     }
@@ -132,11 +145,11 @@ class OrderController extends Controller
     public function cancelOrder($id){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $order = $user->orders()->with('orderItems')->find($id);
+            $order = $user->clientOrders()->with('orderItems')->find($id);
             if ($order) {
                 if($order->status == 'Pending'){
                     $order->update(['status' => 'Canceled']);
-                    $order = $user->orders()->with('orderItems')->find($id);
+                    $order = $user->clientOrders()->with('orderItems')->find($id);
                     return $this->success(data: [$order], message: "Order canceled successfully.");
                 }else{
                     return $this->error('', 'Order cannot be canceled.', 409);
@@ -150,7 +163,7 @@ class OrderController extends Controller
     public function repeatOrder($id){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $order = $user->orders()->with('orderItems')->find($id);
+            $order = $user->clientOrders()->with('orderItems')->find($id);
             foreach ($order->orderItems as $item){
                 $exists = $user->menuItems()
                     ->where('menu_item_id', $item->id)

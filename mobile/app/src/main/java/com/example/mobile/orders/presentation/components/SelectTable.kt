@@ -29,11 +29,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.toSize
+import com.example.mobile.orders.data.remote.dto.TableDto
 
 @Composable
 fun SelectTable(
     modifier: Modifier = Modifier,
-    tables: List<Int>,
+    tables: List<TableDto>,
     selectedTable: Int,
     onTableNumberChanged: (Int) -> Unit
 ){
@@ -89,12 +90,12 @@ fun SelectTable(
                 tables.forEach{ table ->
                     DropdownMenuItem(
                         onClick = {
-                            onTableNumberChanged(table)
+                            onTableNumberChanged(table.id.toInt())
                             expanded = false
                         },
                         text = {
                             Text(
-                                text = table.toString()
+                                text = table.number.toString()
                             )
                         }
                     )
@@ -107,7 +108,7 @@ fun SelectTable(
 @Preview
 @Composable
 fun SelectTablePreview(){
-    val tables = listOf<Int>(1,2,3,4,5,6,7,8,9,10)
+    val tables = listOf<TableDto>(TableDto(number = "1", capacity = 1, createdAt = "", updatedAt = "", id = "1"))
     val selected = 1
     MobileTheme {
         SelectTable(

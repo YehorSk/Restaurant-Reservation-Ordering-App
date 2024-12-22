@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Table extends Model
+class TimeSlot extends Model
 {
     use HasFactory;
 
-    protected $table = 'tables';
+    protected $table = 'time_slot';
 
     protected $fillable = [
-        "number",
-        "capacity"
+        "start_time",
+        "end_time",
     ];
 }

@@ -3,6 +3,7 @@ package com.example.mobile.orders.domain.service
 import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
+import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.presentation.create_order.OrderForm
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -34,5 +35,8 @@ interface OrderService {
 
     @POST("order/user/delivery")
     suspend fun makeUserDeliveryOrder(@Body orderForm: OrderForm) : ResponseDto<OrderDto>
+
+    @GET("table/waiter/tables")
+    suspend fun getTables() : ResponseDto<TableDto>
 
 }

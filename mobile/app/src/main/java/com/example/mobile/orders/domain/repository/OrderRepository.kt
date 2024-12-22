@@ -5,6 +5,7 @@ import com.example.mobile.core.domain.AppError
 import com.example.mobile.core.domain.Result
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
+import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.presentation.create_order.OrderForm
 
 interface OrderRepository {
@@ -24,5 +25,7 @@ interface OrderRepository {
     suspend fun makeUserDeliveryOrder(orderForm: OrderForm) : Result<List<OrderDto>, AppError>
 
     suspend fun makeWaiterOrder(orderForm: OrderForm) : Result<List<OrderDto>, AppError>
+
+    suspend fun getTables() : Result<List<TableDto>, AppError>
 
 }

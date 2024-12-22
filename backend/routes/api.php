@@ -6,6 +6,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use App\Models\Menu;
 use Illuminate\Http\Request;
@@ -92,6 +93,10 @@ Route::prefix("favorite")->controller(FavoriteController::class)->group(function
     Route::get('/user','getUserFavoriteItems');
     Route::post('/user/add','addUserFavoriteItem');
     Route::post('/user/delete','deleteUserFavoriteItem');
+});
+
+Route::prefix("table")->controller(TableController::class)->group(function (){
+    Route::get('/waiter/tables','getTables');
 });
 
 Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
