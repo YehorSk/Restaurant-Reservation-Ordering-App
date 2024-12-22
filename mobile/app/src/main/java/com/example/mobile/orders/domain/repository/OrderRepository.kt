@@ -28,6 +28,6 @@ interface OrderRepository {
 
     suspend fun getTables() : Result<List<TableDto>, AppError>
 
-    suspend fun getAvailableTimeSlots() : Result<List<TimeSlotDto>, AppError>
+    suspend fun getAvailableTimeSlots(orderForm: OrderForm) : Result<List<TimeSlotDto>, AppError>
 
 }

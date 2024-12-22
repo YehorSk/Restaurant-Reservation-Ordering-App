@@ -19,4 +19,14 @@ class Reservation extends Model
         'party_size',
         'date'
     ];
+
+    public function timeSlot()
+    {
+        return $this->belongsTo(TimeSlot::class, 'time_slot_id');
+    }
+
+    public function table()
+    {
+        return $this->belongsTo(Table::class, 'table_id');
+    }
 }

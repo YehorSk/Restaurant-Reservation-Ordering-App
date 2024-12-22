@@ -29,6 +29,7 @@ class CreateReservationViewModel @Inject constructor(
                 )
             )
         }
+        getAvailableTimeSlots()
     }
 
     fun updateReservationDate(date: String){
@@ -39,6 +40,7 @@ class CreateReservationViewModel @Inject constructor(
                 )
             )
         }
+        getAvailableTimeSlots()
     }
 
     fun updateTimeSlot(slot: Int){
@@ -54,17 +56,14 @@ class CreateReservationViewModel @Inject constructor(
     fun getAvailableTimeSlots(){
         Timber.d("getAvailableTimeSlots")
         viewModelScope.launch{
-            setLoadingState(true)
-            orderRepositoryImpl.getAvailableTimeSlots()
+            orderRepositoryImpl.getAvailableTimeSlots(uiState.value.orderForm)
                 .onSuccess { data, message ->
                     _uiState.update {
                         it.copy(timeSlots = data)
                     }
-                    setLoadingState(false)
                 }
                 .onError { error ->
                     _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
-                    setLoadingState(false)
                 }
         }
     }

@@ -15,4 +15,9 @@ class TimeSlot extends Model
         "start_time",
         "end_time",
     ];
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'time_slot_id');
+    }
 }

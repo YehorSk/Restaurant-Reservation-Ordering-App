@@ -15,4 +15,9 @@ class Table extends Model
         "number",
         "capacity"
     ];
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'table_id');
+    }
 }

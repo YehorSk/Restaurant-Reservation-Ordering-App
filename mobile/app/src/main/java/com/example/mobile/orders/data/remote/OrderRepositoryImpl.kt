@@ -175,11 +175,11 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getAvailableTimeSlots(): Result<List<TimeSlotDto>, AppError> {
+    override suspend fun getAvailableTimeSlots(orderForm: OrderForm): Result<List<TimeSlotDto>, AppError> {
         Timber.d("Order getTables")
         return safeCall<TimeSlotDto>(
             execute = {
-                orderService.getAvailableTimeSlots()
+                orderService.getAvailableTimeSlots(orderForm)
             }
         )    }
 }

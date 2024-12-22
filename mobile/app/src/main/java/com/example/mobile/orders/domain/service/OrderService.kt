@@ -40,7 +40,7 @@ interface OrderService {
     @GET("table/waiter/tables")
     suspend fun getTables() : ResponseDto<TableDto>
 
-    @GET("reservation/user/getTimeSlots")
-    suspend fun getAvailableTimeSlots() : ResponseDto<TimeSlotDto>
+    @POST("reservation/user/getTimeSlots")
+    suspend fun getAvailableTimeSlots(@Body orderForm: OrderForm) : ResponseDto<TimeSlotDto>
 
 }
