@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Table;
 use App\Models\TimeSlot;
@@ -68,14 +69,65 @@ class ReservationController extends Controller
     public function createReservation(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $reservation = new Reservation([
-                "client_id" =>  $user->id,
-                "table_id" => $request->input('table_id', ''),
-                "time_slot_id" => $request->input('table_id', ''),
-                "party_size" => $request->input('party_size', ''),
-                "date" => $request->input('reservation_date', ''),
+            $date = $request->input('reservation_date', '');
+            $size = $request->input('party_size', '');
+            $timeSlotId = $request->input('time_slot_id', '');
+
+            if (!$date || !$size || !$timeSlotId) {
+                return $this->error('', 'Reservation date, party size, and time slot are required', 400);
+            }
+
+            $availableTable = Table::query()
+                ->where('capacity', '>=', $size)
+                ->whereDoesntHave('reservations', function ($query) use ($timeSlotId, $date) {
+                    $query->where('time_slot_id', $timeSlotId)
+                        ->where('date', $date);
+                })
+                ->first();
+
+            if (!$availableTable) {
+                return $this->error('', 'No available tables for the selected time slot', 400);
+            }
+
+            $reservation = Reservation::create([
+                "client_id" => $user->id,
+                "table_id" => $availableTable->id,
+                "time_slot_id" => $timeSlotId,
+                "party_size" => $size,
+                "date" => $date,
                 "status" => "pending",
             ]);
+            $this->makeUserReservationOrder($request, $reservation->id);
+
+            return $this->success(data: $reservation , message: "Reservation was created successfully");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function makeUserReservationOrder(Request $request, $reservationId){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $total_price = $user->menuItems()->get()->sum('pivot.price');
+            $order = new Order([
+                'price' => $total_price,
+                'special_request' => $request->input('special_request', ''),
+                'order_type' =>  4,
+                'client_id' => $user->id,
+                'reservation_id' => $reservationId,
+                'code' => $this->generate_code(),
+                'status' => 'Pending'
+            ]);
+            $order->save();
+            $items = $user->menuItems()->get();
+            foreach ($items as $item) {
+                $order->orderItems()->attach($item->id, [
+                    'quantity' => $item->pivot->quantity,
+                    'price' => $item->pivot->price,
+                ]);
+                $user->menuItems()->detach($item->id);
+            }
+            $order = Order::with('orderItems')->find($order->id);
+            return $this->success(data: [$order], message: "Pickup order was created");
         }
         return $this->error('', 'No user', 401);
     }

@@ -105,8 +105,6 @@ class CreateOrderViewModel @Inject constructor(
                 makePickupOrder()
             }else if(orderType == 1){ // Delivery User
                 makeDeliveryOrder()
-            }else if(orderType == 2){ // Reservation User
-                null
             }else{
                 null
             }
@@ -187,6 +185,5 @@ class CreateOrderViewModel @Inject constructor(
                 }
         }
     }
-
 
 }
