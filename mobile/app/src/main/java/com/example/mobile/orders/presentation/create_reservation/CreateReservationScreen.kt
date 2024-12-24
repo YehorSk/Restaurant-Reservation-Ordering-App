@@ -52,7 +52,7 @@ fun CreateReservationScreen(
         when(sideEffect){
             is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
             is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-            is SideEffect.NavigateToNextScreen -> {}
+            is SideEffect.NavigateToNextScreen -> { goBack() }
         }
     }
     if(!uiState.isLoading){
@@ -92,6 +92,7 @@ fun CreateReservationScreen(
                     .fillMaxWidth(),
                 enabled = uiState.orderForm.selectedTimeSlot != null,
                 onClick = {
+                    viewModel.createReservation()
                 }
             ) {
                 Text(

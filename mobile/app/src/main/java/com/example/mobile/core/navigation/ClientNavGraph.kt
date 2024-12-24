@@ -14,7 +14,7 @@ import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
-import com.example.mobile.core.presentation.settings.SettingsScreen
+import com.example.mobile.core.presentation.settings.ProfileScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
@@ -46,11 +46,14 @@ fun ClientNavGraph(
                 onSearchClicked = {
                     navController.navigate(ClientScreen.Search.route)
                 },
+                onCreateReservationClicked = {
+                    navController.navigate(ClientScreen.MakeReservation.route)
+                },
                 viewModel = menuScreenViewModel
             )
         }
-        composable(ClientScreen.Settings.route) {
-            SettingsScreen(
+        composable(ClientScreen.Profile.route) {
+            ProfileScreen(
                 modifier = modifier.fillMaxSize(),
                 onSuccessLoggedOut = onLoggedOut
             )
@@ -63,15 +66,17 @@ fun ClientNavGraph(
                 }
             )
         }
-        composable(ClientScreen.MakeReservation.route) {
+        composable(
+            route = ClientScreen.MakeReservation.route,
+            enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
+            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
+            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+            ) {
             CreateReservationScreen(
                 modifier = modifier,
                 goBack = {
-                    navController.navigate(ClientScreen.CreateOrder.route){
-                        popUpTo(ClientScreen.CreateOrder.route){
-                            inclusive = true
-                        }
-                    }
+                    navController.popBackStack()
                 }
             )
         }
@@ -164,6 +169,7 @@ sealed class ClientScreen(val route: String){
     @Serializable
     data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")
     data object Settings: ClientScreen(route = "SETTINGS")
+    data object Profile: ClientScreen(route = "PROFILE")
     data object Favorites: ClientScreen(route = "FAVORITES")
     data object Search: ClientScreen(route = "SEARCH")
 }

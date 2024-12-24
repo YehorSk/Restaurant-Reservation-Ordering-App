@@ -3,8 +3,6 @@ package com.example.mobile.core.navigation
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,7 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
-import com.example.mobile.core.presentation.settings.SettingsScreen
+import com.example.mobile.core.presentation.settings.ProfileScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
@@ -45,11 +43,12 @@ fun WaiterNavGraph(
                 onSearchClicked = {
                     navController.navigate(WaiterScreen.Search.route)
                 },
+                onCreateReservationClicked = {},
                 viewModel = menuScreenViewModel
             )
         }
         composable(WaiterScreen.Settings.route) {
-            SettingsScreen(
+            ProfileScreen(
                 modifier = modifier.fillMaxSize(),
                 onSuccessLoggedOut = onLoggedOut
             )

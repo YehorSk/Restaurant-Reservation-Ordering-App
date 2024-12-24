@@ -3,6 +3,7 @@ package com.example.mobile.orders.domain.service
 import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
+import com.example.mobile.orders.data.remote.dto.ReservationDto
 import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.orders.presentation.OrderForm
@@ -42,5 +43,8 @@ interface OrderService {
 
     @POST("reservation/user/getTimeSlots")
     suspend fun getAvailableTimeSlots(@Body orderForm: OrderForm) : ResponseDto<TimeSlotDto>
+
+    @POST("reservation/user/createReservation")
+    suspend fun createReservation(@Body orderForm: OrderForm) : ResponseDto<ReservationDto>
 
 }

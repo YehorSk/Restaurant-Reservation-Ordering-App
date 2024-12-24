@@ -17,11 +17,13 @@ suspend inline fun <reified T> safeCall(
 ): Result<List<T>, AppError> {
     return try {
         val response = execute()
+        Timber.d(response.toString())
         onSuccess(response.data!!)
         Result.Success(data = response.data, message = response.message)
     }catch (e: IOException) {
         Result.Error(error = AppError.NO_INTERNET)
     } catch (e: SerializationException) {
+        Timber.d("Error " + e.toString())
         Result.Error(error = AppError.SERIALIZATION_ERROR)
     } catch (e: HttpException) {
         onFailure()

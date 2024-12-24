@@ -27,22 +27,24 @@ class ReservationController extends Controller
             $today = now()->format('Y-m-d');
             $currentTime = now()->setTimezone('Europe/Bratislava')->format('H:i:s');
 
-            // Fetch available time slots
-            $timeSlots = TimeSlot::query()
-                ->when($date === $today, function ($query) use ($currentTime) {
-                    $query->where('start_time', '>=', $currentTime);
-                })
-                ->whereDoesntHave('reservations', function ($query) use ($date, $size) {
-                    $query->where('date', $date)
-                        ->whereHas('table', function ($tableQuery) use ($size) {
-                            $tableQuery->where('capacity', '>=', $size);
-                        });
+            // Fetch tables that can accommodate the party size and are not already reserved for the requested date
+            $availableTables = Table::query()
+                ->where('capacity', '>=', $size)
+                ->whereDoesntHave('reservations', function ($query) use ($date) {
+                    $query->where('date', $date);
                 })
                 ->get();
 
-            // Filter tables that meet the party size requirement and are available
-            $availableTables = Table::query()
-                ->where('capacity', '>=', $size)
+            if ($availableTables->isEmpty()) {
+                // No tables available that meet the party size requirement
+                return $this->success(data: [], message: "No available tables for the requested party size");
+            }
+
+            // Fetch available time slots based on the availability of tables
+            $timeSlots = TimeSlot::query()
+                ->when($date === now()->format('Y-m-d'), function ($query) use ($currentTime) {
+                    $query->where('start_time', '>=', $currentTime);
+                })
                 ->whereDoesntHave('reservations', function ($query) use ($date) {
                     $query->where('date', $date);
                 })
@@ -57,6 +59,7 @@ class ReservationController extends Controller
         }
         return $this->error('', 'No user', 401);
     }
+
 
     public function getReservations(Request $request){
         $user = auth('sanctum')->user();
@@ -97,9 +100,8 @@ class ReservationController extends Controller
                 "date" => $date,
                 "status" => "pending",
             ]);
-            $this->makeUserReservationOrder($request, $reservation->id);
 
-            return $this->success(data: $reservation , message: "Reservation was created successfully");
+            return $this->success(data: [$reservation] , message: "Reservation was created successfully");
         }
         return $this->error('', 'No user', 401);
     }

@@ -16,7 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import timber.log.Timber
 
 @Composable
-fun SettingsScreen(
+fun ProfileScreen(
     modifier: Modifier,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     onSuccessLoggedOut: () -> Unit

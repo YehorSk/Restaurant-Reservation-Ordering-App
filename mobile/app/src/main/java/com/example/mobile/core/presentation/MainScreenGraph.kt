@@ -78,19 +78,19 @@ fun BottomBar(
                 BottomBarScreen.Cart,
                 BottomBarScreen.Orders,
                 BottomBarScreen.Favorites,
-                BottomBarScreen.Settings
+                BottomBarScreen.Profile
             )
         }
         UserRoles.ADMIN -> {
             screens = listOf(
                 BottomBarScreen.Home,
-                BottomBarScreen.Settings
+                BottomBarScreen.Profile
             )
         }
         UserRoles.CHEF -> {
             screens = listOf(
                 BottomBarScreen.Home,
-                BottomBarScreen.Settings
+                BottomBarScreen.Profile
             )
         }
         UserRoles.WAITER -> {
@@ -99,7 +99,7 @@ fun BottomBar(
                 BottomBarScreen.Cart,
                 BottomBarScreen.Orders,
                 BottomBarScreen.Favorites,
-                BottomBarScreen.Settings
+                BottomBarScreen.Profile
             )
         }
     }

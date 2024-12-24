@@ -11,6 +11,7 @@ import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.db.model.OrderWithOrderItems
+import com.example.mobile.orders.data.db.model.ReservationEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -62,4 +63,17 @@ interface OrderDao {
     @Transaction
     @Query("SELECT * FROM order_table ORDER BY created_at DESC")
     fun getOrderWithOrderItemsOnce(): List<OrderWithOrderItems>
+
+    @Query("SELECT * FROM reservation_table ORDER BY created_at DESC")
+    fun getUserReservations(): Flow<List<ReservationEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReservation(reservation: ReservationEntity)
+
+    @Update
+    suspend fun updateReservation(reservation: ReservationEntity)
+
+    @Delete
+    suspend fun deleteReservation(reservation: ReservationEntity)
+    
 }

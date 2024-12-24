@@ -68,4 +68,18 @@ class CreateReservationViewModel @Inject constructor(
         }
     }
 
+    fun createReservation(){
+        Timber.d("createReservation")
+        viewModelScope.launch{
+            orderRepositoryImpl.createReservation(uiState.value.orderForm)
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+        }
+    }
+
 }

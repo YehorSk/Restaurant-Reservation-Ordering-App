@@ -8,13 +8,16 @@ import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.orders.data.dao.OrderDao
+import com.example.mobile.orders.data.dao.ReservationDao
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.remote.dto.OrderDto
+import com.example.mobile.orders.data.remote.dto.ReservationDto
 import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.orders.data.remote.dto.toCartItemEntity
 import com.example.mobile.orders.data.remote.dto.toOrderEntity
 import com.example.mobile.orders.data.remote.dto.toOrderMenuItemEntity
+import com.example.mobile.orders.data.remote.dto.toReservationEntity
 import com.example.mobile.orders.presentation.OrderForm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -25,7 +28,8 @@ import kotlin.collections.first
 class OrderRepositoryImpl @Inject constructor(
     private val orderService: OrderService,
     private val orderDao: OrderDao,
-    private val cartDao: CartDao
+    private val cartDao: CartDao,
+    private val reservationDao: ReservationDao
     ) : OrderRepository{
 
 
@@ -181,5 +185,19 @@ class OrderRepositoryImpl @Inject constructor(
             execute = {
                 orderService.getAvailableTimeSlots(orderForm)
             }
-        )    }
+        )
+    }
+
+    override suspend fun createReservation(orderForm: OrderForm): Result<List<ReservationDto>, AppError> {
+        Timber.d("Order getTables")
+        return safeCall<ReservationDto>(
+            execute = {
+                orderService.createReservation(orderForm)
+            },
+            onSuccess = { data ->
+                reservationDao.insertReservation(data.first().toReservationEntity())
+            }
+        )
+    }
+
 }

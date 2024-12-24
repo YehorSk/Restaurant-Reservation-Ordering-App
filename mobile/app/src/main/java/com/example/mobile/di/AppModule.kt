@@ -28,6 +28,7 @@ import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.core.utils.ConnectivityRepository
 import com.example.mobile.core.utils.NetworkConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
+import com.example.mobile.orders.data.dao.ReservationDao
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -109,6 +110,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideReservationDao(database: MainRoomDatabase): ReservationDao = database.reservationDao
+
+    @Provides
+    @Singleton
     fun provideAuthApiService(retrofit: Retrofit): AuthService = retrofit.create(AuthService::class.java)
 
     @Provides
@@ -145,5 +150,5 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesOrderRepositoryImpl(orderService: OrderService, orderDao: OrderDao, cartDao: CartDao) : OrderRepository = OrderRepositoryImpl(orderService, orderDao, cartDao)
+    fun providesOrderRepositoryImpl(orderService: OrderService, orderDao: OrderDao, cartDao: CartDao, reservationDao: ReservationDao) : OrderRepository = OrderRepositoryImpl(orderService, orderDao, cartDao, reservationDao)
 }
