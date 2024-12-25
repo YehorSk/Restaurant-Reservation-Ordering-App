@@ -16,6 +16,7 @@ class Reservation extends Model
         'table_id',
         'time_slot_id',
         'status',
+        'code',
         'party_size',
         'date'
     ];

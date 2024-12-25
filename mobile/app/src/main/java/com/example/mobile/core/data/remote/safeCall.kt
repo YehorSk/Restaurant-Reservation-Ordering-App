@@ -23,7 +23,6 @@ suspend inline fun <reified T> safeCall(
     }catch (e: IOException) {
         Result.Error(error = AppError.NO_INTERNET)
     } catch (e: SerializationException) {
-        Timber.d("Error " + e.toString())
         Result.Error(error = AppError.SERIALIZATION_ERROR)
     } catch (e: HttpException) {
         onFailure()

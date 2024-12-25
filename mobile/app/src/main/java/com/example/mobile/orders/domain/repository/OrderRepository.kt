@@ -33,4 +33,6 @@ interface OrderRepository {
 
     suspend fun createReservation(orderForm: OrderForm) : Result<List<ReservationDto>, AppError>
 
+    suspend fun getUserReservations() : Result<List<ReservationDto>, AppError>
+
 }

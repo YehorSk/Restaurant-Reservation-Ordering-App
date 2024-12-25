@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.core.presentation.settings.ProfileScreen
@@ -21,6 +22,7 @@ import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreenRoot
 import com.example.mobile.orders.presentation.create_reservation.CreateReservationScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
+import com.example.mobile.orders.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -47,7 +49,7 @@ fun ClientNavGraph(
                     navController.navigate(ClientScreen.Search.route)
                 },
                 onCreateReservationClicked = {
-                    navController.navigate(ClientScreen.MakeReservation.route)
+                    navController.navigate(ClientScreen.CreateReservation.route)
                 },
                 viewModel = menuScreenViewModel
             )
@@ -55,7 +57,13 @@ fun ClientNavGraph(
         composable(ClientScreen.Profile.route) {
             ProfileScreen(
                 modifier = modifier.fillMaxSize(),
-                onSuccessLoggedOut = onLoggedOut
+                onNavigate = { destination ->
+                    when(destination){
+                        ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
+                        ProfileDestination.Logout -> onLoggedOut()
+                        ProfileDestination.Settings -> {}
+                    }
+                }
             )
         }
         composable(ClientScreen.Orders.route) {
@@ -67,7 +75,7 @@ fun ClientNavGraph(
             )
         }
         composable(
-            route = ClientScreen.MakeReservation.route,
+            route = ClientScreen.CreateReservation.route,
             enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
             exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
             popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
@@ -105,7 +113,7 @@ fun ClientNavGraph(
                     }
                 },
                 onGoToMakeReservation = {
-                    navController.navigate(ClientScreen.MakeReservation.route){}
+                    navController.navigate(ClientScreen.CreateReservation.route){}
                 }
             )
         }
@@ -126,7 +134,8 @@ fun ClientNavGraph(
         composable(ClientScreen.Favorites.route) {
             FavoritesScreen(
                 modifier = modifier,
-                viewModel = menuScreenViewModel
+                viewModel = menuScreenViewModel,
+                onGoBack = { navController.popBackStack() }
             )
         }
         composable(
@@ -135,6 +144,13 @@ fun ClientNavGraph(
             CartScreenRoot(
                 modifier = modifier,
                 onGoToCheckoutClick = { navController.navigate(ClientScreen.CreateOrder.route) }
+            )
+        }
+        composable(
+            route = ClientScreen.Reservations.route,
+        ) {
+            ReservationScreenRoot(
+                modifier = modifier
             )
         }
         composable(
@@ -165,10 +181,11 @@ sealed class ClientScreen(val route: String){
     data object Cart: ClientScreen(route = "CART")
     data object Orders: ClientScreen(route = "ORDERS")
     data object CreateOrder: ClientScreen(route = "CREATE_ORDER")
-    data object MakeReservation: ClientScreen(route = "MAKE_RESERVATION")
+    data object CreateReservation: ClientScreen(route = "MAKE_RESERVATION")
     @Serializable
     data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")
     data object Settings: ClientScreen(route = "SETTINGS")
+    data object Reservations: ClientScreen(route = "RESERVATIONS")
     data object Profile: ClientScreen(route = "PROFILE")
     data object Favorites: ClientScreen(route = "FAVORITES")
     data object Search: ClientScreen(route = "SEARCH")

@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.orders.data.db.model.OrderEntity
 import com.example.mobile.orders.data.db.model.OrderItemEntity
@@ -21,6 +22,9 @@ interface ReservationDao {
     fun getUserReservations(): Flow<List<ReservationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReservations(reservations: List<ReservationEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReservation(reservation: ReservationEntity)
 
     @Update
@@ -28,5 +32,16 @@ interface ReservationDao {
 
     @Delete
     suspend fun deleteReservation(reservation: ReservationEntity)
+
+    @Delete
+    suspend fun deleteItems(items: List<ReservationEntity>)
+
+    @Query("DELETE FROM reservation_table")
+    suspend fun deleteAllItems()
+
+    @Transaction
+    suspend fun runInTransaction(block: suspend () -> Unit) {
+        block()
+    }
     
 }

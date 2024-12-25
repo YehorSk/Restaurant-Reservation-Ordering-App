@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
 import com.example.mobile.menu.presentation.menu_admin.MenuAdminScreen
 import com.example.mobile.menu.presentation.menu_admin.viewmodel.MenuAdminScreenViewModel
@@ -37,7 +38,13 @@ fun AdminNavGraph(
         composable(AdminScreen.Settings.route) {
             ProfileScreen(
                 modifier = modifier.fillMaxSize(),
-                onSuccessLoggedOut = onLoggedOut
+                onNavigate = { destination ->
+                    when(destination){
+                        ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
+                        ProfileDestination.Logout -> onLoggedOut()
+                        ProfileDestination.Settings -> {}
+                    }
+                }
             )
         }
     }

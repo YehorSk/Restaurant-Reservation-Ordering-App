@@ -22,11 +22,13 @@ import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.utils.toString
 import com.example.mobile.menu.presentation.menu.components.MenuItem
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
+import com.example.mobile.orders.presentation.components.NavBar
 
 @Composable
 fun FavoritesScreen(
     modifier: Modifier = Modifier,
-    viewModel: MenuScreenViewModel
+    viewModel: MenuScreenViewModel,
+    onGoBack: () -> Unit
 ){
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -47,6 +49,10 @@ fun FavoritesScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        NavBar(
+            onGoBack = onGoBack,
+            title = R.string.go_back
+        )
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {

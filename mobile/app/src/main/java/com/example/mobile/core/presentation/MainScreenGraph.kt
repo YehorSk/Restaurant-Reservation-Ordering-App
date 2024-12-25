@@ -77,7 +77,7 @@ fun BottomBar(
                 BottomBarScreen.Home,
                 BottomBarScreen.Cart,
                 BottomBarScreen.Orders,
-                BottomBarScreen.Favorites,
+                BottomBarScreen.Reservations,
                 BottomBarScreen.Profile
             )
         }
@@ -98,7 +98,6 @@ fun BottomBar(
                 BottomBarScreen.Home,
                 BottomBarScreen.Cart,
                 BottomBarScreen.Orders,
-                BottomBarScreen.Favorites,
                 BottomBarScreen.Profile
             )
         }

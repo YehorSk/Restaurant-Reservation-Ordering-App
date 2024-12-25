@@ -64,7 +64,8 @@ class ReservationController extends Controller
     public function getReservations(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-
+            $items = $user->reservations()->get();
+            return $this->success(data: $items, message: "");
         }
         return $this->error('', 'No user', 401);
     }
@@ -99,6 +100,7 @@ class ReservationController extends Controller
                 "party_size" => $size,
                 "date" => $date,
                 "status" => "pending",
+                "code" => $this->generate_code()
             ]);
 
             return $this->success(data: [$reservation] , message: "Reservation was created successfully");
@@ -132,5 +134,19 @@ class ReservationController extends Controller
             return $this->success(data: [$order], message: "Pickup order was created");
         }
         return $this->error('', 'No user', 401);
+    }
+
+    private function generate_code(): String
+    {
+        $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        do {
+            $code='';
+            for($i=0;$i<6;$i++){
+                $code .= $chars[rand(0, 35)];
+            }
+        } while (Reservation::where('code', $code)->exists());
+
+        return $code;
     }
 }

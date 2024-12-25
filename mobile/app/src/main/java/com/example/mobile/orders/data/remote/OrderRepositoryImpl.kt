@@ -200,4 +200,13 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getUserReservations(): Result<List<ReservationDto>, AppError> {
+        Timber.d("Order getTables")
+        return safeCall<ReservationDto>(
+            execute = {
+                orderService.getReservations()
+            }
+        )
+    }
+
 }

@@ -47,4 +47,7 @@ interface OrderService {
     @POST("reservation/user/createReservation")
     suspend fun createReservation(@Body orderForm: OrderForm) : ResponseDto<ReservationDto>
 
+    @GET("reservation/user/getReservations")
+    suspend fun getReservations() : ResponseDto<ReservationDto>
+
 }

@@ -22,7 +22,8 @@ data class ReservationEntity(
     @ColumnInfo("party_size")
     val partySize: Int,
     val date: String,
-    val status: String
+    val status: String,
+    val code: String,
 )
 
 fun ReservationEntity.toReservationDto(): ReservationDto{
@@ -35,6 +36,7 @@ fun ReservationEntity.toReservationDto(): ReservationDto{
         timeSlotId = this.timeSlotId,
         partySize = this.partySize,
         date = this.date,
-        status = this.status
+        status = this.status,
+        code = this.code
     )
 }

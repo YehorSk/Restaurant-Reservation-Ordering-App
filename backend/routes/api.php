@@ -103,6 +103,7 @@ Route::prefix("table")->controller(TableController::class)->group(function (){
 Route::prefix("reservation")->controller(ReservationController::class)->group(function (){
     Route::post('/user/getTimeSlots','getAvailableTimeSlots');
     Route::post('/user/createReservation','createReservation');
+    Route::get('/user/getReservations','getReservations');
 });
 
 Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);

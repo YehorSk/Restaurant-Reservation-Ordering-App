@@ -9,9 +9,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
@@ -50,7 +52,13 @@ fun WaiterNavGraph(
         composable(WaiterScreen.Settings.route) {
             ProfileScreen(
                 modifier = modifier.fillMaxSize(),
-                onSuccessLoggedOut = onLoggedOut
+                onNavigate = { destination ->
+                    when(destination){
+                        ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
+                        ProfileDestination.Logout -> onLoggedOut()
+                        ProfileDestination.Settings -> {}
+                    }
+                }
             )
         }
         composable(WaiterScreen.Orders.route) {
@@ -94,7 +102,8 @@ fun WaiterNavGraph(
         composable(WaiterScreen.Favorites.route) {
             FavoritesScreen(
                 modifier = modifier,
-                viewModel = menuScreenViewModel
+                viewModel = menuScreenViewModel,
+                onGoBack = { navController.popBackStack() }
             )
         }
         composable(WaiterScreen.CreateOrder.route) {

@@ -30,6 +30,13 @@
     <string name="your_number">What\'s your number?</string>
     <string name="date">Date</string>
 
+    <!-- Profile Items -->
+
+    <string name="favorites">Favorites</string>
+    <string name="order_history">Order history</string>
+    <string name="reservation_history">Reservation history</string>
+    <string name="logout">Log out</string>
+
     <!--    Errors-->
     <string name="error_no_internet">No internet connection.</string>
     <string name="error_serialization">We encountered an issue while processing your request. Please try again later.</string>

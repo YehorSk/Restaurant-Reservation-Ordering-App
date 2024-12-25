@@ -20,7 +20,8 @@ data class ReservationDto(
     @SerialName("party_size")
     val partySize: Int,
     val date: String,
-    val status: String
+    val status: String,
+    val code: String,
 )
 
 fun ReservationDto.toReservationEntity(): ReservationEntity{
@@ -33,6 +34,7 @@ fun ReservationDto.toReservationEntity(): ReservationEntity{
         timeSlotId = this.timeSlotId,
         partySize = this.partySize,
         date = this.date,
-        status = this.status
+        status = this.status,
+        code = this.code
     )
 }
