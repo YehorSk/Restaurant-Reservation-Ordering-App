@@ -1,17 +1,19 @@
-package com.example.mobile.orders.presentation.reservations
+package com.example.mobile.reservations.presentation.reservations
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.domain.onError
 import com.example.mobile.core.domain.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
-import com.example.mobile.orders.data.dao.ReservationDao
-import com.example.mobile.orders.data.db.model.ReservationEntity
+import com.example.mobile.reservations.data.dao.ReservationDao
+import com.example.mobile.reservations.data.db.model.ReservationEntity
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
-import com.example.mobile.orders.data.remote.dto.toReservationEntity
+import com.example.mobile.reservations.data.remote.dto.toReservationEntity
 import com.example.mobile.orders.presentation.OrderBaseViewModel
+import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
+import com.example.mobile.reservations.data.remote.dto.ReservationDto
+import com.example.mobile.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,17 +26,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ReservationScreenViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
-    orderRepositoryImpl: OrderRepositoryImpl,
-    orderDao: OrderDao,
-    val reservationDao: ReservationDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao){
-
-    val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationDao.getUserReservations()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = listOf()
-        )
+    reservationRepositoryImpl: ReservationRepositoryImpl,
+    reservationDao: ReservationDao
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao){
 
     init {
         getReservations()
@@ -46,7 +40,7 @@ class ReservationScreenViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
             val localItems = reservationItemUiState.value
 
-            orderRepositoryImpl.getUserReservations()
+            reservationRepositoryImpl.getUserReservations()
                 .onSuccess { data, message ->
                     val serverItemIds = data.map { it.id }.toSet()
                     val itemsToDelete = localItems.filter { it.id !in serverItemIds }

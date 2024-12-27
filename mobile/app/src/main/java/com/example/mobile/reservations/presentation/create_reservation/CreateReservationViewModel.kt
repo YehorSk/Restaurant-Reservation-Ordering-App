@@ -1,22 +1,17 @@
-package com.example.mobile.orders.presentation.create_reservation
+package com.example.mobile.reservations.presentation.create_reservation
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.cart.data.db.model.CartItemEntity
-import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.domain.onError
 import com.example.mobile.core.domain.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
-import com.example.mobile.orders.data.dao.ReservationDao
-import com.example.mobile.orders.data.db.model.ReservationEntity
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
-import com.example.mobile.orders.data.remote.dto.toReservationEntity
 import com.example.mobile.orders.presentation.OrderBaseViewModel
+import com.example.mobile.reservations.data.dao.ReservationDao
+import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
+import com.example.mobile.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -25,14 +20,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateReservationViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
-    orderRepositoryImpl: OrderRepositoryImpl,
-    orderDao: OrderDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao){
+    reservationRepositoryImpl: ReservationRepositoryImpl,
+    reservationDao: ReservationDao
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao){
 
     fun updatePartySize(size: Int){
         _uiState.update {
             it.copy(
-                orderForm = it.orderForm.copy(
+                reservationForm = it.reservationForm.copy(
                     partySize = size
                 )
             )
@@ -43,7 +38,7 @@ class CreateReservationViewModel @Inject constructor(
     fun updateReservationDate(date: String){
         _uiState.update {
             it.copy(
-                orderForm = it.orderForm.copy(
+                reservationForm = it.reservationForm.copy(
                     reservationDate = date
                 )
             )
@@ -54,7 +49,7 @@ class CreateReservationViewModel @Inject constructor(
     fun updateTimeSlot(slot: Int){
         _uiState.update {
             it.copy(
-                orderForm = it.orderForm.copy(
+                reservationForm = it.reservationForm.copy(
                     selectedTimeSlot = slot
                 )
             )
@@ -64,7 +59,7 @@ class CreateReservationViewModel @Inject constructor(
     fun getAvailableTimeSlots(){
         Timber.d("getAvailableTimeSlots")
         viewModelScope.launch{
-            orderRepositoryImpl.getAvailableTimeSlots(uiState.value.orderForm)
+            reservationRepositoryImpl.getAvailableTimeSlots(uiState.value.reservationForm)
                 .onSuccess { data, message ->
                     _uiState.update {
                         it.copy(timeSlots = data)
@@ -79,7 +74,7 @@ class CreateReservationViewModel @Inject constructor(
     fun createReservation(){
         Timber.d("createReservation")
         viewModelScope.launch{
-            orderRepositoryImpl.createReservation(uiState.value.orderForm)
+            reservationRepositoryImpl.createReservation(uiState.value.reservationForm)
                 .onSuccess { data, message ->
                     _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)

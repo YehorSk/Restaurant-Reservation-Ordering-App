@@ -20,9 +20,10 @@ import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreenRoot
-import com.example.mobile.orders.presentation.create_reservation.CreateReservationScreen
+import com.example.mobile.reservations.presentation.create_reservation.CreateReservationScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
-import com.example.mobile.orders.presentation.reservations.ReservationScreenRoot
+import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
+import com.example.mobile.reservations.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -121,9 +122,23 @@ fun ClientNavGraph(
             val args = it.toRoute<ClientScreen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
-                onGoToOrders = {
+                onGoBack = {
                     navController.navigate(ClientScreen.Orders.route){
                         popUpTo(ClientScreen.Orders.route){
+                            inclusive = true
+                        }
+                    }
+                },
+                id = args.id
+            )
+        }
+        composable<ClientScreen.ReservationDetails>{
+            val args = it.toRoute<ClientScreen.ReservationDetails>()
+            ReservationDetailsScreenRoot(
+                modifier = modifier,
+                onGoBack = {
+                    navController.navigate(ClientScreen.Reservations.route){
+                        popUpTo(ClientScreen.Reservations.route){
                             inclusive = true
                         }
                     }
@@ -150,7 +165,9 @@ fun ClientNavGraph(
             route = ClientScreen.Reservations.route,
         ) {
             ReservationScreenRoot(
-                modifier = modifier
+                modifier = modifier,
+                onGoToReservationDetails = {id ->
+                    navController.navigate(ClientScreen.ReservationDetails(id))}
             )
         }
         composable(
@@ -186,6 +203,8 @@ sealed class ClientScreen(val route: String){
     data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")
     data object Settings: ClientScreen(route = "SETTINGS")
     data object Reservations: ClientScreen(route = "RESERVATIONS")
+    @Serializable
+    data class ReservationDetails(val id: Int): ClientScreen(route = "RESERVATION_DETAILS")
     data object Profile: ClientScreen(route = "PROFILE")
     data object Favorites: ClientScreen(route = "FAVORITES")
     data object Search: ClientScreen(route = "SEARCH")

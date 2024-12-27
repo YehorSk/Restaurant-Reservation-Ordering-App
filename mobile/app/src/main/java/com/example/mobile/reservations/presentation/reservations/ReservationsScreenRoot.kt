@@ -1,10 +1,9 @@
-package com.example.mobile.orders.presentation.reservations
+package com.example.mobile.reservations.presentation.reservations
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -15,13 +14,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
-import com.example.mobile.orders.presentation.orders.components.OrdersList
-import com.example.mobile.orders.presentation.reservations.components.ReservationsList
+import com.example.mobile.reservations.presentation.reservations.components.ReservationsList
 
 @Composable
 fun ReservationScreenRoot(
     modifier: Modifier = Modifier,
-    viewModel: ReservationScreenViewModel = hiltViewModel()
+    viewModel: ReservationScreenViewModel = hiltViewModel(),
+    onGoToReservationDetails: (Int) -> Unit
 ){
 
     val context = LocalContext.current
@@ -43,7 +42,8 @@ fun ReservationScreenRoot(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         ReservationsList(
-            items = reservations
+            items = reservations,
+            onGoToReservationDetails = { onGoToReservationDetails(it) }
         )
     }
 }

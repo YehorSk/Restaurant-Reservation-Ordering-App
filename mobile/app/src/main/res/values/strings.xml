@@ -24,6 +24,7 @@
     <string name="order_preferences">Order Preferences</string>
     <string name="go_back">Go Back</string>
     <string name="delivery_details">Delivery details</string>
+    <string name="cancel_reservation">Cancel reservation</string>
     <string name="cancel_order">Cancel order</string>
     <string name="repeat_order">Repeat order</string>
     <string name="party_size">Party size</string>

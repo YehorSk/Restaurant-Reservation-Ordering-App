@@ -28,7 +28,10 @@ import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.core.utils.ConnectivityRepository
 import com.example.mobile.core.utils.NetworkConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
-import com.example.mobile.orders.data.dao.ReservationDao
+import com.example.mobile.reservations.data.dao.ReservationDao
+import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
+import com.example.mobile.reservations.domain.repository.ReservationRepository
+import com.example.mobile.reservations.domain.service.ReservationService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -130,6 +133,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideReservationApiService(retrofit: Retrofit): ReservationService = retrofit.create(ReservationService::class.java)
+
+    @Provides
+    @Singleton
     fun providesAuthPreferences(@ApplicationContext applicationContext: Context) : MainPreferencesRepository = MainPreferencesRepository(dataStore = applicationContext.dataStore)
 
     @Provides
@@ -150,5 +157,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesOrderRepositoryImpl(orderService: OrderService, orderDao: OrderDao, cartDao: CartDao, reservationDao: ReservationDao) : OrderRepository = OrderRepositoryImpl(orderService, orderDao, cartDao, reservationDao)
+    fun providesOrderRepositoryImpl(orderService: OrderService, orderDao: OrderDao, cartDao: CartDao) : OrderRepository = OrderRepositoryImpl(orderService, orderDao, cartDao)
+
+    @Provides
+    @Singleton
+    fun providesReservationRepositoryImpl(reservationDao: ReservationDao, reservationService: ReservationService) : ReservationRepository = ReservationRepositoryImpl(reservationDao, reservationService)
 }

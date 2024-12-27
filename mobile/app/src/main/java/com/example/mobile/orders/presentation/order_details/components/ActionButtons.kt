@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.ui.theme.MobileTheme
 import com.example.mobile.R
+import com.example.mobile.core.presentation.components.ActionButton
 
 @Composable
 fun ActionButtons(
@@ -62,32 +63,6 @@ fun ActionButtons(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun ActionButton(
-    modifier: Modifier = Modifier,
-    onAction:() -> Unit,
-    color: Color,
-    @StringRes text: Int
-){
-    Button(
-        modifier = modifier
-            .fillMaxWidth(),
-        colors = ButtonColors(
-            contentColor = Color.White,
-            containerColor = color,
-            disabledContainerColor = color,
-            disabledContentColor = color
-            ),
-        onClick = { onAction() }
-    ){
-        Text(
-            text = stringResource(text),
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-        )
     }
 }
 

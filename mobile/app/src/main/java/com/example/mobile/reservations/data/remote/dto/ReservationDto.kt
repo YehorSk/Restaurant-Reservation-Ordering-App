@@ -1,6 +1,7 @@
-package com.example.mobile.orders.data.remote.dto
+package com.example.mobile.reservations.data.remote.dto
 
-import com.example.mobile.orders.data.db.model.ReservationEntity
+import androidx.room.ColumnInfo
+import com.example.mobile.reservations.data.db.model.ReservationEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,6 +23,10 @@ data class ReservationDto(
     val date: String,
     val status: String,
     val code: String,
+    @SerialName("table_number")
+    val tableNumber: String,
+    @SerialName("start_time")
+    val startTime: String
 )
 
 fun ReservationDto.toReservationEntity(): ReservationEntity{
@@ -35,6 +40,8 @@ fun ReservationDto.toReservationEntity(): ReservationEntity{
         partySize = this.partySize,
         date = this.date,
         status = this.status,
-        code = this.code
+        code = this.code,
+        tableNumber = this.tableNumber,
+        startTime = this.startTime
     )
 }

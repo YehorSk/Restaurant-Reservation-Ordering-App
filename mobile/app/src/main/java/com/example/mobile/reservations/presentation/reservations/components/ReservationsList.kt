@@ -1,4 +1,4 @@
-package com.example.mobile.orders.presentation.reservations.components
+package com.example.mobile.reservations.presentation.reservations.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,13 +8,13 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.mobile.orders.data.db.model.ReservationEntity
-import com.example.mobile.orders.presentation.orders.components.OrderListItem
+import com.example.mobile.reservations.data.db.model.ReservationEntity
 
 @Composable
 fun ReservationsList(
     modifier: Modifier = Modifier,
-    items: List<ReservationEntity>
+    items: List<ReservationEntity>,
+    onGoToReservationDetails: (Int) -> Unit
 ){
     LazyColumn(
         modifier = modifier
@@ -24,6 +24,7 @@ fun ReservationsList(
         items(items){ reservation ->
             ReservationItem(
                 reservationEntity = reservation,
+                onGoToReservationDetails = { onGoToReservationDetails(it) }
             )
             HorizontalDivider()
         }

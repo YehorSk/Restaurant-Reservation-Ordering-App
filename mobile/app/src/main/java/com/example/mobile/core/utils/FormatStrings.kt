@@ -52,7 +52,7 @@ fun formatOrderDateTime(input: String): String {
     return localDateTime.format(formatter)
 }
 
-fun formatSlotTime(input: String): String {
+fun formatTime(input: String): String {
     val parser = DateTimeFormatter.ofPattern("HH:mm:ss")
     val localDate = LocalTime.parse(input, parser)
     val formatter = DateTimeFormatter.ofPattern("HH:mm")

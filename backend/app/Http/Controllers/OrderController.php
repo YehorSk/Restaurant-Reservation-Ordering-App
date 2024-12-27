@@ -148,7 +148,7 @@ class OrderController extends Controller
             $order = $user->clientOrders()->with('orderItems')->find($id);
             if ($order) {
                 if($order->status == 'Pending'){
-                    $order->update(['status' => 'Canceled']);
+                    $order->update(['status' => 'Cancelled']);
                     $order = $user->clientOrders()->with('orderItems')->find($id);
                     return $this->success(data: [$order], message: "Order canceled successfully.");
                 }else{

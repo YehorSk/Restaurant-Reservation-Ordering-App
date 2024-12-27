@@ -4,9 +4,7 @@ import com.example.mobile.core.domain.AppError
 import com.example.mobile.core.domain.Result
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
-import com.example.mobile.orders.data.remote.dto.ReservationDto
 import com.example.mobile.orders.data.remote.dto.TableDto
-import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.orders.presentation.OrderForm
 
 interface OrderRepository {
@@ -27,12 +25,5 @@ interface OrderRepository {
 
     suspend fun makeWaiterOrder(orderForm: OrderForm) : Result<List<OrderDto>, AppError>
 
-    suspend fun getTables() : Result<List<TableDto>, AppError>
-
-    suspend fun getAvailableTimeSlots(orderForm: OrderForm) : Result<List<TimeSlotDto>, AppError>
-
-    suspend fun createReservation(orderForm: OrderForm) : Result<List<ReservationDto>, AppError>
-
-    suspend fun getUserReservations() : Result<List<ReservationDto>, AppError>
-
+    suspend fun getTables() : com.example.mobile.core.domain.Result<List<TableDto>, AppError>
 }

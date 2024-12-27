@@ -9,7 +9,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
@@ -136,7 +135,7 @@ fun WaiterNavGraph(
             val args = it.toRoute<WaiterScreen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
-                onGoToOrders = {
+                onGoBack = {
                     navController.navigate(WaiterScreen.Orders.route){
                         popUpTo(WaiterScreen.Orders.route){
                             inclusive = true

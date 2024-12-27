@@ -1,9 +1,9 @@
-package com.example.mobile.orders.data.db.model
+package com.example.mobile.reservations.data.db.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.mobile.orders.data.remote.dto.ReservationDto
+import com.example.mobile.reservations.data.remote.dto.ReservationDto
 
 @Entity("reservation_table")
 data class ReservationEntity(
@@ -24,6 +24,10 @@ data class ReservationEntity(
     val date: String,
     val status: String,
     val code: String,
+    @ColumnInfo("table_number")
+    val tableNumber: String,
+    @ColumnInfo("start_time")
+    val startTime: String
 )
 
 fun ReservationEntity.toReservationDto(): ReservationDto{
@@ -37,6 +41,8 @@ fun ReservationEntity.toReservationDto(): ReservationDto{
         partySize = this.partySize,
         date = this.date,
         status = this.status,
-        code = this.code
+        code = this.code,
+        tableNumber = this.tableNumber,
+        startTime = this.startTime
     )
 }

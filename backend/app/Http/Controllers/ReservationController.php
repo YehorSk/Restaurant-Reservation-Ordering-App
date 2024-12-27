@@ -64,9 +64,37 @@ class ReservationController extends Controller
     public function getReservations(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $items = $user->reservations()->get();
+            $items = $user->reservations()->with('table', 'timeSlot')->get();
+
+            $items->each(function ($item) {
+                $item->table_number = $item->table->number ?? null;
+                $item->start_time = $item->timeSlot->start_time ?? null;
+
+                unset($item->table);
+                unset($item->timeSlot);
+            });
             return $this->success(data: $items, message: "");
         }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function getReservationsDetails($id){
+        $user = auth('sanctum')->user();
+
+        if ($user instanceof User) {
+            $item = $user->reservations()->with('table')->with('timeSlot')->find($id);
+
+            if ($item) {
+                $item->table_number = $item->table->number ?? null;
+                $item->start_time = $item->timeSlot->start_time ?? null;
+                unset($item->table);
+                unset($item->timeSlot);
+                return $this->success(data: [$item], message: "");
+            }
+
+            return $this->error('', 'Reservation not found', 404);
+        }
+
         return $this->error('', 'No user', 401);
     }
 
@@ -99,11 +127,18 @@ class ReservationController extends Controller
                 "time_slot_id" => $timeSlotId,
                 "party_size" => $size,
                 "date" => $date,
-                "status" => "pending",
+                "status" => "Pending",
                 "code" => $this->generate_code()
             ]);
 
-            return $this->success(data: [$reservation] , message: "Reservation was created successfully");
+            $item = $user->reservations()->with('table')->with('timeSlot')->find($reservation->id);
+
+            $item->table_number = $item->table->number ?? null;
+            $item->start_time = $item->timeSlot->start_time ?? null;
+            unset($item->table);
+            unset($item->timeSlot);
+            return $this->success(data: [$item], message: "Reservation was created successfully");
+
         }
         return $this->error('', 'No user', 401);
     }
@@ -132,6 +167,29 @@ class ReservationController extends Controller
             }
             $order = Order::with('orderItems')->find($order->id);
             return $this->success(data: [$order], message: "Pickup order was created");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function cancelReservation($id)
+    {
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $item = $user->reservations()->with('table')->with('timeSlot')->find($id);
+
+            if ($item) {
+                if($item->status == "Pending"){
+                    $item->update(['status' => 'Cancelled']);
+                    $item->table_number = $item->table->number ?? null;
+                    $item->start_time = $item->timeSlot->start_time ?? null;
+                    unset($item->table);
+                    unset($item->timeSlot);
+                    return $this->success(data: [$item], message: "Reservation cancelled successfully");
+                }else{
+                    return $this->error('', 'Reservation cannot be canceled.', 409);
+                }
+            }
+            return $this->error('', 'Reservation not found', 404);
         }
         return $this->error('', 'No user', 401);
     }

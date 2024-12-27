@@ -1,4 +1,4 @@
-package com.example.mobile.orders.data.dao
+package com.example.mobile.reservations.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -7,12 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.example.mobile.cart.data.db.model.CartItemEntity
-import com.example.mobile.menu.data.db.model.MenuWithMenuItems
-import com.example.mobile.orders.data.db.model.OrderEntity
-import com.example.mobile.orders.data.db.model.OrderItemEntity
-import com.example.mobile.orders.data.db.model.OrderWithOrderItems
-import com.example.mobile.orders.data.db.model.ReservationEntity
+import com.example.mobile.reservations.data.db.model.ReservationEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,4 +1,4 @@
-package com.example.mobile.orders.presentation.reservations.components
+package com.example.mobile.reservations.presentation.reservations.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,13 +17,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.core.utils.formatOrderDateTime
-import com.example.mobile.core.utils.formattedPrice
-import com.example.mobile.orders.data.db.model.ReservationEntity
+import com.example.mobile.reservations.data.db.model.ReservationEntity
 
 @Composable
 fun ReservationItem(
     modifier: Modifier = Modifier,
-    reservationEntity: ReservationEntity
+    reservationEntity: ReservationEntity,
+    onGoToReservationDetails: (Int) -> Unit
 ){
     val contentColor = if(isSystemInDarkTheme()){
         Color.White
@@ -32,23 +32,16 @@ fun ReservationItem(
     }
     Row(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
-            .height(120.dp)
+            .height(90.dp)
             .fillMaxWidth()
             .clickable {
-
+                onGoToReservationDetails(reservationEntity.id)
             }
     ){
         Column {
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 text = "#${reservationEntity.code}",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = contentColor,
-            )
-            Text(
-                modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
-                text = "Table: ${reservationEntity.tableId}",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = contentColor,

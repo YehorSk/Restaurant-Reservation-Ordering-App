@@ -12,7 +12,6 @@ data class CreateOrderUiState(
     val orderForm: OrderForm = OrderForm(),
     val isLoading: Boolean = false,
     val tables: List<TableDto>? = null,
-    val timeSlots: List<TimeSlotDto>? = null,
 )
 
 @Serializable
@@ -25,12 +24,6 @@ data class OrderForm(
     val orderText: String = "Pickup",
     val address: String = "",
     val instructions: String = "",
-    @SerialName("party_size")
-    val partySize:Int = 1,
     @SerialName("table_id")
     val selectedTable:Int = 0,
-    @SerialName("reservation_date")
-    val reservationDate:String = LocalDate.now().toString(),
-    @SerialName("time_slot_id")
-    val selectedTimeSlot:Int = 0,
 )

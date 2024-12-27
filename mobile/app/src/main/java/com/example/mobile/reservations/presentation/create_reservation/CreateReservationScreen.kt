@@ -1,4 +1,4 @@
-package com.example.mobile.orders.presentation.create_reservation
+package com.example.mobile.reservations.presentation.create_reservation
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -17,7 +17,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.orders.presentation.components.NavBar
-import com.example.mobile.orders.presentation.create_reservation.components.PartySize
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -29,8 +28,9 @@ import com.example.mobile.core.domain.SideEffect
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
-import com.example.mobile.orders.presentation.create_reservation.components.CalendarRoot
-import com.example.mobile.orders.presentation.create_reservation.components.TimeRoot
+import com.example.mobile.reservations.presentation.create_reservation.components.CalendarRoot
+import com.example.mobile.reservations.presentation.create_reservation.components.PartySize
+import com.example.mobile.reservations.presentation.create_reservation.components.TimeRoot
 
 @Composable
 fun CreateReservationScreen(
@@ -68,16 +68,16 @@ fun CreateReservationScreen(
             )
             PartySize(
                 onPartySizeChanged = { size -> viewModel.updatePartySize(size) },
-                partySize = uiState.orderForm.partySize
+                partySize = uiState.reservationForm.partySize
             )
             CalendarRoot(
                 onUpdateSelectedDate = { date -> viewModel.updateReservationDate(date) }
             )
             if (uiState.timeSlots!=null){
                 TimeRoot(
-                    date = uiState.orderForm.reservationDate,
+                    date = uiState.reservationForm.reservationDate,
                     slots = uiState.timeSlots!!,
-                    selectedSlot = uiState.orderForm.selectedTimeSlot,
+                    selectedSlot = uiState.reservationForm.selectedTimeSlot,
                     onTimeChanged = { viewModel.updateTimeSlot(it) }
                 )
             }
@@ -90,7 +90,7 @@ fun CreateReservationScreen(
                         bottom = 10.dp
                     )
                     .fillMaxWidth(),
-                enabled = uiState.orderForm.selectedTimeSlot != null,
+                enabled = uiState.reservationForm.selectedTimeSlot != null,
                 onClick = {
                     viewModel.createReservation()
                 }

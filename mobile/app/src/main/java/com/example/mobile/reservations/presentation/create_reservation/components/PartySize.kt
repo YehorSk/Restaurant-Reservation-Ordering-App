@@ -1,4 +1,4 @@
-package com.example.mobile.orders.presentation.create_reservation.components
+package com.example.mobile.reservations.presentation.create_reservation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,11 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,20 +26,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mobile.R
-import com.example.mobile.core.utils.formatDateTime
-import com.example.mobile.core.utils.formatSlotTime
-import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.ui.theme.MobileTheme
+import com.example.mobile.R
 
 @Composable
-fun TimeRoot(
+fun PartySize(
     modifier: Modifier = Modifier,
-    selectedSlot: Int,
-    date: String,
-    slots: List<TimeSlotDto>,
-    onTimeChanged: (Int) -> Unit
+    partySize: Int,
+    onPartySizeChanged:(Int) -> Unit
 ){
+
+    val items = (1..10).toList()
+
     Column(
         modifier = Modifier
             .background(Color.White)
@@ -53,7 +49,7 @@ fun TimeRoot(
                 .padding(
                     bottom = 10.dp
                 ),
-            text = formatDateTime(date),
+            text = stringResource(R.string.party_size),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -65,18 +61,18 @@ fun TimeRoot(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(slots){ item ->
+            items(items){ item ->
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(5.dp))
+                        .clip(CircleShape)
                         .border(
                             width = 2.dp,
-                            color = if (item.id == selectedSlot) MaterialTheme.colorScheme.primary else Color.LightGray,
+                            color = if (item == partySize) MaterialTheme.colorScheme.primary else Color.LightGray,
                             shape = CircleShape)
-                        .width(80.dp)
+                        .size(50.dp)
                         .background(Color.White)
                         .clickable{
-                            onTimeChanged(item.id)
+                            onPartySizeChanged(item.toInt())
                         },
                     contentAlignment = Alignment.Center
                 ){
@@ -84,7 +80,7 @@ fun TimeRoot(
                         modifier = Modifier.padding(10.dp),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        text = formatSlotTime(item.startTime.toString())
+                        text = item.toString()
                     )
                 }
             }
@@ -94,25 +90,11 @@ fun TimeRoot(
 
 @Preview
 @Composable
-fun TimeRootPreview(){
-    val timeSlots = listOf(
-        TimeSlotDto(id = 1, startTime = "08:00:00", endTime = "09:00:00"),
-        TimeSlotDto(id = 2, startTime = "09:00:00", endTime = "10:00:00"),
-        TimeSlotDto(id = 3, startTime = "10:00:00", endTime = "11:00:00"),
-        TimeSlotDto(id = 4, startTime = "11:00:00", endTime = "12:00:00"),
-        TimeSlotDto(id = 5, startTime = "12:00:00", endTime = "13:00:00"),
-        TimeSlotDto(id = 6, startTime = "13:00:00", endTime = "14:00:00"),
-        TimeSlotDto(id = 7, startTime = "14:00:00", endTime = "15:00:00"),
-        TimeSlotDto(id = 8, startTime = "15:00:00", endTime = "16:00:00"),
-        TimeSlotDto(id = 9, startTime = "16:00:00", endTime = "17:00:00"),
-        TimeSlotDto(id = 10, startTime = "17:00:00", endTime = "18:00:00")
-    )
+fun PartySizePreview(){
     MobileTheme {
-        TimeRoot(
-            date = "2024-12-20",
-            slots = timeSlots,
-            onTimeChanged = {},
-            selectedSlot = 0
+        PartySize(
+            onPartySizeChanged = {},
+            partySize = 1
         )
     }
 }

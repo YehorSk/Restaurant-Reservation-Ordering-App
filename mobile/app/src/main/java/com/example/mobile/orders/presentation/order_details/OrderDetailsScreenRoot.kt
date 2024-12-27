@@ -2,14 +2,12 @@ package com.example.mobile.orders.presentation.order_details
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -29,7 +27,6 @@ import com.example.mobile.orders.presentation.order_details.components.DeliveryD
 import com.example.mobile.orders.presentation.order_details.components.OrderStatus
 import com.example.mobile.ui.theme.MobileTheme
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.utils.toString
@@ -42,7 +39,7 @@ import com.example.mobile.orders.presentation.order_details.components.ActionBut
 fun OrderDetailsScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: OrderDetailsViewModel = hiltViewModel(),
-    onGoToOrders: () -> Unit,
+    onGoBack: () -> Unit,
     id: Int
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -52,7 +49,7 @@ fun OrderDetailsScreenRoot(
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.NavigateToNextScreen -> onGoToOrders()
+            is SideEffect.NavigateToNextScreen -> onGoBack()
             is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
             is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }
@@ -66,7 +63,7 @@ fun OrderDetailsScreenRoot(
         modifier = modifier,
         ordersUiState = ordersUiState,
         uiState = uiState,
-        onGoToOrders = onGoToOrders,
+        onGoToOrders = onGoBack,
         id = id,
         onAction = viewModel::onAction,
         isConnected = isConnected
@@ -133,7 +130,7 @@ fun OrderDetailsScreen(
 fun OrderDetailsScreenPreview(){
     MobileTheme {
         OrderDetailsScreenRoot(
-            onGoToOrders = {},
+            onGoBack = {},
             id = 1
         )
     }
