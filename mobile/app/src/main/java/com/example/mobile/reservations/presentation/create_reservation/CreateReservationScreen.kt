@@ -21,6 +21,7 @@ import com.example.mobile.orders.presentation.components.NavBar
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -97,7 +98,7 @@ fun CreateReservationScreen(
                 }
             ) {
                 Text(
-                    text = "Book",
+                    text = stringResource(R.string.book),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )

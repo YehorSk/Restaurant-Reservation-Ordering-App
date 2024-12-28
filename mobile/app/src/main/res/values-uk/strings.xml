@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PLATEA</string>
+    <string name="retry">Спробувати ще раз</string>
+    <string name="operation_success">Дію успішно виконано!</string>
+    <string name="operation_failed">Будь ласка, спробуйте ще раз.</string>
+    <string name="loading">Завантаження</string>
+    <string name="loading_failed">Не вдалося завантажити</string>
+    <string name="UPDATE">Оновити</string>
+    <string name="DELETE">Видалити</string>
+    <string name="Add">Додати</string>
+    <string name="btn_yes">Так</string>
+    <string name="btn_no">Ні</string>
+    <string name="delete_confirmation">Видалити цей елемент?</string>
+    <string name="pickup_option">Самовивіз</string>
+    <string name="delivery_option">Доставка</string>
+    <string name="reservation_option">Забронювати</string>
+    <string name="complete_order_navbar_title">Завершіть своє замовлення</string>
+    <string name="notes_for_order">За бажанням: додайте особливі примітки до замовлення.</string>
+    <string name="go_to_cart">Перейти до кошика</string>
+    <string name="add_to_cart">Додати ще</string>
+    <string name="required_fields">*Обов’язкові поля</string>
+    <string name="delivery_address">123 Головна вул., кв. 4Б</string>
+    <string name="instructions_for_the_courier">Інструкції для кур\'єра</string>
+    <string name="order_preferences">Побажання до замовлення</string>
+    <string name="go_back">Повернутися</string>
+    <string name="delivery_details">Деталі доставки</string>
+    <string name="cancel_reservation">Скасувати бронювання</string>
+    <string name="cancel_order">Скасувати замовлення</string>
+    <string name="repeat_order">Повторити замовлення</string>
+    <string name="party_size">Кількість осіб</string>
+    <string name="your_number">Ваш номер?</string>
+    <string name="date">Дата</string>
+    <string name="book">Забронювати</string>
+    <string name="go_to_checkout">Перейти до оплати € %s</string>
+    <string name="search">Пошук</string>
+
+    <!-- Profile Items -->
+    <string name="favorites">Улюблене</string>
+    <string name="order_history">Історія замовлень</string>
+    <string name="reservation_history">Історія бронювань</string>
+    <string name="logout">Вийти</string>
+
+    <!-- Errors -->
+    <string name="error_no_internet">Відсутнє з\'єднання з інтернетом.</string>
+    <string name="error_serialization">Виникла проблема з обробкою вашого запиту. Будь ласка, спробуйте пізніше.</string>
+    <string name="error_unauthorized">Ви не авторизовані. Будь ласка, увійдіть знову.</string>
+    <string name="error_request_timeout">Час очікування запиту вичерпано. Спробуйте ще раз.</string>
+    <string name="error_http">Сталася помилка HTTP. Будь ласка, спробуйте пізніше.</string>
+    <string name="error_unknown">Сталася невідома помилка. Будь ласка, спробуйте ще раз.</string>
+</resources>

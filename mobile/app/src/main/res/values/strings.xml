@@ -30,6 +30,9 @@
     <string name="party_size">Party size</string>
     <string name="your_number">What\'s your number?</string>
     <string name="date">Date</string>
+    <string name="book">Book</string>
+    <string name="go_to_checkout">Go to checkout € %s</string>
+    <string name="search">Search</string>
 
     <!-- Profile Items -->
 

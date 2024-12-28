@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PLATEA</string>
+    <string name="retry">Skúsiť znova</string>
+    <string name="operation_success">Akcia bola úspešne dokončená!</string>
+    <string name="operation_failed">Skúste to prosím znova.</string>
+    <string name="loading">Načítava sa</string>
+    <string name="loading_failed">Načítanie zlyhalo</string>
+    <string name="UPDATE">Aktualizovať</string>
+    <string name="DELETE">Odstrániť</string>
+    <string name="Add">Pridať</string>
+    <string name="btn_yes">Áno</string>
+    <string name="btn_no">Nie</string>
+    <string name="delete_confirmation">Odstrániť túto položku?</string>
+    <string name="pickup_option">Osobný odber</string>
+    <string name="delivery_option">Doručenie</string>
+    <string name="reservation_option">Rezervovať</string>
+    <string name="complete_order_navbar_title">Dokončite svoju objednávku</string>
+    <string name="notes_for_order">Voliteľné: pridajte špeciálne poznámky k objednávke.</string>
+    <string name="go_to_cart">Prejsť do košíka</string>
+    <string name="add_to_cart">Pridať ďalšie</string>
+    <string name="required_fields">*Povinné polia</string>
+    <string name="delivery_address">123 Hlavná ulica, byt 4B</string>
+    <string name="instructions_for_the_courier">Pokyny pre kuriéra</string>
+    <string name="order_preferences">Preferencie objednávky</string>
+    <string name="go_back">Vrátiť sa späť</string>
+    <string name="delivery_details">Podrobnosti o doručení</string>
+    <string name="cancel_reservation">Zrušiť rezerváciu</string>
+    <string name="cancel_order">Zrušiť objednávku</string>
+    <string name="repeat_order">Zopakovať objednávku</string>
+    <string name="party_size">Počet osôb</string>
+    <string name="your_number">Aké je vaše číslo?</string>
+    <string name="date">Dátum</string>
+    <string name="book">Rezervovať</string>
+    <string name="go_to_checkout">Prejsť k platbe € %s</string>
+    <string name="search">Hľadať</string>
+
+    <!-- Profile Items -->
+    <string name="favorites">Obľúbené</string>
+    <string name="order_history">História objednávok</string>
+    <string name="reservation_history">História rezervácií</string>
+    <string name="logout">Odhlásiť sa</string>
+
+    <!-- Errors -->
+    <string name="error_no_internet">Nie je k dispozícii internetové pripojenie.</string>
+    <string name="error_serialization">Pri spracovaní vašej požiadavky sa vyskytol problém. Skúste to prosím neskôr.</string>
+    <string name="error_unauthorized">Nie ste autorizovaný. Prosím, prihláste sa znova.</string>
+    <string name="error_request_timeout">Časový limit požiadavky vypršal. Skúste to prosím znova.</string>
+    <string name="error_http">Došlo k HTTP chybe. Skúste to prosím neskôr.</string>
+    <string name="error_unknown">Došlo k neznámej chybe. Skúste to prosím znova.</string>
+</resources>

@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mobile.R
@@ -124,7 +125,7 @@ fun CartScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(8.dp),
-                    text = "Go to checkout € ${formattedPrice(checkout)}"
+                    text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
                 )
             }
         }

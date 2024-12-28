@@ -238,7 +238,7 @@ fun Day(
             color = when {
                 day.position != DayPosition.MonthDate -> Color.Transparent
                 isPastDate -> Color.Gray
-                isSelected -> contentColor
+                isSelected -> Color.White
                 else -> Color.Black
             }
         )

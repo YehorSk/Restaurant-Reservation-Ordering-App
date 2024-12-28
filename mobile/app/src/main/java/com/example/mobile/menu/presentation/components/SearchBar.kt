@@ -15,9 +15,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.example.mobile.ui.theme.MobileTheme
+import com.example.mobile.R
 
 @Composable
 fun SearchBar(
@@ -51,7 +53,7 @@ fun SearchBar(
             leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
             placeholder = {
                 Text(
-                    text = "Search",
+                    text = stringResource(R.string.search),
                     color = contentColor
                 )
             }
