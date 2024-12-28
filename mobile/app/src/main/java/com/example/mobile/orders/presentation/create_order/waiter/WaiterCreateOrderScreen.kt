@@ -69,7 +69,7 @@ fun WaiterCreateOrderScreen(
         }
     }
 
-    if(uiState.items != null && !uiState.isLoading){
+    if(uiState.orderItems != null && !uiState.isLoading){
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -82,7 +82,7 @@ fun WaiterCreateOrderScreen(
                 title = R.string.complete_order_navbar_title
             )
             if (isConnected){
-                OrderItemList(items = uiState.items!!)
+                OrderItemList(items = uiState.orderItems!!)
                 HorizontalDivider()
             }
             OrderAddMore(
@@ -118,7 +118,7 @@ fun WaiterCreateOrderScreen(
                 Spacer(modifier = Modifier.height(10.dp))
             }
             if (isConnected){
-                val checkout = uiState.items!!.sumOf {
+                val checkout = uiState.orderItems!!.sumOf {
                     it.pivot.price
                 }
                 TotalPrice(

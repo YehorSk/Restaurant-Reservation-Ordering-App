@@ -41,7 +41,7 @@ import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.orders.presentation.components.OrderAddress
 import com.example.mobile.orders.presentation.components.OrderSpecialRequest
 import com.example.mobile.orders.presentation.create_order.CreateOrderAction
-import com.example.mobile.orders.presentation.CreateOrderUiState
+import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
 import androidx.compose.runtime.getValue
 import com.example.mobile.core.utils.toString
@@ -89,7 +89,7 @@ fun UserCreateOrderScreenRoot(
 @Composable
 fun UserCreateOrderScreen(
     modifier: Modifier = Modifier,
-    uiState: CreateOrderUiState,
+    uiState: OrderUiState,
     isConnected: Boolean,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
@@ -98,7 +98,7 @@ fun UserCreateOrderScreen(
     validateForm: Boolean,
     onAction: (CreateOrderAction) -> Unit
 ){
-    if(uiState.items != null){
+    if(uiState.orderItems != null){
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -111,7 +111,7 @@ fun UserCreateOrderScreen(
                 title = R.string.complete_order_navbar_title
             )
             if (isConnected){
-                OrderItemList(items = uiState.items)
+                OrderItemList(items = uiState.orderItems)
                 HorizontalDivider()
             }
             OrderAddMore(
@@ -140,7 +140,7 @@ fun UserCreateOrderScreen(
                 Spacer(modifier = Modifier.height(10.dp))
             }
             if (isConnected){
-                val checkout = uiState.items.sumOf {
+                val checkout = uiState.orderItems.sumOf {
                     it.pivot.price
                 }
                 TotalPrice(

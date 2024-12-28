@@ -75,11 +75,11 @@ class CreateOrderViewModel @Inject constructor(
         }
     }
 
-    fun updateTableNumber(number: Int){
+    fun updateTableNumber(id: Int){
         _uiState.update {
             it.copy(
                 orderForm = it.orderForm.copy(
-                    selectedTable = number
+                    selectedTable = id
                 )
             )
         }
@@ -117,7 +117,7 @@ class CreateOrderViewModel @Inject constructor(
             orderRepositoryImpl.getUserOrderItems()
                 .onSuccess { data, message ->
                     _uiState.update {
-                        it.copy(items = data)
+                        it.copy(orderItems = data)
                     }
                 }
                 .onError { error ->

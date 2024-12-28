@@ -32,7 +32,7 @@ import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.presentation.components.OrderDetailsItemList
-import com.example.mobile.orders.presentation.CreateOrderUiState
+import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.order_details.components.ActionButtons
 
 @Composable
@@ -75,7 +75,7 @@ fun OrderDetailsScreenRoot(
 fun OrderDetailsScreen(
     modifier: Modifier = Modifier,
     ordersUiState: List<OrderWithOrderItems>,
-    uiState: CreateOrderUiState,
+    uiState: OrderUiState,
     onGoToOrders: () -> Unit,
     id: Int,
     isConnected: Boolean,

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +27,7 @@ open class OrderBaseViewModel @Inject constructor(
     val orderDao: OrderDao
 ): ViewModel(){
 
-    protected val _uiState = MutableStateFlow(CreateOrderUiState())
+    protected val _uiState = MutableStateFlow(OrderUiState())
     val uiState = _uiState.asStateFlow()
 
     val ordersUiState: StateFlow<List<OrderWithOrderItems>> = orderDao.getOrderWithOrderItems()
