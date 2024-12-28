@@ -52,7 +52,8 @@ fun ClientNavGraph(
                 onCreateReservationClicked = {
                     navController.navigate(ClientScreen.CreateReservation.route)
                 },
-                viewModel = menuScreenViewModel
+                viewModel = menuScreenViewModel,
+                isUser = true
             )
         }
         composable(ClientScreen.Profile.route) {

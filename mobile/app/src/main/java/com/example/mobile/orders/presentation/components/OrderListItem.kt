@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -43,7 +44,8 @@ fun OrderListItem(
         Color.Black
     }
     Row(
-        modifier = Modifier.background(Color.White)
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
             .height(100.dp)
             .clickable {
                 onClick(menuItem)
@@ -88,7 +90,7 @@ fun OrderListItem(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun OrderListItemPreview(){
     MobileTheme {

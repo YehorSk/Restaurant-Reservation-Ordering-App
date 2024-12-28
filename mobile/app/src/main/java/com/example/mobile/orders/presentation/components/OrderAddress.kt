@@ -1,6 +1,7 @@
 package com.example.mobile.orders.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.R
@@ -27,11 +29,16 @@ fun OrderAddress(
     onAddressChange: (String) -> Unit,
     onInstructionsChange: (String) -> Unit
 ) {
+    val contentColor = if(isSystemInDarkTheme()){
+        Color.White
+    }else{
+        Color.Black
+    }
     Card(
     ) {
         Column(
             modifier = Modifier
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .fillMaxWidth()
         ) {
             TextField(
@@ -47,15 +54,16 @@ fun OrderAddress(
                 onValueChange = {it -> onAddressChange(it)},
                 placeholder = {
                     Text(
-                        text = stringResource(R.string.delivery_address)
+                        text = stringResource(R.string.delivery_address),
+                        color = contentColor
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = contentColor,
+                    unfocusedIndicatorColor = contentColor,
                     disabledIndicatorColor = Color.Transparent,
-                    focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background
                 ),
                 shape = MaterialTheme.shapes.small
             )
@@ -71,15 +79,16 @@ fun OrderAddress(
                 onValueChange = {it -> onInstructionsChange(it)},
                 placeholder = {
                     Text(
-                        text = "*"+stringResource(R.string.instructions_for_the_courier)
+                        text = "*"+stringResource(R.string.instructions_for_the_courier),
+                        color = contentColor
                     )
                 },
                 colors = TextFieldDefaults.colors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = contentColor,
+                    unfocusedIndicatorColor = contentColor,
                     disabledIndicatorColor = Color.Transparent,
-                    focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background
                 ),
                 shape = MaterialTheme.shapes.small
             )
@@ -98,7 +107,7 @@ fun OrderAddress(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun OrderAddressPreview(){
     MobileTheme {

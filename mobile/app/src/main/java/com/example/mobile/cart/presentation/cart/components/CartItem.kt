@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,7 +42,6 @@ fun CartItem(
     }
     Row(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
-            .height(140.dp)
             .clickable {
                 Timber.d("Item $cartItem")
                 onClick(cartItem)
@@ -101,6 +101,7 @@ fun CartItem(
             modifier = Modifier
                 .weight(1f)
                 .padding(16.dp)
+                .size(100.dp)
                 .clip(RoundedCornerShape(10.dp)),
             contentDescription = cartItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),

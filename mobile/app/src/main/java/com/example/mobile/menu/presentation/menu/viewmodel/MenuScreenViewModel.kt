@@ -2,9 +2,9 @@ package com.example.mobile.menu.presentation.menu.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
-import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.core.domain.onError
-import com.example.mobile.core.domain.onSuccess
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.domain.remote.onError
+import com.example.mobile.core.domain.remote.onSuccess
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity

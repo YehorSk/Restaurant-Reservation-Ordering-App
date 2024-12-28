@@ -26,7 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.toMenuItem
-import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.cart.presentation.cart.components.CartItem
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect

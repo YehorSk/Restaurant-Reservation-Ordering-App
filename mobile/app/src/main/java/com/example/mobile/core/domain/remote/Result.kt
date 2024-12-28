@@ -1,4 +1,4 @@
-package com.example.mobile.core.domain
+package com.example.mobile.core.domain.remote
 
 typealias DomainError = Error
 

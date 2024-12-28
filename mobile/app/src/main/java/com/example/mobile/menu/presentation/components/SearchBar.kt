@@ -1,7 +1,8 @@
-package com.example.mobile.menu.presentation.menu.components
+package com.example.mobile.menu.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,13 @@ fun SearchBar(
     onValueChange: (String) -> Unit,
     isConnected: Boolean
 ){
+    
+    val contentColor = if(isSystemInDarkTheme()){
+        Color.White
+    }else{
+        Color.Black
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,7 +43,7 @@ fun SearchBar(
         OutlinedTextField(
             modifier = modifier
                 .fillMaxWidth()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .clickable { onClick() },
             value = text,
             onValueChange = onValueChange,
@@ -43,7 +51,8 @@ fun SearchBar(
             leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
             placeholder = {
                 Text(
-                    text = "Search"
+                    text = "Search",
+                    color = contentColor
                 )
             }
         )

@@ -1,4 +1,4 @@
-package com.example.mobile.menu.presentation.menu.components
+package com.example.mobile.menu.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.menu.data.db.model.MenuEntity
-import com.example.mobile.menu.data.remote.dto.MenuDto
 
 @Composable
 fun MenuHeader(

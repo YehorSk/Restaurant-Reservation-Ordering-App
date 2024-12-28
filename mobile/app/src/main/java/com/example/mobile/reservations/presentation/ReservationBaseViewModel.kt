@@ -2,10 +2,8 @@ package com.example.mobile.reservations.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.utils.ConnectivityObserver
-import com.example.mobile.orders.data.dao.OrderDao
-import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.reservations.data.dao.ReservationDao
 import com.example.mobile.reservations.data.db.model.ReservationEntity
 import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl

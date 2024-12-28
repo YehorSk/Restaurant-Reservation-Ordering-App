@@ -35,7 +35,6 @@ fun OrderListItem(
     }
     Row(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
-            .height(120.dp)
             .fillMaxWidth()
             .clickable {
                 onGoToOrderDetails(orderEntity.id.toInt())

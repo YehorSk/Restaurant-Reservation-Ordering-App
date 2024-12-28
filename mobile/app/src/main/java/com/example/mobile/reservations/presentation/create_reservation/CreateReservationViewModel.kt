@@ -1,13 +1,10 @@
 package com.example.mobile.reservations.presentation.create_reservation
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.core.domain.onError
-import com.example.mobile.core.domain.onSuccess
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.domain.remote.onError
+import com.example.mobile.core.domain.remote.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
-import com.example.mobile.orders.data.dao.OrderDao
-import com.example.mobile.orders.data.remote.OrderRepositoryImpl
-import com.example.mobile.orders.presentation.OrderBaseViewModel
 import com.example.mobile.reservations.data.dao.ReservationDao
 import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
 import com.example.mobile.reservations.presentation.ReservationBaseViewModel

@@ -5,11 +5,10 @@ import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.presentation.BaseAuthViewModel
-import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.utils.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -36,12 +35,9 @@ class LoginViewModel @Inject constructor(
     init {
         viewModelScope.launch(Dispatchers.Main){
             isNetwork.collect{ available ->
-                Timber.tag("NetworkCheck 1").v("Network status: $available")
                 if (available == true){
-                    Timber.tag("NetworkCheck 2").v("Network status: $available")
                     authenticate()
                 }else{
-                    Timber.tag("NetworkCheck 3").v("Network status: $available")
                     checkIfLoggedIn()
                 }
             }

@@ -16,10 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.core.utils.EventConsumer
-import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.menu.presentation.menu.components.MenuHeader
-import com.example.mobile.menu.presentation.menu.components.MenuItem
-import com.example.mobile.menu.presentation.menu.components.SearchBar
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.menu.presentation.components.MenuHeader
+import com.example.mobile.menu.presentation.components.MenuItem
+import com.example.mobile.menu.presentation.components.MenuList
+import com.example.mobile.menu.presentation.components.SearchBar
 import com.example.mobile.menu.presentation.menu_admin.viewmodel.MenuAdminScreenViewModel
 
 @OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
@@ -34,6 +35,7 @@ fun MenuAdminScreen(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
+    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle()
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
@@ -42,7 +44,6 @@ fun MenuAdminScreen(
             is SideEffect.NavigateToNextScreen -> {}
         }
     }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -53,29 +54,13 @@ fun MenuAdminScreen(
             onValueChange = {},
             isConnected = true
         )
-        LazyColumn(
+        MenuList(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            menuUiState.forEach { menu ->
-                stickyHeader {
-                    MenuHeader(
-                        menuDto = menu.menu,
-                        onMenuClick = { }
-                    )
-                }
-                items(menu.menuItems.map { it }){ item ->
-                    MenuItem(
-                        menuItem = item,
-                        onClick = { menuItem ->
-
-                        },
-                        isConnected = true
-                    )
-                    HorizontalDivider()
-                }
-            }
-        }
+                .background(MaterialTheme.colorScheme.background),
+            items = menuUiState,
+            onClick = {},
+            isConnected = isConnected
+        )
     }
 }

@@ -1,7 +1,9 @@
 package com.example.mobile.orders.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -16,14 +18,21 @@ fun OrderSpecialRequest(
     request: String,
     onRequestChange: (String) -> Unit
 ){
+
+    val contentColor = if(isSystemInDarkTheme()){
+        Color.White
+    }else{
+        Color.Black
+    }
+
     TextField(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Color.White),
+            .fillMaxWidth(),
         value = request,
         placeholder = {
             Text(
-                text = stringResource(R.string.notes_for_order)
+                text = stringResource(R.string.notes_for_order),
+                color = contentColor
             )
         },
         onValueChange = {
@@ -33,8 +42,8 @@ fun OrderSpecialRequest(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White
+            focusedContainerColor = MaterialTheme.colorScheme.background,
+            unfocusedContainerColor = MaterialTheme.colorScheme.background
         )
     )
 }

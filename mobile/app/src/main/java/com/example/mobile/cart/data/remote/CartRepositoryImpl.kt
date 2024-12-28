@@ -3,13 +3,12 @@ package com.example.mobile.cart.data.remote
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.domain.repository.CartRepository
 import com.example.mobile.cart.domain.service.CartService
-import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.core.data.remote.safeCall
-import com.example.mobile.core.domain.AppError
-import com.example.mobile.core.domain.Result
+import com.example.mobile.core.domain.remote.AppError
+import com.example.mobile.core.domain.remote.Result
 import timber.log.Timber
 import javax.inject.Inject
 

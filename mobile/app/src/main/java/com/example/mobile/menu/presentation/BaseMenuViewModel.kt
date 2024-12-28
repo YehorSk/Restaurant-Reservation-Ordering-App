@@ -3,9 +3,9 @@ package com.example.mobile.menu.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.cart.data.remote.CartRepositoryImpl
-import com.example.mobile.core.data.remote.dto.NetworkResult
-import com.example.mobile.core.domain.Result
-import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.domain.remote.Result
+import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -89,13 +88,10 @@ open class BaseMenuViewModel @Inject constructor(
     fun getMenus(){
         viewModelScope.launch {
             setLoadingState(true)
-            when(val result = menuRepositoryImpl.getAllMenus()){
-                is Result.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(result.error))
+            menuRepositoryImpl.getAllMenus()
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-                is Result.Success ->{
-                }
-            }
             setLoadingState(false)
         }
     }

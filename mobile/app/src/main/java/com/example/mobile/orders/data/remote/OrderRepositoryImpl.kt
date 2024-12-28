@@ -2,22 +2,18 @@ package com.example.mobile.orders.data.remote
 
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.core.data.remote.safeCall
-import com.example.mobile.core.domain.AppError
-import com.example.mobile.core.domain.Result
+import com.example.mobile.core.domain.remote.AppError
+import com.example.mobile.core.domain.remote.Result
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.orders.data.dao.OrderDao
-import com.example.mobile.reservations.data.dao.ReservationDao
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.remote.dto.OrderDto
-import com.example.mobile.reservations.data.remote.dto.ReservationDto
 import com.example.mobile.orders.data.remote.dto.TableDto
-import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.orders.data.remote.dto.toCartItemEntity
 import com.example.mobile.orders.data.remote.dto.toOrderEntity
 import com.example.mobile.orders.data.remote.dto.toOrderMenuItemEntity
-import com.example.mobile.reservations.data.remote.dto.toReservationEntity
 import com.example.mobile.orders.presentation.OrderForm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

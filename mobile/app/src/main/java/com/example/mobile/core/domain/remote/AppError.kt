@@ -1,4 +1,4 @@
-package com.example.mobile.core.domain
+package com.example.mobile.core.domain.remote
 
 enum class AppError: Error{
     NO_INTERNET,

@@ -4,6 +4,7 @@ import android.graphics.drawable.Icon
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.ui.theme.MobileTheme
@@ -37,7 +38,10 @@ fun OrderAddMore(
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
 ){
-    Column{
+    Column(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+    ){
         OrderButton(
             icon = Icons.Filled.AddShoppingCart,
             text = R.string.add_to_cart,
@@ -61,12 +65,18 @@ fun OrderButton(
     @StringRes text: Int,
     onClick: () -> Unit
 ){
+    val contentColor = if(isSystemInDarkTheme()){
+        Color.White
+    }else{
+        Color.Black
+    }
+
     Row(
         modifier = modifier
             .clickable{
                 onClick()
             }
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
@@ -80,7 +90,7 @@ fun OrderButton(
                 ),
             imageVector = icon,
             contentDescription = "",
-            tint = MaterialTheme.colorScheme.primary,
+            tint = contentColor,
         )
         Text(
             modifier = Modifier
@@ -90,14 +100,14 @@ fun OrderButton(
                     bottom = 20.dp
                 ),
             text = stringResource(id = text),
-            color = MaterialTheme.colorScheme.primary,
+            color = contentColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
         )
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun OrderAddMorePreview(){
     MobileTheme {

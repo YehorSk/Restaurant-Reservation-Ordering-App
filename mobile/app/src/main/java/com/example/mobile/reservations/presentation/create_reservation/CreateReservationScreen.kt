@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
@@ -60,7 +61,7 @@ fun CreateReservationScreen(
             modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             NavBar(
                 onGoBack = goBack,

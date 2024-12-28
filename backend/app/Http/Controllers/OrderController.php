@@ -30,7 +30,8 @@ class OrderController extends Controller
             if ($user->role === 'user') {
                 $orders = $user->clientOrders()->with('orderItems')->get();
             } elseif ($user->role === 'waiter') {
-                $orders = $user->waiterOrders()->with('orderItems')->get();
+//                $orders = $user->waiterOrders()->with('orderItems')->get();
+                $orders = Order::with('orderItems')->get();
             } else {
                 return $this->error('', 'Invalid role', 403);
             }
@@ -45,7 +46,8 @@ class OrderController extends Controller
             if ($user->role === 'user') {
                 $order = $user->clientOrders()->with('orderItems')->find($id);
             } elseif ($user->role === 'waiter') {
-                $order = $user->waiterOrders()->with('orderItems')->find($id);
+//                $order = $user->waiterOrders()->with('orderItems')->find($id);
+                $order = Order::with('orderItems')->find($id);
             } else {
                 return $this->error('', 'Invalid role', 403);
             }

@@ -1,8 +1,8 @@
 package com.example.mobile.reservations.data.remote
 
 import com.example.mobile.core.data.remote.safeCall
-import com.example.mobile.core.domain.AppError
-import com.example.mobile.core.domain.Result
+import com.example.mobile.core.domain.remote.AppError
+import com.example.mobile.core.domain.remote.Result
 import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.reservations.data.dao.ReservationDao
 import com.example.mobile.reservations.data.remote.dto.ReservationDto

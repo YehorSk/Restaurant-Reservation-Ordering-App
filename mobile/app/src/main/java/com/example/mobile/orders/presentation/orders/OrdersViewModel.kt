@@ -1,11 +1,8 @@
 package com.example.mobile.orders.presentation.orders
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.core.data.remote.dto.NetworkResult
-import com.example.mobile.core.domain.Result
-import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.core.domain.onError
-import com.example.mobile.core.domain.onSuccess
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.db.model.OrderEntity
@@ -40,10 +37,13 @@ class OrdersViewModel @Inject constructor(
     fun getUserOrders(){
         Timber.d("getUserOrders")
         viewModelScope.launch{
+            setLoadingState(true)
             orderRepositoryImpl.getUserOrders()
                 .onError { result ->
                     _sideEffectChannel.send(SideEffect.ShowErrorToast(result))
+                    setLoadingState(false)
                 }
+            setLoadingState(false)
         }
     }
 }

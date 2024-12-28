@@ -3,6 +3,7 @@ package com.example.mobile.reservations.presentation.create_reservation.componen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,6 +58,13 @@ import kotlinx.coroutines.launch
 fun CalendarRoot(
     onUpdateSelectedDate: (String) -> Unit
 ){
+
+    val contentColor = if(isSystemInDarkTheme()){
+        Color.White
+    }else{
+        Color.Black
+    }
+
     val coroutineScope = rememberCoroutineScope()
     val currentMonth = remember { YearMonth.now() }
     val startMonth = remember { currentMonth }
@@ -72,7 +80,7 @@ fun CalendarRoot(
     )
     Column(
         modifier = Modifier
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
             .padding(20.dp)
     ) {
@@ -86,6 +94,7 @@ fun CalendarRoot(
                     bottom = 10.dp
                 ),
             text = stringResource(R.string.date),
+            color = contentColor,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -108,6 +117,7 @@ fun CalendarRoot(
                 Icon(
                     modifier = Modifier.weight(1f),
                     imageVector = Icons.Filled.ArrowBackIosNew,
+                    tint = contentColor,
                     contentDescription = ""
                 )
             }
@@ -116,6 +126,7 @@ fun CalendarRoot(
                     .weight(1f),
                 textAlign = TextAlign.Center,
                 text = formatMonth(state.lastVisibleMonth.yearMonth.toString()),
+                color = contentColor,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -132,6 +143,7 @@ fun CalendarRoot(
                 Icon(
                     modifier = Modifier.weight(1f),
                     imageVector = Icons.Filled.ArrowForwardIos,
+                    tint = contentColor,
                     contentDescription = ""
                 )
             }
@@ -142,13 +154,20 @@ fun CalendarRoot(
         HorizontalCalendar(
             state = state,
             dayContent = { day ->
-                Day(day, isSelected = selectedDate == day.date) { day ->
-                    selectedDate = if (selectedDate == day.date) selectedDate else day.date
-                    onUpdateSelectedDate(selectedDate.toString())
-                }
+                Day(day,
+                    isSelected = selectedDate == day.date,
+                    contentColor = contentColor,
+                    onClick = { day ->
+                        selectedDate = if (selectedDate == day.date) selectedDate else day.date
+                        onUpdateSelectedDate(selectedDate.toString())
+                    }
+                )
             },
             monthHeader = {
-                DaysOfWeekTitle(daysOfWeek = daysOfWeek())
+                DaysOfWeekTitle(
+                    daysOfWeek = daysOfWeek(),
+                    contentColor = contentColor
+                )
             }
         )
     }
@@ -157,7 +176,10 @@ fun CalendarRoot(
 }
 
 @Composable
-fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
+fun DaysOfWeekTitle(
+    daysOfWeek: List<DayOfWeek>,
+    contentColor: Color
+    ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -170,6 +192,7 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
+                color = contentColor,
                 text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
             )
         }
@@ -177,7 +200,12 @@ fun DaysOfWeekTitle(daysOfWeek: List<DayOfWeek>) {
 }
 
 @Composable
-fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
+fun Day(
+    day: CalendarDay,
+    isSelected: Boolean,
+    onClick: (CalendarDay) -> Unit,
+    contentColor: Color
+) {
     val isPastDate = day.date.isBefore(LocalDate.now())
     Box(
         modifier = Modifier
@@ -210,7 +238,7 @@ fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
             color = when {
                 day.position != DayPosition.MonthDate -> Color.Transparent
                 isPastDate -> Color.Gray
-                isSelected -> Color.White
+                isSelected -> contentColor
                 else -> Color.Black
             }
         )

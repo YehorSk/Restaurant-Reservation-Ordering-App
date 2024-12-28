@@ -2,6 +2,7 @@ package com.example.mobile.orders.presentation.order_details.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.ui.theme.MobileTheme
@@ -33,7 +35,7 @@ fun ActionButtons(
     ) {
         Column(
             modifier = modifier
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .fillMaxWidth()
         ) {
             ActionButton(
@@ -66,7 +68,7 @@ fun ActionButtons(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 fun ActionButtonsPreview(){
     MobileTheme {

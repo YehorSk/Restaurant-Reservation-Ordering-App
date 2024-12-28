@@ -1,4 +1,4 @@
-package com.example.mobile.menu.presentation.menu.components
+package com.example.mobile.menu.presentation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

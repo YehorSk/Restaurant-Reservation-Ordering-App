@@ -1,10 +1,8 @@
 package com.example.mobile.menu.data.remote
 
-import com.example.mobile.cart.data.remote.dto.CartItemDto
-import com.example.mobile.core.data.remote.dto.NetworkResult
 import com.example.mobile.core.data.remote.safeCall
-import com.example.mobile.core.domain.AppError
-import com.example.mobile.core.domain.Result
+import com.example.mobile.core.domain.remote.AppError
+import com.example.mobile.core.domain.remote.Result
 import com.example.mobile.menu.data.remote.dto.MenuDto
 import com.example.mobile.menu.domain.service.MenuService
 import com.example.mobile.menu.data.dao.MenuDao
@@ -12,16 +10,8 @@ import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.data.remote.dto.toMenuEntity
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import com.example.mobile.menu.domain.repository.MenuRepository
-import com.example.mobile.core.utils.ConnectivityObserver
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 

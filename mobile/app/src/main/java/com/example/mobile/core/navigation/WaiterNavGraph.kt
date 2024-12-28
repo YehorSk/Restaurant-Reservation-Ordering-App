@@ -45,7 +45,20 @@ fun WaiterNavGraph(
                     navController.navigate(WaiterScreen.Search.route)
                 },
                 onCreateReservationClicked = {},
-                viewModel = menuScreenViewModel
+                viewModel = menuScreenViewModel,
+                isUser = false
+            )
+        }
+        composable(WaiterScreen.Profile.route) {
+            ProfileScreen(
+                modifier = modifier.fillMaxSize(),
+                onNavigate = { destination ->
+                    when(destination){
+                        ProfileDestination.Favorites -> navController.navigate(WaiterScreen.Favorites.route)
+                        ProfileDestination.Logout -> onLoggedOut()
+                        ProfileDestination.Settings -> {}
+                    }
+                }
             )
         }
         composable(WaiterScreen.Settings.route) {
@@ -152,6 +165,7 @@ fun WaiterNavGraph(
 sealed class WaiterScreen(val route: String){
     object Home: WaiterScreen(route = "HOME")
     object Settings: WaiterScreen(route = "SETTINGS")
+    data object Profile: WaiterScreen(route = "PROFILE")
     object Cart: WaiterScreen(route = "CART")
     object Orders: WaiterScreen(route = "ORDERS")
     object CreateOrder: WaiterScreen(route = "CREATE_ORDER")

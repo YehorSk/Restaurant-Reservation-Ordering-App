@@ -6,16 +6,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.TableRestaurant
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,16 +26,17 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.utils.EventConsumer
-import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.menu.presentation.menu.components.MenuHeader
-import com.example.mobile.menu.presentation.menu.components.MenuItem
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.menu.presentation.components.MenuHeader
+import com.example.mobile.menu.presentation.components.MenuItem
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.utils.toString
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.menu.presentation.MenuAction
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
-import com.example.mobile.menu.presentation.menu.components.MenuDetailsDialog
-import com.example.mobile.menu.presentation.menu.components.SearchBar
+import com.example.mobile.menu.presentation.components.MenuDetailsDialog
+import com.example.mobile.menu.presentation.components.MenuList
+import com.example.mobile.menu.presentation.components.SearchBar
 
 @OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class
@@ -49,6 +47,7 @@ fun MenuScreenRoot(
     viewModel: MenuScreenViewModel,
     onSearchClicked: () -> Unit,
     onCreateReservationClicked: () -> Unit,
+    isUser: Boolean
 ){
 
     val context = LocalContext.current
@@ -71,7 +70,8 @@ fun MenuScreenRoot(
         isConnected = isConnected,
         onSearchClicked = { onSearchClicked() },
         onCreateReservationClicked = { onCreateReservationClicked() },
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        isUser = isUser
     )
 
 }
@@ -85,7 +85,8 @@ fun MenuScreen(
     isConnected: Boolean,
     onSearchClicked: () -> Unit,
     onCreateReservationClicked: () -> Unit,
-    onAction: (MenuAction) -> Unit
+    onAction: (MenuAction) -> Unit,
+    isUser: Boolean
 ){
     Box(
         modifier = modifier
@@ -101,44 +102,32 @@ fun MenuScreen(
                 onValueChange = {},
                 isConnected = isConnected
             )
-            LazyColumn(
+            MenuList(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-            ) {
-                menuUiState.forEach { menu ->
-                    stickyHeader {
-                        MenuHeader(
-                            menuDto = menu.menu,
-                            onMenuClick = { onAction(MenuAction.ShowMenuDetails(menu.menu)) }
-                        )
-                    }
-                    items(menu.menuItems.map { it }){ item ->
-                        MenuItem(
-                            menuItem = item,
-                            onClick = { menuItem ->
-                                onAction(MenuAction.OnMenuItemClick(menuItem))
-                            },
-                            isConnected = isConnected
-                        )
-                        HorizontalDivider()
-                    }
-                }
-            }
+                    .background(MaterialTheme.colorScheme.background),
+                items = menuUiState,
+                onClick = {
+                    menuItem -> onAction(MenuAction.OnMenuItemClick(menuItem))
+                },
+                isConnected = isConnected
+            )
         }
-        ExtendedFloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            onClick = { onCreateReservationClicked() },
-            icon = {
-                Icon(
-                    imageVector = Icons.Filled.Event,
-                    contentDescription = null
-                )
-            },
-            text = { Text(text = "Book") },
-        )
+        if(isUser){
+            ExtendedFloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
+                onClick = { onCreateReservationClicked() },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Filled.Event,
+                        contentDescription = null
+                    )
+                },
+                text = { Text(text = "Book") },
+            )
+        }
     }
 
     if (uiState.showBottomSheet) {

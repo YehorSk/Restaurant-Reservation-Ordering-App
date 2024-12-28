@@ -1,7 +1,7 @@
 package com.example.mobile.core.utils
 
 import android.content.Context
-import com.example.mobile.core.domain.AppError
+import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.R
 
 fun AppError.toString(context: Context): String {

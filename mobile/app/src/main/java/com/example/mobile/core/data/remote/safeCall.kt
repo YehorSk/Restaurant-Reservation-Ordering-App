@@ -1,8 +1,8 @@
 package com.example.mobile.core.data.remote
 
 import com.example.mobile.core.data.remote.dto.ResponseDto
-import com.example.mobile.core.domain.AppError
-import com.example.mobile.core.domain.Result
+import com.example.mobile.core.domain.remote.AppError
+import com.example.mobile.core.domain.remote.Result
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException

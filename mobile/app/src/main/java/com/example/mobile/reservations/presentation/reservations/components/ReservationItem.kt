@@ -32,7 +32,6 @@ fun ReservationItem(
     }
     Row(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
-            .height(90.dp)
             .fillMaxWidth()
             .clickable {
                 onGoToReservationDetails(reservationEntity.id)

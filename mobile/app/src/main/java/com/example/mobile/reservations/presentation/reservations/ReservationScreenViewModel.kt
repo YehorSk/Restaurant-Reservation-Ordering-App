@@ -1,23 +1,15 @@
 package com.example.mobile.reservations.presentation.reservations
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.core.domain.SideEffect
-import com.example.mobile.core.domain.onError
-import com.example.mobile.core.domain.onSuccess
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.domain.remote.onError
+import com.example.mobile.core.domain.remote.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
-import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.reservations.data.dao.ReservationDao
-import com.example.mobile.reservations.data.db.model.ReservationEntity
-import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.reservations.data.remote.dto.toReservationEntity
-import com.example.mobile.orders.presentation.OrderBaseViewModel
 import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
-import com.example.mobile.reservations.data.remote.dto.ReservationDto
 import com.example.mobile.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber

@@ -1,7 +1,7 @@
 package com.example.mobile.orders.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.core.domain.SideEffect
+import com.example.mobile.core.domain.remote.SideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

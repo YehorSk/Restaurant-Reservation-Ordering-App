@@ -1,8 +1,7 @@
 package com.example.mobile.menu.domain.repository
 
-import com.example.mobile.core.data.remote.dto.NetworkResult
-import com.example.mobile.core.domain.AppError
-import com.example.mobile.core.domain.Result
+import com.example.mobile.core.domain.remote.AppError
+import com.example.mobile.core.domain.remote.Result
 import com.example.mobile.menu.data.remote.dto.MenuDto
 
 interface MenuRepository {
