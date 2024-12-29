@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import androidx.lifecycle.ViewModel
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.db.model.OrderWithOrderItems
@@ -24,8 +25,12 @@ import javax.inject.Inject
 open class OrderBaseViewModel @Inject constructor(
     val networkConnectivityObserver: ConnectivityObserver,
     val orderRepositoryImpl: OrderRepositoryImpl,
-    val orderDao: OrderDao
+    val orderDao: OrderDao,
+    val preferencesRepository: MainPreferencesRepository
 ): ViewModel(){
+
+    val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     protected val _uiState = MutableStateFlow(OrderUiState())
     val uiState = _uiState.asStateFlow()

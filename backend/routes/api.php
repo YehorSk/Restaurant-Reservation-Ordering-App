@@ -83,9 +83,19 @@ Route::prefix("order")->controller(OrderController::class)->group(function (){
     Route::get('/user/cartItems','getUserCartItems');
     Route::get('/user/orders','getUserOrders');
     Route::get('/user/orders/{id}','getUserOrderDetails');
-    Route::get('/user/orders/cancel/{id}','cancelOrder');
+    Route::get('/user/orders/cancel/{id}','userCancelOrder');
     Route::get('/user/orders/repeat/{id}','repeatOrder');
+
+    // Waiter
+    Route::get('/waiter/orders/confirm/{id}','markOrderAsConfirmed');
+    Route::get('/waiter/orders/complete/{id}','markOrderAsCompleted');
+    Route::get('/waiter/orders/cancel/{id}','markOrderAsCancelled');
     Route::post('/waiter/order','makeWaiterOrder');
+
+    // Chef
+    Route::get('/chef/orders/prepare/{id}','markOrderAsPreparing');
+    Route::get('/chef/orders/ready/{id}','markOrderAsReadyForPickup');
+
     Route::post('/user/pickup','makeUserPickUpOrder');
     Route::post('/user/delivery','makeUserDeliveryOrder');
 })->middleware('auth:sanctum');

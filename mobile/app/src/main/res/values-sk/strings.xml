@@ -28,12 +28,18 @@
     <string name="cancel_reservation">Zrušiť rezerváciu</string>
     <string name="cancel_order">Zrušiť objednávku</string>
     <string name="repeat_order">Zopakovať objednávku</string>
+    <string name="confirm_order">Potvrdiť objednávku</string>
+    <string name="complete_order">Dokončiť objednávku</string>
+    <string name="prepare_order">Pripraviť objednávku</string>
+    <string name="ready_order">Pripravené na vyzdvihnutie alebo doručenie</string>
     <string name="party_size">Počet osôb</string>
     <string name="your_number">Aké je vaše číslo?</string>
     <string name="date">Dátum</string>
     <string name="book">Rezervovať</string>
     <string name="go_to_checkout">Prejsť k platbe € %s</string>
     <string name="search">Hľadať</string>
+    <string name="quantity">Množstvo %s x</string>
+    <string name="price">Cena %s €</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>
@@ -48,4 +54,15 @@
     <string name="error_request_timeout">Časový limit požiadavky vypršal. Skúste to prosím znova.</string>
     <string name="error_http">Došlo k HTTP chybe. Skúste to prosím neskôr.</string>
     <string name="error_unknown">Došlo k neznámej chybe. Skúste to prosím znova.</string>
+
+    <!-- Order Filters-->
+
+    <string name="filter">Filter: %s</string>
+    <string name="filter_all">Všetky objednávky</string>
+    <string name="filter_pending">Čakajúce</string>
+    <string name="filter_confirmed">Potvrdené</string>
+    <string name="filter_preparing">Pripravuje sa</string>
+    <string name="filter_ready">Pripravené na vyzdvihnutie</string>
+    <string name="filter_completed">Dokončené</string>
+    <string name="filter_cancelled">Zrušené</string>
 </resources>

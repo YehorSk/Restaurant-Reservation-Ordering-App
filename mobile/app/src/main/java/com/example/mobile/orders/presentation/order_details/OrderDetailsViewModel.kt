@@ -1,6 +1,7 @@
 package com.example.mobile.orders.presentation.order_details
 
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
@@ -17,13 +18,19 @@ import javax.inject.Inject
 class OrderDetailsViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     orderRepositoryImpl: OrderRepositoryImpl,
-    orderDao: OrderDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao){
+    orderDao: OrderDao,
+    preferencesRepository: MainPreferencesRepository,
+): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository){
 
     fun onAction(action: OrderDetailsAction){
         when(action){
-            is OrderDetailsAction.CancelOrder -> cancelOrder(action.id)
+            is OrderDetailsAction.UserCancelOrder -> cancelOrder(action.id)
             is OrderDetailsAction.RepeatOrder -> repeatOrder(action.id)
+            is OrderDetailsAction.CompleteOrder -> markOrderAsCompleted(action.id)
+            is OrderDetailsAction.ConfirmOrder -> markOrderAsConfirmed(action.id)
+            is OrderDetailsAction.PrepareOrder -> markOrderAsPreparing(action.id)
+            is OrderDetailsAction.ReadyForPickupOrder -> markOrderAsReadyForPickup(action.id)
+            is OrderDetailsAction.WaiterCancelOrder -> markOrderAsCancelled(action.id)
         }
     }
 
@@ -66,6 +73,96 @@ class OrderDetailsViewModel @Inject constructor(
                 it.copy(isLoading = true)
             }
             orderRepositoryImpl.cancelUserOrder(id)
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+            _uiState.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun markOrderAsCancelled(id: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+            orderRepositoryImpl.markOrderAsCancelled(id)
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+            _uiState.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun markOrderAsCompleted(id: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+            orderRepositoryImpl.markOrderAsCompleted(id)
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+            _uiState.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun markOrderAsConfirmed(id: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+            orderRepositoryImpl.markOrderAsConfirmed(id)
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+            _uiState.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun markOrderAsPreparing(id: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+            orderRepositoryImpl.markOrderAsPreparing(id)
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+            _uiState.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun markOrderAsReadyForPickup(id: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+            orderRepositoryImpl.markOrderAsReadyForPickup(id)
                 .onSuccess { data,message ->
                     _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }

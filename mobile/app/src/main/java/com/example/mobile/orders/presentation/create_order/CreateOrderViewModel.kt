@@ -1,6 +1,7 @@
 package com.example.mobile.orders.presentation.create_order
 
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
@@ -18,8 +19,9 @@ import javax.inject.Inject
 class CreateOrderViewModel @Inject constructor(
      networkConnectivityObserver: ConnectivityObserver,
      orderRepositoryImpl: OrderRepositoryImpl,
-     orderDao: OrderDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao){
+     orderDao: OrderDao,
+     preferencesRepository: MainPreferencesRepository,
+): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository){
 
     fun onAction(action: CreateOrderAction){
         when(action){

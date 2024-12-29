@@ -96,7 +96,7 @@ class OrderController extends Controller
                 'special_request' => $request->input('special_request', ''),
                 'order_type' =>  $request->input('order_type'),
                 'code' => $this->generate_code(),
-                'status' => 'Pending',
+                'status' => 'Confirmed',
                 'table_id' => $request->input('table_id'),
                 'waiter_id' => $user->id
             ]);
@@ -144,7 +144,7 @@ class OrderController extends Controller
         return $this->error('', 'No user', 401);
     }
 
-    public function cancelOrder($id){
+    public function userCancelOrder($id){
         $user = auth('sanctum')->user();
         if($user instanceof User){
             $order = $user->clientOrders()->with('orderItems')->find($id);
@@ -183,6 +183,76 @@ class OrderController extends Controller
                 }
             }
             return $this->success(data: [$order], message: "Items added to cart successfully.");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function markOrderAsCancelled($id){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "waiter"){
+            $order = Order::with('orderItems')->find($id);
+            if ($order) {
+                $order->update(['status' => 'Cancelled']);
+                $order = Order::with('orderItems')->find($id);
+                return $this->success(data: [$order], message: "Order canceled successfully.");
+            }
+            return $this->error('', 'Order not found', 404);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function markOrderAsConfirmed($id){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "waiter"){
+            $order = Order::with('orderItems')->find($id);
+            if ($order) {
+                $order->update(['status' => 'Confirmed']);
+                $order = Order::with('orderItems')->find($id);
+                return $this->success(data: [$order], message: "Order confirmed successfully.");
+            }
+            return $this->error('', 'Order not found', 404);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function markOrderAsCompleted($id){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "waiter"){
+            $order = Order::with('orderItems')->find($id);
+            if ($order) {
+                $order->update(['status' => 'Completed']);
+                $order = Order::with('orderItems')->find($id);
+                return $this->success(data: [$order], message: "Order completed successfully.");
+            }
+            return $this->error('', 'Order not found', 404);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function markOrderAsPreparing($id){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "waiter"){
+            $order = Order::with('orderItems')->find($id);
+            if ($order) {
+                $order->update(['status' => 'Preparing']);
+                $order = Order::with('orderItems')->find($id);
+                return $this->success(data: [$order], message: "Order marked as preparing.");
+            }
+            return $this->error('', 'Order not found', 404);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function markOrderAsReadyForPickup($id){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "waiter"){
+            $order = Order::with('orderItems')->find($id);
+            if ($order) {
+                $order->update(['status' => 'Ready for Pickup']);
+                $order = Order::with('orderItems')->find($id);
+                return $this->success(data: [$order], message: "Order ready for pickup.");
+            }
+            return $this->error('', 'Order not found', 404);
         }
         return $this->error('', 'No user', 401);
     }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,7 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -40,8 +43,9 @@ fun CartItem(
     }else{
         Color.Black
     }
+
     Row(
-        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+        modifier = modifier.background(MaterialTheme.colorScheme.background)
             .clickable {
                 Timber.d("Item $cartItem")
                 onClick(cartItem)
@@ -54,44 +58,31 @@ fun CartItem(
                 text = cartItem.name,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                modifier = modifier
+                maxLines = 2,
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 color = contentColor
 
             )
-            Text(
-                text = cartItem.shortDescription,
-                fontSize = 12.sp,
-                maxLines = 2,
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                color = contentColor
-            )
-            Row(
-                modifier = modifier
+            Column(
+                modifier = Modifier
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp)
             ) {
                 Text(
-                    text = cartItem.pivot.quantity.toString()+"x",
+                    text = stringResource(R.string.quantity, cartItem.pivot.quantity),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
                     maxLines = 2,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     color = contentColor
                 )
                 Text(
-                    text = cartItem.pivot.price.toString()+ " €",
+                    text = stringResource(R.string.price, cartItem.pivot.price),
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 2,
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                    maxLines = 1,
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     color = contentColor
                 )
             }
@@ -130,7 +121,7 @@ fun MenuItemPreview(){
                 pivot = PivotCartItemEntity(
                     userId = 0,
                     menuItemId = 0,
-                    price = 100.0,
+                    price = 1000.0,
                     quantity = 20,
                     createdAt = "",
                     updatedAt = "",

@@ -1,5 +1,6 @@
 package com.example.mobile.orders.domain.repository
 
+import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.Result
 import com.example.mobile.orders.data.remote.dto.OrderDto
@@ -26,4 +27,14 @@ interface OrderRepository {
     suspend fun makeWaiterOrder(orderForm: OrderForm) : Result<List<OrderDto>, AppError>
 
     suspend fun getTables() : Result<List<TableDto>, AppError>
+
+    suspend fun markOrderAsCancelled(id: String) : Result<List<OrderDto>, AppError>
+
+    suspend fun markOrderAsCompleted(id: String) : Result<List<OrderDto>, AppError>
+
+    suspend fun markOrderAsConfirmed(id: String) : Result<List<OrderDto>, AppError>
+
+    suspend fun markOrderAsPreparing(id: String) : Result<List<OrderDto>, AppError>
+
+    suspend fun markOrderAsReadyForPickup(id: String) : Result<List<OrderDto>, AppError>
 }

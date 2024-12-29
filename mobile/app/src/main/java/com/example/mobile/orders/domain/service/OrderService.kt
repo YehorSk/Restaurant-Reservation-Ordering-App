@@ -39,4 +39,19 @@ interface OrderService {
     @GET("table/waiter/tables")
     suspend fun getTables() : ResponseDto<TableDto>
 
+    @GET("order/waiter/orders/cancel/{id}")
+    suspend fun markOrderAsCancelled(@Path("id") id: String) : ResponseDto<OrderDto>
+
+    @GET("order/waiter/orders/complete/{id}")
+    suspend fun markOrderAsCompleted(@Path("id") id: String) : ResponseDto<OrderDto>
+
+    @GET("order/waiter/orders/confirm/{id}")
+    suspend fun markOrderAsConfirmed(@Path("id") id: String) : ResponseDto<OrderDto>
+
+    @GET("order/chef/orders/prepare/{id}")
+    suspend fun markOrderAsPreparing(@Path("id") id: String) : ResponseDto<OrderDto>
+
+    @GET("order/chef/orders/ready/{id}")
+    suspend fun markOrderAsReadyForPickup(@Path("id") id: String) : ResponseDto<OrderDto>
+
 }

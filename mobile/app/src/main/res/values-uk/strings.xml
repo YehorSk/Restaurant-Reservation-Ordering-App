@@ -28,12 +28,18 @@
     <string name="cancel_reservation">Скасувати бронювання</string>
     <string name="cancel_order">Скасувати замовлення</string>
     <string name="repeat_order">Повторити замовлення</string>
+    <string name="confirm_order">Підтвердити замовлення</string>
+    <string name="complete_order">Завершити замовлення</string>
+    <string name="prepare_order">Підготувати замовлення</string>
+    <string name="ready_order">Готово до забору або доставки</string>
     <string name="party_size">Кількість осіб</string>
     <string name="your_number">Ваш номер?</string>
     <string name="date">Дата</string>
     <string name="book">Забронювати</string>
     <string name="go_to_checkout">Перейти до оплати € %s</string>
     <string name="search">Пошук</string>
+    <string name="quantity">Кількість %s x</string>
+    <string name="price">Ціна %s €</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>
@@ -48,4 +54,15 @@
     <string name="error_request_timeout">Час очікування запиту вичерпано. Спробуйте ще раз.</string>
     <string name="error_http">Сталася помилка HTTP. Будь ласка, спробуйте пізніше.</string>
     <string name="error_unknown">Сталася невідома помилка. Будь ласка, спробуйте ще раз.</string>
+
+    <!-- Order Filters-->
+
+    <string name="filter">Фільтр: %s</string>
+    <string name="filter_all">Усі замовлення</string>
+    <string name="filter_pending">Очікують</string>
+    <string name="filter_confirmed">Підтверджені</string>
+    <string name="filter_preparing">Готується</string>
+    <string name="filter_ready">Готово до забору</string>
+    <string name="filter_completed">Завершено</string>
+    <string name="filter_cancelled">Скасовано</string>
 </resources>

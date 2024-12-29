@@ -27,11 +27,17 @@
     <string name="cancel_reservation">Cancel reservation</string>
     <string name="cancel_order">Cancel order</string>
     <string name="repeat_order">Repeat order</string>
+    <string name="confirm_order">Confirm order</string>
+    <string name="complete_order">Complete order</string>
+    <string name="prepare_order">Prepare order</string>
+    <string name="ready_order">Ready for pickup or delivery</string>
     <string name="party_size">Party size</string>
     <string name="your_number">What\'s your number?</string>
     <string name="date">Date</string>
     <string name="book">Book</string>
     <string name="go_to_checkout">Go to checkout € %s</string>
+    <string name="quantity">Quantity %s x</string>
+    <string name="price">Price %s €</string>
     <string name="search">Search</string>
 
     <!-- Profile Items -->
@@ -48,4 +54,15 @@
     <string name="error_request_timeout">The request timed out. Please try again.</string>
     <string name="error_http">An HTTP error occurred. Please try again later.</string>
     <string name="error_unknown">An unknown error occurred. Please try again.</string>
+
+    <!-- Order Filters-->
+
+    <string name="filter">Filter: %s</string>
+    <string name="filter_all">All Orders</string>
+    <string name="filter_pending">Pending</string>
+    <string name="filter_confirmed">Confirmed</string>
+    <string name="filter_preparing">Preparing</string>
+    <string name="filter_ready">Ready for Pickup</string>
+    <string name="filter_completed">Completed</string>
+    <string name="filter_cancelled">Cancelled</string>
 </resources>

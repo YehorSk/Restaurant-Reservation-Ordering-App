@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
@@ -28,12 +30,12 @@ import com.example.mobile.orders.presentation.order_details.components.OrderStat
 import com.example.mobile.ui.theme.MobileTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
+import com.example.mobile.core.presentation.components.ActionButton
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.data.db.model.OrderWithOrderItems
 import com.example.mobile.orders.presentation.components.OrderDetailsItemList
 import com.example.mobile.orders.presentation.OrderUiState
-import com.example.mobile.orders.presentation.order_details.components.ActionButtons
 
 @Composable
 fun OrderDetailsScreenRoot(
@@ -46,6 +48,7 @@ fun OrderDetailsScreenRoot(
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val ordersUiState by viewModel.ordersUiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val role by viewModel.userRole.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -66,7 +69,8 @@ fun OrderDetailsScreenRoot(
         onGoToOrders = onGoBack,
         id = id,
         onAction = viewModel::onAction,
-        isConnected = isConnected
+        isConnected = isConnected,
+        role = role.toString()
     )
 
 }
@@ -79,7 +83,8 @@ fun OrderDetailsScreen(
     onGoToOrders: () -> Unit,
     id: Int,
     isConnected: Boolean,
-    onAction: (OrderDetailsAction) -> Unit
+    onAction: (OrderDetailsAction) -> Unit,
+    role: String
 ){
     val data = ordersUiState.find { it.order.id == id.toString() }
     if(uiState.isLoading){
@@ -115,11 +120,85 @@ fun OrderDetailsScreen(
             }
             Spacer(modifier = Modifier.height(10.dp))
             if(isConnected){
-                ActionButtons(
-                    onRepeatOrder = { onAction(OrderDetailsAction.RepeatOrder((data.order.id))) },
-                    onCancelOrder = { onAction(OrderDetailsAction.CancelOrder((data.order.id))) },
-                    allowCancel = data.order.status == "Pending"
-                )
+                if(role == "user"){
+                    Column(
+                        modifier = modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .fillMaxWidth()
+                    ) {
+                        ActionButton(
+                            modifier = Modifier
+                                .padding(
+                                    start = 20.dp,
+                                    end = 20.dp,
+                                    top = 10.dp,
+                                    bottom = 5.dp
+                                ),
+                            onAction = { onAction(OrderDetailsAction.RepeatOrder((data.order.id))) },
+                            color = MaterialTheme.colorScheme.primary,
+                            text = R.string.repeat_order
+                        )
+                        if(data.order.status == "Pending"){
+                            ActionButton(
+                                modifier = Modifier
+                                    .padding(
+                                        start = 20.dp,
+                                        end = 20.dp,
+                                        top = 5.dp,
+                                        bottom = 20.dp
+                                    ),
+                                onAction = { onAction(OrderDetailsAction.UserCancelOrder((data.order.id))) },
+                                color = MaterialTheme.colorScheme.error,
+                                text = R.string.cancel_order
+                            )
+                        }
+                    }
+                }else{
+                    Column(
+                        modifier = modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .fillMaxWidth()
+                    ) {
+                        if(data.order.status == "Pending"){
+                            ActionButton(
+                                modifier = Modifier
+                                    .padding(
+                                        start = 20.dp,
+                                        end = 20.dp,
+                                        top = 5.dp,
+                                        bottom = 20.dp
+                                    ),
+                                onAction = { onAction(OrderDetailsAction.ConfirmOrder((data.order.id))) },
+                                color = MaterialTheme.colorScheme.primary,
+                                text = R.string.confirm_order
+                            )
+                        }
+                        ActionButton(
+                            modifier = Modifier
+                                .padding(
+                                    start = 20.dp,
+                                    end = 20.dp,
+                                    top = 5.dp,
+                                    bottom = 20.dp
+                                ),
+                            onAction = { onAction(OrderDetailsAction.CompleteOrder((data.order.id))) },
+                            color = MaterialTheme.colorScheme.primary,
+                            text = R.string.complete_order
+                        )
+                        ActionButton(
+                            modifier = Modifier
+                                .padding(
+                                    start = 20.dp,
+                                    end = 20.dp,
+                                    top = 5.dp,
+                                    bottom = 20.dp
+                                ),
+                            onAction = { onAction(OrderDetailsAction.WaiterCancelOrder((data.order.id))) },
+                            color = MaterialTheme.colorScheme.error,
+                            text = R.string.cancel_order
+                        )
+                    }
+                }
             }
         }
     }
