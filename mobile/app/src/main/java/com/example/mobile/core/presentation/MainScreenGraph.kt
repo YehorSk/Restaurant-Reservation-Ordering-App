@@ -17,6 +17,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.mobile.core.data.remote.UserRoles
 import com.example.mobile.core.navigation.AdminNavGraph
+import com.example.mobile.core.navigation.ChefNavGraph
 import com.example.mobile.core.navigation.ClientNavGraph
 import com.example.mobile.core.navigation.WaiterNavGraph
 
@@ -44,7 +45,11 @@ fun MainScreenGraph(
                 )
             }
             UserRoles.CHEF -> {
-
+                ChefNavGraph(
+                    navController = navController,
+                    modifier = Modifier.padding(contentPadding),
+                    onLoggedOut = onLoggedOut
+                )
             }
             UserRoles.USER -> {
                 ClientNavGraph(
@@ -89,8 +94,8 @@ fun BottomBar(
         }
         UserRoles.CHEF -> {
             screens = listOf(
-                BottomBarScreen.Home,
-                BottomBarScreen.Profile
+                BottomBarScreen.Orders,
+                BottomBarScreen.Profile,
             )
         }
         UserRoles.WAITER -> {

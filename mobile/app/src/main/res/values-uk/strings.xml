@@ -65,4 +65,15 @@
     <string name="filter_ready">Готово до забору</string>
     <string name="filter_completed">Завершено</string>
     <string name="filter_cancelled">Скасовано</string>
+
+    <!-- Auth Screen-->
+    <string name="hide_password">Приховати пароль</string>
+    <string name="show_password">Показати пароль</string>
+    <string name="user_email">Електронна пошта користувача</string>
+    <string name="user_password">Пароль користувача</string>
+    <string name="forgot_password">Забули пароль?</string>
+    <string name="sign_up">Зареєструватися</string>
+    <string name="log_in">Увійти</string>
+    <string name="password_confirm">Підтвердження пароля</string>
+    <string name="reset_password">Скинути пароль</string>
 </resources>

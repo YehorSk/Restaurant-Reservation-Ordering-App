@@ -39,7 +39,7 @@ import com.example.mobile.orders.presentation.components.OrderDetailsListItem
 fun OrderDetailsListItem(
     menuItem: OrderItemEntity,
     modifier: Modifier = Modifier,
-    onClick: (OrderItemEntity) -> Unit
+    onClick: (OrderItemEntity) -> Unit,
 ){
     val contentColor = if(isSystemInDarkTheme()){
         Color.White

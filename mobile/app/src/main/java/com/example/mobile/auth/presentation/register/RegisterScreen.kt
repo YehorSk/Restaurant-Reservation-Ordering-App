@@ -135,13 +135,13 @@ fun RegBody(
             enabled = itemUiState.isEntryValid,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Sign Up")
+            Text(text = stringResource(R.string.sign_up))
         }
         Button(
             onClick = onLogClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Login")
+            Text(text = stringResource(R.string.log_in))
         }
     }
 }
@@ -194,7 +194,7 @@ fun RegForm(
         OutlinedTextField(
             value = registerForm.email,
             onValueChange = { onValueChange(registerForm.copy(email = it)) },
-            label = { Text(text = "User Email") },
+            label = { Text(text = stringResource(R.string.user_email)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,
@@ -218,7 +218,7 @@ fun RegForm(
         OutlinedTextField(
             value = registerForm.password,
             onValueChange = { onValueChange(registerForm.copy(password = it)) },
-            label = { Text(text = "User Password") },
+            label = { Text(text = stringResource(R.string.user_password)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,
@@ -239,7 +239,7 @@ fun RegForm(
                     Icons.Filled.Visibility
                 else Icons.Filled.VisibilityOff
 
-                val description = if (passwordVisibility) "Hide password" else "Show password"
+                val description = if (passwordVisibility) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
                 IconButton(onClick = {passwordVisibility = !passwordVisibility}){
                     Icon(imageVector  = image, description)
@@ -249,7 +249,7 @@ fun RegForm(
         OutlinedTextField(
             value = registerForm.passwordConfirm,
             onValueChange = { onValueChange(registerForm.copy(passwordConfirm = it)) },
-            label = { Text(text = "Password Confirm") },
+            label = { Text(text = stringResource(R.string.password_confirm)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,
@@ -270,7 +270,7 @@ fun RegForm(
                     Icons.Filled.Visibility
                 else Icons.Filled.VisibilityOff
 
-                val description = if (passwordConfirmVisibility) "Hide password" else "Show password"
+                val description = if (passwordConfirmVisibility) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
                 IconButton(onClick = {passwordConfirmVisibility = !passwordConfirmVisibility}){
                     Icon(imageVector  = image, description)

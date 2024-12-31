@@ -65,4 +65,15 @@
     <string name="filter_ready">Pripravené na vyzdvihnutie</string>
     <string name="filter_completed">Dokončené</string>
     <string name="filter_cancelled">Zrušené</string>
+
+    <!-- Auth Screen-->
+    <string name="hide_password">Skryť heslo</string>
+    <string name="show_password">Zobraziť heslo</string>
+    <string name="user_email">E-mail používateľa</string>
+    <string name="user_password">Heslo používateľa</string>
+    <string name="forgot_password">Zabudli ste heslo?</string>
+    <string name="sign_up">Zaregistrovať sa</string>
+    <string name="log_in">Prihlásiť sa</string>
+    <string name="password_confirm">Potvrdenie hesla</string>
+    <string name="reset_password">Obnoviť heslo</string>
 </resources>

@@ -58,6 +58,7 @@ fun LoginScreen(
     onSuccessClient: () -> Unit,
     onSuccessWaiter: () -> Unit,
     onSuccessAdmin: () -> Unit,
+    onSuccessChef: () -> Unit,
     onRegClick: () -> Unit,
     onForgotPwdClick: () -> Unit,
 ) {
@@ -121,7 +122,7 @@ fun LoginScreen(
                     }
                     "chef" -> {
                         Timber.d("Navigating to home screen from Login Chef")
-
+                        onSuccessChef()
                     }
                     else -> {
 
@@ -176,19 +177,19 @@ fun LogBody(
             enabled = itemUiState.isEntryValid && isConnected,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "LogIn")
+            Text(text = stringResource(R.string.log_in))
         }
         Button(
             onClick = onRegClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Sign Up")
+            Text(text = stringResource(R.string.sign_up))
         }
         TextButton(
             onClick = onForgotPwdClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Forgot Password?")
+            Text(text = stringResource(R.string.forgot_password))
         }
     }
 }
@@ -208,7 +209,7 @@ fun LogForm(
         OutlinedTextField(
             value = loginForm.email,
             onValueChange = { onValueChange(loginForm.copy(email = it)) },
-            label = { Text(text = "User Email") },
+            label = { Text(text = stringResource(R.string.user_email)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
@@ -216,7 +217,7 @@ fun LogForm(
         OutlinedTextField(
             value = loginForm.password,
             onValueChange = { onValueChange(loginForm.copy(password = it)) },
-            label = { Text(text = "User Password") },
+            label = { Text(text = stringResource(R.string.user_password)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,
@@ -227,7 +228,7 @@ fun LogForm(
                     Icons.Filled.Visibility
                 else Icons.Filled.VisibilityOff
 
-                val description = if (passwordVisibility) "Hide password" else "Show password"
+                val description = if (passwordVisibility) stringResource(R.string.hide_password) else stringResource(R.string.show_password)
 
                 IconButton(onClick = {passwordVisibility = !passwordVisibility}){
                     Icon(imageVector  = image, description)

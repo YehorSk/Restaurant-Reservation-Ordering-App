@@ -66,7 +66,7 @@ fun WaiterNavGraph(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
-                        ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
+                        ProfileDestination.Favorites -> navController.navigate(WaiterScreen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
                         ProfileDestination.Settings -> {}
                     }
@@ -155,7 +155,8 @@ fun WaiterNavGraph(
                         }
                     }
                 },
-                id = args.id
+                id = args.id,
+                onOpenItemDetails = {}
             )
         }
     }

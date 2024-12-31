@@ -130,7 +130,8 @@ fun ClientNavGraph(
                         }
                     }
                 },
-                id = args.id
+                id = args.id,
+                onOpenItemDetails = {}
             )
         }
         composable<ClientScreen.ReservationDetails>{

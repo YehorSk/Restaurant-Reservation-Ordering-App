@@ -65,4 +65,15 @@
     <string name="filter_ready">Ready for Pickup</string>
     <string name="filter_completed">Completed</string>
     <string name="filter_cancelled">Cancelled</string>
+
+    <!--Auth Screen-->
+    <string name="hide_password">Hide password</string>
+    <string name="show_password">Show password</string>
+    <string name="user_email">User Email</string>
+    <string name="user_password">User Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
+    <string name="password_confirm">Password Confirm</string>
+    <string name="reset_password">Reset Password</string>
 </resources>

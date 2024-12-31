@@ -64,6 +64,14 @@ fun NavGraphBuilder.authNavGraph(
                         }
                     }
                 },
+                onSuccessChef = {
+                    Timber.d("Navigating to chef screen")
+                    navController.navigate(Graph.CHEF) {
+                        popUpTo(Graph.ROOT) {
+                            inclusive = true
+                        }
+                    }
+                },
             )
         }
 

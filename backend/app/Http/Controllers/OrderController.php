@@ -29,7 +29,7 @@ class OrderController extends Controller
         if($user instanceof User){
             if ($user->role === 'user') {
                 $orders = $user->clientOrders()->with('orderItems')->get();
-            } elseif ($user->role === 'waiter') {
+            } elseif (in_array($user->role, ['waiter', 'chef', 'admin'])) {
 //                $orders = $user->waiterOrders()->with('orderItems')->get();
                 $orders = Order::with('orderItems')->get();
             } else {
@@ -45,7 +45,7 @@ class OrderController extends Controller
         if($user instanceof User){
             if ($user->role === 'user') {
                 $order = $user->clientOrders()->with('orderItems')->find($id);
-            } elseif ($user->role === 'waiter') {
+            } elseif (in_array($user->role, ['waiter', 'chef', 'admin'])) {
 //                $order = $user->waiterOrders()->with('orderItems')->find($id);
                 $order = Order::with('orderItems')->find($id);
             } else {
@@ -189,7 +189,7 @@ class OrderController extends Controller
 
     public function markOrderAsCancelled($id){
         $user = auth('sanctum')->user();
-        if($user instanceof User && $user->role === "waiter"){
+        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
             $order = Order::with('orderItems')->find($id);
             if ($order) {
                 $order->update(['status' => 'Cancelled']);
@@ -203,7 +203,7 @@ class OrderController extends Controller
 
     public function markOrderAsConfirmed($id){
         $user = auth('sanctum')->user();
-        if($user instanceof User && $user->role === "waiter"){
+        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
             $order = Order::with('orderItems')->find($id);
             if ($order) {
                 $order->update(['status' => 'Confirmed']);
@@ -217,7 +217,7 @@ class OrderController extends Controller
 
     public function markOrderAsCompleted($id){
         $user = auth('sanctum')->user();
-        if($user instanceof User && $user->role === "waiter"){
+        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
             $order = Order::with('orderItems')->find($id);
             if ($order) {
                 $order->update(['status' => 'Completed']);
@@ -231,7 +231,7 @@ class OrderController extends Controller
 
     public function markOrderAsPreparing($id){
         $user = auth('sanctum')->user();
-        if($user instanceof User && $user->role === "waiter"){
+        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
             $order = Order::with('orderItems')->find($id);
             if ($order) {
                 $order->update(['status' => 'Preparing']);
@@ -245,7 +245,7 @@ class OrderController extends Controller
 
     public function markOrderAsReadyForPickup($id){
         $user = auth('sanctum')->user();
-        if($user instanceof User && $user->role === "waiter"){
+        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
             $order = Order::with('orderItems')->find($id);
             if ($order) {
                 $order->update(['status' => 'Ready for Pickup']);

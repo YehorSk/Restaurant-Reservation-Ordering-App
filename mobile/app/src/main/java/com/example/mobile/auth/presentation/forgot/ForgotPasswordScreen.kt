@@ -98,7 +98,7 @@ fun ForgotBody(
             enabled = itemUiState.isEntryValid,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = "Reset Password")
+            Text(text = stringResource(R.string.reset_password))
         }
     }
 }
@@ -116,7 +116,7 @@ fun ForgotForm(
         OutlinedTextField(
             value = forgotForm.email,
             onValueChange = { onValueChange(forgotForm.copy(email = it)) },
-            label = { Text(text = "User Email") },
+            label = { Text(text = stringResource(R.string.user_email)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
