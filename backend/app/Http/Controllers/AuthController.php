@@ -77,4 +77,19 @@ class AuthController extends Controller
         );
         return response()->json("Password Updated");
     }
+
+    public function updateProfile(Request $request) {
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $name = $request->input('name');
+            $address = $request->input('address');
+            $phone = $request->input('phone');
+            $user->name = $name;
+            $user->address = $address;
+            $user->phone = $phone;
+            $user->save();
+            return $this->success(data: [$user], message: "Profile updated successfully");
+        }
+        return $this->error('', 'No user', 401);
+    }
 }

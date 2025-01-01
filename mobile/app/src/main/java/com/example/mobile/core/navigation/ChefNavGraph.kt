@@ -1,7 +1,5 @@
 package com.example.mobile.core.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,13 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
+import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
-import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
-import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.example.mobile.orders.presentation.order_details.OrderItemDetailsScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
@@ -35,27 +31,23 @@ fun ChefNavGraph(
         route = Graph.CHEF,
         startDestination = ChefScreen.Orders.route
     ){
-        composable(ChefScreen.Profile.route) {
-            ProfileScreen(
+        composable(ChefScreen.Settings.route) {
+            SettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> navController.navigate(ChefScreen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Settings -> {}
+                        ProfileDestination.Profile -> navController.navigate(ChefScreen.Profile.route)
                     }
                 }
             )
         }
-        composable(ChefScreen.Settings.route) {
+        composable(ChefScreen.Profile.route) {
             ProfileScreen(
-                modifier = modifier.fillMaxSize(),
-                onNavigate = { destination ->
-                    when(destination){
-                        ProfileDestination.Favorites -> navController.navigate(ChefScreen.Favorites.route)
-                        ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Settings -> {}
-                    }
+                modifier = modifier,
+                onGoBack = {
+                    navController.popBackStack()
                 }
             )
         }

@@ -130,7 +130,7 @@ fun UserCreateOrderScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             if (uiState.orderForm.orderType == 1 && isConnected){
-                OrderMap()
+//                OrderMap()
                 OrderAddress(
                     address = uiState.orderForm.address,
                     instructions = uiState.orderForm.instructions,

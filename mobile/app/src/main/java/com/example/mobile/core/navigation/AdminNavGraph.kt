@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
+import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.menu_admin.MenuAdminScreen
 import com.example.mobile.menu.presentation.menu_admin.viewmodel.MenuAdminScreenViewModel
 
@@ -30,20 +31,28 @@ fun AdminNavGraph(
             MenuAdminScreen(
                 modifier = modifier,
                 onSearchClicked = {
-                    navController.navigate(ClientScreen.Search.route)
+                    navController.navigate(AdminScreen.Search.route)
                 },
                 viewModel = menuScreenViewModel
             )
         }
         composable(AdminScreen.Settings.route) {
-            ProfileScreen(
+            SettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Settings -> {}
+                        ProfileDestination.Profile -> navController.navigate(ClientScreen.Profile.route)
                     }
+                }
+            )
+        }
+        composable(AdminScreen.Profile.route) {
+            ProfileScreen(
+                modifier = modifier,
+                onGoBack = {
+                    navController.popBackStack()
                 }
             )
         }
@@ -52,5 +61,7 @@ fun AdminNavGraph(
 
 sealed class AdminScreen(val route: String){
     object Home: AdminScreen(route = "HOME")
+    data object Profile: AdminScreen(route = "PROFILE")
     object Settings: AdminScreen(route = "SETTINGS")
+    data object Search: AdminScreen(route = "SEARCH")
 }

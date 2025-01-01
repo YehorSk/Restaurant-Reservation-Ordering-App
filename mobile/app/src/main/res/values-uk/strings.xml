@@ -71,9 +71,17 @@
     <string name="show_password">Показати пароль</string>
     <string name="user_email">Електронна пошта користувача</string>
     <string name="user_password">Пароль користувача</string>
+    <string name="user_address">Адреса користувача</string>
+    <string name="user_phone">Телефон користувача</string>
     <string name="forgot_password">Забули пароль?</string>
     <string name="sign_up">Зареєструватися</string>
     <string name="log_in">Увійти</string>
     <string name="password_confirm">Підтвердження пароля</string>
     <string name="reset_password">Скинути пароль</string>
+    <string name="user_name">Ім\'я користувача</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Налаштування</string>
+    <string name="profile">Профіль</string>
+    <string name="update_profile">Оновити профіль</string>
 </resources>

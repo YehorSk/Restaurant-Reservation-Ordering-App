@@ -71,9 +71,17 @@
     <string name="show_password">Zobraziť heslo</string>
     <string name="user_email">E-mail používateľa</string>
     <string name="user_password">Heslo používateľa</string>
+    <string name="user_address">Adresa používateľa</string>
+    <string name="user_phone">Telefón používateľa</string>
     <string name="forgot_password">Zabudli ste heslo?</string>
     <string name="sign_up">Zaregistrovať sa</string>
     <string name="log_in">Prihlásiť sa</string>
     <string name="password_confirm">Potvrdenie hesla</string>
     <string name="reset_password">Obnoviť heslo</string>
+    <string name="user_name">Meno používateľa</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Nastavenia</string>
+    <string name="profile">Profil</string>
+    <string name="update_profile">Aktualizovať profil</string>
 </resources>

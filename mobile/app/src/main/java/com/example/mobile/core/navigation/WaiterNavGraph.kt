@@ -14,6 +14,7 @@ import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
+import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
@@ -49,27 +50,23 @@ fun WaiterNavGraph(
                 isUser = false
             )
         }
-        composable(WaiterScreen.Profile.route) {
-            ProfileScreen(
+        composable(WaiterScreen.Settings.route) {
+            SettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> navController.navigate(WaiterScreen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Settings -> {}
+                        ProfileDestination.Profile -> navController.navigate(WaiterScreen.Profile.route)
                     }
                 }
             )
         }
-        composable(WaiterScreen.Settings.route) {
+        composable(WaiterScreen.Profile.route) {
             ProfileScreen(
-                modifier = modifier.fillMaxSize(),
-                onNavigate = { destination ->
-                    when(destination){
-                        ProfileDestination.Favorites -> navController.navigate(WaiterScreen.Favorites.route)
-                        ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Settings -> {}
-                    }
+                modifier = modifier,
+                onGoBack = {
+                    navController.popBackStack()
                 }
             )
         }

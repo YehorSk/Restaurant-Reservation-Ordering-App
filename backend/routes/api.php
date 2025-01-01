@@ -32,6 +32,8 @@ Route::get('/user', function (Request $request) {
                 'created_at' => $user->created_at,
                 'id' => $user->id,
                 'role' => $user->role,
+                'address' => $user->address,
+                'phone' => $user->phone,
             ],
             'token' => $token
         ]
@@ -44,6 +46,7 @@ Route::controller(AuthController::class)->group(function (){
     Route::post('/register', 'register');
     Route::get('/reset-password/{token}/{email}','reset_password')->name('password.reset');
     Route::post('/update-password', 'update_password');
+    Route::post('/update-profile', 'updateProfile');
 });
 
 Route::controller(MenuItemController::class)->group(function (){

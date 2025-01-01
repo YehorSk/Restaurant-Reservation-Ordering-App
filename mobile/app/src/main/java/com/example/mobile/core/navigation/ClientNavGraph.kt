@@ -13,9 +13,10 @@ import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.core.presentation.settings.ProfileDestination
+import com.example.mobile.core.presentation.settings.ProfileScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
-import com.example.mobile.core.presentation.settings.ProfileScreen
+import com.example.mobile.core.presentation.settings.SettingsScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
@@ -56,15 +57,23 @@ fun ClientNavGraph(
                 isUser = true
             )
         }
-        composable(ClientScreen.Profile.route) {
-            ProfileScreen(
+        composable(ClientScreen.Settings.route) {
+            SettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Settings -> {}
+                        ProfileDestination.Profile -> navController.navigate(ClientScreen.Profile.route)
                     }
+                }
+            )
+        }
+        composable(ClientScreen.Profile.route) {
+            ProfileScreen(
+                modifier = modifier,
+                onGoBack = {
+                    navController.popBackStack()
                 }
             )
         }
@@ -208,6 +217,6 @@ sealed class ClientScreen(val route: String){
     @Serializable
     data class ReservationDetails(val id: Int): ClientScreen(route = "RESERVATION_DETAILS")
     data object Profile: ClientScreen(route = "PROFILE")
-    data object Favorites: ClientScreen(route = "FAVORITES")
+    data object Favorites: AdminScreen(route = "FAVORITES")
     data object Search: ClientScreen(route = "SEARCH")
 }

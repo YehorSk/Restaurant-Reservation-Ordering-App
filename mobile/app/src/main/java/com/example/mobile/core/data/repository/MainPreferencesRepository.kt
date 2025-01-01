@@ -7,7 +7,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.mobile.auth.data.remote.model.HttpResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class MainPreferencesRepository @Inject constructor(
@@ -18,6 +17,8 @@ class MainPreferencesRepository @Inject constructor(
         val USER_EMAIL = stringPreferencesKey("USER_EMAIL")
         val JWT_TOKEN = stringPreferencesKey("JWT_TOKEN")
         val USER_ROLE = stringPreferencesKey("USER_ROLE")
+        val USER_PHONE = stringPreferencesKey("USER_PHONE")
+        val USER_ADDRESS = stringPreferencesKey("USER_ADDRESS")
     }
 
     val userNameFlow: Flow<String?> = dataStore.data
@@ -28,6 +29,12 @@ class MainPreferencesRepository @Inject constructor(
 
     val userRoleFlow: Flow<String?> = dataStore.data
         .map { preferences -> preferences[USER_ROLE] }
+
+    val userPhoneFlow: Flow<String?> = dataStore.data
+        .map { preferences -> preferences[USER_PHONE] }
+
+    val userAddressFlow: Flow<String?> = dataStore.data
+        .map { preferences -> preferences[USER_ADDRESS] }
 
     val jwtTokenFlow: Flow<String?> = dataStore.data
         .map { preferences -> preferences[JWT_TOKEN] }
@@ -50,6 +57,18 @@ class MainPreferencesRepository @Inject constructor(
         }
     }
 
+    suspend fun saveUserPhone(userPhone: String) {
+        dataStore.edit { preferences ->
+            preferences[USER_PHONE] = userPhone
+        }
+    }
+
+    suspend fun saveUserAddress(userAddress: String) {
+        dataStore.edit { preferences ->
+            preferences[USER_ADDRESS] = userAddress
+        }
+    }
+
     suspend fun saveJwtToken(jwtToken: String) {
         dataStore.edit { preferences ->
             preferences[JWT_TOKEN] = jwtToken
@@ -60,6 +79,8 @@ class MainPreferencesRepository @Inject constructor(
         saveUserName(httpResponse.data?.user?.name ?: "")
         saveUserEmail(httpResponse.data?.user?.email ?: "")
         saveUserRole(httpResponse.data?.user?.role ?: "")
+        saveUserPhone(httpResponse.data?.user?.phone ?: "")
+        saveUserAddress(httpResponse.data?.user?.address ?: "")
         saveJwtToken(httpResponse.data?.token ?: "")
     }
 
@@ -68,6 +89,8 @@ class MainPreferencesRepository @Inject constructor(
             preferences.remove(USER_NAME)
             preferences.remove(USER_EMAIL)
             preferences.remove(USER_ROLE)
+            preferences.remove(USER_PHONE)
+            preferences.remove(USER_ADDRESS)
             preferences.remove(JWT_TOKEN)
         }
     }

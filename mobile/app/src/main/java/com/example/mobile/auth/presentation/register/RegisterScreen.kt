@@ -172,7 +172,7 @@ fun RegForm(
         OutlinedTextField(
             value = registerForm.name,
             onValueChange = { onValueChange(registerForm.copy(name = it)) },
-            label = { Text(text = "User Name") },
+            label = { Text(text = stringResource(R.string.user_name)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true,

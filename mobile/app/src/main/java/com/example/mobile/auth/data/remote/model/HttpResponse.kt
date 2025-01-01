@@ -13,13 +13,13 @@ data class HttpResponse(
 
 @Serializable
 data class Data(
-    val user: User? = null,
+    val user: UserDto? = null,
     val token: String? = null,
     val message: String? = ""
 )
 
 @Serializable
-data class User(
+data class UserDto(
     val name: String? = "",
     val email: String? = "",
     @SerialName("email_verified_at")
@@ -30,7 +30,9 @@ data class User(
     val createdAt: String? = "",
     val id: Int? = 0,
     val message: String? = "",
-    val role: String? = ""
+    val role: String? = "",
+    val address: String? = "",
+    val phone: String? = ""
 )
 
 @Serializable

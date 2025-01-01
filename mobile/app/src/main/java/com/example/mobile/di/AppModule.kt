@@ -17,6 +17,9 @@ import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.domain.repository.CartRepository
 import com.example.mobile.cart.domain.service.CartService
 import com.example.mobile.core.data.db.MainRoomDatabase
+import com.example.mobile.core.data.repository.ProfileRepositoryImpl
+import com.example.mobile.core.domain.remote.ProfileService
+import com.example.mobile.core.domain.repository.ProfileRepository
 import com.example.mobile.menu.data.dao.MenuDao
 import com.example.mobile.menu.data.remote.MenuRepositoryImpl
 import com.example.mobile.menu.domain.repository.MenuRepository
@@ -133,6 +136,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideProfileApiService(retrofit: Retrofit): ProfileService = retrofit.create(ProfileService::class.java)
+
+    @Provides
+    @Singleton
     fun provideReservationApiService(retrofit: Retrofit): ReservationService = retrofit.create(ReservationService::class.java)
 
     @Provides
@@ -154,6 +161,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMenuRepositoryImpl(menuService: MenuService, menuDao: MenuDao) : MenuRepository = MenuRepositoryImpl(menuService, menuDao)
+
+    @Provides
+    @Singleton
+    fun provideProfileRepositoryImpl(profileService: ProfileService, mainPreferencesRepository: MainPreferencesRepository) : ProfileRepository = ProfileRepositoryImpl(profileService, mainPreferencesRepository)
 
     @Provides
     @Singleton
