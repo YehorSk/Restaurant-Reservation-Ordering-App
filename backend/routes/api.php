@@ -8,6 +8,7 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TableController;
+use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\UserController;
 use App\Models\Menu;
 use Illuminate\Http\Request;
@@ -49,14 +50,20 @@ Route::controller(AuthController::class)->group(function (){
     Route::post('/update-profile', 'updateProfile');
 });
 
-Route::controller(MenuItemController::class)->group(function (){
-    Route::get('menuItems/{id}', 'index');
+//Route::controller(MenuItemController::class)->group(function (){
+//    Route::get('menuItems/{id}', 'index');
+//})->middleware('auth:sanctum');
+
+Route::group(['prefix' => 'menuItems/{id}'], function () {
+    Route::apiResource('items', MenuItemController::class);
 })->middleware('auth:sanctum');
 
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::get('/logout',[AuthController::class,'logout']);
     Route::apiResource('menu', MenuController::class);
+    Route::apiResource('timeSlots', TimeSlotController::class);
+    Route::apiResource('tables', TableController::class);
 });
 
 Route::post('/forgot-password', function (Request $request) {

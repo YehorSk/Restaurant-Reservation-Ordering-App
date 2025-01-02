@@ -8,70 +8,56 @@ use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 
-class TableController extends Controller
+class TimeSlotController extends Controller
 {
 
     use HttpResponses;
-
-    public function getTables(){
-        $user = auth('sanctum')->user();
-        if($user){
-            $items = Table::get();
-            return $this->success(data: $items, message: "");
-        }
-        return $this->error('', 'No user', 401);
-    }
 
     public function index()
     {
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
-            $items = Table::all();
+            $items = TimeSlot::all();
             return $this->success(data: $items, message: "");
         }
         return $this->error('', 'No user', 401);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
             $data = $request->validate([
-                "number" => "required",
-                "capacity" => "required",
+                "start_time" => "required",
+                "end_time" => "required",
             ]);
-            $item = new Table($data);
+            $item = new TimeSlot($data);
             $item->save();
-            return $this->success(data: $item, message: "Item was added");
+            return $this->success(data: $item, message: "Item was created");
         }
         return $this->error('', 'No user', 401);
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
-            $item = Table::find($id);
+            $item = TimeSlot::find($id);
             $data = $request->validate([
-                "number" => "required",
-                "capacity" => "required",
+                "start_time" => "required",
+                "end_time" => "required",
             ]);
             $item->update($data);
-            return $this->success(data: $item, message: "Item was updated");
+            return $this->success(data: $item, message: "Item was updated", textStatus: "updated");
         }
         return $this->error('', 'No user', 401);
     }
 
-    public function destroy($id)
-    {
+    public function destroy($id){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
-            $item = Table::find($id);
+            $item = TimeSlot::find($id);
             $item->delete();
-            return $this->success(data: [], message: "Item was deleted");
+            return $this->success(data: [], message: "Item was deleted", textStatus: "deleted");
         }
         return $this->error('', 'No user', 401);
     }
-
-
 }

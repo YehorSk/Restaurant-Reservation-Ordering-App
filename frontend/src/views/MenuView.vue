@@ -85,14 +85,13 @@
       <v-text-field
           v-model="edit_menu.name"
           hide-details="auto"
-          label="Main input"
+          label="Name"
       ></v-text-field>
       <v-text-field
           v-model="edit_menu.description"
           hide-details="auto"
-          label="Main input"
+          label="Description"
       ></v-text-field>
-<!--      <v-checkbox v-model="current_menu.availability" label="Checkbox"></v-checkbox>-->
       <template v-slot:actions>
         <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
         <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="dialog = false, updateMenu(edit_menu)"></v-btn>
@@ -103,6 +102,7 @@
 
 <script>
 import {UseMenuStore} from "@/stores/MenuStore.js";
+import {useToast} from "vue-toastification";
 
 export default{
   data(){
@@ -114,8 +114,24 @@ export default{
       edit_menu: []
     }
   },
+  watch: {
+    // Watch for changes in the success message
+    "menuStore.success": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.success(newValue);
+          this.menuStore.success = "";
+        }
+      },
+      immediate: true,
+    },
+  },
   beforeMount(){
     this.menuStore.fetchMenus()
+  },
+  created() {
+    this.menuStore.success = "";
   },
   methods:{
     setMenu(menu){

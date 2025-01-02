@@ -21,7 +21,7 @@ class MenuController extends Controller
                 });
                 return $menu;
             });
-            return $this->success(data: $menus, message: "");
+            return $this->success(data: $menus, message: "Item was created");
         }
         return $this->error('', 'No user', 401);
     }
