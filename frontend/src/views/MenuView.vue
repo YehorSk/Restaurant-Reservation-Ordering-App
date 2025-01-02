@@ -1,33 +1,26 @@
-<script>
-import {UseMenuStore} from "@/stores/MenuStore.js";
-
-export default{
-  data(){
-    return{
-      menuStore: UseMenuStore(),
-      dialog: false,
-      current_menu: []
-    }
-  },
-  beforeMount(){
-    this.menuStore.fetchMenus()
-  },
-  methods:{
-    setMenu(menu){
-      this.current_menu = menu;
-    }
-  }
-}
-</script>
-
 <template>
   <div class="p-4 sm:ml-64">
-    <div class="relative overflow-x-auto">
+        <v-sheet class="max-w-full">
+          <div class="flex flex-wrap">
+            <div class="w-full md:w-1/2 p-2 max-w-md">
+              <v-form fast-fail @submit.prevent>
+                <v-text-field
+                    v-model="name"
+                    label="Name"
+                    color="orange"
+                ></v-text-field>
+                <v-text-field
+                    v-model="description"
+                    label="Description"
+                    color="orange"
+                ></v-text-field>
+                <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>Save</v-btn>
+              </v-form>
+            </div>
+          </div>
+        </v-sheet>
+    <br>
       <h2 class="text-4xl font-extrabold dark:text-white">All Menu's</h2>
-      <button type="submit" class="my-6 text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-        <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-        Add new Menu
-      </button>
       <div v-if="menuStore.isLoading" class="text-center text-gray-500 py-6">
         <RingLoader/>
       </div>
@@ -47,6 +40,9 @@ export default{
             Edit
           </th>
           <th scope="col" class="px-6 py-3">
+            Delete
+          </th>
+          <th scope="col" class="px-6 py-3">
             Items
           </th>
         </tr>
@@ -63,9 +59,17 @@ export default{
             {{ menu.description }}
           </td>
           <td>
-            <button @click="dialog = true, setMenu(menu)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-              Edit
-            </button>
+            <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setMenu(menu)">
+              Update
+            </v-btn>
+          </td>
+          <td>
+            <form @submit.prevent class="inline-block">
+              <v-btn @click="menuStore.destroyMenu(menu.id)"
+                     color="red-lighten-2"
+                     text="Delete"
+              ></v-btn>
+            </form>
           </td>
           <td>
             <RouterLink :to="'/menu/'+menu.id" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
@@ -75,24 +79,62 @@ export default{
         </tr>
         </tbody>
       </table>
-    </div>
   </div>
   <v-dialog v-model="dialog" width="auto" persistent>
-    <v-card min-width="600" prepend-icon="mdi-update" title="Update Lecture">
-      <h1>Hello</h1>
+    <v-card min-width="600" prepend-icon="mdi-update" title="Update Menu">
       <v-text-field
-          v-model="current_menu.name"
+          v-model="edit_menu.name"
           hide-details="auto"
           label="Main input"
       ></v-text-field>
-      <v-checkbox v-model="current_menu.availability" label="Checkbox"></v-checkbox>
+      <v-text-field
+          v-model="edit_menu.description"
+          hide-details="auto"
+          label="Main input"
+      ></v-text-field>
+<!--      <v-checkbox v-model="current_menu.availability" label="Checkbox"></v-checkbox>-->
       <template v-slot:actions>
         <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Add" @click="dialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="dialog = false, updateMenu(edit_menu)"></v-btn>
       </template>
     </v-card>
   </v-dialog>
 </template>
+
+<script>
+import {UseMenuStore} from "@/stores/MenuStore.js";
+
+export default{
+  data(){
+    return{
+      menuStore: UseMenuStore(),
+      name: "",
+      description: "",
+      dialog: false,
+      edit_menu: []
+    }
+  },
+  beforeMount(){
+    this.menuStore.fetchMenus()
+  },
+  methods:{
+    setMenu(menu){
+      this.edit_menu = menu;
+    },
+    submitForm(){
+      this.menuStore.insertMenu(this.name, this.description);
+      this.name = "";
+      this.description = "";
+    },
+    updateMenu(menu){
+      this.menuStore.updateMenu(menu);
+    },
+    destroyMenu(id){
+      this.menuStore.destroyMenu(id);
+    }
+  }
+}
+</script>
 
 <style scoped>
 

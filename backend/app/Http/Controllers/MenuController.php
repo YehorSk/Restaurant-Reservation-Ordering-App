@@ -23,6 +23,7 @@ class MenuController extends Controller
             });
             return $this->success(data: $menus, message: "");
         }
+        return $this->error('', 'No user', 401);
     }
 
     public function store(Request $request){
@@ -33,6 +34,7 @@ class MenuController extends Controller
                 'description' => 'required',
                 'availability' => 'nullable'
             ]);
+            $data['availability'] = $data['availability'] ?? 1;
             $menu = new Menu($data);
             $menu->save();
             if(!$menu->exists){
@@ -40,6 +42,33 @@ class MenuController extends Controller
             }
             return $this->success(data: [$menu], message: "Item added to menu", textStatus: "added");
         }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function update(Request $request, $id){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $menu = Menu::find($id);
+            $data = $request->validate([
+                'name' => 'required|unique:menus',
+                'description' => 'required',
+                'availability' => 'nullable'
+            ]);
+            $data['availability'] = $data['availability'] ?? 1;
+            $menu->update($data);
+            return $this->success(data: [$menu], message: "Item was updated", textStatus: "updated");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function destroy($id){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $menu = Menu::find($id);
+            $menu->delete();
+            return $this->success(data: [$menu], message: "Item was deleted", textStatus: "deleted");
+        }
+        return $this->error('', 'No user', 401);
     }
 
 }
