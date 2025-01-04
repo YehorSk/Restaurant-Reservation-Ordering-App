@@ -50,7 +50,7 @@ fun SearchBar(
             value = text,
             onValueChange = onValueChange,
             enabled = enabled,
-            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search Icon") },
+            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search_icon)) },
             placeholder = {
                 Text(
                     text = stringResource(R.string.search),

@@ -30,7 +30,9 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.toSize
+import com.example.mobile.R
 import com.example.mobile.orders.data.remote.dto.TableDto
 
 @Composable
@@ -70,12 +72,12 @@ fun SelectTable(
                     .onGloballyPositioned { coordinates ->
                         textFieldSize = coordinates.size.toSize()
                     }
-                    .clickable{
+                    .clickable {
                         expanded = !expanded
                     },
                 label = {
                     Text(
-                        text = "Number",
+                        text = stringResource(R.string.table_number),
                         color = contentColor
                     )
                 },

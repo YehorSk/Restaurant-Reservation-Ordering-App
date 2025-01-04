@@ -9,10 +9,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mobile.R
 import com.example.mobile.core.utils.formatDateTime
 import com.example.mobile.core.utils.formatTime
 import com.example.mobile.ui.theme.MobileTheme
@@ -34,7 +36,7 @@ fun ReservationDetails(
                 start = 20.dp,
                 top = 15.dp
             ),
-            text = "Table: $table",
+            text = stringResource(R.string.table, table),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -43,7 +45,7 @@ fun ReservationDetails(
                 start = 20.dp,
                 top = 15.dp
             ),
-            text = "Date: ${formatDateTime(date)}",
+            text = stringResource(R.string.date_reservation, formatDateTime(date)),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -53,7 +55,7 @@ fun ReservationDetails(
                 top = 15.dp,
                 bottom = 20.dp
             ),
-            text = "Time: ${formatTime(time)}",
+            text = stringResource(R.string.time_reservation, formatTime(time)),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )

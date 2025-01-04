@@ -44,6 +44,7 @@ import com.example.mobile.orders.presentation.create_order.CreateOrderAction
 import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import com.example.mobile.core.utils.toString
 
 @Composable
@@ -166,7 +167,7 @@ fun UserCreateOrderScreen(
                     }
                 ) {
                     Text(
-                        text = "Order ${uiState.orderForm.orderText}",
+                        text = stringResource(R.string.order_button, uiState.orderForm.orderText),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                     )

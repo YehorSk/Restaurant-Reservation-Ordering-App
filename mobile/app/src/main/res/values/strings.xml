@@ -39,6 +39,15 @@
     <string name="quantity">Quantity %s x</string>
     <string name="price">Price %s €</string>
     <string name="search">Search</string>
+    <string name="submit_order">Submit Order</string>
+    <string name="table_number">Table Number</string>
+    <string name="total">Total</string>
+    <string name="table">Table: %1$s</string>
+    <string name="date_reservation">Date: %1$s</string>
+    <string name="time_reservation">Time: %1$s</string>
+    <string name="reservation_code">Reservation #%1$s</string>
+    <string name="search_icon">Search Icon</string>
+    <string name="order_button">Order %1$s</string>
 
     <!-- Profile Items -->
 

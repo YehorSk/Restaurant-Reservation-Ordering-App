@@ -40,6 +40,15 @@
     <string name="search">Hľadať</string>
     <string name="quantity">Množstvo %s x</string>
     <string name="price">Cena %s €</string>
+    <string name="submit_order">Odoslať objednávku</string>
+    <string name="table_number">Číslo stola</string>
+    <string name="total">Celkom</string>
+    <string name="table">Stôl: %1$s</string>
+    <string name="date_reservation">Dátum: %1$s</string>
+    <string name="time_reservation">Čas: %1$s</string>
+    <string name="reservation_code">Rezervácia #%1$s</string>
+    <string name="search_icon">Ikona vyhľadávania</string>
+    <string name="order_button">Objednať %1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>

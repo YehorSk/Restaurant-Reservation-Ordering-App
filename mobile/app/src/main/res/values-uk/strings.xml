@@ -40,6 +40,15 @@
     <string name="search">Пошук</string>
     <string name="quantity">Кількість %s x</string>
     <string name="price">Ціна %s €</string>
+    <string name="submit_order">Відправити замовлення</string>
+    <string name="table_number">Номер столу</string>
+    <string name="total">Загальна сума</string>
+    <string name="table">Столик: %1$s</string>
+    <string name="date_reservation">Дата: %1$s</string>
+    <string name="time_reservation">Час: %1$s</string>
+    <string name="reservation_code">Код бронювання #%1$s</string>
+    <string name="search_icon">Іконка пошуку</string>
+    <string name="order_button">Замовити %1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>

@@ -41,6 +41,7 @@ import com.example.mobile.orders.presentation.components.SelectTable
 import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun WaiterCreateOrderScreen(
@@ -140,7 +141,7 @@ fun WaiterCreateOrderScreen(
                     }
                 ) {
                     Text(
-                        text = "Place Order",
+                        text = stringResource(R.string.submit_order),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                     )
