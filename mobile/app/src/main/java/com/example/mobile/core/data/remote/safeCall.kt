@@ -13,27 +13,37 @@ import kotlin.coroutines.coroutineContext
 suspend inline fun <reified T> safeCall(
     execute: () -> ResponseDto<T>,
     onSuccess: (List<T>) -> Unit = {},
-    onFailure: () -> Unit = {}
+    onFailure: (AppError) -> Unit = {}
 ): Result<List<T>, AppError> {
     return try {
         val response = execute()
         Timber.d(response.toString())
         onSuccess(response.data!!)
         Result.Success(data = response.data, message = response.message)
-    }catch (e: IOException) {
-        Result.Error(error = AppError.NO_INTERNET)
+    } catch (e: IOException) {
+        val error = AppError.NO_INTERNET
+        onFailure(error)
+        Result.Error(error = error)
     } catch (e: SerializationException) {
-        Result.Error(error = AppError.SERIALIZATION_ERROR)
+        val error = AppError.SERIALIZATION_ERROR
+        onFailure(error)
+        Result.Error(error = error)
     } catch (e: HttpException) {
-        onFailure()
-        when (e.code()) {
-            401 -> Result.Error(error = AppError.UNAUTHORIZED)
-            408 -> Result.Error(error = AppError.TIMEOUT)
-            else -> Result.Error(error = AppError.HTTP_ERROR)
+        val error = when (e.code()) {
+            401 -> AppError.UNAUTHORIZED
+            408 -> AppError.TIMEOUT
+            422 -> {
+                AppError.INCORRECT_DATA
+            }
+            else -> AppError.HTTP_ERROR
         }
+        onFailure(error)
+        Result.Error(error = error)
     } catch (e: Exception) {
         coroutineContext.ensureActive()
+        val error = AppError.UNKNOWN_ERROR
+        onFailure(error)
         Timber.d("Error $e")
-        Result.Error(error = AppError.UNKNOWN_ERROR)
+        Result.Error(error = error)
     }
 }

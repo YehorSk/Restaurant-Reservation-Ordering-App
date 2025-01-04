@@ -18,6 +18,27 @@ class AuthController extends Controller
 {
     use HttpResponses;
 
+    public function authenticate(Request $request)
+    {
+        $user = $request->user();
+        $token = $request->bearerToken();
+
+        return $this->success(data: [[
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'updated_at' => $user->updated_at,
+                'created_at' => $user->created_at,
+                'email_verified_at' => $user->email_verified_at,
+                'id' => $user->id,
+                'role' => $user->role,
+                'address' => $user->address,
+                'phone' => $user->phone,
+            ],
+            'token' => $token
+        ]], message: "Authenticated successfully");
+    }
+
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -26,11 +47,10 @@ class AuthController extends Controller
 
         $user = User::where('email',$request->email)->first();
 
-        return $this->success([
+        return $this->success(data: [[
             'user' => $user,
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken,
-            'message' => 'Logged in successfully'
-        ]);
+        ]], message: "Logged in successfully");
     }
 
     public function register(StoreUserRequest $request){
@@ -40,17 +60,15 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        return $this->success([
+        return $this->success(data: [[
             'user' => $user,
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken
-        ]);
+        ]], message: "Registered successfully");
     }
 
     public function logout(Request $request){
         Auth::user()->currentAccessToken()->delete();
-        return $this->success([
-            'message' => 'Logged out successfully'
-        ]);
+        return $this->success(data: [], message: "Logged out successfully");
     }
     public function reset_password($token,$email) {
         return redirect()->to('http://localhost:5173/reset-password/' . $token . '?email=' . urlencode($email));

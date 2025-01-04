@@ -1,15 +1,15 @@
 package com.example.mobile.auth.data.remote
 
-import com.example.mobile.auth.data.remote.model.AuthResult
-import com.example.mobile.auth.data.remote.model.HttpResponse
+import com.example.mobile.auth.data.remote.model.AuthDataDto
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.data.service.AuthService
 import com.example.mobile.auth.presentation.login.LoginForm
 import com.example.mobile.auth.presentation.register.RegisterForm
 import com.example.mobile.core.data.db.MainRoomDatabase
+import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.core.data.repository.MainPreferencesRepository
-import com.example.mobile.core.utils.ConnectivityRepository
-import com.example.mobile.core.utils.parseHttpResponse
+import com.example.mobile.core.domain.remote.AppError
+import com.example.mobile.core.domain.remote.Result
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -20,96 +20,63 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,
     private val prefs: MainPreferencesRepository,
-    private val connectivityRepository: ConnectivityRepository,
     private val mainRoomDatabase: MainRoomDatabase
 ) : AuthRepository {
 
-    override suspend fun register(registerForm: RegisterForm): AuthResult<HttpResponse> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
-            try{
-                val result = authService.register(registerForm)
+    override suspend fun register(registerForm: RegisterForm): Result<List<AuthDataDto>, AppError> {
+        Timber.d("Auth register")
+        return safeCall<AuthDataDto>(
+            execute = {
+                authService.register(registerForm)
+            },
+            onSuccess = {
                 login(LoginForm(email = registerForm.email, password = registerForm.password))
-                AuthResult.Authorized(result)
-            }catch (e: HttpException) {
-                if (e.code() == 422) {
-                    val responseBody = e.response()?.errorBody()?.string() ?: ""
-                    val httpResponse = parseHttpResponse(responseBody)
-                    AuthResult.Unauthorized(httpResponse)
-                } else {
-                    AuthResult.UnknownError(HttpResponse(null, e.message(), null))
-                }
             }
-        }else{
-            AuthResult.UnknownError(HttpResponse(null, "No internet connection!", null))
-        }
+        )
     }
 
-    override suspend fun login(loginForm: LoginForm): AuthResult<HttpResponse> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
-            try{
-                val result = authService.login(loginForm)
-                prefs.saveUser(result)
-                Timber.tag("USER").d(result.toString())
-                AuthResult.Authorized(result)
-            }catch (e: HttpException) {
-                if (e.code() == 401) {
-                    val responseBody = e.response()?.errorBody()?.string() ?: ""
-                    val httpResponse = parseHttpResponse(responseBody)
-                    AuthResult.Unauthorized(httpResponse)
-                } else {
-                    AuthResult.UnknownError(HttpResponse(null, e.message(), null))
-                }
+    override suspend fun login(loginForm: LoginForm): Result<List<AuthDataDto>, AppError> {
+        Timber.d("Auth login")
+        return safeCall<AuthDataDto>(
+            execute = {
+                authService.login(loginForm)
+            },
+            onSuccess = { result ->
+                prefs.saveUser(result.first())
             }
-        }else{
-            AuthResult.UnknownError(HttpResponse(null, "No internet connection!", null))
-        }
+        )
     }
 
-    override suspend fun authenticate(): AuthResult<HttpResponse> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
-            try{
-                val token = prefs.jwtTokenFlow.first()
-                if (token.isNullOrBlank()) {
-                    return AuthResult.Unauthorized(HttpResponse(message = "Unauthenticated"))
-                }
-                val result = authService.authenticate()
-                AuthResult.Authorized(result)
-            }catch (e: HttpException) {
-                if (e.code() == 401) {
+    override suspend fun authenticate(): Result<List<AuthDataDto>, AppError> {
+        Timber.d("Auth login")
+        return safeCall<AuthDataDto>(
+            execute = {
+                authService.authenticate()
+            },
+            onSuccess = { result ->
+                prefs.saveUser(result.first())
+            },
+            onFailure = { error ->
+                if (error == AppError.UNAUTHORIZED) {
                     prefs.clearAllTokens()
-                    AuthResult.Unauthorized(HttpResponse(message = e.message()))
-                } else {
-                    AuthResult.UnknownError(HttpResponse(message = e.code().toString()))
                 }
             }
-        }else{
-            AuthResult.UnknownError(HttpResponse(null, "No internet connection!", null))
-        }
+        )
     }
 
-    override suspend fun logout(): AuthResult<HttpResponse> {
-        val isOnline = connectivityRepository.isInternetConnected()
-        return if(isOnline){
-            try{
-                val result = authService.logout()
+    override suspend fun logout(): Result<List<AuthDataDto>, AppError> {
+        Timber.d("Auth logout")
+        return safeCall<AuthDataDto>(
+            execute = {
+                authService.logout()
+            },
+            onSuccess = { result ->
                 prefs.clearAllTokens()
                 withContext(Dispatchers.IO) {
                     mainRoomDatabase.clearAllTables()
                 }
-                AuthResult.Unauthorized(result)
-            }catch (e: HttpException) {
-                if (e.code() == 401) {
-                    AuthResult.Unauthorized(HttpResponse(message = e.message()))
-                } else {
-                    AuthResult.UnknownError(HttpResponse(message = e.code().toString()))
-                }
             }
-        }else{
-            AuthResult.UnknownError(HttpResponse(null, "No internet connection!", null))
-        }
+        )
     }
 
 }

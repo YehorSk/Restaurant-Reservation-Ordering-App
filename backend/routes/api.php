@@ -9,50 +9,22 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TimeSlotController;
-use App\Http\Controllers\UserController;
-use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
-Route::get('/user', function (Request $request) {
-    $user = $request->user();
+Route::get('/user', [AuthController::class, 'authenticate'])->middleware('auth:sanctum');
 
-    $token = $request->bearerToken();
-
-    // Construct the custom response
-    return response()->json([
-        'status' => 200,
-        'message' => null,
-        'data' => [
-            'user' => [
-                'name' => $user->name,
-                'email' => $user->email,
-                'updated_at' => $user->updated_at,
-                'created_at' => $user->created_at,
-                'id' => $user->id,
-                'role' => $user->role,
-                'address' => $user->address,
-                'phone' => $user->phone,
-            ],
-            'token' => $token
-        ]
-    ]);
-})->middleware('auth:sanctum');
 
 //Public routes
-Route::controller(AuthController::class)->group(function (){
+Route::controller(AuthController::class)->group(function () {
     Route::post('/login', 'login');
     Route::post('/register', 'register');
-    Route::get('/reset-password/{token}/{email}','reset_password')->name('password.reset');
+    Route::get('/reset-password/{token}/{email}', 'reset_password')->name('password.reset');
     Route::post('/update-password', 'update_password');
     Route::post('/update-profile', 'updateProfile');
 });
-
-//Route::controller(MenuItemController::class)->group(function (){
-//    Route::get('menuItems/{id}', 'index');
-//})->middleware('auth:sanctum');
 
 Route::group(['prefix' => 'menuItems/{id}'], function () {
     Route::apiResource('items', MenuItemController::class);

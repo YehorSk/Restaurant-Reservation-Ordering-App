@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.example.mobile.auth.data.remote.model.HttpResponse
+import com.example.mobile.auth.data.remote.model.AuthDataDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -75,13 +75,13 @@ class MainPreferencesRepository @Inject constructor(
         }
     }
 
-    suspend fun saveUser(httpResponse: HttpResponse){
-        saveUserName(httpResponse.data?.user?.name ?: "")
-        saveUserEmail(httpResponse.data?.user?.email ?: "")
-        saveUserRole(httpResponse.data?.user?.role ?: "")
-        saveUserPhone(httpResponse.data?.user?.phone ?: "")
-        saveUserAddress(httpResponse.data?.user?.address ?: "")
-        saveJwtToken(httpResponse.data?.token ?: "")
+    suspend fun saveUser(authData: AuthDataDto){
+        saveUserName(authData.user?.name ?: "")
+        saveUserEmail(authData.user?.email ?: "")
+        saveUserRole(authData.user?.role ?: "")
+        saveUserPhone(authData.user?.phone ?: "")
+        saveUserAddress(authData.user?.address ?: "")
+        saveJwtToken(authData.token ?: "")
     }
 
     suspend fun clearAllTokens(){

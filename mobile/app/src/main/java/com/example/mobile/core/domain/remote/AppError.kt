@@ -6,5 +6,6 @@ enum class AppError: Error{
     UNAUTHORIZED,
     TIMEOUT,
     HTTP_ERROR,
-    UNKNOWN_ERROR
+    UNKNOWN_ERROR,
+    INCORRECT_DATA
 }

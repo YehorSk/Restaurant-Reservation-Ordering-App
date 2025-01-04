@@ -1,11 +1,13 @@
 package com.example.mobile.auth.presentation.register
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.presentation.BaseAuthViewModel
+import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.domain.remote.onError
+import com.example.mobile.core.domain.remote.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.core.utils.cleanError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,16 +29,6 @@ class RegisterViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState.asStateFlow()
 
-    init {
-        viewModelScope.launch{
-            isNetwork.collect{ available ->
-                if (!available) {
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast("No internet connection!"))
-                }
-            }
-        }
-    }
-
     private fun validateRegInput(uiState: RegisterState): Boolean{
         return with(uiState.registerForm){
             name.isNotBlank() && email.isNotBlank() && password.isNotBlank() && passwordConfirm.isNotBlank()
@@ -52,52 +44,57 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun register(){
+    fun register() {
         viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    isLoading = true
-                )
-            }
-            val result = authRepository.register(registerForm = uiState.value.registerForm)
-            _uiState.update { currentState ->
-                when (result) {
-                    is AuthResult.Authorized -> {
-                        Timber.tag("Authorized").v(result.data.toString())
-                        result.data?.let { preferencesRepository.saveUser(it) }
-                        currentState.copy(
-                            isLoading = false,
-                            isLoggedIn = true,
-                            registerFormErrors = RegisterFormErrors(
-                                email = "",
-                                password = "",
-                                passwordConfirm = "",
-                                name = "",
-                            )
+            _uiState.update { it.copy(isLoading = true) }
+            authRepository.register(registerForm = uiState.value.registerForm)
+                .onSuccess { data, _ ->
+                Timber.tag("Authorized").v(data.toString())
+                preferencesRepository.saveUser(data.first())
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        isLoading = false,
+                        isLoggedIn = true,
+                        registerFormErrors = RegisterFormErrors(
+                            email = "",
+                            password = "",
+                            passwordConfirm = "",
+                            name = ""
                         )
-                    }
-
-                    is AuthResult.Unauthorized -> {
-                        Timber.tag("Unauthorized").v(result.data.toString())
-                        currentState.copy(
-                            isLoggedIn = false,
-                            isLoading = false,
-                            registerFormErrors = RegisterFormErrors(
-                                email = cleanError(result.data?.errors?.email.toString()),
-                                password = cleanError(result.data?.errors?.password.toString()),
-                                passwordConfirm = cleanError(result.data?.errors?.passwordConfirmation.toString()),
-                                name = cleanError(result.data?.errors?.name.toString()),
+                    )
+                }
+            }.onError { error ->
+                when (error) {
+                    AppError.UNAUTHORIZED -> {
+                        preferencesRepository.clearAllTokens()
+                        _uiState.update { currentState ->
+                            currentState.copy(
+                                isLoggedIn = false,
+                                isLoading = false,
+                                registerFormErrors = RegisterFormErrors(
+                                    email = cleanError(uiState.value.registerForm.email),
+                                    password = cleanError(uiState.value.registerForm.password),
+                                    passwordConfirm = cleanError(uiState.value.registerForm.passwordConfirm),
+                                    name = cleanError(uiState.value.registerForm.name)
+                                )
                             )
-                        )
+                        }
                     }
-
-                    is AuthResult.UnknownError -> {
-                        Timber.tag("UnknownError").v(result.data.toString())
-                        currentState.copy(isLoading = false)
+                    AppError.UNKNOWN_ERROR -> {
+                        _uiState.update { it.copy(isLoading = false) }
+                    }
+                    AppError.INCORRECT_DATA -> {
+                        _uiState.update { it.copy(isLoading = false) }
+                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    }
+                    else -> {
+                        _uiState.update { it.copy(isLoading = false) }
+                        Timber.tag("UnhandledError").e(error.toString())
                     }
                 }
             }
         }
     }
+
 
 }

@@ -54,6 +54,7 @@
     <string name="error_request_timeout">The request timed out. Please try again.</string>
     <string name="error_http">An HTTP error occurred. Please try again later.</string>
     <string name="error_unknown">An unknown error occurred. Please try again.</string>
+    <string name="error_incorrect_data">Please check your data and try again</string>
 
     <!-- Order Filters-->
 

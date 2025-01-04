@@ -4,15 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HttpResponse(
-    val status: Int? = null,
-    val message: String?,
-    val data: Data? = null,
-    val errors: Errors? = null
-)
-
-@Serializable
-data class Data(
+data class AuthDataDto(
     val user: UserDto? = null,
     val token: String? = null,
     val message: String? = ""
@@ -36,9 +28,9 @@ data class UserDto(
 )
 
 @Serializable
-data class Errors(
-    val email: List<String>? = listOf(),
-    val password: List<String>? = listOf(),
-    val name: List<String>? = listOf(),
-    val passwordConfirmation: List<String>? = listOf()
+data class ErrorsDto(
+    val email: List<String>? = null,
+    val password: List<String>? = null,
+    val name: List<String>? = null,
+    val passwordConfirmation: List<String>? = null
 )

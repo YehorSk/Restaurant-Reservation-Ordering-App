@@ -1,11 +1,13 @@
 package com.example.mobile.auth.presentation.login
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.auth.data.remote.model.AuthResult
 import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.presentation.BaseAuthViewModel
+import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.domain.remote.onError
+import com.example.mobile.core.domain.remote.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -72,79 +74,60 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun authenticate(){
+    private fun authenticate() {
         Timber.tag("NetworkCheck 2-1").v("authenticate")
         viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    isLoading = true
-                )
-            }
-            val result = authRepository.authenticate()
-            _uiState.update { currentState ->
-                Timber.tag("NetworkCheck 2-1").v("result $result")
-                when(result){
-                    is AuthResult.Authorized -> {
-                        Timber.tag("NetworkCheck 2-1").v("Authorized")
-                        result.data?.let { preferencesRepository.saveUser(it) }
-                        currentState.copy(
-                            isLoading = false,
-                            isLoggedIn = true
-                        )
-                    }
-                    is AuthResult.Unauthorized -> {
+            _uiState.update { it.copy(isLoading = true) }
+
+            authRepository.authenticate()
+                .onSuccess { data, _ ->
+                Timber.tag("NetworkCheck 2-1").v("Authorized")
+                preferencesRepository.saveUser(data.first())
+                _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
+            }.onError { error ->
+                when (error) {
+                    AppError.UNAUTHORIZED -> {
                         Timber.tag("NetworkCheck 2-1").v("Unauthorized")
                         preferencesRepository.clearAllTokens()
-                        currentState.copy(
-                            isLoading = false,
-                            isLoggedIn = false,
-                        )
+                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }
-                    is AuthResult.UnknownError -> {
-                        Timber.tag("NetworkCheck 2-1").v("UnknownError")
-                        currentState.copy(
-                            isLoading = false,
-                            isLoggedIn = false
-                        )
+                    else -> {
+                        Timber.tag("NetworkCheck 2-1").v("UnknownError: $error")
+                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }
                 }
             }
         }
     }
 
-    fun login(){
+
+    fun login() {
         viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(isLoading = true)
-            }
+            _uiState.update { it.copy(isLoading = true) }
+
             val result = authRepository.login(loginForm = uiState.value.loginForm)
-            _uiState.update { state ->
-                when (result) {
-                    is AuthResult.Authorized -> {
-                        Timber.tag("Authorized").v(result.data.toString())
-                        result.data?.let { preferencesRepository.saveUser(httpResponse = it) }
-//                        _sideEffectChannel.send(SideEffect.ShowToast(result.data!!.message!!))
-                        state.copy(
-                            isLoading = false,
-                            isLoggedIn = true
-                        )
-                    }
-                    is AuthResult.Unauthorized -> {
-                        Timber.tag("Unauthorized").v(result.data.toString())
+
+            result.onSuccess { data, message ->
+                Timber.tag("Authorized").v(data.toString())
+                preferencesRepository.saveUser(data.first())
+                _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
+            }.onError { error ->
+                when (error) {
+                    AppError.UNAUTHORIZED -> {
+                        Timber.tag("Unauthorized").v("Unauthorized")
                         preferencesRepository.clearAllTokens()
-                        _sideEffectChannel.send(SideEffect.ShowSuccessToast(result.data!!.message!!))
-                        state.copy(
-                            isLoading = false,
-                            isLoggedIn = false
-                        )
+                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }
-                    is AuthResult.UnknownError -> {
-                        Timber.tag("UnknownError").v(result.data.toString())
-                        _sideEffectChannel.send(SideEffect.ShowSuccessToast(result.data!!.message!!))
-                        state.copy(isLoading = false)
+                    else -> {
+                        Timber.tag("UnknownError").v("UnknownError: $error")
+                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        _uiState.update { it.copy(isLoading = false) }
                     }
                 }
             }
         }
     }
+
 }

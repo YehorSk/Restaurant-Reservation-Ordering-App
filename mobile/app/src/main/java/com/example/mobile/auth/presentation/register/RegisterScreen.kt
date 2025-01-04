@@ -26,7 +26,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,12 +41,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.presentation.components.SingleEventEffect
+import com.example.mobile.core.utils.toString
 import com.example.mobile.ui.theme.MobileTheme
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -55,13 +56,21 @@ import timber.log.Timber
 @Composable
 fun RegisterScreen(
     modifier: Modifier = Modifier,
-    authViewModel: RegisterViewModel = hiltViewModel(),
+    viewModel: RegisterViewModel = hiltViewModel(),
     onLogClick: () -> Unit,
     onSuccess: () -> Unit
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val uiState by authViewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+        when(sideEffect){
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.NavigateToNextScreen -> {}
+        }
+    }
 
     Box(
         modifier = modifier
@@ -76,10 +85,10 @@ fun RegisterScreen(
         ) {
             RegBody(
                 itemUiState = uiState,
-                onItemValueChange = authViewModel::updateRegUiState,
+                onItemValueChange = viewModel::updateRegUiState,
                 onRegClick = {
                     coroutineScope.launch {
-                        authViewModel.register()
+                        viewModel.register()
                     }
                 },
                 modifier = Modifier

@@ -40,7 +40,7 @@ class MenuController extends Controller
             if(!$menu->exists){
                 return $this->error('', 'Item was not added', 409);
             }
-            return $this->success(data: [$menu], message: "Item added to menu", textStatus: "added");
+            return $this->success(data: [$menu], message: "Item added to menu");
         }
         return $this->error('', 'No user', 401);
     }
@@ -56,7 +56,7 @@ class MenuController extends Controller
             ]);
             $data['availability'] = $data['availability'] ?? 1;
             $menu->update($data);
-            return $this->success(data: [$menu], message: "Item was updated", textStatus: "updated");
+            return $this->success(data: [$menu], message: "Item was updated");
         }
         return $this->error('', 'No user', 401);
     }
@@ -66,7 +66,7 @@ class MenuController extends Controller
         if ($user instanceof User) {
             $menu = Menu::find($id);
             $menu->delete();
-            return $this->success(data: [$menu], message: "Item was deleted", textStatus: "deleted");
+            return $this->success(data: [$menu], message: "Item was deleted");
         }
         return $this->error('', 'No user', 401);
     }

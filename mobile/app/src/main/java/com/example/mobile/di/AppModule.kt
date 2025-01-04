@@ -152,7 +152,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepositoryImpl(authService: AuthService, mainPreferencesRepository: MainPreferencesRepository, connectivityRepository: ConnectivityRepository, mainRoomDatabase: MainRoomDatabase) : AuthRepository = AuthRepositoryImpl(authService, mainPreferencesRepository, connectivityRepository, mainRoomDatabase)
+    fun provideAuthRepositoryImpl(authService: AuthService, mainPreferencesRepository: MainPreferencesRepository, mainRoomDatabase: MainRoomDatabase) : AuthRepository = AuthRepositoryImpl(authService, mainPreferencesRepository, mainRoomDatabase)
 
     @Provides
     @Singleton

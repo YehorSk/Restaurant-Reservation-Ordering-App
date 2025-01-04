@@ -12,6 +12,7 @@ fun AppError.toString(context: Context): String {
         AppError.TIMEOUT -> R.string.error_request_timeout
         AppError.HTTP_ERROR -> R.string.error_http
         AppError.UNKNOWN_ERROR -> R.string.error_unknown
+        AppError.INCORRECT_DATA -> R.string.error_incorrect_data
     }
     return context.getString(resId)
 }

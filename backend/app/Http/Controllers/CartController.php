@@ -39,7 +39,7 @@ class CartController extends Controller
                 if ($newItem) {
                     $newItem->isFavorite = (bool) $user->favoriteItems()->where('menu_item_id', $newItem->id)->exists();
                 }
-                return $this->success(data: [$newItem], message: "Item in Cart was updated", textStatus: "updated");
+                return $this->success(data: [$newItem], message: "Item in Cart was updated");
             }
             $user->menuItems()->attach($request->input('menu_item_id'), [
                 'quantity' => $request->input('quantity'),
@@ -51,7 +51,7 @@ class CartController extends Controller
             if ($newItem) {
                 $newItem->isFavorite = (bool) $user->favoriteItems()->where('menu_item_id', $newItem->id)->exists();
             }
-            return $this->success(data: [$newItem], message: "Item added to cart", textStatus: "added");
+            return $this->success(data: [$newItem], message: "Item added to cart");
         }
         return $this->error('', 'No user', 401);
     }
@@ -71,9 +71,9 @@ class CartController extends Controller
                     $item->isFavorite = (bool) $user->favoriteItems()->where('menu_item_id', $item->id)->exists();
                 }
                 $user->menuItems()->detach($exists);
-                return $this->success(data: [$item], message: "Item in Cart was deleted", textStatus: "deleted");
+                return $this->success(data: [$item], message: "Item in Cart was deleted");
             }
-            return $this->error('', "Item was not deleted", 400, textStatus: "deleted");
+            return $this->error('', "Item was not deleted", 400);
         }
         return $this->error('', 'No user', 401);
     }
@@ -96,9 +96,9 @@ class CartController extends Controller
                 if ($item) {
                     $item->isFavorite = (bool) $user->favoriteItems()->where('menu_item_id', $item->id)->exists();
                 }
-                return $this->success(data: [$item], message: "Item in Cart was updated", textStatus: "updated");
+                return $this->success(data: [$item], message: "Item in Cart was updated");
             }
-            return $this->error('', "Item in Cart was not updated", 400, textStatus: "updated");
+            return $this->error('', "Item in Cart was not updated", 400);
         }
         return $this->error('', 'No user', 401);
     }
