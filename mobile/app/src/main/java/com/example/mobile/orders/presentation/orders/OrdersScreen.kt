@@ -3,9 +3,7 @@ package com.example.mobile.orders.presentation.orders
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -20,7 +18,7 @@ import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.presentation.orders.components.OrdersList
 import com.example.mobile.R
-import com.example.mobile.core.presentation.components.DropdownList
+import com.example.mobile.core.presentation.components.OrdersDropdownList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,7 +50,7 @@ fun OrdersScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DropdownList(
+            OrdersDropdownList(
                 filterOption = filterOption,
                 text = R.string.filter,
                 onSelect = { viewModel.updateFilter(it) }

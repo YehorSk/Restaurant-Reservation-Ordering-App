@@ -12,6 +12,15 @@ class OrderController extends Controller
 {
     use HttpResponses;
 
+    public function index(){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "admin"){
+            $data = Order::all();
+            return $this->success($data);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     public function getUserCartItems(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
@@ -91,13 +100,14 @@ class OrderController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User && $user->role === "waiter"){
             $total_price = $user->menuItems()->get()->sum('pivot.price');
+            $table = $request->input('table_id');
             $order = new Order([
                 'price' => $total_price,
                 'special_request' => $request->input('special_request', ''),
                 'order_type' =>  $request->input('order_type'),
                 'code' => $this->generate_code(),
                 'status' => 'Confirmed',
-                'table_id' => $request->input('table_id'),
+                'table_id' => $table['id'],
                 'waiter_id' => $user->id
             ]);
             $order->save();

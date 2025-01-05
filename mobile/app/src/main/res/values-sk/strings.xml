@@ -65,10 +65,11 @@
     <string name="error_unknown">Došlo k neznámej chybe. Skúste to prosím znova.</string>
     <string name="error_incorrect_data">Skontrolujte svoje údaje a skúste to znova.</string>
 
-    <!-- Order Filters-->
+    <!-- Filters-->
 
     <string name="filter">Filter: %s</string>
-    <string name="filter_all">Všetky objednávky</string>
+    <string name="filter_all_orders">Všetky objednávky</string>
+    <string name="filter_all_reservations">Všetky rezervácie</string>
     <string name="filter_pending">Čakajúce</string>
     <string name="filter_confirmed">Potvrdené</string>
     <string name="filter_preparing">Pripravuje sa</string>

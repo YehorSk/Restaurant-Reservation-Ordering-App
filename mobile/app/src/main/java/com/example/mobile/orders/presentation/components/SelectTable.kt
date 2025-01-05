@@ -39,8 +39,8 @@ import com.example.mobile.orders.data.remote.dto.TableDto
 fun SelectTable(
     modifier: Modifier = Modifier,
     tables: List<TableDto>,
-    selectedTable: Int,
-    onTableNumberChanged: (Int) -> Unit
+    selectedTable: TableDto,
+    onTableChanged: (TableDto) -> Unit
 ){
     var expanded by remember { mutableStateOf(false) }
 
@@ -65,8 +65,8 @@ fun SelectTable(
                 .fillMaxWidth()
         ) {
             OutlinedTextField(
-                value = selectedTable.toString(),
-                onValueChange = { onTableNumberChanged },
+                value = selectedTable.number.toString(),
+                onValueChange = { onTableChanged },
                 modifier = Modifier
                     .fillMaxWidth()
                     .onGloballyPositioned { coordinates ->
@@ -102,7 +102,7 @@ fun SelectTable(
                 tables.forEach{ table ->
                     DropdownMenuItem(
                         onClick = {
-                            onTableNumberChanged(table.id.toInt())
+                            onTableChanged(table)
                             expanded = false
                         },
                         text = {
@@ -122,12 +122,17 @@ fun SelectTable(
 @Composable
 fun SelectTablePreview(){
     val tables = listOf<TableDto>(TableDto(number = "1", capacity = 1, createdAt = "", updatedAt = "", id = "1"))
-    val selected = 1
     MobileTheme {
         SelectTable(
             tables = tables,
-            selectedTable = selected,
-            onTableNumberChanged = {}
+            selectedTable = TableDto(
+                id = "1",
+                createdAt = "2024-12-22 12:40:32",
+                updatedAt = "2024-12-22 12:40:32",
+                number = "1",
+                capacity = 4
+            ),
+            onTableChanged = {}
         )
     }
 }

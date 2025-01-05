@@ -6,6 +6,10 @@ import MenuView from "@/views/MenuView.vue";
 import MenuItemsView from "@/views/MenuItemsView.vue";
 import TablesView from "@/views/TablesView.vue";
 import TimeSlotsView from "@/views/TimeSlotsView.vue";
+import UsersView from "@/views/UsersView.vue";
+import OrdersView from "@/views/OrdersView.vue";
+import ReservationsView from "@/views/ReservationsView.vue";
+import ForgotPasswordView from "@/views/ForgotPasswordView.vue";
 
 async function checkAuth(roleCheck, next) {
   const authStore = UseAuthStore();
@@ -59,6 +63,30 @@ const router = createRouter({
       name: 'timeslots',
       component: TimeSlotsView,
       beforeEnter: adminGuard
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: UsersView,
+      beforeEnter: adminGuard
+    },
+    {
+      path: '/orders',
+      name: 'orders',
+      component: OrdersView,
+      beforeEnter: adminGuard
+    },
+    {
+      path: '/reservations',
+      name: 'reservations',
+      component: ReservationsView,
+      beforeEnter: adminGuard
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: ForgotPasswordView,
+      beforeEnter: userGuard
     }
   ]
 })

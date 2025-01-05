@@ -8,6 +8,7 @@ import com.example.mobile.core.domain.remote.onSuccess
 import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
+import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -77,11 +78,11 @@ class CreateOrderViewModel @Inject constructor(
         }
     }
 
-    fun updateTableNumber(id: Int){
+    fun updateTableNumber(table: TableDto){
         _uiState.update {
             it.copy(
                 orderForm = it.orderForm.copy(
-                    selectedTable = id
+                    selectedTable = table
                 )
             )
         }

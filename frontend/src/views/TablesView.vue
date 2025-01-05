@@ -1,4 +1,5 @@
 <template>
+  <NavComponent/>
   <div class="p-4 sm:ml-64">
     <v-sheet class="max-w-full">
       <div class="flex flex-wrap">
@@ -92,8 +93,10 @@
 
 import {UseTableStore} from "@/stores/TablesStore.js";
 import {useToast} from "vue-toastification";
+import NavComponent from "@/components/SideBarComponent.vue";
 
 export default {
+  components: {NavComponent},
   data(){
     return {
       tableStore: UseTableStore(),

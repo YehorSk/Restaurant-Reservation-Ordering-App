@@ -65,10 +65,11 @@
     <string name="error_unknown">An unknown error occurred. Please try again.</string>
     <string name="error_incorrect_data">Please check your data and try again</string>
 
-    <!-- Order Filters-->
+    <!-- Filters-->
 
     <string name="filter">Filter: %s</string>
-    <string name="filter_all">All Orders</string>
+    <string name="filter_all_orders">All Orders</string>
+    <string name="filter_all_reservations">All Reservations</string>
     <string name="filter_pending">Pending</string>
     <string name="filter_confirmed">Confirmed</string>
     <string name="filter_preparing">Preparing</string>

@@ -1,14 +1,24 @@
+<template>
+  <NavComponent/>
+  <div class="p-4 sm:ml-64">
+    <h1>Hello World</h1>
+  </div>
+</template>
+
 <script>
 import NavComponent from "@/components/SideBarComponent.vue";
 import { UseAuthStore } from "@/stores/AuthStore.js";
 import { useToast } from 'vue-toastification';
 
 export default {
+  components: {
+    NavComponent,
+  },
   data(){
-      return{
-        authStore: UseAuthStore(),
-        toast: useToast(),
-      }
+    return{
+      authStore: UseAuthStore(),
+      toast: useToast(),
+    }
   },
   watch: {
     // Watch for changes in the success message
@@ -25,9 +35,3 @@ export default {
   },
 }
 </script>
-
-<template>
-  <div class="p-4 sm:ml-64">
-    <h1>Hello World</h1>
-  </div>
-</template>

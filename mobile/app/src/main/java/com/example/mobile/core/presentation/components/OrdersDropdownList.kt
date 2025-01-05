@@ -16,12 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.example.mobile.R
 import com.example.mobile.core.domain.remote.OrderFilter
 import com.example.mobile.core.utils.toString
 
 @Composable
-fun DropdownList(
+fun OrdersDropdownList(
     modifier: Modifier = Modifier,
     filterOption: OrderFilter,
     @StringRes text: Int,

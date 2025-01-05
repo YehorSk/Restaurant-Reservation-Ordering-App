@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
-data class CreateReservationUiState(
+data class ReservationUiState(
     val isLoading: Boolean = false,
     val timeSlots: List<TimeSlotDto>? = null,
     val reservationForm: ReservationForm = ReservationForm()

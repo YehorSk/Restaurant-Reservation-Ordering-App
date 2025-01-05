@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TimeSlotController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::apiResource('menu', MenuController::class);
     Route::apiResource('timeSlots', TimeSlotController::class);
     Route::apiResource('tables', TableController::class);
+    Route::apiResource('users', UserController::class);
 });
 
 Route::post('/forgot-password', function (Request $request) {
@@ -93,6 +95,9 @@ Route::prefix("table")->controller(TableController::class)->group(function (){
 });
 
 Route::prefix("reservation")->controller(ReservationController::class)->group(function (){
+    Route::get('/admin/getAllReservations','getAllReservations');
+    Route::put('/admin/updateReservation/{id}','adminUpdateReservation');
+    Route::delete('/admin/deleteReservation/{id}','adminDeleteReservation');
     Route::post('/user/getTimeSlots','getAvailableTimeSlots');
     Route::post('/user/createReservation','createReservation');
     Route::get('/user/reservations','getReservations');

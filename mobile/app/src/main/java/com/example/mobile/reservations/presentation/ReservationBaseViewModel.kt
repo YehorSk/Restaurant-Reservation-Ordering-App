@@ -1,22 +1,17 @@
 package com.example.mobile.reservations.presentation
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.reservations.data.dao.ReservationDao
-import com.example.mobile.reservations.data.db.model.ReservationEntity
 import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
-import com.example.mobile.reservations.presentation.reservations.CreateReservationUiState
+import com.example.mobile.reservations.presentation.reservations.ReservationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -27,15 +22,8 @@ open class ReservationBaseViewModel @Inject constructor(
     val reservationDao: ReservationDao
 ): ViewModel(){
 
-    protected val _uiState = MutableStateFlow(CreateReservationUiState())
+    protected val _uiState = MutableStateFlow(ReservationUiState())
     val uiState = _uiState.asStateFlow()
-
-    val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationDao.getUserReservations()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = listOf()
-        )
 
     val isNetwork = networkConnectivityObserver.observe()
 

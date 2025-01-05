@@ -65,10 +65,11 @@
     <string name="error_unknown">Сталася невідома помилка. Будь ласка, спробуйте ще раз.</string>
     <string name="error_incorrect_data">Будь ласка, перевірте ваші дані та спробуйте ще раз.</string>
 
-    <!-- Order Filters-->
+    <!-- Filters-->
 
     <string name="filter">Фільтр: %s</string>
-    <string name="filter_all">Усі замовлення</string>
+    <string name="filter_all_orders">Усі замовлення</string>
+    <string name="filter_all_reservations">Усі бронювання</string>
     <string name="filter_pending">Очікують</string>
     <string name="filter_confirmed">Підтверджені</string>
     <string name="filter_preparing">Готується</string>

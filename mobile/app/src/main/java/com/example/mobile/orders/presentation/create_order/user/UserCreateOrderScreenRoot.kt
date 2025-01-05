@@ -45,6 +45,7 @@ import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
+import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.utils.toString
 
 @Composable
@@ -175,16 +176,7 @@ fun UserCreateOrderScreen(
             }
         }
     }else{
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator()
-        }
+        LoadingPart()
     }
 }
 

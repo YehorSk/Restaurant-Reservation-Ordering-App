@@ -1,4 +1,5 @@
 <template>
+  <NavComponent/>
   <div class="p-4 sm:ml-64">
     <v-sheet class="max-w-full">
       <div class="flex flex-wrap">
@@ -93,8 +94,10 @@
 <script>
 import {UseTimeSlotStore} from "@/stores/TimeSlotsStore.js";
 import {useToast} from "vue-toastification";
+import NavComponent from "@/components/SideBarComponent.vue";
 
 export default {
+  components: {NavComponent},
   data(){
     return {
       timeSlotStore: UseTimeSlotStore(),

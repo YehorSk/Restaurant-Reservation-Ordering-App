@@ -15,6 +15,46 @@ class ReservationController extends Controller
 
     use HttpResponses;
 
+    public function getAllReservations(Request $request){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "admin"){
+            $items = Reservation::with('table', 'timeSlot')->get();
+
+            $items->each(function ($item) {
+                $item->table_number = $item->table->number ?? null;
+                $item->start_time = $item->timeSlot->start_time ?? null;
+
+                unset($item->table);
+                unset($item->timeSlot);
+            });
+            return $this->success($items);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function adminUpdateReservation(Request $request, $id){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $reservation = Reservation::find($id);
+            $data = $request->validate([
+                "status" => "required",
+            ]);
+            $reservation->update($data);
+            return $this->success(data: $user, message: "Reservation updated successfully");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function adminDeleteReservation($id){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $reservation = Reservation::find($id);
+            $reservation->delete();
+            return $this->success(data: $user, message: "Reservation deleted successfully");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     public function getAvailableTimeSlots(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
@@ -27,7 +67,6 @@ class ReservationController extends Controller
             $today = now()->format('Y-m-d');
             $currentTime = now()->setTimezone('Europe/Bratislava')->format('H:i:s');
 
-            // Fetch tables that can accommodate the party size and are not already reserved for the requested date
             $availableTables = Table::query()
                 ->where('capacity', '>=', $size)
                 ->whereDoesntHave('reservations', function ($query) use ($date) {
@@ -36,11 +75,9 @@ class ReservationController extends Controller
                 ->get();
 
             if ($availableTables->isEmpty()) {
-                // No tables available that meet the party size requirement
                 return $this->success(data: [], message: "No available tables for the requested party size");
             }
 
-            // Fetch available time slots based on the availability of tables
             $timeSlots = TimeSlot::query()
                 ->when($date === now()->format('Y-m-d'), function ($query) use ($currentTime) {
                     $query->where('start_time', '>=', $currentTime);
@@ -49,11 +86,6 @@ class ReservationController extends Controller
                     $query->where('date', $date);
                 })
                 ->get();
-
-            $data = [
-                'time_slots' => $timeSlots,
-                'available_tables' => $availableTables,
-            ];
 
             return $this->success(data: $timeSlots, message: "");
         }
@@ -186,7 +218,11 @@ class ReservationController extends Controller
                     unset($item->timeSlot);
                     return $this->success(data: [$item], message: "Reservation cancelled successfully");
                 }else{
-                    return $this->error('', 'Reservation cannot be canceled.', 409);
+                    $item->table_number = $item->table->number ?? null;
+                    $item->start_time = $item->timeSlot->start_time ?? null;
+                    unset($item->table);
+                    unset($item->timeSlot);
+                    return $this->error([$item], 'Reservation cannot be canceled.', 200);
                 }
             }
             return $this->error('', 'Reservation not found', 404);

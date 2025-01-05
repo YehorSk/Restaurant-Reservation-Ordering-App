@@ -27,7 +27,7 @@ import com.example.mobile.orders.presentation.components.NavBar
 import com.example.mobile.reservations.data.db.model.ReservationEntity
 import com.example.mobile.reservations.presentation.reservation_details.components.ReservationDetails
 import com.example.mobile.reservations.presentation.reservation_details.components.ReservationStatus
-import com.example.mobile.reservations.presentation.reservations.CreateReservationUiState
+import com.example.mobile.reservations.presentation.reservations.ReservationUiState
 
 @Composable
 fun ReservationDetailsScreenRoot(
@@ -73,7 +73,7 @@ fun ReservationDetailsScreen(
     id: Int,
     isConnected: Boolean,
     onAction: (ReservationDetailsAction) -> Unit,
-    uiState: CreateReservationUiState,
+    uiState: ReservationUiState,
     reservationItemUiState: List<ReservationEntity>
 ){
     val data = reservationItemUiState.find { it.id.toString() == id.toString() }

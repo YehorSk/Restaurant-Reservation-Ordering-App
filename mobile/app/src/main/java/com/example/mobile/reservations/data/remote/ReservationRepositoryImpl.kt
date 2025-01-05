@@ -64,7 +64,7 @@ class ReservationRepositoryImpl @Inject constructor(
     }
 
     override suspend fun cancelUserReservation(id: String): Result<List<ReservationDto>, AppError> {
-        Timber.d("getUserReservations")
+        Timber.d("cancelUserReservation")
         return safeCall<ReservationDto>(
             execute = {
                 reservationService.cancelUserReservation(id)

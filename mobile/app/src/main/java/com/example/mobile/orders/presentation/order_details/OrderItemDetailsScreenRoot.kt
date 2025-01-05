@@ -3,7 +3,6 @@ package com.example.mobile.orders.presentation.order_details
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,7 +31,6 @@ import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.data.db.model.OrderWithOrderItems
-import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.components.NavBar
 import kotlin.collections.List
 
@@ -43,8 +41,7 @@ fun OrderItemDetailsScreenRoot(
     onGoBack: () -> Unit,
     id: Int
 ){
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
+
     val ordersUiState by viewModel.ordersUiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
@@ -58,9 +55,7 @@ fun OrderItemDetailsScreenRoot(
     OrderItemDetailsScreen(
         modifier = modifier,
         ordersUiState = ordersUiState,
-        uiState = uiState,
         id = id,
-        isConnected = isConnected,
         onGoBack = onGoBack
     )
 }
@@ -69,9 +64,7 @@ fun OrderItemDetailsScreenRoot(
 fun OrderItemDetailsScreen(
     modifier: Modifier = Modifier ,
     ordersUiState: List<OrderWithOrderItems>,
-    uiState: OrderUiState,
     id: Int,
-    isConnected: Boolean,
     onGoBack: () -> Unit
 ){
     val orderItem = ordersUiState.flatMap { it.orderItems }.find { it.pivot.menuItemId == id }

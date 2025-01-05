@@ -6,7 +6,7 @@ import com.example.mobile.R
 
 fun OrderFilter.toString(context: Context): String {
     val resId = when (this) {
-        OrderFilter.ALL -> R.string.filter_all
+        OrderFilter.ALL -> R.string.filter_all_orders
         OrderFilter.PENDING -> R.string.filter_pending
         OrderFilter.CONFIRMED -> R.string.filter_confirmed
         OrderFilter.PREPARING -> R.string.filter_preparing

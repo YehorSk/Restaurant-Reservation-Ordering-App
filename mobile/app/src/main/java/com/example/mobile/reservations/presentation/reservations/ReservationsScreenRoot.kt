@@ -13,7 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.mobile.R
 import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.presentation.components.OrdersDropdownList
+import com.example.mobile.core.presentation.components.ReservationDropdownList
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
 import com.example.mobile.reservations.presentation.reservations.components.ReservationsList
@@ -29,7 +32,7 @@ fun ReservationScreenRoot(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val reservations by viewModel.reservationItemUiState.collectAsStateWithLifecycle()
-    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
+    val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -47,6 +50,11 @@ fun ReservationScreenRoot(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            ReservationDropdownList(
+                filterOption = filterOption,
+                text = R.string.filter,
+                onSelect = { viewModel.updateFilter(it) }
+            )
             ReservationsList(
                 items = reservations,
                 onGoToReservationDetails = { onGoToReservationDetails(it) }

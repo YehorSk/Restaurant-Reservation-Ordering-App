@@ -2,7 +2,6 @@ package com.example.mobile.orders.presentation.create_order.waiter
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +39,7 @@ import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
+import com.example.mobile.core.presentation.components.LoadingPart
 
 @Composable
 fun WaiterCreateOrderScreen(
@@ -104,7 +102,7 @@ fun WaiterCreateOrderScreen(
                 SelectTable(
                     tables = uiState.tables!!,
                     selectedTable = uiState.orderForm.selectedTable,
-                    onTableNumberChanged = { viewModel.updateTableNumber(it) }
+                    onTableChanged = { viewModel.updateTableNumber(it) }
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -149,16 +147,7 @@ fun WaiterCreateOrderScreen(
             }
         }
     }else{
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator()
-        }
+        LoadingPart()
     }
 
 }
