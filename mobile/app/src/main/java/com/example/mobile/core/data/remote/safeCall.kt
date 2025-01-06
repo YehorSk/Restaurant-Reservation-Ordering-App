@@ -17,7 +17,6 @@ suspend inline fun <reified T> safeCall(
 ): Result<List<T>, AppError> {
     return try {
         val response = execute()
-        Timber.d(response.toString())
         onSuccess(response.data!!)
         Result.Success(data = response.data, message = response.message)
     } catch (e: IOException) {
@@ -43,7 +42,6 @@ suspend inline fun <reified T> safeCall(
         coroutineContext.ensureActive()
         val error = AppError.UNKNOWN_ERROR
         onFailure(error)
-        Timber.d("Error $e")
         Result.Error(error = error)
     }
 }

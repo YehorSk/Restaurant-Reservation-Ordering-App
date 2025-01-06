@@ -1,6 +1,7 @@
 package com.example.mobile.reservations.presentation.reservation_details
 
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.domain.remote.ReservationFilter
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
@@ -23,8 +24,9 @@ import javax.inject.Inject
 class ReservationDetailsViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     reservationRepositoryImpl: ReservationRepositoryImpl,
-    reservationDao: ReservationDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao){
+    reservationDao: ReservationDao,
+    preferencesRepository: MainPreferencesRepository
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository){
 
     val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationDao.getUserReservations()
         .stateIn(
@@ -37,6 +39,9 @@ class ReservationDetailsViewModel @Inject constructor(
         when(action){
             is ReservationDetailsAction.CancelReservation -> cancelReservation(action.id)
             is ReservationDetailsAction.GetReservationDetails -> getReservationDetails(action.id)
+            is ReservationDetailsAction.SetCancelledStatus -> updateReservation(action.id, action.status)
+            is ReservationDetailsAction.SetConfirmedStatus -> updateReservation(action.id, action.status)
+            is ReservationDetailsAction.SetPendingStatus -> updateReservation(action.id, action.status)
         }
     }
 
@@ -55,12 +60,30 @@ class ReservationDetailsViewModel @Inject constructor(
         }
     }
 
-    fun cancelReservation(id: String){
-        viewModelScope.launch{
+    fun cancelReservation(id: String) {
+        viewModelScope.launch {
             _uiState.update {
                 it.copy(isLoading = true)
             }
             reservationRepositoryImpl.cancelUserReservation(id)
+                .onSuccess { data, message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+            _uiState.update {
+                it.copy(isLoading = false)
+            }
+        }
+    }
+
+    fun updateReservation(id: String, status: Status) {
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
+            reservationRepositoryImpl.updateReservation(id, status)
                 .onSuccess { data, message ->
                     _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 }

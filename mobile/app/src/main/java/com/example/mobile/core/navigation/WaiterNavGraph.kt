@@ -22,6 +22,8 @@ import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.waiter.WaiterCreateOrderScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
+import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
+import com.example.mobile.reservations.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -156,6 +158,29 @@ fun WaiterNavGraph(
                 onOpenItemDetails = {}
             )
         }
+        composable(
+            route = WaiterScreen.Reservations.route,
+        ) {
+            ReservationScreenRoot(
+                modifier = modifier,
+                onGoToReservationDetails = {id ->
+                    navController.navigate(WaiterScreen.ReservationDetails(id))}
+            )
+        }
+        composable<WaiterScreen.ReservationDetails>{
+            val args = it.toRoute<WaiterScreen.ReservationDetails>()
+            ReservationDetailsScreenRoot(
+                modifier = modifier,
+                onGoBack = {
+                    navController.navigate(WaiterScreen.Reservations.route){
+                        popUpTo(WaiterScreen.Reservations.route){
+                            inclusive = true
+                        }
+                    }
+                },
+                id = args.id
+            )
+        }
     }
 }
 
@@ -171,4 +196,7 @@ sealed class WaiterScreen(val route: String){
     data object Search: WaiterScreen(route = "SEARCH")
     @Serializable
     data class OrderDetails(val id: Int): WaiterScreen(route = "ORDER_DETAILS")
+    data object Reservations: WaiterScreen(route = "RESERVATIONS")
+    @Serializable
+    data class ReservationDetails(val id: Int): WaiterScreen(route = "RESERVATION_DETAILS")
 }

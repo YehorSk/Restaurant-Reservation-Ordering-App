@@ -39,19 +39,6 @@ class ReservationController extends Controller
         return $this->error('', 'No user', 401);
     }
 
-    public function adminUpdateReservation(Request $request, $id){
-        $user = auth('sanctum')->user();
-        if ($user instanceof User) {
-            $reservation = Reservation::find($id);
-            $data = $request->validate([
-                "status" => "required",
-            ]);
-            $reservation->update($data);
-            return $this->success(data: $user, message: "Reservation updated successfully");
-        }
-        return $this->error('', 'No user', 401);
-    }
-
     public function adminDeleteReservation($id){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
@@ -103,16 +90,32 @@ class ReservationController extends Controller
     public function getReservations(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $items = $user->reservations()->with('table', 'timeSlot')->get();
+            if ($user->role === 'user') {
+                $items = $user->reservations()->with('table', 'timeSlot')->get();
 
-            $items->each(function ($item) {
-                $item->table_number = $item->table->number ?? null;
-                $item->start_time = $item->timeSlot->start_time ?? null;
+                $items->each(function ($item) {
+                    $item->table_number = $item->table->number ?? null;
+                    $item->start_time = $item->timeSlot->start_time ?? null;
 
-                unset($item->table);
-                unset($item->timeSlot);
-            });
-            return $this->success(data: $items, message: "");
+                    unset($item->table);
+                    unset($item->timeSlot);
+                });
+                return $this->success(data: $items, message: "");
+            }elseif (in_array($user->role, ['waiter', 'chef', 'admin'])) {
+                $items = Reservation::with('table', 'timeSlot')->get();
+
+                $items->each(function ($item) {
+                    $item->table_number = $item->table->number ?? null;
+                    $item->start_time = $item->timeSlot->start_time ?? null;
+
+                    unset($item->table);
+                    unset($item->timeSlot);
+                });
+                return $this->success(data: $items, message: "");
+            }else{
+                return $this->error('', 'Invalid role', 403);
+            }
+
         }
         return $this->error('', 'No user', 401);
     }
@@ -121,17 +124,27 @@ class ReservationController extends Controller
         $user = auth('sanctum')->user();
 
         if ($user instanceof User) {
-            $item = $user->reservations()->with('table')->with('timeSlot')->find($id);
+            if ($user->role === 'user') {
+                $item = $user->reservations()->with('table')->with('timeSlot')->find($id);
 
-            if ($item) {
                 $item->table_number = $item->table->number ?? null;
                 $item->start_time = $item->timeSlot->start_time ?? null;
                 unset($item->table);
                 unset($item->timeSlot);
                 return $this->success(data: [$item], message: "");
+            }elseif (in_array($user->role, ['waiter', 'chef', 'admin'])) {
+                $item = Reservation::with('table')->with('timeSlot')->find($id);
+
+                $item->table_number = $item->table->number ?? null;
+                $item->start_time = $item->timeSlot->start_time ?? null;
+                unset($item->table);
+                unset($item->timeSlot);
+                return $this->success(data: [$item], message: "");
+            } else {
+                return $this->error('', 'Invalid role', 403);
             }
 
-            return $this->error('', 'Reservation not found', 404);
+
         }
 
         return $this->error('', 'No user', 401);
@@ -214,8 +227,11 @@ class ReservationController extends Controller
     {
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $item = $user->reservations()->with('table')->with('timeSlot')->find($id);
-
+            if ($user->role === 'user') {
+                $item = $user->reservations()->with('table')->with('timeSlot')->find($id);
+            }else{
+                $item = Reservation::with('table')->with('timeSlot')->find($id);
+            }
             if ($item) {
                 if($item->status == "Pending"){
                     $item->update(['status' => 'Cancelled']);
@@ -233,6 +249,23 @@ class ReservationController extends Controller
                 }
             }
             return $this->error('', 'Reservation not found', 404);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function adminUpdateReservation(Request $request, $id){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $item = Reservation::with('table')->with('timeSlot')->find($id);
+            $data = $request->validate([
+                "status" => "required",
+            ]);
+            $item->update($data);
+            $item->table_number = $item->table->number ?? null;
+            $item->start_time = $item->timeSlot->start_time ?? null;
+            unset($item->table);
+            unset($item->timeSlot);
+            return $this->success(data: [$item], message: "Reservation updated successfully");
         }
         return $this->error('', 'No user', 401);
     }

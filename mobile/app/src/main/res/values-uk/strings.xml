@@ -49,6 +49,8 @@
     <string name="reservation_code">Код бронювання #%1$s</string>
     <string name="search_icon">Іконка пошуку</string>
     <string name="order_button">Замовити %1$s</string>
+    <string name="confirm_reservation">Підтвердити бронювання</string>
+    <string name="pending_reservation">Очікує на підтвердження</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>

@@ -1,6 +1,7 @@
 package com.example.mobile.reservations.presentation.reservations
 
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.domain.remote.ReservationFilter
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
@@ -27,8 +28,9 @@ import javax.inject.Inject
 class ReservationScreenViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     reservationRepositoryImpl: ReservationRepositoryImpl,
-    reservationDao: ReservationDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao){
+    reservationDao: ReservationDao,
+    preferencesRepository: MainPreferencesRepository
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository){
 
     private val _filterOption = MutableStateFlow(ReservationFilter.ALL)
     val filterOption= _filterOption.asStateFlow()

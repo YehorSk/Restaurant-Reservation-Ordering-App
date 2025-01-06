@@ -104,6 +104,7 @@ fun BottomBar(
                 BottomBarScreen.Home,
                 BottomBarScreen.Cart,
                 BottomBarScreen.Orders,
+                BottomBarScreen.Reservations,
                 BottomBarScreen.Settings
             )
         }

@@ -5,10 +5,12 @@ import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.reservations.data.remote.dto.ReservationDto
 import com.example.mobile.orders.data.remote.dto.TimeSlotDto
 import com.example.mobile.orders.presentation.OrderForm
+import com.example.mobile.reservations.presentation.reservation_details.Status
 import com.example.mobile.reservations.presentation.reservations.ReservationForm
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ReservationService {
@@ -24,6 +26,9 @@ interface ReservationService {
 
     @GET("reservation/user/reservations/{id}")
     suspend fun getReservationDetails(@Path("id") id: String) : ResponseDto<ReservationDto>
+
+    @PUT("reservation/admin/updateReservation/{id}")
+    suspend fun updateReservation(@Path("id") id: String, @Body status: Status) : ResponseDto<ReservationDto>
 
     @GET("reservation/user/reservations/cancel/{id}")
     suspend fun cancelUserReservation(@Path("id") id: String) : ResponseDto<ReservationDto>

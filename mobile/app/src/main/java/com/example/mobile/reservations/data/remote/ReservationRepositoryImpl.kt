@@ -9,6 +9,7 @@ import com.example.mobile.reservations.data.remote.dto.ReservationDto
 import com.example.mobile.reservations.data.remote.dto.toReservationEntity
 import com.example.mobile.reservations.domain.repository.ReservationRepository
 import com.example.mobile.reservations.domain.service.ReservationService
+import com.example.mobile.reservations.presentation.reservation_details.Status
 import com.example.mobile.reservations.presentation.reservations.ReservationForm
 import timber.log.Timber
 import javax.inject.Inject
@@ -56,6 +57,21 @@ class ReservationRepositoryImpl @Inject constructor(
         return safeCall<ReservationDto>(
             execute = {
                 reservationService.getReservationDetails(id)
+            },
+            onSuccess = { data ->
+                reservationDao.insertReservation(data.first().toReservationEntity())
+            }
+        )
+    }
+
+    override suspend fun updateReservation(
+        id: String,
+        status: Status
+    ): Result<List<ReservationDto>, AppError> {
+        Timber.d("updateReservation")
+        return safeCall<ReservationDto>(
+            execute = {
+                reservationService.updateReservation(id, status)
             },
             onSuccess = { data ->
                 reservationDao.insertReservation(data.first().toReservationEntity())

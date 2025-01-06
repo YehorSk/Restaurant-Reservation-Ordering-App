@@ -1,6 +1,8 @@
 package com.example.mobile.reservations.presentation
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.reservations.data.dao.ReservationDao
@@ -10,8 +12,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -19,8 +24,12 @@ import javax.inject.Inject
 open class ReservationBaseViewModel @Inject constructor(
     val networkConnectivityObserver: ConnectivityObserver,
     val reservationRepositoryImpl: ReservationRepositoryImpl,
-    val reservationDao: ReservationDao
+    val reservationDao: ReservationDao,
+    val preferencesRepository: MainPreferencesRepository,
 ): ViewModel(){
+
+    val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     protected val _uiState = MutableStateFlow(ReservationUiState())
     val uiState = _uiState.asStateFlow()

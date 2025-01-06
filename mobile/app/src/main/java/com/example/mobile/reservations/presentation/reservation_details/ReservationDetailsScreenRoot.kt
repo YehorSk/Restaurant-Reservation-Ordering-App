@@ -4,10 +4,12 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,6 +43,7 @@ fun ReservationDetailsScreenRoot(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
+    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -61,7 +64,8 @@ fun ReservationDetailsScreenRoot(
         isConnected = isConnected,
         onAction = viewModel::onAction,
         uiState = uiState,
-        reservationItemUiState = reservationItemUiState
+        reservationItemUiState = reservationItemUiState,
+        userRole = userRole.toString()
     )
 
 }
@@ -74,7 +78,8 @@ fun ReservationDetailsScreen(
     isConnected: Boolean,
     onAction: (ReservationDetailsAction) -> Unit,
     uiState: ReservationUiState,
-    reservationItemUiState: List<ReservationEntity>
+    reservationItemUiState: List<ReservationEntity>,
+    userRole: String
 ){
     val data = reservationItemUiState.find { it.id.toString() == id.toString() }
 
@@ -104,18 +109,63 @@ fun ReservationDetailsScreen(
                 date = data.date
             )
             if(isConnected){
-                ActionButton(
-                    modifier = Modifier
-                        .padding(
-                            start = 20.dp,
-                            end = 20.dp,
-                            top = 10.dp,
-                            bottom = 5.dp
-                        ),
-                    onAction = { onAction(ReservationDetailsAction.CancelReservation(id.toString())) },
-                    text = R.string.cancel_reservation,
-                    enabled = data.status != "Cancelled"
-                )
+                if(userRole == "user"){
+                    ActionButton(
+                        modifier = Modifier
+                            .padding(
+                                start = 20.dp,
+                                end = 20.dp,
+                                top = 10.dp,
+                                bottom = 5.dp
+                            ),
+                        onAction = { onAction(ReservationDetailsAction.CancelReservation(id.toString())) },
+                        text = R.string.cancel_reservation,
+                        enabled = data.status != "Cancelled"
+                    )
+                }else{
+                    Column(
+                        modifier = modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .fillMaxWidth()
+                    ) {
+                        ActionButton(
+                            modifier = Modifier
+                                .padding(
+                                    start = 20.dp,
+                                    end = 20.dp,
+                                    top = 10.dp,
+                                    bottom = 5.dp
+                                ),
+                            onAction = { onAction(ReservationDetailsAction.SetPendingStatus(id.toString())) },
+                            text = R.string.confirm_reservation,
+                            enabled = data.status != "Pending"
+                        )
+                        ActionButton(
+                            modifier = Modifier
+                                .padding(
+                                    start = 20.dp,
+                                    end = 20.dp,
+                                    top = 10.dp,
+                                    bottom = 5.dp
+                                ),
+                            onAction = { onAction(ReservationDetailsAction.SetConfirmedStatus(id.toString())) },
+                            text = R.string.confirm_reservation,
+                            enabled = data.status != "Confirmed"
+                        )
+                        ActionButton(
+                            modifier = Modifier
+                                .padding(
+                                    start = 20.dp,
+                                    end = 20.dp,
+                                    top = 10.dp,
+                                    bottom = 5.dp
+                                ),
+                            onAction = { onAction(ReservationDetailsAction.SetCancelledStatus(id.toString())) },
+                            text = R.string.cancel_reservation,
+                            enabled = data.status != "Cancelled"
+                        )
+                    }
+                }
             }
         }
     }

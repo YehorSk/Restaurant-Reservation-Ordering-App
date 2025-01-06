@@ -1,6 +1,7 @@
 package com.example.mobile.reservations.presentation.create_reservation
 
 import androidx.lifecycle.viewModelScope
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
@@ -18,8 +19,9 @@ import javax.inject.Inject
 class CreateReservationViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     reservationRepositoryImpl: ReservationRepositoryImpl,
-    reservationDao: ReservationDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao){
+    reservationDao: ReservationDao,
+    preferencesRepository: MainPreferencesRepository
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository){
 
     fun updatePartySize(size: Int){
         _uiState.update {
