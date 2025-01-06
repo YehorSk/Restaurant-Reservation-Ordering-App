@@ -12,16 +12,17 @@ class UserController extends Controller
     public function index(Request $request){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
-            $users = $user->all();
+            $search = $request->input('search');
+            $users = User::query()
+                ->when($search, function ($query, $search) {
+                    return $query->where(function ($query) use ($search) {
+                        $query->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%")
+                            ->orWhere('role', 'LIKE', "%{$search}%");
+                    });
+                })
+                ->paginate(10);
             return $this->success($users, "");
-        }
-        return $this->error('', 'No user', 401);
-    }
-
-    public function store(Request $request){
-        $user = auth('sanctum')->user();
-        if ($user instanceof User) {
-
         }
         return $this->error('', 'No user', 401);
     }

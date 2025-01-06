@@ -18,7 +18,14 @@ class ReservationController extends Controller
     public function getAllReservations(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User && $user->role === "admin"){
-            $items = Reservation::with('table', 'timeSlot')->get();
+            $search = $request->input('search');
+            $items = Reservation::with('table', 'timeSlot')
+                ->when($search, function ($query, $search) {
+                    return $query->where(function ($query) use ($search) {
+                        $query->where('code', 'LIKE', "%{$search}%");
+                    });
+                })
+                ->paginate(10);
 
             $items->each(function ($item) {
                 $item->table_number = $item->table->number ?? null;

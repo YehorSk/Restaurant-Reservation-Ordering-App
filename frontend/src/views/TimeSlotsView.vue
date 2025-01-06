@@ -25,7 +25,7 @@
     <br>
     <h2 class="text-4xl font-extrabold dark:text-white">All Time Slot's</h2>
     <div v-if="timeSlotStore.isLoading" class="text-center text-gray-500 py-6">
-      <RingLoader/>
+      <PulseLoader/>
     </div>
     <table v-else class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 my-6">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -95,9 +95,10 @@
 import {UseTimeSlotStore} from "@/stores/TimeSlotsStore.js";
 import {useToast} from "vue-toastification";
 import NavComponent from "@/components/SideBarComponent.vue";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 export default {
-  components: {NavComponent},
+  components: {NavComponent, PulseLoader},
   data(){
     return {
       timeSlotStore: UseTimeSlotStore(),

@@ -11,17 +11,29 @@ class MenuController extends Controller
 {
     use HttpResponses;
 
-    public function index(){
+    public function index(Request $request){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
-            $menus = Menu::with('items')->get()->map(function ($menu) use ($user) {
-                $menu->items = $menu->items->map(function ($item) use ($user) {
-                    $item->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $item->id)->exists();
-                    return $item;
+            if(in_array($user->role, ['waiter', 'chef', 'user'])){
+                $menus = Menu::with('items')->get()->map(function ($menu) use ($user) {
+                    $menu->items = $menu->items->map(function ($item) use ($user) {
+                        $item->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $item->id)->exists();
+                        return $item;
+                    });
+                    return $menu;
                 });
-                return $menu;
-            });
-            return $this->success(data: $menus, message: "Item was created");
+            }else{
+                $search = $request->input('search');
+                $menus = Menu::query()
+                    ->when($search, function ($query, $search) {
+                        return $query->where(function ($query) use ($search) {
+                            $query->where('name', 'LIKE', "%{$search}%")
+                                ->orWhere('description', 'LIKE', "%{$search}%");
+                        });
+                    })
+                    ->paginate(10);
+            }
+            return $this->success(data: $menus, message: "");
         }
         return $this->error('', 'No user', 401);
     }

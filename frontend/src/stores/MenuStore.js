@@ -26,16 +26,19 @@ export const UseMenuStore = defineStore("menu",{
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
         },
-        async fetchMenus() {
+        async fetchMenus(page = 1, search = '') {
             this.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('menu',{
+                const response = await axios.get('menu?page=' + page,{
                     headers: {
                         'Accept': 'application/vnd.api+json',
                         "Content-Type": "application/json",
                         "Access-Control-Allow-Origin":"*",
                         'Authorization': `Bearer ${this.token}`
+                    },
+                    params: {
+                        search: search
                     }
                 });
                 console.log(response.data.data)
@@ -48,17 +51,20 @@ export const UseMenuStore = defineStore("menu",{
                 this.isLoading = false;
             }
         },
-        async fetchMenuItems($id){
+        async fetchMenuItems(page = 1, search = '', $id){
             this.menuItems = [];
             this.isLoading = true;
             await this.getToken();
             try{
-                const response = await axios.get('menuItems/'+$id+'/items',{
+                const response = await axios.get('menuItems/'+$id+'/items?page=' + page,{
                     headers: {
                         'Accept': 'application/vnd.api+json',
                             "Content-Type": "application/json",
                             "Access-Control-Allow-Origin":"*",
                             'Authorization': `Bearer ${this.token}`
+                    },
+                    params: {
+                        search: search
                     }
                 });
                 console.log(response.data)

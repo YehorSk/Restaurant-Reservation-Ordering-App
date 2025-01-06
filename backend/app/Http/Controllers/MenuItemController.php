@@ -11,10 +11,24 @@ class MenuItemController extends Controller
 {
     use HttpResponses;
 
-    public function index($id){
+    public function index(Request $request, $id){
         $user = auth('sanctum')->user();
         if($user instanceof User){
-            $menuItems = MenuItem::where('menu_id', $id)->get();
+            if(in_array($user->role, ['waiter', 'chef', 'user'])){
+                $menuItems = MenuItem::where('menu_id', $id)->get();
+            }else{
+                $search = $request->input('search');
+                $menuItems = MenuItem::where('menu_id', $id)
+                    ->when($search, function ($query, $search) {
+                        return $query->where(function ($query) use ($search) {
+                            $query->where('name', 'LIKE', "%{$search}%")
+                                ->orWhere('long_description', 'LIKE', "%{$search}%")
+                                ->orWhere('short_description', 'LIKE', "%{$search}%")
+                                ->orWhere('recipe', 'LIKE', "%{$search}%");
+                        });
+                    })
+                    ->paginate(10);
+            }
             return $this->success(data: $menuItems, message: "");
         }
         return $this->error('', 'No user', 401);

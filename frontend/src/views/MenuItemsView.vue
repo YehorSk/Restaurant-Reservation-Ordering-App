@@ -43,11 +43,27 @@
     </v-sheet>
     <div class="relative overflow-x-auto">
       <h2 class="text-4xl font-extrabold dark:text-white">All Menu Items</h2>
+      <br>
+      <form class="flex items-center max-w-sm mx-auto" @submit.prevent="onSearch">
+        <div class="relative w-full">
+          <input type="text" v-model="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
+        </div>
+        <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+          <span class="sr-only">Search</span>
+        </button>
+      </form>
+      <br>
       <button type="submit" class="my-6 text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
         Add new Item Menu
       </button>
-      <table class="my-6 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <div v-if="menuStore.isLoading" class="text-center text-gray-500 py-6">
+        <PulseLoader/>
+      </div>
+      <table v-else class="my-6 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3">
@@ -71,7 +87,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in menuStore.menuItems" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        <tr v-for="item in menuStore.menuItems.data" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ item.name }}
           </th>
@@ -100,6 +116,13 @@
         </tr>
         </tbody>
       </table>
+      <div class="text-center">
+        <v-pagination
+            v-model="page"
+            :length="menuStore.getMenuItems.last_page"
+            rounded="circle"
+        ></v-pagination>
+      </div>
     </div>
   </div>
   <v-dialog v-model="dialog" width="auto" persistent>
@@ -148,10 +171,11 @@ import {RouterLink, useRoute} from "vue-router";
 import {UseMenuStore} from "@/stores/MenuStore.js";
 import {useToast} from "vue-toastification";
 import NavComponent from "@/components/SideBarComponent.vue";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 export default {
   name: "MenuItemsView",
-  components: {NavComponent},
+  components: {NavComponent, PulseLoader},
   data(){
     return {
       route: useRoute(),
@@ -163,7 +187,9 @@ export default {
       picture: "",
       price: 0,
       dialog: false,
-      editMenuItem: {}
+      editMenuItem: {},
+      page: 1,
+      search: '',
     }
   },
   watch: {
@@ -183,7 +209,7 @@ export default {
     this.menuStore.success = "";
   },
   beforeMount(){
-    this.menuStore.fetchMenuItems(this.route.params.id)
+    this.menuStore.fetchMenuItems(this.page, this.search, this.route.params.id)
   },
   methods:{
     submitForm(){
@@ -197,7 +223,11 @@ export default {
     },
     setMenuItem(item){
       this.editMenuItem = item;
-    }
+    },
+    onSearch() {
+      this.page = 1;
+      this.menuStore.fetchMenuItems(this.page, this.search, this.route.params.id);
+    },
   }
 }
 </script>

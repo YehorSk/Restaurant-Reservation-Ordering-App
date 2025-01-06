@@ -88,7 +88,8 @@ fun BottomBar(
         }
         UserRoles.ADMIN -> {
             screens = listOf(
-                BottomBarScreen.Home,
+                BottomBarScreen.Orders,
+                BottomBarScreen.Reservations,
                 BottomBarScreen.Settings
             )
         }

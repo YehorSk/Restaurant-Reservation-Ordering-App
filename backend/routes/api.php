@@ -64,6 +64,8 @@ Route::prefix("cart")->controller(CartController::class)->group(function (){
 })->middleware('auth:sanctum');
 
 Route::prefix("order")->controller(OrderController::class)->group(function (){
+    Route::get('/admin/getAllOrders-','getAllOrders');
+    Route::put('/admin/updateOrder/{id}','adminUpdateOrder');
     Route::get('/user/cartItems','getUserCartItems');
     Route::get('/user/orders','getUserOrders');
     Route::get('/user/orders/{id}','getUserOrderDetails');

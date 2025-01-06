@@ -22,16 +22,19 @@ export const UseReservationStore = defineStore("reservations", {
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
         },
-        async fetchReservations(){
+        async fetchReservations(page = 1, search = ''){
             this.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('reservation/admin/getAllReservations',{
+                const response = await axios.get('reservation/admin/getAllReservations?page=' + page,{
                     headers: {
                         'Accept': 'application/vnd.api+json',
                         "Content-Type": "application/json",
                         "Access-Control-Allow-Origin":"*",
                         'Authorization': `Bearer ${this.token}`
+                    },
+                    params:{
+                        search: search
                     }
                 });
                 console.log(response.data.data)
