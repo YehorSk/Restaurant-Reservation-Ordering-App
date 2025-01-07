@@ -29,6 +29,9 @@ class SettingsViewModel @Inject constructor(
     val preferencesRepository: MainPreferencesRepository
 ): ViewModel() {
 
+    val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
     val userName: StateFlow<String?> = preferencesRepository.userNameFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 

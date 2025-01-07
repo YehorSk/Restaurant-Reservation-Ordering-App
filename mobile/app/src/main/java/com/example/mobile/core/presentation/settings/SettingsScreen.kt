@@ -29,6 +29,7 @@ fun SettingsScreen(
             .background(MaterialTheme.colorScheme.background),
     ) {
         val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
+        val userRole by settingsViewModel.userRole.collectAsStateWithLifecycle()
 
         LazyColumn(
             modifier = Modifier.fillMaxSize()
@@ -46,13 +47,15 @@ fun SettingsScreen(
                     }
                 )
             }
-            item{
-                ProfileListItem(
-                    text = R.string.favorites,
-                    onClick = {
-                        onNavigate(ProfileDestination.Favorites)
-                    }
-                )
+            if(userRole in arrayOf("user","waiter")){
+                item{
+                    ProfileListItem(
+                        text = R.string.favorites,
+                        onClick = {
+                            onNavigate(ProfileDestination.Favorites)
+                        }
+                    )
+                }
             }
             item{
                 ProfileListItem(

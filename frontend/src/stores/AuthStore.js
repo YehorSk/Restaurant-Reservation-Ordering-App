@@ -38,8 +38,9 @@ export const UseAuthStore = defineStore("auth",{
                 });
                 console.log(response)
                 this.success = response.data.data.message;
-                this.user = response.data.data.user;
-                this.token = response.data.data.token;
+                this.user = response.data.data[0].user;
+                this.token = response.data.data[0].token;
+                console.log(this.token)
                 await router.push('/');
             } catch (error) {
                 console.log(error.response);
