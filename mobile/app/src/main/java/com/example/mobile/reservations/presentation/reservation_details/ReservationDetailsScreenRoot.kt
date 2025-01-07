@@ -90,7 +90,7 @@ fun ReservationDetailsScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
         ) {
             NavBar(
@@ -137,7 +137,7 @@ fun ReservationDetailsScreen(
                                     bottom = 5.dp
                                 ),
                             onAction = { onAction(ReservationDetailsAction.SetPendingStatus(id.toString())) },
-                            text = R.string.confirm_reservation,
+                            text = R.string.pending_reservation,
                             enabled = data.status != "Pending"
                         )
                         ActionButton(

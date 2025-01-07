@@ -48,7 +48,9 @@
     <string name="time_reservation">Час: %1$s</string>
     <string name="reservation_code">Код бронювання #%1$s</string>
     <string name="search_icon">Іконка пошуку</string>
-    <string name="order_button">Замовити %1$s</string>
+    <string name="order_button_pickup">Замовити самовивіз</string>
+    <string name="order_button_delivery">Замовити доставку</string>
+    <string name="order_button_reservation">Зробити резервацію</string>
     <string name="confirm_reservation">Підтвердити бронювання</string>
     <string name="pending_reservation">Очікує на підтвердження</string>
 

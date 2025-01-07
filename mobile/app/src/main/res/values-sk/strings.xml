@@ -48,7 +48,9 @@
     <string name="time_reservation">Čas: %1$s</string>
     <string name="reservation_code">Rezervácia #%1$s</string>
     <string name="search_icon">Ikona vyhľadávania</string>
-    <string name="order_button">Objednať %1$s</string>
+    <string name="order_button_pickup">Objednať osobný odber</string>
+    <string name="order_button_delivery">Objednať doručenie</string>
+    <string name="order_button_reservation">Vytvoriť rezerváciu</string>
     <string name="confirm_reservation">Potvrdiť rezerváciu</string>
     <string name="pending_reservation">Čakajúca rezervácia</string>
 

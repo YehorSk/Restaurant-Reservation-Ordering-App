@@ -47,7 +47,9 @@
     <string name="time_reservation">Time: %1$s</string>
     <string name="reservation_code">Reservation #%1$s</string>
     <string name="search_icon">Search Icon</string>
-    <string name="order_button">Order %1$s</string>
+    <string name="order_button_pickup">Order Pickup</string>
+    <string name="order_button_delivery">Order Delivery</string>
+    <string name="order_button_reservation">Make Reservation</string>
     <string name="confirm_reservation">Confirm reservation</string>
     <string name="pending_reservation">Pending reservation</string>
 

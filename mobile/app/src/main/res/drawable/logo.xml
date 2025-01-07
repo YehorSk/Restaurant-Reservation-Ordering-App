@@ -6,7 +6,7 @@
             
         <clip-path android:pathData="M0,0h400v400h-400z"/>
             
-        <path android:fillColor="#ffffff" android:pathData="M0,0h400v400h-400z"/>
+        <path android:pathData="M0,0h400v400h-400z"/>
             
         <path android:fillColor="#ffffff" android:pathData="M200,200m-197,0a197,197 0,1 1,394 0a197,197 0,1 1,-394 0" android:strokeColor="#555555" android:strokeWidth="6"/>
             
