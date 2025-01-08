@@ -63,9 +63,6 @@ class ReservationController extends Controller
 
             $availableTables = Table::query()
                 ->where('capacity', '>=', $size)
-                ->whereDoesntHave('reservations', function ($query) use ($date) {
-                    $query->where('date', $date);
-                })
                 ->get();
 
             if ($availableTables->isEmpty()) {

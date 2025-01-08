@@ -110,4 +110,18 @@ class AuthController extends Controller
         }
         return $this->error('', 'No user', 401);
     }
+
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? response()->json(['status' => __($status)], 200)
+            : response()->json(['error' => __($status)], 400);
+    }
+
 }

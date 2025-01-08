@@ -10,13 +10,10 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
-Route::get('/user', [AuthController::class, 'authenticate'])->middleware('auth:sanctum');
-
+Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
 //Public routes
 Route::controller(AuthController::class)->group(function () {
@@ -27,89 +24,75 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/update-profile', 'updateProfile');
 });
 
-Route::group(['prefix' => 'menuItems/{id}'], function () {
-    Route::apiResource('items', MenuItemController::class);
-})->middleware('auth:sanctum');
-
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::get('/logout',[AuthController::class,'logout']);
+    Route::get('/forgot-password',[AuthController::class,'forgotPassword']);
+    Route::get('/user', [AuthController::class, 'authenticate']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('menu', MenuController::class);
     Route::apiResource('timeSlots', TimeSlotController::class);
     Route::apiResource('tables', TableController::class);
     Route::apiResource('users', UserController::class);
+
+    Route::group(['prefix' => 'menuItems/{id}'], function () {
+        Route::apiResource('items', MenuItemController::class);
+    });
+
+    Route::prefix("cart")->controller(CartController::class)->group(function (){
+        Route::get('/user','getUserCartItems');
+        Route::post('/user/add','addUserCartItem');
+        Route::post('/user/delete','deleteUserCartItem');
+        Route::post('/user/update','updateUserCartItem');
+    });
+
+    Route::prefix("order")->controller(OrderController::class)->group(function (){
+        //Admin
+        Route::get('/admin/getAllOrders-','getAllOrders');
+        Route::put('/admin/updateOrder/{id}','adminUpdateOrder');
+
+        // Waiter
+        Route::get('/waiter/orders/confirm/{id}','markOrderAsConfirmed');
+        Route::get('/waiter/orders/complete/{id}','markOrderAsCompleted');
+        Route::get('/waiter/orders/cancel/{id}','markOrderAsCancelled');
+        Route::post('/waiter/order','makeWaiterOrder');
+
+        // Chef
+        Route::get('/chef/orders/prepare/{id}','markOrderAsPreparing');
+        Route::get('/chef/orders/ready/{id}','markOrderAsReadyForPickup');
+
+        //User
+        Route::post('/user/pickup','makeUserPickUpOrder');
+        Route::post('/user/delivery','makeUserDeliveryOrder');
+        Route::get('/user/cartItems','getUserCartItems');
+        Route::get('/user/orders','getUserOrders');
+        Route::get('/user/orders/{id}','getUserOrderDetails');
+        Route::get('/user/orders/cancel/{id}','userCancelOrder');
+        Route::get('/user/orders/repeat/{id}','repeatOrder');
+    });
+
+    Route::prefix("favorite")->controller(FavoriteController::class)->group(function (){
+        Route::get('/user','getUserFavoriteItems');
+        Route::post('/user/add','addUserFavoriteItem');
+        Route::post('/user/delete','deleteUserFavoriteItem');
+    });
+
+    Route::prefix("table")->controller(TableController::class)->group(function (){
+        Route::get('/waiter/tables','getTables');
+    });
+
+    Route::prefix("reservation")->controller(ReservationController::class)->group(function (){
+        //Admin
+        Route::get('/admin/getAllReservations','getAllReservations');
+        Route::put('/admin/updateReservation/{id}','adminUpdateReservation');
+        Route::delete('/admin/deleteReservation/{id}','adminDeleteReservation');
+
+        //User
+        Route::post('/user/getTimeSlots','getAvailableTimeSlots');
+        Route::post('/user/createReservation','createReservation');
+        Route::get('/user/reservations','getReservations');
+        Route::get('/user/reservations/{id}','getReservationsDetails');
+        Route::get('/user/reservations/cancel/{id}','cancelReservation');
+    });
+
 });
-
-Route::post('/forgot-password', function (Request $request) {
-    $request->validate(['email' => 'required|email']);
-
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
-
-    return $status === Password::RESET_LINK_SENT
-        ? back()->with(['status' => __($status)])
-        : back()->withErrors(['email' => __($status)]);
-})->name('password.email');
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
-
-Route::prefix("cart")->controller(CartController::class)->group(function (){
-    Route::get('/user','getUserCartItems');
-    Route::post('/user/add','addUserCartItem');
-    Route::post('/user/delete','deleteUserCartItem');
-    Route::post('/user/update','updateUserCartItem');
-})->middleware('auth:sanctum');
-
-Route::prefix("order")->controller(OrderController::class)->group(function (){
-    Route::get('/admin/getAllOrders-','getAllOrders');
-    Route::put('/admin/updateOrder/{id}','adminUpdateOrder');
-    Route::get('/user/cartItems','getUserCartItems');
-    Route::get('/user/orders','getUserOrders');
-    Route::get('/user/orders/{id}','getUserOrderDetails');
-    Route::get('/user/orders/cancel/{id}','userCancelOrder');
-    Route::get('/user/orders/repeat/{id}','repeatOrder');
-
-    // Waiter
-    Route::get('/waiter/orders/confirm/{id}','markOrderAsConfirmed');
-    Route::get('/waiter/orders/complete/{id}','markOrderAsCompleted');
-    Route::get('/waiter/orders/cancel/{id}','markOrderAsCancelled');
-    Route::post('/waiter/order','makeWaiterOrder');
-
-    // Chef
-    Route::get('/chef/orders/prepare/{id}','markOrderAsPreparing');
-    Route::get('/chef/orders/ready/{id}','markOrderAsReadyForPickup');
-
-    Route::post('/user/pickup','makeUserPickUpOrder');
-    Route::post('/user/delivery','makeUserDeliveryOrder');
-})->middleware('auth:sanctum');
-
-Route::prefix("favorite")->controller(FavoriteController::class)->group(function (){
-    Route::get('/user','getUserFavoriteItems');
-    Route::post('/user/add','addUserFavoriteItem');
-    Route::post('/user/delete','deleteUserFavoriteItem');
-});
-
-Route::prefix("table")->controller(TableController::class)->group(function (){
-    Route::get('/waiter/tables','getTables');
-});
-
-Route::prefix("reservation")->controller(ReservationController::class)->group(function (){
-    Route::get('/admin/getAllReservations','getAllReservations');
-    Route::put('/admin/updateReservation/{id}','adminUpdateReservation');
-    Route::delete('/admin/deleteReservation/{id}','adminDeleteReservation');
-    Route::post('/user/getTimeSlots','getAvailableTimeSlots');
-    Route::post('/user/createReservation','createReservation');
-    Route::get('/user/reservations','getReservations');
-    Route::get('/user/reservations/{id}','getReservationsDetails');
-    Route::get('/user/reservations/cancel/{id}','cancelReservation');
-});
-
-Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
-
-// 0 - Pickup
-// 1 - Delivery
-// 3 - Reservation
-// 4 - Waiter Dine-in

@@ -136,18 +136,18 @@ fun OrderDetailsScreen(
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxWidth()
                     ) {
-                        ActionButton(
-                            modifier = Modifier
-                                .padding(
-                                    start = 20.dp,
-                                    end = 20.dp,
-                                    top = 10.dp,
-                                    bottom = 5.dp
-                                ),
-                            onAction = { onAction(OrderDetailsAction.RepeatOrder((data.order.id))) },
-                            text = R.string.repeat_order,
-                            enabled = true
-                        )
+//                        ActionButton(
+//                            modifier = Modifier
+//                                .padding(
+//                                    start = 20.dp,
+//                                    end = 20.dp,
+//                                    top = 10.dp,
+//                                    bottom = 5.dp
+//                                ),
+//                            onAction = { onAction(OrderDetailsAction.RepeatOrder((data.order.id))) },
+//                            text = R.string.repeat_order,
+//                            enabled = true
+//                        )
                         ActionButton(
                             modifier = Modifier
                                 .padding(
