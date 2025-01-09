@@ -11,6 +11,24 @@ class MenuItemController extends Controller
 {
     use HttpResponses;
 
+    public function getStats(){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $data_fav = MenuItem::withCount('favoritedByUsers')
+                ->orderBy('favorited_by_users_count', 'desc')
+                ->take(10)
+                ->get();
+            $data_ord = MenuItem::withCount('orders')
+                ->orderBy('orders_count', 'desc')
+                ->take(10)
+                ->get();
+            return $this->success(data: [[
+                'favorites' => $data_fav,
+                'ordered' => $data_ord
+            ]], message: "");
+        }
+        return $this->error('', 'No user', 401);
+    }
 
     public function index(Request $request, $id){
         $user = auth('sanctum')->user();

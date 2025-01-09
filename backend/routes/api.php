@@ -41,6 +41,8 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         Route::apiResource('items', MenuItemController::class);
     });
 
+    Route::get('/menuItems/stats', [MenuItemController::class, 'getStats']);
+
     Route::prefix("cart")->controller(CartController::class)->group(function (){
         Route::get('/user','getUserCartItems');
         Route::post('/user/add','addUserCartItem');

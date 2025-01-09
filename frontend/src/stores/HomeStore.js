@@ -16,6 +16,10 @@ export const UseHomeStore = defineStore("home", {
            isLoading: false,
            data: [],
        },
+       menuItems_stats: {
+           isLoading: false,
+           data: [],
+       }
    }),
     getters: {
        getOrderStats(){
@@ -23,6 +27,9 @@ export const UseHomeStore = defineStore("home", {
        },
         getReservationStats(){
             return this.reservation_stats;
+        },
+        getMenuItemsStats(){
+           return this.menuItems_stats;
         }
     },
     actions: {
@@ -67,6 +74,26 @@ export const UseHomeStore = defineStore("home", {
                 console.log(error);
             }finally {
                 this.reservation_stats.isLoading = false;
+            }
+        },
+        async fetchMenuItemsStats(){
+            this.menuItems_stats.isLoading = true;
+            await this.getToken();
+            try {
+                const response = await axios.get('menuItems/stats',{
+                    headers: {
+                        'Accept': 'application/vnd.api+json',
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Origin":"*",
+                        'Authorization': `Bearer ${this.token}`
+                    }
+                });
+                console.log(response.data.data)
+                this.menuItems_stats.data = response.data.data;
+            }catch (error) {
+                console.log(error);
+            }finally {
+                this.menuItems_stats.isLoading = false;
             }
         },
     }
