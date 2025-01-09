@@ -18,6 +18,17 @@ class AuthController extends Controller
 {
     use HttpResponses;
 
+    public function getStats(){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "admin"){
+            $data_all = User::all();
+            return $this->success([[
+                'data_all' => $data_all->count(),
+            ]]);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     public function authenticate(Request $request)
     {
         $user = $request->user();

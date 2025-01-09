@@ -12,6 +12,71 @@ class OrderController extends Controller
 {
     use HttpResponses;
 
+    public function getStats(){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "admin"){
+            $data_today = Order::whereDay('created_at', now()->day)->get();
+            $data_all = Order::all();
+            $order_cancelled = Order::where('status', 'Cancelled')->get();
+            $order_confirmed = Order::where('status', 'Confirmed')->get();
+            $order_pending = Order::where('status', 'Pending')->get();
+            $order_preparing = Order::where('status', 'Preparing')->get();
+            $order_ready = Order::where('status', 'Ready for Pickup')->get();
+            $order_completed = Order::where('status', 'Completed')->get();
+            return $this->success([[
+                'data_today' => $data_today->count(),
+                'data_all_count' => $data_all->count(),
+                'data_all' => $data_all,
+                'order_cancelled' => $order_cancelled->count(),
+                'oder_confirmed' => $order_confirmed->count(),
+                'order_pending' => $order_pending->count(),
+                'order_preparing' => $order_preparing->count(),
+                'order_ready' => $order_ready->count(),
+                'order_completed' => $order_completed->count(),
+            ]]);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function getAllOrders(Request $request){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "admin"){
+            $search = $request->input('search');
+            $items = Order::with('orderItems')->when($search, function ($query, $search) {
+                    return $query->where(function ($query) use ($search) {
+                        $query->where('code', 'LIKE', "%{$search}%");
+                    });
+                })
+                ->paginate(10);
+            return $this->success($items);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+    public function adminUpdateOrder(Request $request, $id){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $item = Order::all()->find($id);
+            $data = $request->validate([
+                "status" => "required",
+            ]);
+            $item->update($data);
+            return $this->success(data: [$item], message: "Order updated successfully");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
+
+    public function adminDeleteOrder($id){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $reservation = Order::find($id);
+            $reservation->delete();
+            return $this->success(data: $user, message: "Order deleted successfully");
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     public function index(){
         $user = auth('sanctum')->user();
         if($user instanceof User && $user->role === "admin"){

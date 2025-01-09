@@ -22,6 +22,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/reset-password/{token}/{email}', 'reset_password')->name('password.reset');
     Route::post('/update-password', 'update_password');
     Route::post('/update-profile', 'updateProfile');
+
+    Route::get('/users/stats','getStats');
 });
 
 //Protected routes
@@ -48,8 +50,9 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
 
     Route::prefix("order")->controller(OrderController::class)->group(function (){
         //Admin
-        Route::get('/admin/getAllOrders-','getAllOrders');
+        Route::get('/admin/getAllOrders','getAllOrders');
         Route::put('/admin/updateOrder/{id}','adminUpdateOrder');
+        Route::delete('/admin/deleteOrder/{id}','adminDeleteOrder');
 
         // Waiter
         Route::get('/waiter/orders/confirm/{id}','markOrderAsConfirmed');
@@ -69,6 +72,8 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         Route::get('/user/orders/{id}','getUserOrderDetails');
         Route::get('/user/orders/cancel/{id}','userCancelOrder');
         Route::get('/user/orders/repeat/{id}','repeatOrder');
+
+        Route::get('/stats','getStats');
     });
 
     Route::prefix("favorite")->controller(FavoriteController::class)->group(function (){
@@ -93,6 +98,10 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         Route::get('/user/reservations','getReservations');
         Route::get('/user/reservations/{id}','getReservationsDetails');
         Route::get('/user/reservations/cancel/{id}','cancelReservation');
+
+        Route::get('/stats','getStats');
     });
+
+
 
 });

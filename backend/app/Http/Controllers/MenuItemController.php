@@ -11,6 +11,7 @@ class MenuItemController extends Controller
 {
     use HttpResponses;
 
+
     public function index(Request $request, $id){
         $user = auth('sanctum')->user();
         if($user instanceof User){

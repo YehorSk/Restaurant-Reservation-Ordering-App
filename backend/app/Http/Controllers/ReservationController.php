@@ -15,6 +15,26 @@ class ReservationController extends Controller
 
     use HttpResponses;
 
+    public function getStats(){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role === "admin"){
+            $data_today = Reservation::whereDay('created_at', now()->day)->get();
+            $data_all = Reservation::all();
+            $reservation_cancelled = Reservation::where('status', 'Cancelled')->get();
+            $reservation_confirmed = Reservation::where('status', 'Confirmed')->get();
+            $reservation_pending = Reservation::where('status', 'Pending')->get();
+            return $this->success([[
+                'data_today' => $data_today->count(),
+                'data_all_count' => $data_all->count(),
+                'data_all' => $data_all,
+                'reservation_cancelled' => $reservation_cancelled->count(),
+                'reservation_confirmed' => $reservation_confirmed->count(),
+                'reservation_pending' => $reservation_pending->count(),
+            ]]);
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     public function getAllReservations(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User && $user->role === "admin"){
