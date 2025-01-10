@@ -53,6 +53,7 @@
     <string name="order_button_reservation">Vytvoriť rezerváciu</string>
     <string name="confirm_reservation">Potvrdiť rezerváciu</string>
     <string name="pending_reservation">Čakajúca rezervácia</string>
+    <string name="order">Objednavka #%1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>

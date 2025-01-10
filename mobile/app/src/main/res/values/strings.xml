@@ -52,6 +52,7 @@
     <string name="order_button_reservation">Make Reservation</string>
     <string name="confirm_reservation">Confirm reservation</string>
     <string name="pending_reservation">Pending reservation</string>
+    <string name="order">Order #%1$s</string>
 
     <!-- Profile Items -->
 

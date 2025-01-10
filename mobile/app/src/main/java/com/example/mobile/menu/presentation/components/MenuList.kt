@@ -24,7 +24,7 @@ fun MenuList(
             stickyHeader {
                 MenuHeader(
                     menuDto = menu.menu,
-                    onMenuClick = { }
+                    onMenuClick = {  }
                 )
             }
             items(menu.menuItems.map { it }){ item ->

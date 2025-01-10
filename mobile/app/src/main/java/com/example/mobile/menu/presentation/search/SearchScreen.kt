@@ -92,8 +92,7 @@ fun SearchScreen(
                         viewModel.setMenuItemId(menuItem.id)
                         viewModel.showBottomSheet()
                         onGoBack()
-                    },
-                    isConnected = true
+                    }
                 )
                 HorizontalDivider()
             }

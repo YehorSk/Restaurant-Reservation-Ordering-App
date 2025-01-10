@@ -3,7 +3,9 @@ package com.example.mobile.menu.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -31,7 +34,6 @@ import com.example.mobile.core.utils.formattedPrice
 fun MenuItem(
     menuItem: MenuItemEntity,
     modifier: Modifier = Modifier,
-    isConnected: Boolean,
     onClick: (MenuItemEntity) -> Unit
 ){
     val contentColor = if(isSystemInDarkTheme()){
@@ -41,41 +43,46 @@ fun MenuItem(
     }
     Row(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
-            .height(140.dp)
+            .height(IntrinsicSize.Max)
             .clickable {
                 onClick(menuItem)
-            }
+            },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ){
         Column(
             modifier = Modifier.weight(1f)
         ) {
             Text(
                 text = menuItem.name,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 modifier = modifier
                     .fillMaxWidth()
+                    .weight(1f)
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 color = contentColor
 
             )
             Text(
                 text = menuItem.shortDescription,
-                fontSize = 12.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 maxLines = 2,
                 modifier = modifier
                     .fillMaxWidth()
+                    .weight(1f)
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp),
                 color = contentColor
             )
             Text(
                 text = "€"+ formattedPrice(menuItem.price.toDouble()),
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
                 modifier = modifier
                     .fillMaxWidth()
+                    .weight(1f)
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp),
                 color = contentColor
             )
@@ -84,7 +91,7 @@ fun MenuItem(
             model = menuItem.picture,
             modifier = Modifier
                 .weight(1f)
-                .padding(16.dp)
+                .padding(32.dp)
                 .clip(RoundedCornerShape(10.dp)),
             contentDescription = menuItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),
@@ -112,7 +119,6 @@ fun MenuItemPreview(){
                 price = 5.99
             ),
             onClick = {},
-            isConnected = true
         )
     }
 }

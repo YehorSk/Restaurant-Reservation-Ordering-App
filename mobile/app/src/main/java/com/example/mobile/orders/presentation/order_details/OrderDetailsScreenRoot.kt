@@ -113,7 +113,6 @@ fun OrderDetailsScreen(
             OrderDetailsItemList(
                 order = data,
                 onOpenItemDetails = { id ->
-                    Timber.d("Clicked")
                     onOpenItemDetails(id)
                 }
             )

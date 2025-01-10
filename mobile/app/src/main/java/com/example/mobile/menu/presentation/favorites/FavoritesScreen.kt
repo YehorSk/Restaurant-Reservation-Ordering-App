@@ -68,8 +68,7 @@ fun FavoritesScreen(
                         viewModel.setMenuItemId(menuItem.id)
                         viewModel.setMenuItemFavorite(menuItem.isFavorite)
                         viewModel.showBottomSheet()
-                    },
-                    isConnected = true
+                    }
                 )
                 HorizontalDivider()
             }

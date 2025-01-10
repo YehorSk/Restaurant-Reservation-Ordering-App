@@ -12,11 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mobile.R
 import com.example.mobile.core.utils.formatOrderDateTime
 import com.example.mobile.ui.theme.MobileTheme
 
@@ -45,7 +47,7 @@ fun OrderStatus(
                         start = 20.dp,
                         top = 15.dp
                     ),
-                    text = "Order #$code",
+                    text = stringResource(R.string.order, code),
                     fontSize = 18.sp,
                     color = contentColor,
                     fontWeight = FontWeight.Bold,

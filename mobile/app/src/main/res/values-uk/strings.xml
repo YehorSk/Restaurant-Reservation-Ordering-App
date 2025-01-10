@@ -42,7 +42,7 @@
     <string name="price">Ціна %s €</string>
     <string name="submit_order">Відправити замовлення</string>
     <string name="table_number">Номер столу</string>
-    <string name="total">Загальна сума</string>
+    <string name="total">Cума</string>
     <string name="table">Столик: %1$s</string>
     <string name="date_reservation">Дата: %1$s</string>
     <string name="time_reservation">Час: %1$s</string>
@@ -53,6 +53,7 @@
     <string name="order_button_reservation">Зробити резервацію</string>
     <string name="confirm_reservation">Підтвердити бронювання</string>
     <string name="pending_reservation">Очікує на підтвердження</string>
+    <string name="order">Замовлення #%1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>
@@ -84,16 +85,16 @@
     <!-- Auth Screen-->
     <string name="hide_password">Приховати пароль</string>
     <string name="show_password">Показати пароль</string>
-    <string name="user_email">Електронна пошта користувача</string>
-    <string name="user_password">Пароль користувача</string>
-    <string name="user_address">Адреса користувача</string>
-    <string name="user_phone">Телефон користувача</string>
+    <string name="user_email">Електронна пошта</string>
+    <string name="user_password">Пароль</string>
+    <string name="user_address">Адреса</string>
+    <string name="user_phone">Телефон</string>
     <string name="forgot_password">Забули пароль?</string>
     <string name="sign_up">Зареєструватися</string>
     <string name="log_in">Увійти</string>
     <string name="password_confirm">Підтвердження пароля</string>
     <string name="reset_password">Скинути пароль</string>
-    <string name="user_name">Ім\'я користувача</string>
+    <string name="user_name">Ім\'я</string>
 
     <!-- Settings Screen -->
     <string name="settings">Налаштування</string>

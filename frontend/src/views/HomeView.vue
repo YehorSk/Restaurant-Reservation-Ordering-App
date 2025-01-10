@@ -6,29 +6,12 @@
     <VRow>
       <VCol
           cols="12"
-          md="8"
-      >
-        <VCard>
-          <v-card-item>
-            <v-card-title class="text-h6 me-2 font-weight-bold">Orders</v-card-title>
-          </v-card-item>
-          <v-card-text>
-            <div v-if="!homeStore.getOrderStats.isLoading">
-              <p class="text-h6 me-2"><span class="font-weight-bold">All: </span>{{homeStore.getOrderStats.data[0].data_all_count}}</p>
-              <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{homeStore.getOrderStats.data[0].data_today}}</p>
-            </div>
-            <PulseLoader v-else/>
-          </v-card-text>
-        </VCard>
-      </VCol>
-      <VCol
-          cols="12"
-          sm="4"
+          md="4"
+          sm="12"
       >
         <VRow>
           <VCol
               cols="12"
-              md="6"
           >
             <VCard>
               <v-card-item>
@@ -45,7 +28,6 @@
           </VCol>
           <VCol
               cols="12"
-              md="6"
           >
             <VCard>
               <v-card-item>
@@ -65,7 +47,7 @@
       <VCol
           cols="12"
           md="4"
-          sm="6"
+          sm="12"
           order="2"
       >
         <VCard
@@ -96,7 +78,7 @@
       <VCol
           cols="12"
           md="4"
-          sm="6"
+          sm="12"
           order="2"
       >
         <VCard
