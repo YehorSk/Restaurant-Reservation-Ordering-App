@@ -12,27 +12,31 @@ class OrderController extends Controller
 {
     use HttpResponses;
 
-    public function getStats(){
+    public function getStats($year){
         $user = auth('sanctum')->user();
         if($user instanceof User && $user->role === "admin"){
             $data_today = Order::whereDay('created_at', now()->day)->get();
             $data_all = Order::all();
-            $order_cancelled = Order::where('status', 'Cancelled')->get();
-            $order_confirmed = Order::where('status', 'Confirmed')->get();
-            $order_pending = Order::where('status', 'Pending')->get();
-            $order_preparing = Order::where('status', 'Preparing')->get();
-            $order_ready = Order::where('status', 'Ready for Pickup')->get();
-            $order_completed = Order::where('status', 'Completed')->get();
+            $data_stats = Order::selectRaw('SUM(price) as total_price')
+                ->whereYear('created_at', $year)
+                ->groupByRaw('MONTHNAME(created_at)')
+                ->orderByRaw('MONTH(created_at) DESC')
+                ->pluck('total_price');
+            $years = Order::selectRaw('YEAR(created_at) as year')
+                ->groupBy('year')
+                ->orderByRaw('year ASC')
+                ->pluck('year');
+            $months = Order::selectRaw('MONTHNAME(created_at) as month')
+                ->whereYear('created_at', $year)
+                ->groupBy('month')
+                ->orderByRaw('month DESC')
+                ->pluck('month');
             return $this->success([[
                 'data_today' => $data_today->count(),
                 'data_all_count' => $data_all->count(),
-                'data_all' => $data_all,
-                'order_cancelled' => $order_cancelled->count(),
-                'oder_confirmed' => $order_confirmed->count(),
-                'order_pending' => $order_pending->count(),
-                'order_preparing' => $order_preparing->count(),
-                'order_ready' => $order_ready->count(),
-                'order_completed' => $order_completed->count(),
+                'years' => $years,
+                'months' => $months,
+                'data_stats' => $data_stats
             ]]);
         }
         return $this->error('', 'No user', 401);
@@ -120,12 +124,10 @@ class OrderController extends Controller
             if ($user->role === 'user') {
                 $order = $user->clientOrders()->with('orderItems')->find($id);
             } elseif (in_array($user->role, ['waiter', 'chef', 'admin'])) {
-//                $order = $user->waiterOrders()->with('orderItems')->find($id);
                 $order = Order::with('orderItems')->find($id);
             } else {
                 return $this->error('', 'Invalid role', 403);
             }
-//            $order = $user->clientOrders()->with('orderItems')->find($id);
             if ($order) {
                 return $this->success(data: [$order], message: "Order retrieved successfully.");
             }

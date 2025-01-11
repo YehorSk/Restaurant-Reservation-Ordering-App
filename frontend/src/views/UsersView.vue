@@ -102,6 +102,7 @@ import NavComponent from "@/components/SideBarComponent.vue";
 import {UseUserStore} from "@/stores/UserStore.js";
 import {useToast} from "vue-toastification";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import {watch} from "vue";
 
 export default {
   components: {NavComponent, PulseLoader},
@@ -132,6 +133,14 @@ export default {
       },
       immediate: true,
     },
+  },
+  mounted() {
+    initFlowbite();
+    watch(() => this.page, (newValue, oldValue) => {
+      if (newValue) {
+        this.userStore.fetchUsers(this.page, this.search)
+      }
+    });
   },
   beforeMount(){
     this.userStore.fetchUsers()

@@ -172,6 +172,7 @@ import {UseMenuStore} from "@/stores/MenuStore.js";
 import {useToast} from "vue-toastification";
 import NavComponent from "@/components/SideBarComponent.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import {watch} from "vue";
 
 export default {
   name: "MenuItemsView",
@@ -204,6 +205,14 @@ export default {
       },
       immediate: true,
     },
+  },
+  mounted() {
+    initFlowbite();
+    watch(() => this.page, (newValue, oldValue) => {
+      if (newValue) {
+        this.menuStore.fetchMenuItems(this.page, this.search)
+      }
+    });
   },
   created() {
     this.menuStore.success = "";

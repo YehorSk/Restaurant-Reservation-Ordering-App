@@ -36,11 +36,11 @@ export const UseHomeStore = defineStore("home", {
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
         },
-        async fetchOrderStats(){
+        async fetchOrderStats(year){
             this.order_stats.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('order/stats',{
+                const response = await axios.get('order/stats/' + year,{
                     headers: {
                         'Accept': 'application/vnd.api+json',
                         "Content-Type": "application/json",

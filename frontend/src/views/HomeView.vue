@@ -9,47 +9,6 @@
           md="4"
           sm="12"
       >
-        <VRow>
-          <VCol
-              cols="12"
-          >
-            <VCard>
-              <v-card-item>
-                <v-card-title class="text-h6 me-2 font-weight-bold">Orders</v-card-title>
-              </v-card-item>
-              <v-card-text>
-                <div v-if="!homeStore.getOrderStats.isLoading">
-                  <p class="text-h6 me-2"><span class="font-weight-bold">All: </span>{{homeStore.getOrderStats.data[0].data_all_count}}</p>
-                  <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{homeStore.getOrderStats.data[0].data_today}}</p>
-                </div>
-                <PulseLoader v-else/>
-              </v-card-text>
-            </VCard>
-          </VCol>
-          <VCol
-              cols="12"
-          >
-            <VCard>
-              <v-card-item>
-                <v-card-title class="text-h6 me-2 font-weight-bold">Reservations</v-card-title>
-              </v-card-item>
-              <v-card-text>
-                <div v-if="!homeStore.getOrderStats.isLoading">
-                  <p class="text-h6 me-2"><span class="font-weight-bold">All: </span>{{homeStore.getReservationStats.data[0].data_all_count}}</p>
-                  <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{homeStore.getReservationStats.data[0].data_today}}</p>
-                </div>
-                <PulseLoader v-else/>
-              </v-card-text>
-            </VCard>
-          </VCol>
-        </VRow>
-      </VCol>
-      <VCol
-          cols="12"
-          md="4"
-          sm="12"
-          order="2"
-      >
         <VCard
             title="Top 10 Favorite Menu Items"
         >
@@ -106,6 +65,28 @@
           </VCardText>
         </VCard>
       </VCol>
+      <VCol
+          cols="12"
+          md="4"
+          sm="12"
+          order="2"
+      >
+        <VCard
+            title="Sales by year"
+        >
+          <VCardText>
+            <VList>
+              <div v-if="!homeStore.getMenuItemsStats.isLoading">
+                <p class="text-h6 me-2"><span class="font-weight-bold">Total orders created: </span>{{ homeStore.getOrderStats.data[0].data_all_count }}</p>
+                <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getOrderStats.data[0].data_today }}</p>
+                <StatProfits :data="homeStore.getOrderStats.data[0]"/>
+                <VBtn v-for="year in homeStore.getOrderStats.data[0].years" @click="onYearChange(year)">{{year}}</VBtn>
+              </div>
+              <PulseLoader v-else/>
+            </VList>
+          </VCardText>
+        </VCard>
+      </VCol>
     </VRow>
   </div>
 </template>
@@ -116,10 +97,13 @@ import { UseAuthStore } from "@/stores/AuthStore.js";
 import { UseHomeStore} from "@/stores/HomeStore.js";
 import { useToast } from 'vue-toastification';
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
-
+import BasicCard from "@/components/StatBasicCard.vue";
+import StatProfits from "@/components/StatProfits.vue";
 
 export default {
   components: {
+    StatProfits,
+    BasicCard,
     NavComponent,
     PulseLoader
   },
@@ -144,12 +128,17 @@ export default {
     },
   },
   beforeMount(){
-    this.homeStore.fetchOrderStats()
+    this.homeStore.fetchOrderStats(2024)
     this.homeStore.fetchReservationStats()
     this.homeStore.fetchMenuItemsStats()
   },
   created() {
     this.homeStore.success = "";
   },
+  methods: {
+    onYearChange(year){
+      this.homeStore.fetchOrderStats(year)
+    }
+  }
 }
 </script>

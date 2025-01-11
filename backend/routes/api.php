@@ -75,7 +75,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         Route::get('/user/orders/cancel/{id}','userCancelOrder');
         Route::get('/user/orders/repeat/{id}','repeatOrder');
 
-        Route::get('/stats','getStats');
+        Route::get('/stats/{year}','getStats');
     });
 
     Route::prefix("favorite")->controller(FavoriteController::class)->group(function (){

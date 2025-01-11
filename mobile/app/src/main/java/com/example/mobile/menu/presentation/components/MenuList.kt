@@ -32,8 +32,7 @@ fun MenuList(
                     menuItem = item,
                     onClick = { menuItem ->
                         onClick(menuItem)
-                    },
-                    isConnected = isConnected
+                    }
                 )
                 HorizontalDivider()
             }

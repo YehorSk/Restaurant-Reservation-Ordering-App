@@ -114,6 +114,7 @@ import NavComponent from "@/components/SideBarComponent.vue";
 import {UseReservationStore} from "@/stores/ReservationsStore.js";
 import {useToast} from "vue-toastification";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import {watch} from "vue";
 
 export default {
   name: "ReservationsView",
@@ -143,6 +144,14 @@ export default {
       },
       immediate: true,
     },
+  },
+  mounted() {
+    initFlowbite();
+    watch(() => this.page, (newValue, oldValue) => {
+      if (newValue) {
+        this.reservationStore.fetchReservations(this.page, this.search)
+      }
+    });
   },
   beforeMount(){
     this.reservationStore.fetchReservations();

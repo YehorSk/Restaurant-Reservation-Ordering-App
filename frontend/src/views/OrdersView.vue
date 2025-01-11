@@ -96,6 +96,7 @@ import NavComponent from "@/components/SideBarComponent.vue";
 import {useToast} from "vue-toastification";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { UseOrdersStore } from "@/stores/OrdersStore.js";
+import {watch} from "vue";
 
 export default {
   name: "OrdersView",
@@ -116,6 +117,14 @@ export default {
         'Ready for Pickup',
       ],
     }
+  },
+  mounted() {
+    initFlowbite();
+    watch(() => this.page, (newValue, oldValue) => {
+      if (newValue) {
+        this.ordersStore.fetchOrders(this.page, this.search)
+      }
+    });
   },
   beforeMount(){
     this.ordersStore.fetchOrders();
