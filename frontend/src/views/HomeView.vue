@@ -80,7 +80,37 @@
                 <p class="text-h6 me-2"><span class="font-weight-bold">Total orders created: </span>{{ homeStore.getOrderStats.data[0].data_all_count }}</p>
                 <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getOrderStats.data[0].data_today }}</p>
                 <StatProfits :data="homeStore.getOrderStats.data[0]"/>
-                <VBtn v-for="year in homeStore.getOrderStats.data[0].years" @click="onYearChange(year)">{{year}}</VBtn>
+                <div class="d-flex justify-center mt-4">
+                  <VBtn v-for="year in homeStore.getReservationStats.data[0].years" :key="year" @click="onOrderYearChange(year)">
+                    {{ year }}
+                  </VBtn>
+                </div>
+              </div>
+              <PulseLoader v-else/>
+            </VList>
+          </VCardText>
+        </VCard>
+      </VCol>
+      <VCol
+          cols="12"
+          md="4"
+          sm="12"
+          order="2"
+      >
+        <VCard
+            title="Reservations by year"
+        >
+          <VCardText>
+            <VList>
+              <div v-if="!homeStore.getReservationStats.isLoading">
+                <p class="text-h6 me-2"><span class="font-weight-bold">Total reservations created: </span>{{ homeStore.getReservationStats.data[0].data_all_count }}</p>
+                <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getReservationStats.data[0].data_today }}</p>
+                <StatProfits :data="homeStore.getReservationStats.data[0]"/>
+                <div class="d-flex justify-center mt-4">
+                  <VBtn v-for="year in homeStore.getReservationStats.data[0].years" :key="year" @click="onReservationYearChange(year)">
+                    {{ year }}
+                  </VBtn>
+                </div>
               </div>
               <PulseLoader v-else/>
             </VList>
@@ -128,16 +158,19 @@ export default {
     },
   },
   beforeMount(){
-    this.homeStore.fetchOrderStats(2024)
-    this.homeStore.fetchReservationStats()
+    this.homeStore.fetchOrderStats(2025)
+    this.homeStore.fetchReservationStats(2025)
     this.homeStore.fetchMenuItemsStats()
   },
   created() {
     this.homeStore.success = "";
   },
   methods: {
-    onYearChange(year){
+    onOrderYearChange(year){
       this.homeStore.fetchOrderStats(year)
+    },
+    onReservationYearChange(year){
+      this.homeStore.fetchReservationStats(year)
     }
   }
 }

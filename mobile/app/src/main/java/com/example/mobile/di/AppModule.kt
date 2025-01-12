@@ -28,7 +28,6 @@ import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.orders.domain.repository.OrderRepository
 import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.core.utils.ConnectivityObserver
-import com.example.mobile.core.utils.ConnectivityRepository
 import com.example.mobile.core.utils.NetworkConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.reservations.data.dao.ReservationDao
@@ -145,10 +144,6 @@ object AppModule {
     @Provides
     @Singleton
     fun providesAuthPreferences(@ApplicationContext applicationContext: Context) : MainPreferencesRepository = MainPreferencesRepository(dataStore = applicationContext.dataStore)
-
-    @Provides
-    @Singleton
-    fun connectivityRepository(@ApplicationContext applicationContext: Context) : ConnectivityRepository = ConnectivityRepository(context = applicationContext)
 
     @Provides
     @Singleton

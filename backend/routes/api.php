@@ -101,7 +101,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         Route::get('/user/reservations/{id}','getReservationsDetails');
         Route::get('/user/reservations/cancel/{id}','cancelReservation');
 
-        Route::get('/stats','getStats');
+        Route::get('/stats/{year}','getStats');
     });
 
 

@@ -56,11 +56,11 @@ export const UseHomeStore = defineStore("home", {
                 this.order_stats.isLoading = false;
             }
         },
-        async fetchReservationStats(){
+        async fetchReservationStats(year){
             this.reservation_stats.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('reservation/stats',{
+                const response = await axios.get('reservation/stats/'  + year,{
                     headers: {
                         'Accept': 'application/vnd.api+json',
                         "Content-Type": "application/json",

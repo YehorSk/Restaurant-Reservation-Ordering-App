@@ -22,18 +22,13 @@ export default {
       return {
         labels: months,
         datasets: [{
-          label: 'Data Stats',
+          label: 'Data',
           data: dataStats,
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           borderWidth: 1
         }]
       };
-    }
-  },
-  watch: {
-    data(newVal, oldVal) {
-      console.log("New Val "+ newVal);
     }
   }
 }

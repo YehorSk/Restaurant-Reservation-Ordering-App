@@ -14,8 +14,7 @@ import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 fun MenuList(
     modifier: Modifier = Modifier,
     items: List<MenuWithMenuItems>,
-    onClick: (MenuItemEntity) -> Unit,
-    isConnected: Boolean
+    onClick: (MenuItemEntity) -> Unit
 ){
     LazyColumn(
         modifier = modifier

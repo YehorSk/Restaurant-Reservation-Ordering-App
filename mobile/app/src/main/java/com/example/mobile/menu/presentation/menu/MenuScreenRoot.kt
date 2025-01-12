@@ -110,8 +110,7 @@ fun MenuScreen(
                 items = menuUiState,
                 onClick = {
                     menuItem -> onAction(MenuAction.OnMenuItemClick(menuItem))
-                },
-                isConnected = isConnected
+                }
             )
         }
         if(isUser){

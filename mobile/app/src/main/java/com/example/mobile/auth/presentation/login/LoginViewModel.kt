@@ -60,7 +60,6 @@ class LoginViewModel @Inject constructor(
             preferencesRepository.jwtTokenFlow.collect { token ->
                 Timber.tag("NetworkCheck ").v("checkIfLoggedIn Token received: $token")
                 val isLoggedIn = token != null
-                Timber.tag("Check ").v(isLoggedIn.toString())
                 _uiState.update { currentState ->
                     currentState.copy(isLoggedIn = isLoggedIn)
                 }
@@ -75,24 +74,20 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun authenticate() {
-        Timber.tag("NetworkCheck 2-1").v("authenticate")
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
             authRepository.authenticate()
                 .onSuccess { data, _ ->
-                Timber.tag("NetworkCheck 2-1").v("Authorized")
                 preferencesRepository.saveUser(data.first())
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onError { error ->
                 when (error) {
                     AppError.UNAUTHORIZED -> {
-                        Timber.tag("NetworkCheck 2-1").v("Unauthorized")
                         preferencesRepository.clearAllTokens()
                         _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }
                     else -> {
-                        Timber.tag("NetworkCheck 2-1").v("UnknownError: $error")
                         _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }
                 }
@@ -108,20 +103,17 @@ class LoginViewModel @Inject constructor(
             val result = authRepository.login(loginForm = uiState.value.loginForm)
 
             result.onSuccess { data, message ->
-                Timber.tag("Authorized").v(data.toString())
                 preferencesRepository.saveUser(data.first())
                 _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onError { error ->
                 when (error) {
                     AppError.UNAUTHORIZED -> {
-                        Timber.tag("Unauthorized").v("Unauthorized")
                         preferencesRepository.clearAllTokens()
                         _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                         _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }
                     else -> {
-                        Timber.tag("UnknownError").v("UnknownError: $error")
                         _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                         _uiState.update { it.copy(isLoading = false) }
                     }
