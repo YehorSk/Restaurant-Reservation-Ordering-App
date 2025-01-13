@@ -14,7 +14,7 @@ import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
-import com.example.mobile.core.presentation.settings.SettingsScreen
+import com.example.mobile.core.presentation.settings.AccountScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
@@ -52,14 +52,16 @@ fun WaiterNavGraph(
                 isUser = false
             )
         }
-        composable(WaiterScreen.Settings.route) {
-            SettingsScreen(
+        composable(WaiterScreen.Account.route) {
+            AccountScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> navController.navigate(WaiterScreen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
                         ProfileDestination.Profile -> navController.navigate(WaiterScreen.Profile.route)
+                        ProfileDestination.Orders -> navController.navigate(WaiterScreen.Orders.route)
+                        ProfileDestination.Reservations -> navController.navigate(WaiterScreen.Reservations.route)
                     }
                 }
             )
@@ -77,7 +79,11 @@ fun WaiterNavGraph(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
                     navController.navigate(WaiterScreen.OrderDetails(id))
-                }
+                },
+                onGoBack = {
+                    navController.popBackStack()
+                },
+                showGoBack = false
             )
         }
         composable(
@@ -164,7 +170,11 @@ fun WaiterNavGraph(
             ReservationScreenRoot(
                 modifier = modifier,
                 onGoToReservationDetails = {id ->
-                    navController.navigate(WaiterScreen.ReservationDetails(id))}
+                    navController.navigate(WaiterScreen.ReservationDetails(id))},
+                onGoBack = {
+                    navController.popBackStack()
+                },
+                showGoBack = false
             )
         }
         composable<WaiterScreen.ReservationDetails>{
@@ -187,7 +197,7 @@ fun WaiterNavGraph(
 @Serializable
 sealed class WaiterScreen(val route: String){
     object Home: WaiterScreen(route = "HOME")
-    object Settings: WaiterScreen(route = "SETTINGS")
+    object Account: WaiterScreen(route = "ACCOUNT")
     data object Profile: WaiterScreen(route = "PROFILE")
     object Cart: WaiterScreen(route = "CART")
     object Orders: WaiterScreen(route = "ORDERS")

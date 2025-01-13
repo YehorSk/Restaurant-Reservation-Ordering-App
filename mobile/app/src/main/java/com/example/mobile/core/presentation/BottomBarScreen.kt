@@ -1,11 +1,11 @@
 package com.example.mobile.core.presentation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Receipt
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -32,16 +32,22 @@ sealed class BottomBarScreen(
         icon = Icons.Default.Receipt
     )
 
-    object Settings : BottomBarScreen(
-        route = "SETTINGS",
-        title = "SETTINGS",
-        icon = Icons.Default.Settings
+    object Account : BottomBarScreen(
+        route = "ACCOUNT",
+        title = "ACCOUNT",
+        icon = Icons.Default.AccountCircle
     )
 
     object Reservations : BottomBarScreen(
         route = "RESERVATIONS",
         title = "RESERVATIONS",
         icon = Icons.Default.CalendarMonth
+    )
+
+    object Favorites : BottomBarScreen(
+        route = "FAVORITES",
+        title = "FAVORITES",
+        icon = Icons.Default.Favorite
     )
 
 

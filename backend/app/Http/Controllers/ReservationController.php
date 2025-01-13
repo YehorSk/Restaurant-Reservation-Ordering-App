@@ -88,7 +88,6 @@ class ReservationController extends Controller
                 return $this->error('', 'Reservation date and party size are required', 400);
             }
 
-            $today = now()->format('Y-m-d');
             $currentTime = now()->setTimezone('Europe/Bratislava')->format('H:i:s');
 
             $availableTables = Table::query()

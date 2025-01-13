@@ -1,8 +1,12 @@
 package com.example.mobile.menu.presentation.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,26 +18,30 @@ import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 fun MenuList(
     modifier: Modifier = Modifier,
     items: List<MenuWithMenuItems>,
-    onClick: (MenuItemEntity) -> Unit
+    onClick: (MenuItemEntity) -> Unit,
+    listState: LazyListState = rememberLazyListState(),
 ){
-    LazyColumn(
-        modifier = modifier
-    ) {
-        items.forEach { menu ->
-            stickyHeader {
+    Column{
+        LazyColumn(
+            state = listState,
+            modifier = modifier
+        ) {
+            itemsIndexed(items){ _, menu ->
                 MenuHeader(
                     menuDto = menu.menu,
                     onMenuClick = {  }
                 )
-            }
-            items(menu.menuItems.map { it }){ item ->
-                MenuItem(
-                    menuItem = item,
-                    onClick = { menuItem ->
-                        onClick(menuItem)
+                Column {
+                    menu.menuItems.forEach{ item ->
+                        MenuItem(
+                            menuItem = item,
+                            onClick = { menuItem ->
+                                onClick(menuItem)
+                            }
+                        )
+                        HorizontalDivider()
                     }
-                )
-                HorizontalDivider()
+                }
             }
         }
     }

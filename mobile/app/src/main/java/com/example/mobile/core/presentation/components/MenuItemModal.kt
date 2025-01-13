@@ -136,38 +136,45 @@ fun MenuItemModalContent(
                     .padding(20.dp),
                 horizontalArrangement = Arrangement.End
             ){
-                if(showFavorite){
-                    IconButton(
-                        onClick = {
-                            if(cartForm.isFavorite) deleteFavoriteItem()
-                            else addFavoriteItem()
-                        },
-                    ) {
-                        if(cartForm.isFavorite){
+                Card(
+                    modifier = Modifier,
+                    shape = RoundedCornerShape(40.dp)
+                ) {
+                    Row {
+                        if(showFavorite){
+                            IconButton(
+                                onClick = {
+                                    if(cartForm.isFavorite) deleteFavoriteItem()
+                                    else addFavoriteItem()
+                                },
+                            ) {
+                                if(cartForm.isFavorite){
+                                    Icon(
+                                        imageVector = Icons.Filled.Favorite,
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                    )
+                                }else{
+                                    Icon(
+                                        imageVector = Icons.Filled.FavoriteBorder,
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .size(30.dp)
+                                    )
+                                }
+                            }
+                        }
+                        IconButton(
+                            onClick = onDismiss
+                        ) {
                             Icon(
-                                imageVector = Icons.Filled.Favorite,
+                                imageVector = Icons.Filled.Close,
                                 contentDescription = "",
-                                modifier = Modifier
-                                    .size(30.dp)
-                            )
-                        }else{
-                            Icon(
-                                imageVector = Icons.Filled.FavoriteBorder,
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .size(30.dp)
+                                modifier = Modifier.size(30.dp)
                             )
                         }
                     }
-                }
-                IconButton(
-                    onClick = onDismiss
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Close,
-                        contentDescription = "",
-                        modifier = Modifier.size(30.dp)
-                    )
                 }
             }
         }
@@ -185,7 +192,7 @@ fun MenuItemModalContent(
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
                 fontSize = 16.sp,
-                text = "€"+formattedPrice(cartForm.price),
+                text = "€"+formattedPrice(menuItem.price),
                 color = contentColor
             )
             Text(

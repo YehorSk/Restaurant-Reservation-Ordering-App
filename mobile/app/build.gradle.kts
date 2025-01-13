@@ -63,6 +63,9 @@ android {
 
 dependencies {
 
+    // Tab Synchronizer
+    implementation(libs.tabsync.compose)
+
     // The compose calendar library for Android
     implementation("com.kizitonwose.calendar:compose:2.6.1")
 

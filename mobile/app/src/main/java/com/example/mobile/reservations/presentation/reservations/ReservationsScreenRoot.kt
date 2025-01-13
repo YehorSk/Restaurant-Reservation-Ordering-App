@@ -19,6 +19,7 @@ import com.example.mobile.core.presentation.components.OrdersDropdownList
 import com.example.mobile.core.presentation.components.ReservationDropdownList
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
+import com.example.mobile.orders.presentation.components.NavBar
 import com.example.mobile.reservations.presentation.reservations.components.ReservationsList
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,7 +27,9 @@ import com.example.mobile.reservations.presentation.reservations.components.Rese
 fun ReservationScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: ReservationScreenViewModel = hiltViewModel(),
-    onGoToReservationDetails: (Int) -> Unit
+    onGoToReservationDetails: (Int) -> Unit,
+    onGoBack: () -> Unit,
+    showGoBack: Boolean
 ){
 
     val context = LocalContext.current
@@ -50,6 +53,11 @@ fun ReservationScreenRoot(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            NavBar(
+                onGoBack = onGoBack,
+                title = R.string.go_back,
+                showGoBack = showGoBack
+            )
             ReservationDropdownList(
                 filterOption = filterOption,
                 text = R.string.filter,

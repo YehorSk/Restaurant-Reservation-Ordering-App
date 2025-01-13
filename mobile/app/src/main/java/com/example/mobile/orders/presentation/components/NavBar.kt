@@ -36,7 +36,8 @@ import com.example.mobile.R
 fun NavBar(
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit,
-    @StringRes title: Int
+    @StringRes title: Int,
+    showGoBack: Boolean = true
 ){
     Row(
         modifier = modifier
@@ -47,15 +48,17 @@ fun NavBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(Modifier.width(8.dp))
-        Icon(
-            modifier = Modifier
-                .size(30.dp)
-                .clickable {
-                    onGoBack()
-                },
-            imageVector = Icons.Filled.ArrowBack,
-            contentDescription = null
-        )
+        if(showGoBack){
+            Icon(
+                modifier = Modifier
+                    .size(30.dp)
+                    .clickable {
+                        onGoBack()
+                    },
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = null
+            )
+        }
         Text(
             modifier = Modifier
                 .padding(start = 10.dp),

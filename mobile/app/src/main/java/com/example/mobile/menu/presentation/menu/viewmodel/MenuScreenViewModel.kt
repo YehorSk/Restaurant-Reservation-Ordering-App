@@ -123,7 +123,6 @@ class MenuScreenViewModel @Inject constructor(
 
     fun addUserCartItem(){
         viewModelScope.launch {
-            setLoadingState(true)
             cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)
                 .onSuccess { data, message ->
                     _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
@@ -132,14 +131,12 @@ class MenuScreenViewModel @Inject constructor(
                     _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
             setLoadingState(false)
-            clearForm()
         }
     }
 
     fun addUserFavoriteItem(){
         Timber.d("addUserFavoriteItem")
         viewModelScope.launch {
-            setLoadingState(true)
             menuRepositoryImpl.addFavorite(_uiState.value.currentMenuItem!!.id.toString())
                 .onSuccess { data, message ->
                     _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
@@ -147,14 +144,12 @@ class MenuScreenViewModel @Inject constructor(
                 .onError { error ->
                     _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            setLoadingState(false)
         }
     }
 
     fun deleteUserFavoriteItem(){
         Timber.d("deleteUserFavoriteItem")
         viewModelScope.launch {
-            setLoadingState(true)
             menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenuItem!!.id.toString())
                 .onSuccess { data, message ->
                     _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
@@ -162,7 +157,6 @@ class MenuScreenViewModel @Inject constructor(
                 .onError { error ->
                     _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
-            setLoadingState(false)
         }
     }
 

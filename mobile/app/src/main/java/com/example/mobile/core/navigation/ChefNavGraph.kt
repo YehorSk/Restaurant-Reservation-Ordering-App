@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
-import com.example.mobile.core.presentation.settings.SettingsScreen
+import com.example.mobile.core.presentation.settings.AccountScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
@@ -31,14 +31,16 @@ fun ChefNavGraph(
         route = Graph.CHEF,
         startDestination = ChefScreen.Orders.route
     ){
-        composable(ChefScreen.Settings.route) {
-            SettingsScreen(
+        composable(ChefScreen.Account.route) {
+            AccountScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> navController.navigate(ChefScreen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
                         ProfileDestination.Profile -> navController.navigate(ChefScreen.Profile.route)
+                        ProfileDestination.Orders -> {}
+                        ProfileDestination.Reservations -> {}
                     }
                 }
             )
@@ -56,7 +58,11 @@ fun ChefNavGraph(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
                     navController.navigate(ChefScreen.OrderDetails(id))
-                }
+                },
+                onGoBack = {
+                    navController.popBackStack()
+                },
+                showGoBack = false
             )
         }
         composable(ChefScreen.Favorites.route) {
@@ -98,7 +104,7 @@ fun ChefNavGraph(
 
 @Serializable
 sealed class ChefScreen(val route: String){
-    object Settings: ChefScreen(route = "SETTINGS")
+    object Account: ChefScreen(route = "ACCOUNT")
     data object Profile: ChefScreen(route = "PROFILE")
     object Orders: ChefScreen(route = "ORDERS")
     data object Favorites: ChefScreen(route = "FAVORITES")

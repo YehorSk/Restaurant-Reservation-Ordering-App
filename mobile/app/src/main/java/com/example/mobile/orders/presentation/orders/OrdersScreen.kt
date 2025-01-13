@@ -19,13 +19,16 @@ import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.presentation.orders.components.OrdersList
 import com.example.mobile.R
 import com.example.mobile.core.presentation.components.OrdersDropdownList
+import com.example.mobile.orders.presentation.components.NavBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrdersScreen(
     modifier:Modifier = Modifier,
     onGoToOrderDetails: (Int) -> Unit,
-    viewModel: OrdersViewModel = hiltViewModel()
+    viewModel: OrdersViewModel = hiltViewModel(),
+    onGoBack: () -> Unit,
+    showGoBack: Boolean
 ){
 
     val context = LocalContext.current
@@ -50,6 +53,11 @@ fun OrdersScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            NavBar(
+                onGoBack = onGoBack,
+                title = R.string.go_back,
+                showGoBack = showGoBack
+            )
             OrdersDropdownList(
                 filterOption = filterOption,
                 text = R.string.filter,

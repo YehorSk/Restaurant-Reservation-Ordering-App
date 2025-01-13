@@ -32,6 +32,7 @@ import coil.compose.AsyncImage
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.PivotCartItemEntity
+import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.ui.theme.MobileTheme
 import timber.log.Timber
 
@@ -48,9 +49,9 @@ fun CartItem(
     }
 
     Row(
-        modifier = modifier.background(MaterialTheme.colorScheme.background)
+        modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            .height(IntrinsicSize.Max)
             .clickable {
-                Timber.d("Item $cartItem")
                 onClick(cartItem)
             },
         verticalAlignment = Alignment.CenterVertically,
@@ -58,48 +59,47 @@ fun CartItem(
     ){
         Column(
             modifier = Modifier
-                .height(IntrinsicSize.Max)
                 .weight(1f)
         ) {
             Text(
                 text = cartItem.name,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                maxLines = 2,
-                modifier = Modifier
+                maxLines = 1,
+                modifier = modifier
                     .fillMaxWidth()
+                    .weight(1f)
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 color = contentColor
 
             )
-            Column(
-                modifier = Modifier
-                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.quantity, cartItem.pivot.quantity),
-                    fontSize = 14.sp,
-                    maxLines = 2,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    color = contentColor
-                )
-                Text(
-                    text = stringResource(R.string.price, cartItem.pivot.price),
-                    fontSize = 14.sp,
-                    maxLines = 1,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    color = contentColor
-                )
-            }
+            Text(
+                text = stringResource(R.string.quantity, cartItem.pivot.quantity),
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 2,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                color = contentColor
+            )
+            Text(
+                text = "€"+ formattedPrice(cartItem.pivot.price),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
+                maxLines = 2,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp),
+                color = contentColor
+            )
         }
         AsyncImage(
             model = cartItem.picture,
             modifier = Modifier
                 .weight(1f)
                 .padding(32.dp)
-                .size(100.dp)
                 .clip(RoundedCornerShape(10.dp)),
             contentDescription = cartItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),

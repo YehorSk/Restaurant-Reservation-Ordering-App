@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
-import com.example.mobile.core.presentation.settings.SettingsScreen
+import com.example.mobile.core.presentation.settings.AccountScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
@@ -28,14 +28,16 @@ fun AdminNavGraph(
         route = Graph.ADMIN,
         startDestination = AdminScreen.Orders.route
     ){
-        composable(AdminScreen.Settings.route) {
-            SettingsScreen(
+        composable(AdminScreen.Account.route) {
+            AccountScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
-                        ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
+                        ProfileDestination.Favorites -> {}
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Profile -> navController.navigate(ClientScreen.Profile.route)
+                        ProfileDestination.Profile -> navController.navigate(AdminScreen.Profile.route)
+                        ProfileDestination.Orders -> navController.navigate(AdminScreen.Orders.route)
+                        ProfileDestination.Reservations -> navController.navigate(AdminScreen.Reservations.route)
                     }
                 }
             )
@@ -53,7 +55,11 @@ fun AdminNavGraph(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
                     navController.navigate(AdminScreen.OrderDetails(id))
-                }
+                },
+                onGoBack = {
+                    navController.popBackStack()
+                },
+                showGoBack = false
             )
         }
         composable<AdminScreen.OrderDetails>{
@@ -77,7 +83,11 @@ fun AdminNavGraph(
             ReservationScreenRoot(
                 modifier = modifier,
                 onGoToReservationDetails = {id ->
-                    navController.navigate(AdminScreen.ReservationDetails(id))}
+                    navController.navigate(AdminScreen.ReservationDetails(id))},
+                onGoBack = {
+                    navController.popBackStack()
+                },
+                showGoBack = false
             )
         }
         composable<AdminScreen.ReservationDetails>{
@@ -106,5 +116,5 @@ sealed class AdminScreen(val route: String){
     @Serializable
     data class ReservationDetails(val id: Int): AdminScreen(route = "RESERVATION_DETAILS")
     data object Profile: AdminScreen(route = "PROFILE")
-    object Settings: AdminScreen(route = "SETTINGS")
+    object Account: AdminScreen(route = "ACCOUNT")
 }

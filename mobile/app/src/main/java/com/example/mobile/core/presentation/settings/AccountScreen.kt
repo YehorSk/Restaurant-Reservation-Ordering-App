@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -19,7 +20,7 @@ import com.example.mobile.core.presentation.settings.components.ProfileListHeade
 import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
-fun SettingsScreen(
+fun AccountScreen(
     modifier: Modifier = Modifier,
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     onNavigate: (ProfileDestination) -> Unit
@@ -30,13 +31,14 @@ fun SettingsScreen(
     ) {
         val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
         val userRole by settingsViewModel.userRole.collectAsStateWithLifecycle()
+        val userName by settingsViewModel.userName.collectAsStateWithLifecycle()
 
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
             item{
                 ProfileListHeader(
-                    text = R.string.settings
+                    text = stringResource(R.string.hello_user, userName.toString())
                 )
             }
             item{
@@ -47,12 +49,32 @@ fun SettingsScreen(
                     }
                 )
             }
-            if(userRole in arrayOf("user","waiter")){
+//            if(userRole in arrayOf("user","waiter")){
+//                item{
+//                    ProfileListItem(
+//                        text = R.string.favorites,
+//                        onClick = {
+//                            onNavigate(ProfileDestination.Favorites)
+//                        }
+//                    )
+//                }
+//            }
+            if(userRole in arrayOf("user","waiter","admin")){
                 item{
                     ProfileListItem(
-                        text = R.string.favorites,
+                        text = R.string.reservations,
                         onClick = {
-                            onNavigate(ProfileDestination.Favorites)
+                            onNavigate(ProfileDestination.Reservations)
+                        }
+                    )
+                }
+            }
+            if(userRole in arrayOf("user","waiter","admin")){
+                item{
+                    ProfileListItem(
+                        text = R.string.orders,
+                        onClick = {
+                            onNavigate(ProfileDestination.Orders)
                         }
                     )
                 }
@@ -79,7 +101,7 @@ fun SettingsScreen(
 @Composable
 fun ProfileScreenPreview(){
     MobileTheme {
-        SettingsScreen(
+        AccountScreen(
             onNavigate = {}
         )
     }

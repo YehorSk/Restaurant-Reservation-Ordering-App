@@ -16,7 +16,7 @@ import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
-import com.example.mobile.core.presentation.settings.SettingsScreen
+import com.example.mobile.core.presentation.settings.AccountScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
@@ -57,14 +57,16 @@ fun ClientNavGraph(
                 isUser = true
             )
         }
-        composable(ClientScreen.Settings.route) {
-            SettingsScreen(
+        composable(ClientScreen.Account.route) {
+            AccountScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
                         ProfileDestination.Profile -> navController.navigate(ClientScreen.Profile.route)
+                        ProfileDestination.Orders -> navController.navigate(ClientScreen.Orders.route)
+                        ProfileDestination.Reservations -> navController.navigate(ClientScreen.Reservations.route)
                     }
                 }
             )
@@ -82,7 +84,11 @@ fun ClientNavGraph(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
                     navController.navigate(ClientScreen.OrderDetails(id))
-                }
+                },
+                onGoBack = {
+                    navController.popBackStack()
+                },
+                showGoBack = true
             )
         }
         composable(
@@ -178,7 +184,9 @@ fun ClientNavGraph(
             ReservationScreenRoot(
                 modifier = modifier,
                 onGoToReservationDetails = {id ->
-                    navController.navigate(ClientScreen.ReservationDetails(id))}
+                    navController.navigate(ClientScreen.ReservationDetails(id))},
+                onGoBack = { navController.popBackStack() },
+                showGoBack = true
             )
         }
         composable(
@@ -212,7 +220,7 @@ sealed class ClientScreen(val route: String){
     data object CreateReservation: ClientScreen(route = "MAKE_RESERVATION")
     @Serializable
     data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")
-    data object Settings: ClientScreen(route = "SETTINGS")
+    data object Account: ClientScreen(route = "ACCOUNT")
     data object Reservations: ClientScreen(route = "RESERVATIONS")
     @Serializable
     data class ReservationDetails(val id: Int): ClientScreen(route = "RESERVATION_DETAILS")

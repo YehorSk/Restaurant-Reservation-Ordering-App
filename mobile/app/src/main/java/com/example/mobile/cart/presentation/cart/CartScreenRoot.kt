@@ -2,7 +2,9 @@ package com.example.mobile.cart.presentation.cart
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,6 +37,7 @@ import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.core.utils.toString
+import com.example.mobile.orders.presentation.components.NavBar
 
 @Composable
 fun CartScreenRoot(
@@ -74,59 +77,72 @@ fun CartScreen(
     onGoToCheckoutClick: () -> Unit,
     onAction: (CartAction) -> Unit
 ){
-    Box(
+    Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ){
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(
-                items = cartItems,
-                key = {it.pivot.id}
-            ) { item ->
-                SwipeToDeleteContainer(
-                    item = item,
-                    onDelete = {
-                        onAction(CartAction.SetItem(item))
-                        onAction(CartAction.DeleteItem)
+            .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        NavBar(
+            onGoBack = {  },
+            title = R.string.cart,
+            showGoBack = false
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+        ){
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(
+                    items = cartItems,
+                    key = {it.pivot.id}
+                ) { item ->
+                    SwipeToDeleteContainer(
+                        item = item,
+                        onDelete = {
+                            onAction(CartAction.SetItem(item))
+                            onAction(CartAction.DeleteItem)
+                        }
+                    ) {
+                        CartItem(
+                            cartItem = item,
+                            onClick = { cartItem ->
+                                onAction(CartAction.SetItem(cartItem))
+                                onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
+                                onAction(CartAction.ShowBottomSheet)
+                            },
+                        )
+                    }
+                    HorizontalDivider()
+                }
+                item {
+                    if(cartItems.isNotEmpty()){
+                        Spacer(modifier = Modifier.height(60.dp))
+                    }
+                }
+            }
+            val checkout = cartItems.sumOf {
+                it.pivot.price
+            }
+            if(cartItems.isNotEmpty() && isConnected){
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
+                        .align(Alignment.BottomCenter),
+                    onClick = {
+                        onGoToCheckoutClick()
                     }
                 ) {
-                    CartItem(
-                        cartItem = item,
-                        onClick = { cartItem ->
-                            onAction(CartAction.SetItem(cartItem))
-                            onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
-                            onAction(CartAction.ShowBottomSheet)
-                        },
+                    Text(
+                        modifier = Modifier.padding(8.dp),
+                        text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
                     )
                 }
-                HorizontalDivider()
-            }
-            item {
-                if(cartItems.isNotEmpty()){
-                    Spacer(modifier = Modifier.height(60.dp))
-                }
-            }
-        }
-        val checkout = cartItems.sumOf {
-            it.pivot.price
-        }
-        if(cartItems.isNotEmpty() && isConnected){
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
-                    .align(Alignment.BottomCenter),
-                onClick = {
-                    onGoToCheckoutClick()
-                }
-            ) {
-                Text(
-                    modifier = Modifier.padding(8.dp),
-                    text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
-                )
             }
         }
     }

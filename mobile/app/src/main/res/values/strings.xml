@@ -53,13 +53,17 @@
     <string name="confirm_reservation">Confirm reservation</string>
     <string name="pending_reservation">Pending reservation</string>
     <string name="order">Order #%1$s</string>
+    <string name="cart">Cart</string>
 
     <!-- Profile Items -->
 
     <string name="favorites">Favorites</string>
+    <string name="reservations">Reservations</string>
+    <string name="orders">Orders</string>
     <string name="order_history">Order history</string>
     <string name="reservation_history">Reservation history</string>
     <string name="logout">Log out</string>
+    <string name="hello_user">Hello, %1$s</string>
 
     <!--    Errors-->
     <string name="error_no_internet">No internet connection.</string>

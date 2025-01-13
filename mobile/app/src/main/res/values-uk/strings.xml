@@ -22,7 +22,7 @@
     <string name="required_fields">*Обов’язкові поля</string>
     <string name="delivery_address">123 Головна вул., кв. 4Б</string>
     <string name="instructions_for_the_courier">Інструкції для кур\'єра</string>
-    <string name="order_preferences">Побажання до замовлення</string>
+    <string name="order_preferences">Тип замовлення</string>
     <string name="go_back">Повернутися</string>
     <string name="delivery_details">Деталі доставки</string>
     <string name="cancel_reservation">Скасувати бронювання</string>
@@ -54,12 +54,16 @@
     <string name="confirm_reservation">Підтвердити бронювання</string>
     <string name="pending_reservation">Очікує на підтвердження</string>
     <string name="order">Замовлення #%1$s</string>
+    <string name="cart">Кошик</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>
+    <string name="reservations">Резервації</string>
+    <string name="orders">Замовлення</string>
     <string name="order_history">Історія замовлень</string>
     <string name="reservation_history">Історія бронювань</string>
     <string name="logout">Вийти</string>
+    <string name="hello_user">Привіт, %1$s</string>
 
     <!-- Errors -->
     <string name="error_no_internet">Відсутнє з\'єднання з інтернетом.</string>

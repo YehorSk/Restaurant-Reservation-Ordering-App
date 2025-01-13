@@ -22,7 +22,7 @@
     <string name="required_fields">*Povinné polia</string>
     <string name="delivery_address">123 Hlavná ulica, byt 4B</string>
     <string name="instructions_for_the_courier">Pokyny pre kuriéra</string>
-    <string name="order_preferences">Preferencie objednávky</string>
+    <string name="order_preferences">Typ objednávky</string>
     <string name="go_back">Vrátiť sa späť</string>
     <string name="delivery_details">Podrobnosti o doručení</string>
     <string name="cancel_reservation">Zrušiť rezerváciu</string>
@@ -54,12 +54,16 @@
     <string name="confirm_reservation">Potvrdiť rezerváciu</string>
     <string name="pending_reservation">Čakajúca rezervácia</string>
     <string name="order">Objednavka #%1$s</string>
+    <string name="cart">Košík</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>
+    <string name="reservations">Rezervácie</string>
+    <string name="orders">Objednávky</string>
     <string name="order_history">História objednávok</string>
     <string name="reservation_history">História rezervácií</string>
     <string name="logout">Odhlásiť sa</string>
+    <string name="hello_user">Ahoj, %1$s</string>
 
     <!-- Errors -->
     <string name="error_no_internet">Nie je k dispozícii internetové pripojenie.</string>

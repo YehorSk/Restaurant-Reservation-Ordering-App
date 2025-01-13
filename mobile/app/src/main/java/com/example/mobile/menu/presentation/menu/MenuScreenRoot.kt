@@ -7,13 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,11 +22,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ahmadhamwi.tabsync_compose.lazyListTabSync
 import com.example.mobile.R
 import com.example.mobile.core.utils.EventConsumer
 import com.example.mobile.core.domain.remote.SideEffect
-import com.example.mobile.menu.presentation.components.MenuHeader
-import com.example.mobile.menu.presentation.components.MenuItem
+import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.utils.toString
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
@@ -37,7 +34,9 @@ import com.example.mobile.menu.presentation.MenuAction
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.components.MenuDetailsDialog
 import com.example.mobile.menu.presentation.components.MenuList
+import com.example.mobile.menu.presentation.components.MenuTabBar
 import com.example.mobile.menu.presentation.components.SearchBar
+import timber.log.Timber
 
 @OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class
@@ -63,17 +62,20 @@ fun MenuScreenRoot(
             is SideEffect.NavigateToNextScreen -> {}
         }
     }
-    
-    MenuScreen(
-        modifier = modifier,
-        uiState = uiState,
-        menuUiState = menuUiState,
-        isConnected = isConnected,
-        onSearchClicked = { onSearchClicked() },
-        onCreateReservationClicked = { onCreateReservationClicked() },
-        onAction = viewModel::onAction,
-        isUser = isUser
-    )
+    if(uiState.isLoading){
+        LoadingPart()
+    }else {
+        MenuScreen(
+            modifier = modifier,
+            uiState = uiState,
+            menuUiState = menuUiState,
+            isConnected = isConnected,
+            onSearchClicked = { onSearchClicked() },
+            onCreateReservationClicked = { onCreateReservationClicked() },
+            onAction = viewModel::onAction,
+            isUser = isUser
+        )
+    }
 
 }
 
@@ -89,6 +91,9 @@ fun MenuScreen(
     onAction: (MenuAction) -> Unit,
     isUser: Boolean
 ){
+
+    val (selectedTabIndex, setSelectedTabIndex, lazyListState) = lazyListTabSync(menuUiState.map { it.menu.id }.indices.toList())
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -103,6 +108,11 @@ fun MenuScreen(
                 onValueChange = {},
                 isConnected = isConnected
             )
+            MenuTabBar(
+                menus = menuUiState.map { it.menu },
+                selectedMenu = selectedTabIndex,
+                onMenuClicked = {index, _ -> setSelectedTabIndex(index) }
+            )
             MenuList(
                 modifier = Modifier
                     .fillMaxSize()
@@ -110,7 +120,8 @@ fun MenuScreen(
                 items = menuUiState,
                 onClick = {
                     menuItem -> onAction(MenuAction.OnMenuItemClick(menuItem))
-                }
+                },
+                listState = lazyListState
             )
         }
         if(isUser){

@@ -28,7 +28,8 @@ import com.example.mobile.orders.presentation.components.NavBar
 fun FavoritesScreen(
     modifier: Modifier = Modifier,
     viewModel: MenuScreenViewModel,
-    onGoBack: () -> Unit
+    onGoBack: () -> Unit,
+    showGoBack: Boolean = false
 ){
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -51,7 +52,8 @@ fun FavoritesScreen(
     ) {
         NavBar(
             onGoBack = onGoBack,
-            title = R.string.go_back
+            title = R.string.favorites,
+            showGoBack = showGoBack
         )
         LazyColumn(
             modifier = Modifier.fillMaxSize()

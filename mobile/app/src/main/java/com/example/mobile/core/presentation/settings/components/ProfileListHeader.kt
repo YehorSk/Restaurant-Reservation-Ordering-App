@@ -23,7 +23,7 @@ import com.example.mobile.ui.theme.MobileTheme
 @Composable
 fun ProfileListHeader(
     modifier: Modifier = Modifier,
-    @StringRes text: Int
+    text: String
 ){
 
     val contentColor = if(isSystemInDarkTheme()){
@@ -40,8 +40,8 @@ fun ProfileListHeader(
             modifier = Modifier
                 .padding(16.dp)
                 .weight(1f),
-            text = stringResource(text),
-            fontSize = 18.sp,
+            text = text,
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.ExtraBold,
             color = contentColor,
         )
@@ -54,7 +54,7 @@ fun ProfileListHeader(
 fun ProfileListHeaderPreview(){
     MobileTheme {
         ProfileListHeader(
-            text = R.string.settings
+            text = "Hello User"
         )
     }
 }
