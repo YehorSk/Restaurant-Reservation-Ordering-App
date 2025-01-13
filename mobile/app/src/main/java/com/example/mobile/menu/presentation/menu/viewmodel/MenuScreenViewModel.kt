@@ -11,6 +11,7 @@ import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.menu.presentation.BaseMenuViewModel
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.menu.data.db.model.MenuEntity
+import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.menu.presentation.MenuAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted

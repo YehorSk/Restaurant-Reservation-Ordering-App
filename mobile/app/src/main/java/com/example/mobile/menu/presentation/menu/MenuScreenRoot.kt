@@ -92,52 +92,55 @@ fun MenuScreen(
     isUser: Boolean
 ){
 
-    val (selectedTabIndex, setSelectedTabIndex, lazyListState) = lazyListTabSync(menuUiState.map { it.menu.id }.indices.toList())
+    if(menuUiState.isNotEmpty()){
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-    ){
-        Column(
-            modifier = Modifier
+        val (selectedTabIndex, setSelectedTabIndex, lazyListState) = lazyListTabSync(menuUiState.map { it.menu.id }.indices.toList())
+
+        Box(
+            modifier = modifier
                 .fillMaxSize()
-        ) {
-            SearchBar(
-                onClick = onSearchClicked,
-                enabled = false,
-                onValueChange = {},
-                isConnected = isConnected
-            )
-            MenuTabBar(
-                menus = menuUiState.map { it.menu },
-                selectedMenu = selectedTabIndex,
-                onMenuClicked = {index, _ -> setSelectedTabIndex(index) }
-            )
-            MenuList(
+        ){
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
-                items = menuUiState,
-                onClick = {
-                    menuItem -> onAction(MenuAction.OnMenuItemClick(menuItem))
-                },
-                listState = lazyListState
-            )
-        }
-        if(isUser){
-            ExtendedFloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                onClick = { onCreateReservationClicked() },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Filled.Event,
-                        contentDescription = null
-                    )
-                },
-                text = { Text(text = stringResource(R.string.book)) },
-            )
+            ) {
+                SearchBar(
+                    onClick = onSearchClicked,
+                    enabled = false,
+                    onValueChange = {},
+                    isConnected = isConnected
+                )
+                MenuTabBar(
+                    menus = menuUiState.map { it.menu },
+                    selectedMenu = selectedTabIndex,
+                    onMenuClicked = {index, _ -> setSelectedTabIndex(index) }
+                )
+                MenuList(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
+                    items = menuUiState,
+                    onClick = {
+                            menuItem -> onAction(MenuAction.OnMenuItemClick(menuItem))
+                    },
+                    listState = lazyListState
+                )
+            }
+            if(isUser){
+                ExtendedFloatingActionButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp),
+                    onClick = { onCreateReservationClicked() },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Filled.Event,
+                            contentDescription = null
+                        )
+                    },
+                    text = { Text(text = stringResource(R.string.book)) },
+                )
+            }
         }
     }
 

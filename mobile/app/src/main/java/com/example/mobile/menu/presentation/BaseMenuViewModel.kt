@@ -39,19 +39,19 @@ open class BaseMenuViewModel @Inject constructor(
     protected val _uiState = MutableStateFlow(MenuScreenUiState())
     val uiState: StateFlow<MenuScreenUiState> = _uiState.asStateFlow()
 
+    val menuUiState: StateFlow<List<MenuWithMenuItems>> = menuDao.getMenuWithMenuItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = listOf()
+        )
+
     val isNetwork = networkConnectivityObserver
         .observe()
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
             false
-        )
-
-    val menuUiState: StateFlow<List<MenuWithMenuItems>> = menuDao.getMenuWithMenuItems()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = listOf()
         )
 
     protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)

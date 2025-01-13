@@ -144,8 +144,12 @@ fun MenuItemModalContent(
                         if(showFavorite){
                             IconButton(
                                 onClick = {
-                                    if(cartForm.isFavorite) deleteFavoriteItem()
-                                    else addFavoriteItem()
+                                    if(cartForm.isFavorite){
+                                        deleteFavoriteItem()
+                                    } else {
+                                        addFavoriteItem()
+                                    }
+                                    onDismiss()
                                 },
                             ) {
                                 if(cartForm.isFavorite){
