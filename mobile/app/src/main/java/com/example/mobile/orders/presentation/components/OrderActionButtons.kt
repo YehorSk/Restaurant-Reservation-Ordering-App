@@ -1,6 +1,5 @@
 package com.example.mobile.orders.presentation.components
 
-import android.graphics.drawable.Icon
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,9 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddShoppingCart
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -51,7 +48,7 @@ fun OrderAddMore(
         HorizontalDivider()
         OrderButton(
             icon = Icons.Filled.ShoppingCart,
-            text = R.string.go_to_cart
+            text = R.string.edit_cart
         ) {
             onGoToCart()
         }

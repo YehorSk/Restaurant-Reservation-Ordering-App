@@ -1,5 +1,6 @@
 package com.example.mobile.auth.data.remote
 
+import androidx.compose.ui.text.intl.Locale
 import com.example.mobile.auth.data.remote.model.AuthDataDto
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.data.service.AuthService
@@ -43,6 +44,7 @@ class AuthRepositoryImpl @Inject constructor(
             },
             onSuccess = { result ->
                 prefs.saveUser(result.first())
+                setLocale(Locale.current.language)
             }
         )
     }
@@ -55,6 +57,7 @@ class AuthRepositoryImpl @Inject constructor(
             },
             onSuccess = { result ->
                 prefs.saveUser(result.first())
+                setLocale(Locale.current.language)
             },
             onFailure = { error ->
                 if (error == AppError.UNAUTHORIZED) {
@@ -69,6 +72,21 @@ class AuthRepositoryImpl @Inject constructor(
         return safeCall<AuthDataDto>(
             execute = {
                 authService.logout()
+            },
+            onSuccess = { result ->
+                prefs.clearAllTokens()
+                withContext(Dispatchers.IO) {
+                    mainRoomDatabase.clearAllTables()
+                }
+            }
+        )
+    }
+
+    override suspend fun setLocale(lang: String): Result<List<String>, AppError> {
+        Timber.d("Auth setLocale")
+        return safeCall<String>(
+            execute = {
+                authService.setLocale(lang)
             },
             onSuccess = { result ->
                 prefs.clearAllTokens()

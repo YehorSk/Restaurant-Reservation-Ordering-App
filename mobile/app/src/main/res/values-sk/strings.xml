@@ -17,7 +17,7 @@
     <string name="reservation_option">Rezervovať</string>
     <string name="complete_order_navbar_title">Dokončite svoju objednávku</string>
     <string name="notes_for_order">Voliteľné: pridajte špeciálne poznámky k objednávke.</string>
-    <string name="go_to_cart">Prejsť do košíka</string>
+    <string name="edit_cart">Upraviť košík</string>
     <string name="add_to_cart">Pridať ďalšie</string>
     <string name="required_fields">*Povinné polia</string>
     <string name="delivery_address">123 Hlavná ulica, byt 4B</string>
@@ -104,4 +104,13 @@
     <string name="settings">Nastavenia</string>
     <string name="profile">Profil</string>
     <string name="update_profile">Aktualizovať profil</string>
+
+    <!-- Bottom Bar Items -->
+    <string name="home_item">Domov</string>
+    <string name="cart_item">Košík</string>
+    <string name="orders_item">Objednávky</string>
+    <string name="account_item">Účet</string>
+    <string name="reservations_item">Rezervácie</string>
+    <string name="favorites_item">Obľúbené</string>
+
 </resources>

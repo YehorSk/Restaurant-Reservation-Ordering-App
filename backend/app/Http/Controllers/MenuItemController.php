@@ -69,7 +69,7 @@ class MenuItemController extends Controller
 
             $menuItem = MenuItem::create(array_merge($validatedData, ['menu_id' => $menu_id]));
 
-            return $this->success(data: $menuItem, message: "Menu item added successfully.");
+            return $this->success(data: $menuItem, message: __("messages.menu_item_added_successfully"));
         }
 
         return $this->error('', 'No user', 401);
@@ -86,7 +86,6 @@ class MenuItemController extends Controller
                 return $this->error('', 'Menu item not found', 404);
             }
 
-            // Validate input
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'short_description' => 'nullable|string',
@@ -98,7 +97,7 @@ class MenuItemController extends Controller
 
             $menuItem->update($validatedData);
 
-            return $this->success(data: $menuItem, message: "Menu item updated successfully.");
+            return $this->success(data: $menuItem, message: __("messages.menu_item_updated_successfully"));
         }
 
         return $this->error('', 'No user', 401);
@@ -117,7 +116,7 @@ class MenuItemController extends Controller
 
             $menuItem->delete();
 
-            return $this->success(message: "Menu item deleted successfully.");
+            return $this->success(message: __("messages.menu_item_deleted_successfully"));
         }
 
         return $this->error('', 'No user', 401);

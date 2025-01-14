@@ -32,7 +32,7 @@ class TimeSlotController extends Controller
             ]);
             $item = new TimeSlot($data);
             $item->save();
-            return $this->success(data: $item, message: "Item was created");
+            return $this->success(data: $item, message: __("messages.item_was_added"));
         }
         return $this->error('', 'No user', 401);
     }
@@ -46,7 +46,7 @@ class TimeSlotController extends Controller
                 "end_time" => "required",
             ]);
             $item->update($data);
-            return $this->success(data: $item, message: "Item was updated");
+            return $this->success(data: $item, message: __("messages.item_was_updated"));
         }
         return $this->error('', 'No user', 401);
     }
@@ -56,7 +56,7 @@ class TimeSlotController extends Controller
         if ($user instanceof User) {
             $item = TimeSlot::find($id);
             $item->delete();
-            return $this->success(data: [], message: "Item was deleted",);
+            return $this->success(data: [], message: __("messages.item_was_deleted"));
         }
         return $this->error('', 'No user', 401);
     }

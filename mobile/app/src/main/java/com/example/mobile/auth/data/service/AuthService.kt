@@ -8,6 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface AuthService {
 
@@ -38,5 +39,12 @@ interface AuthService {
     )
     @GET("user")
     suspend fun authenticate() : ResponseDto<AuthDataDto>
+
+    @Headers(
+        "Accept: application/vnd.api+json",
+        "Content-Type: application/vnd.api+json"
+    )
+    @GET("locale/{locale}")
+    suspend fun setLocale(@Path("locale") lang: String) : ResponseDto<String>
 
 }

@@ -47,7 +47,7 @@ class AuthController extends Controller
                 'phone' => $user->phone,
             ],
             'token' => $token
-        ]], message: "Authenticated successfully");
+        ]], message: __("messages.authenticated_successfully"));
     }
 
     public function login(LoginUserRequest $request){
@@ -61,7 +61,7 @@ class AuthController extends Controller
         return $this->success(data: [[
             'user' => $user,
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken,
-        ]], message: "Logged in successfully");
+        ]], message: __("messages.logged_in_successfully"));
     }
 
     public function register(StoreUserRequest $request){
@@ -74,12 +74,12 @@ class AuthController extends Controller
         return $this->success(data: [[
             'user' => $user,
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken
-        ]], message: "Registered successfully");
+        ]], message: __("messages.registered_successfully"));
     }
 
     public function logout(Request $request){
         Auth::user()->currentAccessToken()->delete();
-        return $this->success(data: [], message: "Logged out successfully");
+        return $this->success(data: [], message: __("messages.logged_out_successfully"));
     }
     public function reset_password($token,$email) {
         return redirect()->to('http://localhost:5173/reset-password/' . $token . '?email=' . urlencode($email));
@@ -117,7 +117,7 @@ class AuthController extends Controller
             $user->address = $address;
             $user->phone = $phone;
             $user->save();
-            return $this->success(data: [$user], message: "Profile updated successfully");
+            return $this->success(data: [$user], message: __("messages.profile_updated_successfully"));
         }
         return $this->error('', 'No user', 401);
     }

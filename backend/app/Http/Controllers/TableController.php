@@ -42,7 +42,7 @@ class TableController extends Controller
             ]);
             $item = new Table($data);
             $item->save();
-            return $this->success(data: $item, message: "Item was added");
+            return $this->success(data: $item, message: __("messages.item_was_added"));
         }
         return $this->error('', 'No user', 401);
     }
@@ -57,7 +57,7 @@ class TableController extends Controller
                 "capacity" => "required",
             ]);
             $item->update($data);
-            return $this->success(data: $item, message: "Item was updated");
+            return $this->success(data: $item, message: __("messages.item_was_updated"));
         }
         return $this->error('', 'No user', 401);
     }
@@ -68,7 +68,7 @@ class TableController extends Controller
         if ($user instanceof User) {
             $item = Table::find($id);
             $item->delete();
-            return $this->success(data: [], message: "Item was deleted");
+            return $this->success(data: [], message: __("messages.item_was_deleted"));
         }
         return $this->error('', 'No user', 401);
     }

@@ -17,7 +17,7 @@
     <string name="reservation_option">Забронювати</string>
     <string name="complete_order_navbar_title">Завершіть своє замовлення</string>
     <string name="notes_for_order">За бажанням: додайте особливі примітки до замовлення.</string>
-    <string name="go_to_cart">Перейти до кошика</string>
+    <string name="edit_cart">Редагувати кошик</string>
     <string name="add_to_cart">Додати ще</string>
     <string name="required_fields">*Обов’язкові поля</string>
     <string name="delivery_address">123 Головна вул., кв. 4Б</string>
@@ -104,4 +104,13 @@
     <string name="settings">Налаштування</string>
     <string name="profile">Профіль</string>
     <string name="update_profile">Оновити профіль</string>
+
+    <!-- Bottom Bar Items -->
+    <string name="home_item">Головна</string>
+    <string name="cart_item">Кошик</string>
+    <string name="orders_item">Замовлення</string>
+    <string name="account_item">Акаунт</string>
+    <string name="reservations_item">Резервації</string>
+    <string name="favorites_item">Улюблене</string>
+
 </resources>

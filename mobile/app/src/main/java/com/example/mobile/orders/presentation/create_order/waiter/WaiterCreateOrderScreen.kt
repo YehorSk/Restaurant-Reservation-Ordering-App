@@ -32,7 +32,7 @@ import com.example.mobile.orders.presentation.components.NavBar
 import com.example.mobile.orders.presentation.components.OrderAddMore
 import com.example.mobile.orders.presentation.components.OrderAddress
 import com.example.mobile.orders.presentation.components.OrderItemList
-import com.example.mobile.orders.presentation.components.OrderMap
+import com.example.mobile.orders.presentation.components.DeliveryMap
 import com.example.mobile.orders.presentation.components.OrderSpecialRequest
 import com.example.mobile.orders.presentation.components.SelectTable
 import com.example.mobile.orders.presentation.components.TotalPrice
@@ -78,7 +78,7 @@ fun WaiterCreateOrderScreen(
 
             NavBar(
                 onGoBack = onGoToCart,
-                title = R.string.complete_order_navbar_title
+                title = R.string.go_back
             )
             if (isConnected){
                 OrderItemList(items = uiState.orderItems!!)
@@ -107,7 +107,7 @@ fun WaiterCreateOrderScreen(
             }
             Spacer(modifier = Modifier.height(10.dp))
             if (uiState.orderForm.orderType == 1 && isConnected){
-                OrderMap()
+                DeliveryMap()
                 OrderAddress(
                     address = uiState.orderForm.address,
                     instructions = uiState.orderForm.instructions,

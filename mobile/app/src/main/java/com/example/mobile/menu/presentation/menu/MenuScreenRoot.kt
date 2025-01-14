@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,10 +37,11 @@ import com.example.mobile.menu.presentation.components.MenuDetailsDialog
 import com.example.mobile.menu.presentation.components.MenuList
 import com.example.mobile.menu.presentation.components.MenuTabBar
 import com.example.mobile.menu.presentation.components.SearchBar
-import timber.log.Timber
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
-    ExperimentalMaterial3Api::class
+    ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class
 )
 @Composable
 fun MenuScreenRoot(
@@ -49,6 +51,19 @@ fun MenuScreenRoot(
     onCreateReservationClicked: () -> Unit,
     isUser: Boolean
 ){
+
+    val locationPermissionsState = rememberMultiplePermissionsState(
+        listOf(
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+        )
+    )
+
+    LaunchedEffect(locationPermissionsState) {
+        if(!locationPermissionsState.allPermissionsGranted){
+            locationPermissionsState.launchMultiplePermissionRequest()
+        }
+    }
 
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -162,6 +177,7 @@ fun MenuScreen(
                 addUserCartItem = {
                     onAction(MenuAction.CloseBottomSheet)
                     onAction(MenuAction.AddCartItem)
+                    onAction(MenuAction.ClearForm)
                 },
                 buttonText = R.string.Add,
                 addFavoriteItem = {

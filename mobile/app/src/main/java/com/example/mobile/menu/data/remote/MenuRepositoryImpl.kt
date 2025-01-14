@@ -1,5 +1,6 @@
 package com.example.mobile.menu.data.remote
 
+import androidx.compose.ui.text.intl.Locale
 import com.example.mobile.core.data.remote.safeCall
 import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.Result

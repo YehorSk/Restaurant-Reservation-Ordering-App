@@ -34,10 +34,13 @@ class LoginViewModel @Inject constructor(
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    val userToken: StateFlow<String?> = preferencesRepository.jwtTokenFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
     init {
         viewModelScope.launch(Dispatchers.Main){
             isNetwork.collect{ available ->
-                if (available == true){
+                if (available == true && userToken.toString().isNotEmpty()){
                     authenticate()
                 }else{
                     checkIfLoggedIn()

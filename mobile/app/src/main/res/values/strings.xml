@@ -16,7 +16,7 @@
     <string name="reservation_option">Make Reservation</string>
     <string name="complete_order_navbar_title">Finish Your Order</string>
     <string name="notes_for_order">Optional: Add special notes for your order.</string>
-    <string name="go_to_cart">Go to Cart</string>
+    <string name="edit_cart">Edit cart</string>
     <string name="add_to_cart">Add More</string>
     <string name="required_fields">*Required fields</string>
     <string name="delivery_address">123 Main St, Apt 4B</string>
@@ -104,4 +104,13 @@
     <string name="settings">Settings</string>
     <string name="profile">Profile</string>
     <string name="update_profile">Update Profile</string>
+
+    <!-- Bottom Bar Items -->
+    <string name="home_item">Home</string>
+    <string name="cart_item">Cart</string>
+    <string name="orders_item">Orders</string>
+    <string name="account_item">Account\n</string>
+    <string name="reservations_item">Reservations\n</string>
+    <string name="favorites_item">Favorites</string>
+
 </resources>

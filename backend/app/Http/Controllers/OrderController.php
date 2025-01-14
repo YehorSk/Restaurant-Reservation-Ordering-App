@@ -54,7 +54,7 @@ class OrderController extends Controller
                 ->paginate(10);
             return $this->success($items);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function adminUpdateOrder(Request $request, $id){
@@ -65,9 +65,9 @@ class OrderController extends Controller
                 "status" => "required",
             ]);
             $item->update($data);
-            return $this->success(data: [$item], message: "Order updated successfully");
+            return $this->success(data: [$item], message: __('messages.order_updated_successfully'));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
 
@@ -76,9 +76,9 @@ class OrderController extends Controller
         if ($user instanceof User) {
             $reservation = Order::find($id);
             $reservation->delete();
-            return $this->success(data: $user, message: "Order deleted successfully");
+            return $this->success(data: $user, message: __('messages.order_deleted_successfully'));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function index(){
@@ -87,7 +87,7 @@ class OrderController extends Controller
             $data = Order::all();
             return $this->success($data);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function getUserCartItems(Request $request){
@@ -99,7 +99,7 @@ class OrderController extends Controller
             });
             return $this->success(data: $items, message: "");
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function getUserOrders(Request $request){
@@ -115,7 +115,7 @@ class OrderController extends Controller
             }
             return $this->success(data: $orders, message: "");
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function getUserOrderDetails($id){
@@ -129,11 +129,11 @@ class OrderController extends Controller
                 return $this->error('', 'Invalid role', 403);
             }
             if ($order) {
-                return $this->success(data: [$order], message: "Order retrieved successfully.");
+                return $this->success(data: [$order], message: __('messages.order_retrieved_successfully'));
             }
             return $this->error('', 'Order not found', 404);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function makeUserPickUpOrder(Request $request){
@@ -158,9 +158,9 @@ class OrderController extends Controller
                 $user->menuItems()->detach($item->id);
             }
             $order = Order::with('orderItems')->find($order->id);
-            return $this->success(data: [$order], message: "Pickup order was created");
+            return $this->success(data: [$order], message: __('messages.pickup_order_was_created'));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function makeWaiterOrder(Request $request){
@@ -187,9 +187,9 @@ class OrderController extends Controller
                 $user->menuItems()->detach($item->id);
             }
             $order = Order::with('orderItems')->find($order->id);
-            return $this->success(data: [$order], message: "Order was created");
+            return $this->success(data: [$order], message: __('messages.order_was_created'));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function makeUserDeliveryOrder(Request $request){
@@ -216,9 +216,9 @@ class OrderController extends Controller
                 $user->menuItems()->detach($item->id);
             }
             $order = Order::with('orderItems')->find($order->id);
-            return $this->success(data: [$order], message: "Delivery order was created");
+            return $this->success(data: [$order], message: __('messages.delivery_order_was_created'));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function userCancelOrder($id){
@@ -229,14 +229,14 @@ class OrderController extends Controller
                 if($order->status == 'Pending'){
                     $order->update(['status' => 'Cancelled']);
                     $order = $user->clientOrders()->with('orderItems')->find($id);
-                    return $this->success(data: [$order], message: "Order canceled successfully.");
+                    return $this->success(data: [$order], message: __('messages.order_canceled_successfully'));
                 }else{
-                    return $this->error('', 'Order cannot be canceled.', 409);
+                    return $this->error('', __('messages.order_cannot_be_canceled'), 409);
                 }
             }
-            return $this->error('', 'Order not found', 404);
+            return $this->error('', __('messages.order_not_found'), 404);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function repeatOrder($id){
@@ -259,7 +259,7 @@ class OrderController extends Controller
                     ]);
                 }
             }
-            return $this->success(data: [$order], message: "Items added to cart successfully.");
+            return $this->success(data: [$order], message: __('messages.items_added_to_cart_successfully'));
         }
         return $this->error('', 'No user', 401);
     }
@@ -271,11 +271,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Cancelled']);
                 $order = Order::with('orderItems')->find($id);
-                return $this->success(data: [$order], message: "Order canceled successfully.");
+                return $this->success(data: [$order], message: __('messages.order_canceled_successfully'));
             }
-            return $this->error('', 'Order not found', 404);
+            return $this->error('', __('messages.order_not_found'), 404);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function markOrderAsConfirmed($id){
@@ -285,11 +285,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Confirmed']);
                 $order = Order::with('orderItems')->find($id);
-                return $this->success(data: [$order], message: "Order confirmed successfully.");
+                return $this->success(data: [$order], message: __('messages.order_confirmed_successfully'));
             }
-            return $this->error('', 'Order not found', 404);
+            return $this->error('', __('messages.order_not_found'), 404);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function markOrderAsCompleted($id){
@@ -299,11 +299,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Completed']);
                 $order = Order::with('orderItems')->find($id);
-                return $this->success(data: [$order], message: "Order completed successfully.");
+                return $this->success(data: [$order], message: __('messages.order_completed_successfully'));
             }
-            return $this->error('', 'Order not found', 404);
+            return $this->error('', __('messages.order_not_found'), 404);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function markOrderAsPreparing($id){
@@ -313,11 +313,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Preparing']);
                 $order = Order::with('orderItems')->find($id);
-                return $this->success(data: [$order], message: "Order marked as preparing.");
+                return $this->success(data: [$order], message: __('messages.order_marked_as_preparing'));
             }
-            return $this->error('', 'Order not found', 404);
+            return $this->error('', __('messages.order_not_found'), 404);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function markOrderAsReadyForPickup($id){
@@ -327,11 +327,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Ready for Pickup']);
                 $order = Order::with('orderItems')->find($id);
-                return $this->success(data: [$order], message: "Order ready for pickup.");
+                return $this->success(data: [$order], message: __('messages.order_ready_for_pickup'));
             }
-            return $this->error('', 'Order not found', 404);
+            return $this->error('', __('messages.order_not_found'), 404);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     private function generate_code(): String

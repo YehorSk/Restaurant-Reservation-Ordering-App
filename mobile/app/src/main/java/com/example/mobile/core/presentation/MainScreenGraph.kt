@@ -6,9 +6,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -102,8 +104,7 @@ fun BottomBar(
             screens = listOf(
                 BottomBarScreen.Home,
                 BottomBarScreen.Cart,
-                BottomBarScreen.Orders,
-                BottomBarScreen.Reservations,
+                BottomBarScreen.Favorites,
                 BottomBarScreen.Account
             )
         }
@@ -138,10 +139,14 @@ fun RowScope.AddItem(
     } == true
     NavigationBarItem(
         label = {
-//            Text(text = screen.title)
+            Text(text = stringResource(screen.title))
         },
         icon = {
-            Icon(imageVector = screen.icon, contentDescription = "Navigation Icon")
+            if(isSelected){
+                Icon(imageVector = screen.selectedIcon, contentDescription = stringResource(screen.title))
+            }else{
+                Icon(imageVector = screen.unselectedIcon, contentDescription = stringResource(screen.title))
+            }
         },
         selected = isSelected,
         onClick ={

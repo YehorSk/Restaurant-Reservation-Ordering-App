@@ -83,7 +83,7 @@ fun WaiterNavGraph(
                 onGoBack = {
                     navController.popBackStack()
                 },
-                showGoBack = false
+                showGoBack = true
             )
         }
         composable(
@@ -120,7 +120,8 @@ fun WaiterNavGraph(
             FavoritesScreen(
                 modifier = modifier,
                 viewModel = menuScreenViewModel,
-                onGoBack = { navController.popBackStack() }
+                onGoBack = { navController.popBackStack() },
+                showGoBack = false
             )
         }
         composable(WaiterScreen.CreateOrder.route) {
@@ -174,7 +175,7 @@ fun WaiterNavGraph(
                 onGoBack = {
                     navController.popBackStack()
                 },
-                showGoBack = false
+                showGoBack = true
             )
         }
         composable<WaiterScreen.ReservationDetails>{

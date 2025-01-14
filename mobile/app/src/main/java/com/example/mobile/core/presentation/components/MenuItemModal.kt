@@ -2,6 +2,7 @@ package com.example.mobile.core.presentation.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,11 +23,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -86,7 +89,8 @@ fun MenuItemModal(
                 buttonText = buttonText,
                 addFavoriteItem = addFavoriteItem,
                 deleteFavoriteItem = deleteFavoriteItem,
-                showFavorite = showFavorite
+                showFavorite = showFavorite,
+                deleteCartItem = deleteCartItem
             )
         }
     )
@@ -103,6 +107,7 @@ fun MenuItemModalContent(
     addUserCartItem: () -> Unit,
     addFavoriteItem: () -> Unit,
     deleteFavoriteItem: () -> Unit,
+    deleteCartItem: () -> Unit = {},
     showFavorite: Boolean = true,
     @StringRes buttonText: Int
 ){
@@ -211,8 +216,33 @@ fun MenuItemModalContent(
                     .fillMaxWidth()
                     .height(10.dp)
             )
+            if(!showFavorite){
+                HorizontalDivider()
+                Row(
+                    modifier = Modifier
+                        .padding(start = 20.dp, top = 10.dp, bottom = 10.dp, end = 20.dp)
+                        .fillMaxWidth()
+                        .clickable{ deleteCartItem() }
+                    ,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        tint = MaterialTheme.colorScheme.error,
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(30.dp)
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = 10.dp),
+                        text = stringResource(R.string.DELETE),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+            HorizontalDivider()
             Row(
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 10.dp, end = 20.dp)
             ) {
                 Card(
                     modifier = Modifier
@@ -261,7 +291,9 @@ fun MenuItemModalContent(
                 }
                 Spacer(modifier = Modifier.width(20.dp))
                 Button(
-                    modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
                     onClick = {
                         addUserCartItem()
                     }

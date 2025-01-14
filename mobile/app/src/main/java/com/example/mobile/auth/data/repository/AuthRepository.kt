@@ -14,4 +14,6 @@ interface AuthRepository {
     suspend fun authenticate() : Result<List<AuthDataDto>, AppError>
 
     suspend fun logout() : Result<List<AuthDataDto>, AppError>
+
+    suspend fun setLocale(lang: String) : Result<List<String>, AppError>
 }

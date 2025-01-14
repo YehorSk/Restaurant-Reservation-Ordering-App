@@ -37,7 +37,7 @@ class UserController extends Controller
                 "role" => "required",
             ]);
             $user->update($data);
-            return $this->success(data: $user, message: "User updated successfully");
+            return $this->success(data: $user, message: __("messages.user_updated_successfully"));
         }
         return $this->error('', 'No user', 401);
     }
@@ -47,7 +47,7 @@ class UserController extends Controller
         if ($user instanceof User) {
             $user = User::find($id);
             $user->delete();
-            return $this->success(message: "User deleted successfully");
+            return $this->success(message: __("messages.user_deleted_successfully"));
         }
         return $this->error('', 'No user', 401);
     }

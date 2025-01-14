@@ -43,6 +43,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.utils.toString
+import com.example.mobile.orders.presentation.components.DeliveryMap
+import com.example.mobile.orders.presentation.components.PickupMap
 
 @Composable
 fun UserCreateOrderScreenRoot(
@@ -106,7 +108,7 @@ fun UserCreateOrderScreen(
 
             NavBar(
                 onGoBack = onGoToCart,
-                title = R.string.complete_order_navbar_title
+                title = R.string.go_back
             )
             if (isConnected){
                 OrderItemList(items = uiState.orderItems)
@@ -127,8 +129,11 @@ fun UserCreateOrderScreen(
                 onSelectedChange = { type,text -> onAction(CreateOrderAction.UpdateOrderType(type,text)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
+            if (uiState.orderForm.orderType == 0 && isConnected){
+                PickupMap()
+            }
             if (uiState.orderForm.orderType == 1 && isConnected){
-//                OrderMap()
+                DeliveryMap()
                 OrderAddress(
                     address = uiState.orderForm.address,
                     instructions = uiState.orderForm.instructions,

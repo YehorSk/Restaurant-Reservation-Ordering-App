@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\OrderController;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
+
+Route::get('/locale/{locale}', [LocaleController::class, 'setLocale']);
 
 //Public routes
 Route::controller(AuthController::class)->group(function () {
