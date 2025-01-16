@@ -1,6 +1,9 @@
 package com.example.mobile.orders.presentation.create_order.user
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,6 +44,9 @@ import com.example.mobile.orders.presentation.create_order.CreateOrderAction
 import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.utils.toString
@@ -98,6 +105,9 @@ fun UserCreateOrderScreen(
     validateForm: Boolean,
     onAction: (CreateOrderAction) -> Unit
 ){
+
+    var isMapLoaded by remember { mutableStateOf(false) }
+
     if(uiState.orderItems != null){
         Column(
             modifier = modifier
@@ -130,14 +140,24 @@ fun UserCreateOrderScreen(
             )
             Spacer(modifier = Modifier.height(10.dp))
             if (uiState.orderForm.orderType == 0 && isConnected){
-                PickupMap()
+                PickupMap(
+                    onMapLoaded = {
+                        isMapLoaded = true
+                    }
+                )
             }
             if (uiState.orderForm.orderType == 1 && isConnected){
-                DeliveryMap()
+                if(!uiState.places.isNullOrEmpty()){
+                    DeliveryMap()
+                }
                 OrderAddress(
                     address = uiState.orderForm.address,
                     instructions = uiState.orderForm.instructions,
-                    onAddressChange = {address -> onAction(CreateOrderAction.UpdateAddress(address)) },
+                    places = uiState.places,
+                    onAddressChange = {
+                        address -> onAction(CreateOrderAction.UpdateAddress(address))
+//                                   onAction(CreateOrderAction.UpdatePlace(address))
+                                      },
                     onInstructionsChange = {instructions -> onAction(CreateOrderAction.UpdateInstructions(instructions)) }
                 )
                 Spacer(modifier = Modifier.height(10.dp))

@@ -10,6 +10,8 @@ sealed interface CreateOrderAction {
 
     data class UpdateInstructions(val instructions: String): CreateOrderAction
 
+    data class UpdatePlace(val place: String): CreateOrderAction
+
     data object MakeOrder: CreateOrderAction
 
 

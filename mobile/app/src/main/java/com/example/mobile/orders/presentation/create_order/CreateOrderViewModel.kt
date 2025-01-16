@@ -2,6 +2,7 @@ package com.example.mobile.orders.presentation.create_order
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.data.repository.MainPreferencesRepository
+import com.example.mobile.core.domain.remote.Result
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
@@ -9,6 +10,7 @@ import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
 import com.example.mobile.orders.data.remote.dto.TableDto
+import com.example.mobile.orders.domain.repository.GooglePlacesRepository
 import com.example.mobile.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -22,6 +24,7 @@ class CreateOrderViewModel @Inject constructor(
      orderRepositoryImpl: OrderRepositoryImpl,
      orderDao: OrderDao,
      preferencesRepository: MainPreferencesRepository,
+     private val googlePlacesRepository: GooglePlacesRepository
 ): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository){
 
     fun onAction(action: CreateOrderAction){
@@ -34,6 +37,7 @@ class CreateOrderViewModel @Inject constructor(
                 text = action.text
             )
             is CreateOrderAction.UpdateRequest -> updateRequest(action.request)
+            is CreateOrderAction.UpdatePlace -> updatePlace(action.place)
         }
     }
 
@@ -86,6 +90,10 @@ class CreateOrderViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun updatePlace(address: String){
+        getPlaces(address)
     }
 
     fun validateForm(): Boolean{
@@ -186,6 +194,27 @@ class CreateOrderViewModel @Inject constructor(
                     _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                     setLoadingState(false)
                 }
+        }
+    }
+
+    fun getPlaces(address: String){
+        Timber.d("getPlaces")
+        viewModelScope.launch{
+            val response = googlePlacesRepository.getPredictions(address)
+            setPlacesLoadingState(true)
+            when(response){
+                is Result.Success -> {
+                    _uiState.update {
+                        it.copy(places = response.data.predictions)
+                    }
+                    Timber.d("Prediction: " + response.data.predictions)
+                    setPlacesLoadingState(false)
+                }
+                is Result.Error -> {
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(response.error))
+                    setPlacesLoadingState(false)
+                }
+            }
         }
     }
 

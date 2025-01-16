@@ -1,6 +1,7 @@
 package com.example.mobile.orders.presentation
 
 import com.example.mobile.orders.data.db.model.OrderEntity
+import com.example.mobile.orders.data.remote.dto.GooglePredictionDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.data.remote.dto.TableDto
 import kotlinx.serialization.SerialName
@@ -11,7 +12,9 @@ data class OrderUiState(
     val orders: List<OrderEntity>? = null,
     val orderForm: OrderForm = OrderForm(),
     val isLoading: Boolean = false,
+    val isLoadingPlaces: Boolean = false,
     val tables: List<TableDto>? = null,
+    val places: List<GooglePredictionDto>? = null
 )
 
 @Serializable

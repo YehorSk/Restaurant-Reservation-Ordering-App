@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -19,6 +20,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.R
+import com.example.mobile.orders.data.remote.dto.GooglePredictionDto
 import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
@@ -26,6 +28,7 @@ fun OrderAddress(
     modifier: Modifier = Modifier,
     address: String,
     instructions: String,
+    places: List<GooglePredictionDto>? = null,
     onAddressChange: (String) -> Unit,
     onInstructionsChange: (String) -> Unit
 ) {
@@ -34,10 +37,13 @@ fun OrderAddress(
     }else{
         Color.Black
     }
+
+    var placesExpanded = remember { mutableListOf(false) }
+
     Card(
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxWidth()
         ) {
@@ -67,6 +73,7 @@ fun OrderAddress(
                 ),
                 shape = MaterialTheme.shapes.small
             )
+
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()

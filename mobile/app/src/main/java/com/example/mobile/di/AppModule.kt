@@ -30,6 +30,9 @@ import com.example.mobile.orders.domain.service.OrderService
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.core.utils.NetworkConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
+import com.example.mobile.orders.data.remote.GooglePlacesRepositoryImpl
+import com.example.mobile.orders.domain.repository.GooglePlacesRepository
+import com.example.mobile.orders.domain.service.GooglePlacesApi
 import com.example.mobile.reservations.data.dao.ReservationDao
 import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
 import com.example.mobile.reservations.domain.repository.ReservationRepository
@@ -143,6 +146,10 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideGooglePlacesApi(retrofit: Retrofit): GooglePlacesApi = retrofit.create(GooglePlacesApi::class.java)
+
+    @Provides
+    @Singleton
     fun providesAuthPreferences(@ApplicationContext applicationContext: Context) : MainPreferencesRepository = MainPreferencesRepository(dataStore = applicationContext.dataStore)
 
     @Provides
@@ -168,4 +175,9 @@ object AppModule {
     @Provides
     @Singleton
     fun providesReservationRepositoryImpl(reservationDao: ReservationDao, reservationService: ReservationService) : ReservationRepository = ReservationRepositoryImpl(reservationDao, reservationService)
+
+
+    @Provides
+    @Singleton
+    fun provideGooglePlacesRepositoryImpl(googlePlacesApi: GooglePlacesApi) : GooglePlacesRepository = GooglePlacesRepositoryImpl(googlePlacesApi)
 }

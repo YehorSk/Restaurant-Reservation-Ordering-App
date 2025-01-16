@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,5 +49,9 @@ open class OrderBaseViewModel @Inject constructor(
 
     protected fun setLoadingState(isLoading: Boolean) {
         _uiState.update { it.copy(isLoading = isLoading) }
+    }
+
+    protected fun setPlacesLoadingState(isLoading: Boolean) {
+        _uiState.update { it.copy(isLoadingPlaces = isLoading) }
     }
 }

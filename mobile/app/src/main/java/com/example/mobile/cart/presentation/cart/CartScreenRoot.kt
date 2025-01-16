@@ -100,7 +100,7 @@ fun CartScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ){
-            if(cartItems.isNotEmpty() && isConnected){
+            if(cartItems.isNotEmpty()){
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
@@ -135,19 +135,22 @@ fun CartScreen(
                 val checkout = cartItems.sumOf {
                     it.pivot.price
                 }
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
-                        .align(Alignment.BottomCenter),
-                    onClick = {
-                        onGoToCheckoutClick()
+                if(isConnected){
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
+                            .align(Alignment.BottomCenter),
+                        onClick = {
+                            onGoToCheckoutClick()
+                        }
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(8.dp),
+                            style = MaterialTheme.typography.bodyLarge,
+                            text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
+                        )
                     }
-                ) {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
-                    )
                 }
             }else{
                 Column(

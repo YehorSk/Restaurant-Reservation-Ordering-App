@@ -76,6 +76,8 @@ dependencies {
 
     //Google Maps
     implementation(libs.maps.compose)
+    implementation(libs.places)
+    implementation(libs.places.ktx)
 
     //Room
     implementation(libs.androidx.room.runtime)

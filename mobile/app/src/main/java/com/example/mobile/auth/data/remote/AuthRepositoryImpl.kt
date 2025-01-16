@@ -12,9 +12,7 @@ import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.Result
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -50,7 +48,7 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun authenticate(): Result<List<AuthDataDto>, AppError> {
-        Timber.d("Auth login")
+        Timber.d("Auth authenticate")
         return safeCall<AuthDataDto>(
             execute = {
                 authService.authenticate()
