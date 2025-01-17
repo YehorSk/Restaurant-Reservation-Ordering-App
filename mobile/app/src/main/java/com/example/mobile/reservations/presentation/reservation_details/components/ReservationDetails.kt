@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +27,9 @@ fun ReservationDetails(
     modifier: Modifier = Modifier,
     time: String,
     table: String,
-    date: String
+    date: String,
+    request: String,
+    phone: String
 ){
     val contentColor = if(isSystemInDarkTheme()){
         Color.White
@@ -62,9 +65,31 @@ fun ReservationDetails(
             modifier = Modifier.padding(
                 start = 20.dp,
                 top = 15.dp,
-                bottom = 20.dp
+                bottom = 10.dp
             ),
             text = stringResource(R.string.time_reservation, formatTime(time)),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = contentColor
+        )
+        HorizontalDivider()
+        Text(
+            modifier = Modifier.padding(
+                start = 20.dp,
+                top = 15.dp,
+            ),
+            text = stringResource(R.string.special_request, request),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = contentColor
+        )
+        Text(
+            modifier = Modifier.padding(
+                start = 20.dp,
+                top = 15.dp,
+                bottom = 20.dp
+            ),
+            text = stringResource(R.string.phone_number, phone),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             color = contentColor
@@ -79,7 +104,9 @@ fun ReservationDetailsPreview(){
         ReservationDetails(
             time = "17:00:00",
             table = "3",
-            date = "2024-12-27"
+            date = "2024-12-27",
+            request = "Lorem ipsum dolor sit amet",
+            phone = "0680000000"
         )
     }
 }

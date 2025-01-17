@@ -7,6 +7,7 @@ import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.reservations.data.dao.ReservationDao
 import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
+import com.example.mobile.reservations.presentation.reservations.ReservationForm
 import com.example.mobile.reservations.presentation.reservations.ReservationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -42,5 +43,9 @@ open class ReservationBaseViewModel @Inject constructor(
 
     protected fun setLoadingState(isLoading: Boolean) {
         _uiState.update { it.copy(isLoading = isLoading) }
+    }
+
+    public fun clearForm(){
+        _uiState.update { it.copy(reservationForm = ReservationForm()) }
     }
 }

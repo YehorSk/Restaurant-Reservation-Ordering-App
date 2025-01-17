@@ -55,6 +55,12 @@
     <string name="pending_reservation">Čakajúca rezervácia</string>
     <string name="order">Objednavka #%1$s</string>
     <string name="cart">Košík</string>
+    <string name="at">o %1$s</string>
+    <string name="reservation_special_request">Špeciálne požiadavky</string>
+    <string name="type_request_here">Vaše špeciálne požiadavky…</string>
+    <string name="what_is_your_number">Aké je vaše číslo?</string>
+    <string name="special_request">Špeciálna požiadavka: %1$s</string>
+    <string name="phone_number">Telefónne číslo: %1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>
@@ -112,5 +118,6 @@
     <string name="account_item">Účet</string>
     <string name="reservations_item">Rezervácie</string>
     <string name="favorites_item">Obľúbené</string>
+    <string name="platea_restaurant">PLATEA Restaurant</string>
 
 </resources>

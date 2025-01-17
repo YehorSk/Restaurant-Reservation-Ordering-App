@@ -14,8 +14,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.mobile.R
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -73,8 +75,8 @@ fun PickupMap(
             ) {
                 Marker(
                     state = charmMarkerState,
-                    title = "PLATEA Restaurant",
-                    snippet = "PLATEA"
+                    title = stringResource(R.string.platea_restaurant),
+                    snippet = stringResource(R.string.app_name)
                 )
             }
         }
@@ -84,7 +86,7 @@ fun PickupMap(
                     top = 15.dp,
                     bottom = 10.dp
                 ),
-            text = "PLATEA Restaurant",
+            text = stringResource(R.string.platea_restaurant),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             )

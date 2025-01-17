@@ -45,11 +45,33 @@ class CreateReservationViewModel @Inject constructor(
         getAvailableTimeSlots()
     }
 
-    fun updateTimeSlot(slot: Int){
+    fun updateSpecialRequest(request: String){
         _uiState.update {
             it.copy(
                 reservationForm = it.reservationForm.copy(
-                    selectedTimeSlot = slot
+                    specialRequest = request
+                )
+            )
+        }
+    }
+
+    fun updatePhone(phone: String){
+        _uiState.update {
+            it.copy(
+                reservationForm = it.reservationForm.copy(
+                    phone = phone
+                )
+            )
+        }
+    }
+
+
+    fun updateTimeSlot(slot: Int, time: String){
+        _uiState.update {
+            it.copy(
+                reservationForm = it.reservationForm.copy(
+                    selectedTimeSlot = slot,
+                    selectedTime = time
                 )
             )
         }
@@ -68,6 +90,11 @@ class CreateReservationViewModel @Inject constructor(
                     _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                 }
         }
+    }
+
+    fun validatePhoneNumber(): Boolean{
+        val phoneRegex = "^[+]?[0-9]{10,15}$"
+        return _uiState.value.reservationForm.phone.matches(phoneRegex.toRegex())
     }
 
     fun createReservation(){

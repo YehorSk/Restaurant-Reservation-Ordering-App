@@ -21,6 +21,8 @@ return new class extends Migration
             $table->date("date");
             $table->string("status");
             $table->string("code");
+            $table->string("special_request")->nullable();
+            $table->string("phone");
             $table->foreign("client_id")->references("id")->on("users")->onDelete("cascade");
             $table->foreign("time_slot_id")->references("id")->on("time_slot")->onDelete("cascade");
             $table->foreign("table_id")->references("id")->on("tables")->onDelete("cascade");

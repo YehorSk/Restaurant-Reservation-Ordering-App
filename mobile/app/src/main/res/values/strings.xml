@@ -54,6 +54,13 @@
     <string name="pending_reservation">Pending reservation</string>
     <string name="order">Order #%1$s</string>
     <string name="cart">Cart</string>
+    <string name="at">at %1$s</string>
+    <string name="platea_restaurant">PLATEA Restaurant</string>
+    <string name="reservation_special_request">Special requests</string>
+    <string name="type_request_here">Your special requests…</string>
+    <string name="what_is_your_number">What\'s your number?</string>
+    <string name="special_request">Special request: %1$s</string>
+    <string name="phone_number">Phone number: %1$s</string>
 
     <!-- Profile Items -->
 

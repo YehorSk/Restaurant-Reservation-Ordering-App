@@ -19,4 +19,8 @@ data class ReservationForm(
     val reservationDate:String = LocalDate.now().toString(),
     @SerialName("time_slot_id")
     val selectedTimeSlot:Int = 0,
+    val selectedTime:String = "",
+    @SerialName("special_request")
+    val specialRequest: String = "",
+    val phone: String = ""
 )

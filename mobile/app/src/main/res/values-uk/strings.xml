@@ -55,6 +55,12 @@
     <string name="pending_reservation">Очікує на підтвердження</string>
     <string name="order">Замовлення #%1$s</string>
     <string name="cart">Кошик</string>
+    <string name="at">o %1$s</string>
+    <string name="reservation_special_request">Особливі побажання</string>
+    <string name="type_request_here">Ваші особливі побажання…</string>
+    <string name="what_is_your_number">Який ваш номер?</string>
+    <string name="special_request">Особливе побажання: %1$s</string>
+    <string name="phone_number">Номер телефону: %1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>
@@ -112,5 +118,6 @@
     <string name="account_item">Акаунт</string>
     <string name="reservations_item">Резервації</string>
     <string name="favorites_item">Улюблене</string>
+    <string name="platea_restaurant">PLATEA Restaurant</string>
 
 </resources>

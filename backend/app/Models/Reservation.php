@@ -18,7 +18,9 @@ class Reservation extends Model
         'status',
         'code',
         'party_size',
-        'date'
+        'date',
+        'special_request',
+        'phone'
     ];
 
     public function timeSlot()

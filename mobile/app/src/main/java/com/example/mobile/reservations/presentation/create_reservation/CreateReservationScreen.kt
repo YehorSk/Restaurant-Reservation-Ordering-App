@@ -4,26 +4,17 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.orders.presentation.components.NavBar
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.SingleEventEffect
@@ -35,8 +26,9 @@ import com.example.mobile.reservations.presentation.create_reservation.component
 @Composable
 fun CreateReservationScreen(
     modifier: Modifier = Modifier,
-    viewModel: CreateReservationViewModel = hiltViewModel(),
-    goBack: ()->Unit
+    viewModel: CreateReservationViewModel,
+    goBack: ()-> Unit,
+    goToFinishReservation: () -> Unit
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -61,7 +53,10 @@ fun CreateReservationScreen(
                 .background(MaterialTheme.colorScheme.background)
         ) {
             NavBar(
-                onGoBack = goBack,
+                onGoBack = {
+                    goBack()
+                    viewModel.clearForm()
+                },
                 title = R.string.go_back
             )
             PartySize(
@@ -76,27 +71,10 @@ fun CreateReservationScreen(
                     date = uiState.reservationForm.reservationDate,
                     slots = uiState.timeSlots!!,
                     selectedSlot = uiState.reservationForm.selectedTimeSlot,
-                    onTimeChanged = { viewModel.updateTimeSlot(it) }
-                )
-            }
-            Button(
-                modifier = Modifier
-                    .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 20.dp,
-                        bottom = 10.dp
-                    )
-                    .fillMaxWidth(),
-                enabled = uiState.reservationForm.selectedTimeSlot != null,
-                onClick = {
-                    viewModel.createReservation()
-                }
-            ) {
-                Text(
-                    text = stringResource(R.string.book),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
+                    onTimeChanged = {id, time ->
+                        viewModel.updateTimeSlot(id, time)
+                        goToFinishReservation()
+                    }
                 )
             }
         }

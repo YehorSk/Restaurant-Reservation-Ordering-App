@@ -7,10 +7,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -82,12 +80,13 @@ fun CalendarRoot(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
-            .padding(20.dp)
+            .padding(
+                start = 20.dp,
+                end = 20.dp,
+                top = 10.dp,
+                bottom = 10.dp
+            )
     ) {
-//        Text(
-//            modifier = Modifier.padding(bottom = 20.dp),
-//            text = formatDateTime(selectedDate.toString())
-//        )
         Text(
             modifier = Modifier
                 .padding(
@@ -148,9 +147,6 @@ fun CalendarRoot(
                 )
             }
         }
-        Spacer(
-            modifier = Modifier.height(20.dp)
-        )
         HorizontalCalendar(
             state = state,
             dayContent = { day ->

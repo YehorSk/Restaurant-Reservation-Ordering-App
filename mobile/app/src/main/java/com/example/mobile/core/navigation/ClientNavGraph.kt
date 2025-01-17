@@ -23,6 +23,8 @@ import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreenRoot
 import com.example.mobile.reservations.presentation.create_reservation.CreateReservationScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
+import com.example.mobile.reservations.presentation.confirm_reservation.ConfirmReservationScreen
+import com.example.mobile.reservations.presentation.create_reservation.CreateReservationViewModel
 import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.example.mobile.reservations.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
@@ -34,8 +36,7 @@ fun ClientNavGraph(
     onLoggedOut: () -> Unit
 ){
     val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
-//    val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
-    val ordersScreenViewModel: CartScreenViewModel = hiltViewModel()
+    val createReservationViewModel: CreateReservationViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -91,17 +92,31 @@ fun ClientNavGraph(
                 showGoBack = true
             )
         }
-        composable(
-            route = ClientScreen.CreateReservation.route,
-            enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
-            ) {
+        composable(ClientScreen.CreateReservation.route) {
             CreateReservationScreen(
                 modifier = modifier,
+                viewModel = createReservationViewModel,
                 goBack = {
                     navController.popBackStack()
+                },
+                goToFinishReservation = {
+                    navController.navigate(ClientScreen.ConfirmReservation.route)
+                }
+            )
+        }
+        composable(ClientScreen.ConfirmReservation.route) {
+            ConfirmReservationScreen(
+                modifier = modifier,
+                viewModel = createReservationViewModel,
+                goBack = {
+                    navController.popBackStack()
+                },
+                goBackToMenu = {
+                    navController.navigate(ClientScreen.Home.route){
+                        popUpTo(ClientScreen.Home.route){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -218,6 +233,7 @@ sealed class ClientScreen(val route: String){
     data object Orders: ClientScreen(route = "ORDERS")
     data object CreateOrder: ClientScreen(route = "CREATE_ORDER")
     data object CreateReservation: ClientScreen(route = "MAKE_RESERVATION")
+    data object ConfirmReservation: ClientScreen(route = "CONFIRM_RESERVATION")
     @Serializable
     data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")
     data object Account: ClientScreen(route = "ACCOUNT")

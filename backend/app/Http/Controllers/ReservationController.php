@@ -206,6 +206,8 @@ class ReservationController extends Controller
                 "party_size" => $size,
                 "date" => $date,
                 "status" => "Pending",
+                "special_request" => $request->input('special_request', ''),
+                "phone" => $request->input('phone', ''),
                 "code" => $this->generate_code()
             ]);
 

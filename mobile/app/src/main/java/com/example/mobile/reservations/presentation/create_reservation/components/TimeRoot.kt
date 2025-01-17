@@ -38,7 +38,7 @@ fun TimeRoot(
     selectedSlot: Int,
     date: String,
     slots: List<TimeSlotDto>,
-    onTimeChanged: (Int) -> Unit
+    onTimeChanged: (Int, String) -> Unit
 ){
 
     val contentColor = if(isSystemInDarkTheme()){
@@ -82,7 +82,7 @@ fun TimeRoot(
                         .width(80.dp)
                         .background(MaterialTheme.colorScheme.background)
                         .clickable{
-                            onTimeChanged(item.id)
+                            onTimeChanged(item.id, item.startTime)
                         },
                     contentAlignment = Alignment.Center
                 ){
@@ -118,7 +118,7 @@ fun TimeRootPreview(){
         TimeRoot(
             date = "2024-12-20",
             slots = timeSlots,
-            onTimeChanged = {},
+            onTimeChanged = {id, time ->},
             selectedSlot = 0
         )
     }

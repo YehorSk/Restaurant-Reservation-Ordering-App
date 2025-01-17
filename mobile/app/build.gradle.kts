@@ -64,6 +64,8 @@ android {
 
 dependencies {
 
+    implementation("io.github.joelkanyi:komposecountrycodepicker:1.3.1")
+
     implementation(libs.accompanist.permissions)
 
     implementation(libs.secrets.gradle.plugin)

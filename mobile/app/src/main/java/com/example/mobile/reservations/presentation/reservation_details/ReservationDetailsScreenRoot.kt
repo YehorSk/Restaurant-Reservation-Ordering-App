@@ -105,7 +105,9 @@ fun ReservationDetailsScreen(
             ReservationDetails(
                 time = data.startTime,
                 table = data.tableNumber,
-                date = data.date
+                date = data.date,
+                request = data.specialRequest,
+                phone = data.phone
             )
             if(isConnected){
                 if(userRole == "user"){
