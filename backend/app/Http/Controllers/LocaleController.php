@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Traits\HttpResponses;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
 

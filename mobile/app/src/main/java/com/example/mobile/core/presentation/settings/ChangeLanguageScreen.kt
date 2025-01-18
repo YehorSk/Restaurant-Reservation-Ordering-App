@@ -8,11 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
-import com.example.mobile.core.presentation.settings.components.ProfileListHeader
 import com.example.mobile.core.presentation.settings.components.SettingsListItem
 import com.example.mobile.orders.presentation.components.NavBar
 

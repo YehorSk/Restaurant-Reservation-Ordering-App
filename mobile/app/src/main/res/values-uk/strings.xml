@@ -132,4 +132,15 @@
     <string name="favorites_item">Улюблене</string>
     <string name="platea_restaurant">PLATEA Restaurant</string>
 
+    <!-- Statuses -->
+    <string name="status_pending">Очікує</string>
+    <string name="status_confirmed">Підтверджено</string>
+    <string name="status_preparing">Готується</string>
+    <string name="status_ready_pickup">Готово для самовивозу</string>
+    <string name="status_on_the_way">В дорозі</string>
+    <string name="status_completed">Завершено</string>
+    <string name="status_cancelled">Скасовано</string>
+    <string name="status_rejected">Відхилено</string>
+    <string name="status_ready_dinein">Готово для обслуговування</string>
+
 </resources>

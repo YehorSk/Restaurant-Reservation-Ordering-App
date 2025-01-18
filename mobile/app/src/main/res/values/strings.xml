@@ -132,4 +132,16 @@
     <string name="reservations_item">Reservations\n</string>
     <string name="favorites_item">Favorites</string>
 
+    <!-- Statuses -->
+    <string name="status_pending">Pending</string>
+    <string name="status_confirmed">Confirmed</string>
+    <string name="status_preparing">Preparing</string>
+    <string name="status_ready_pickup">Ready for Pickup</string>
+    <string name="status_on_the_way">On the Way</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_cancelled">Cancelled</string>
+    <string name="status_rejected">Rejected</string>
+    <string name="status_ready_dinein">Ready for Dine-In</string>
+
+
 </resources>

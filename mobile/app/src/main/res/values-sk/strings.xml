@@ -132,4 +132,15 @@
     <string name="favorites_item">Obľúbené</string>
     <string name="platea_restaurant">PLATEA Restaurant</string>
 
+    <!-- Statuses -->
+    <string name="status_pending">Čaká sa</string>
+    <string name="status_confirmed">Potvrdené</string>
+    <string name="status_preparing">Pripravuje sa</string>
+    <string name="status_ready_pickup">Pripravené na vyzdvihnutie</string>
+    <string name="status_on_the_way">Na ceste</string>
+    <string name="status_completed">Dokončené</string>
+    <string name="status_cancelled">Zrušené</string>
+    <string name="status_rejected">Zamietnuté</string>
+    <string name="status_ready_dinein">Pripravené na servírovanie</string>
+
 </resources>

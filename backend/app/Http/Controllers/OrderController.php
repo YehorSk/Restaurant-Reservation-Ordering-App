@@ -348,4 +348,14 @@ class OrderController extends Controller
         return $code;
     }
 
+    // Pending
+    // Confirmed
+    // Preparing
+    // Ready for Pickup
+    // On the Way
+    // Completed
+    // Cancelled
+    // Rejected
+    // Ready for Dine-In
+
 }

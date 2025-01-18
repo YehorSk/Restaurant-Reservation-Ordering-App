@@ -79,38 +79,40 @@ class ReservationController extends Controller
         return $this->error('', 'No user', 401);
     }
 
-    public function getAvailableTimeSlots(Request $request){
+    public function getAvailableTimeSlots(Request $request)
+    {
         $user = auth('sanctum')->user();
-        if($user instanceof User){
+
+        if ($user instanceof User) {
             $date = $request->input('reservation_date', '');
-            $size = $request->input('party_size', '');
-            if (!$date || !$size) {
+            $partySize = $request->input('party_size', '');
+
+            if (!$date || !$partySize) {
                 return $this->error('', 'Reservation date and party size are required', 400);
             }
 
             $currentTime = now()->setTimezone('Europe/Bratislava')->format('H:i:s');
 
-            $availableTables = Table::query()
-                ->where('capacity', '>=', $size)
-                ->get();
-
-            if ($availableTables->isEmpty()) {
-                return $this->success(data: [], message: "No available tables for the requested party size");
-            }
-
             $timeSlots = TimeSlot::query()
                 ->when($date === now()->format('Y-m-d'), function ($query) use ($currentTime) {
                     $query->where('start_time', '>=', $currentTime);
                 })
-                ->whereDoesntHave('reservations', function ($query) use ($date) {
-                    $query->where('date', $date);
+                ->whereDoesntHave('reservations', function ($query) use ($date, $partySize) {
+                    $query->where('date', $date)
+                        ->whereHas('table', function ($tableQuery) use ($partySize) {
+                            $tableQuery->where('capacity', '>=', $partySize);
+                        });
                 })
+                ->orderBy('start_time')
                 ->get();
 
             return $this->success(data: $timeSlots, message: "");
         }
+
         return $this->error('', 'No user', 401);
     }
+
+
 
 
     public function getReservations(Request $request){

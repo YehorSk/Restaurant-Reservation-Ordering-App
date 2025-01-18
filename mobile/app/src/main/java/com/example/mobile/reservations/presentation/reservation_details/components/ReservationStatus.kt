@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.R
 import com.example.mobile.core.utils.formatOrderDateTime
+import com.example.mobile.core.utils.statusToString
 import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
@@ -26,7 +28,7 @@ fun ReservationStatus(
     date: String,
     code: String
 ){
-
+    val context = LocalContext.current
     Card(
     ) {
         Column {
@@ -56,7 +58,7 @@ fun ReservationStatus(
                         top = 15.dp,
                         bottom = 10.dp
                     ),
-                    text = status,
+                    text = statusToString(status, context),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )

@@ -11,10 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mobile.core.utils.formatOrderDateTime
+import com.example.mobile.core.utils.statusToString
 import com.example.mobile.reservations.data.db.model.ReservationEntity
 
 @Composable
@@ -23,7 +25,7 @@ fun ReservationItem(
     reservationEntity: ReservationEntity,
     onGoToReservationDetails: (Int) -> Unit
 ){
-
+    val context = LocalContext.current
     Row(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
@@ -48,7 +50,7 @@ fun ReservationItem(
                     color = Color.LightGray,
                 )
                 Text(
-                    text = " ${reservationEntity.status}",
+                    text = " ${statusToString(reservationEntity.status, context)}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                 )
