@@ -1,6 +1,8 @@
 package com.example.mobile.core.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -11,11 +13,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
+import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.core.presentation.settings.ChangeLanguageScreen
 import com.example.mobile.core.presentation.settings.ChangeThemeScreen
 import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
+import com.example.mobile.core.presentation.settings.SettingsViewModel
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
@@ -38,6 +42,8 @@ fun ClientNavGraph(
 ){
     val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
     val createReservationViewModel: CreateReservationViewModel = hiltViewModel()
+    val cartViewModel: CartScreenViewModel = hiltViewModel()
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -46,6 +52,8 @@ fun ClientNavGraph(
     ){
         composable(
             route = ClientScreen.Home.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
         ) {
             MenuScreenRoot(
                 modifier = modifier,
@@ -59,9 +67,14 @@ fun ClientNavGraph(
                 isUser = true
             )
         }
-        composable(ClientScreen.Account.route) {
+        composable(
+            route = ClientScreen.Account.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
+                viewModel = settingsViewModel,
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> navController.navigate(ClientScreen.Favorites.route)
@@ -75,7 +88,11 @@ fun ClientNavGraph(
                 }
             )
         }
-        composable(ClientScreen.Profile.route) {
+        composable(
+            route = ClientScreen.Profile.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             ProfileScreen(
                 modifier = modifier,
                 onGoBack = {
@@ -83,7 +100,11 @@ fun ClientNavGraph(
                 }
             )
         }
-        composable(ClientScreen.Orders.route) {
+        composable(
+            route = ClientScreen.Orders.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             OrdersScreen(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
@@ -95,7 +116,11 @@ fun ClientNavGraph(
                 showGoBack = true
             )
         }
-        composable(ClientScreen.CreateReservation.route) {
+        composable(
+            route = ClientScreen.CreateReservation.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             CreateReservationScreen(
                 modifier = modifier,
                 viewModel = createReservationViewModel,
@@ -107,7 +132,11 @@ fun ClientNavGraph(
                 }
             )
         }
-        composable(ClientScreen.ConfirmReservation.route) {
+        composable(
+            route = ClientScreen.ConfirmReservation.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             ConfirmReservationScreen(
                 modifier = modifier,
                 viewModel = createReservationViewModel,
@@ -123,7 +152,11 @@ fun ClientNavGraph(
                 }
             )
         }
-        composable(ClientScreen.CreateOrder.route) {
+        composable(
+            route = ClientScreen.CreateOrder.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             UserCreateOrderScreenRoot(
                 modifier = modifier,
                 onGoToCart = {
@@ -152,7 +185,10 @@ fun ClientNavGraph(
                 }
             )
         }
-        composable<ClientScreen.OrderDetails>{
+        composable<ClientScreen.OrderDetails>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ){
             val args = it.toRoute<ClientScreen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
@@ -167,7 +203,10 @@ fun ClientNavGraph(
                 onOpenItemDetails = {}
             )
         }
-        composable<ClientScreen.ReservationDetails>{
+        composable<ClientScreen.ReservationDetails>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ){
             val args = it.toRoute<ClientScreen.ReservationDetails>()
             ReservationDetailsScreenRoot(
                 modifier = modifier,
@@ -181,19 +220,31 @@ fun ClientNavGraph(
                 id = args.id
             )
         }
-        composable(ClientScreen.Theme.route) {
+        composable(
+            route = ClientScreen.Theme.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             ChangeThemeScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(ClientScreen.Language.route) {
+        composable(
+            route = ClientScreen.Language.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             ChangeLanguageScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(ClientScreen.Favorites.route) {
+        composable(
+            route = ClientScreen.Favorites.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             FavoritesScreen(
                 modifier = modifier,
                 viewModel = menuScreenViewModel,
@@ -202,14 +253,19 @@ fun ClientNavGraph(
         }
         composable(
             route = ClientScreen.Cart.route,
-        ) {
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+            ) {
             CartScreenRoot(
                 modifier = modifier,
+                viewModel = cartViewModel,
                 onGoToCheckoutClick = { navController.navigate(ClientScreen.CreateOrder.route) }
             )
         }
         composable(
             route = ClientScreen.Reservations.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
         ) {
             ReservationScreenRoot(
                 modifier = modifier,
@@ -221,10 +277,8 @@ fun ClientNavGraph(
         }
         composable(
             route = ClientScreen.Search.route,
-            enterTransition =   { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(700)) },
-            exitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-            popEnterTransition = { slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) },
-            popExitTransition = { slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(700)) }
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
         ) {
             SearchScreen(
                 modifier = modifier,

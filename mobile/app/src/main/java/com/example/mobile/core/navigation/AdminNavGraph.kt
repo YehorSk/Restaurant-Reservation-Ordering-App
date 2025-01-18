@@ -1,8 +1,11 @@
 package com.example.mobile.core.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +15,7 @@ import com.example.mobile.core.presentation.settings.ChangeThemeScreen
 import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
+import com.example.mobile.core.presentation.settings.SettingsViewModel
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
@@ -24,15 +28,20 @@ fun AdminNavGraph(
     navController: NavHostController,
     onLoggedOut: () -> Unit
 ){
-
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         route = Graph.ADMIN,
         startDestination = AdminScreen.Orders.route
     ){
-        composable(AdminScreen.Account.route) {
+        composable(
+            route = AdminScreen.Account.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
+                viewModel = settingsViewModel,
                 onNavigate = { destination ->
                     when(destination){
                         ProfileDestination.Favorites -> {}
@@ -46,19 +55,31 @@ fun AdminNavGraph(
                 }
             )
         }
-        composable(AdminScreen.Theme.route) {
+        composable(
+            route = AdminScreen.Theme.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             ChangeThemeScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(AdminScreen.Language.route) {
+        composable(
+            route = AdminScreen.Language.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             ChangeLanguageScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(AdminScreen.Profile.route) {
+        composable(
+            route = AdminScreen.Profile.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             ProfileScreen(
                 modifier = modifier,
                 onGoBack = {
@@ -66,7 +87,11 @@ fun AdminNavGraph(
                 }
             )
         }
-        composable(AdminScreen.Orders.route) {
+        composable(
+            route = AdminScreen.Orders.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
             OrdersScreen(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
@@ -78,7 +103,10 @@ fun AdminNavGraph(
                 showGoBack = false
             )
         }
-        composable<AdminScreen.OrderDetails>{
+        composable<AdminScreen.OrderDetails>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ){
             val args = it.toRoute<AdminScreen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
@@ -95,6 +123,8 @@ fun AdminNavGraph(
         }
         composable(
             route = AdminScreen.Reservations.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
         ) {
             ReservationScreenRoot(
                 modifier = modifier,
@@ -106,7 +136,10 @@ fun AdminNavGraph(
                 showGoBack = false
             )
         }
-        composable<AdminScreen.ReservationDetails>{
+        composable<AdminScreen.ReservationDetails>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ){
             val args = it.toRoute<AdminScreen.ReservationDetails>()
             ReservationDetailsScreenRoot(
                 modifier = modifier,

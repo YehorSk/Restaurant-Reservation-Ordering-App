@@ -11,21 +11,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.settings.components.ProfileListHeader
 import com.example.mobile.core.presentation.settings.components.ProfileListItem
 import com.example.mobile.core.utils.toString
-import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
 fun MainSettingsScreen(
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel = hiltViewModel(),
+    viewModel: SettingsViewModel,
     onNavigate: (ProfileDestination) -> Unit
 ){
     val userRole by viewModel.userRole.collectAsStateWithLifecycle()
@@ -40,80 +38,74 @@ fun MainSettingsScreen(
         }
     }
 
-    Column(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.background),
-    ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
+    if(userRole != null){
+        Column(
+            modifier = modifier
+                .background(MaterialTheme.colorScheme.background),
         ) {
-            item{
-                ProfileListHeader(
-                    text = stringResource(R.string.hello_user, userName.toString())
-                )
-            }
-            item{
-                ProfileListItem(
-                    text = R.string.profile,
-                    onClick = {
-                        onNavigate(ProfileDestination.Profile)
-                    }
-                )
-            }
-            if(userRole in arrayOf("user","waiter","admin")){
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                item{
+                    ProfileListHeader(
+                        text = stringResource(R.string.hello_user, userName.toString())
+                    )
+                }
                 item{
                     ProfileListItem(
-                        text = R.string.reservations,
+                        text = R.string.profile,
                         onClick = {
-                            onNavigate(ProfileDestination.Reservations)
+                            onNavigate(ProfileDestination.Profile)
                         }
                     )
                 }
-            }
-            if(userRole in arrayOf("user","waiter","admin")){
+                if(userRole in arrayOf("user","waiter","admin")){
+                    item{
+                        ProfileListItem(
+                            text = R.string.reservations,
+                            onClick = {
+                                onNavigate(ProfileDestination.Reservations)
+                            }
+                        )
+                    }
+                }
+                if(userRole in arrayOf("user","waiter","admin")){
+                    item{
+                        ProfileListItem(
+                            text = R.string.orders,
+                            onClick = {
+                                onNavigate(ProfileDestination.Orders)
+                            }
+                        )
+                    }
+                }
                 item{
                     ProfileListItem(
-                        text = R.string.orders,
+                        text = R.string.theme,
                         onClick = {
-                            onNavigate(ProfileDestination.Orders)
+                            onNavigate(ProfileDestination.Theme)
                         }
                     )
                 }
-            }
-            item{
-                ProfileListItem(
-                    text = R.string.theme,
-                    onClick = {
-                        onNavigate(ProfileDestination.Theme)
-                    }
-                )
-            }
-            item{
-                ProfileListItem(
-                    text = R.string.language,
-                    onClick = {
-                        onNavigate(ProfileDestination.Language)
-                    }
-                )
-            }
-            item{
-                ProfileListItem(
-                    text = R.string.logout,
-                    onClick = {
-                        viewModel.logout()
-                    }
-                )
+                item{
+                    ProfileListItem(
+                        text = R.string.language,
+                        onClick = {
+                            onNavigate(ProfileDestination.Language)
+                        }
+                    )
+                }
+                item{
+                    ProfileListItem(
+                        text = R.string.logout,
+                        onClick = {
+                            viewModel.logout()
+                        }
+                    )
+                }
             }
         }
-    }
-}
-
-@PreviewLightDark
-@Composable
-fun ProfileScreenPreview(){
-    MobileTheme {
-        MainSettingsScreen(
-            onNavigate = {}
-        )
+    }else{
+        LoadingPart()
     }
 }

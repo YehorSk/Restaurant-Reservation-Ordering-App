@@ -45,7 +45,7 @@ import com.example.mobile.orders.presentation.components.NavBar
 @Composable
 fun CartScreenRoot(
     modifier: Modifier = Modifier,
-    viewModel: CartScreenViewModel = hiltViewModel(),
+    viewModel: CartScreenViewModel,
     onGoToCheckoutClick: () -> Unit
 ){
     val context = LocalContext.current
