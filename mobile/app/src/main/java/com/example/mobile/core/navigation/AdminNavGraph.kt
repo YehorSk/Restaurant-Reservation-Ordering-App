@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.mobile.core.presentation.settings.ChangeLanguageScreen
 import com.example.mobile.core.presentation.settings.ChangeThemeScreen
 import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
@@ -39,7 +40,7 @@ fun AdminNavGraph(
                         ProfileDestination.Profile -> navController.navigate(AdminScreen.Profile.route)
                         ProfileDestination.Orders -> navController.navigate(AdminScreen.Orders.route)
                         ProfileDestination.Reservations -> navController.navigate(AdminScreen.Reservations.route)
-                        ProfileDestination.Language -> {}
+                        ProfileDestination.Language -> navController.navigate(AdminScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(AdminScreen.Theme.route)
                     }
                 }
@@ -47,6 +48,12 @@ fun AdminNavGraph(
         }
         composable(AdminScreen.Theme.route) {
             ChangeThemeScreen(
+                modifier = modifier,
+                onGoBack = { navController.popBackStack() }
+            )
+        }
+        composable(AdminScreen.Language.route) {
+            ChangeLanguageScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )

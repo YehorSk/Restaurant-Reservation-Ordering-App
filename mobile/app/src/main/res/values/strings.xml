@@ -65,6 +65,14 @@
     <string name="language">Language</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
+    <string name="english">English</string>
+    <string name="ukrainian">Українська</string>
+    <string name="slovak">Slovenčina</string>
+    <string name="pickup_time">30-45 min</string>
+    <string name="delivery_time">45-55 min</string>
+    <string name="select_date">Select date</string>
+    <string name="select_time">Select time</string>
+    <string name="schedule">Schedule</string>
 
     <!-- Profile Items -->
 
@@ -120,7 +128,7 @@
     <string name="home_item">Home</string>
     <string name="cart_item">Cart</string>
     <string name="orders_item">Orders</string>
-    <string name="account_item">Account\n</string>
+    <string name="account_item">Account</string>
     <string name="reservations_item">Reservations\n</string>
     <string name="favorites_item">Favorites</string>
 

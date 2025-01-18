@@ -46,6 +46,8 @@ class SettingsViewModel @Inject constructor(
     val userTheme: StateFlow<Boolean?> = preferencesRepository.appIsDarkThemeFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, false)
 
+    val userLang: StateFlow<String?> = preferencesRepository.appLanguageFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, "en")
 
     val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
@@ -87,6 +89,12 @@ class SettingsViewModel @Inject constructor(
     fun updateTheme(value: Boolean){
         viewModelScope.launch{
             preferencesRepository.setAppTheme(value)
+        }
+    }
+
+    fun updateLanguage(value: String){
+        viewModelScope.launch{
+            preferencesRepository.setAppLanguage(value)
         }
     }
 

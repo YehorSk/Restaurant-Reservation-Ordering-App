@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
+import com.example.mobile.core.presentation.settings.ChangeLanguageScreen
 import com.example.mobile.core.presentation.settings.ChangeThemeScreen
 import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
@@ -68,8 +69,8 @@ fun ClientNavGraph(
                         ProfileDestination.Profile -> navController.navigate(ClientScreen.Profile.route)
                         ProfileDestination.Orders -> navController.navigate(ClientScreen.Orders.route)
                         ProfileDestination.Reservations -> navController.navigate(ClientScreen.Reservations.route)
-                        ProfileDestination.Language -> {}
-                        ProfileDestination.Theme -> { navController.navigate(ClientScreen.Theme.route) }
+                        ProfileDestination.Language -> navController.navigate(ClientScreen.Language.route)
+                        ProfileDestination.Theme -> navController.navigate(ClientScreen.Theme.route)
                     }
                 }
             )
@@ -141,7 +142,7 @@ fun ClientNavGraph(
                 },
                 onGoToOrders = {
                     navController.navigate(ClientScreen.Orders.route){
-                        popUpTo(ClientScreen.Orders.route){
+                        popUpTo(ClientScreen.CreateOrder.route){
                             inclusive = true
                         }
                     }
@@ -182,6 +183,12 @@ fun ClientNavGraph(
         }
         composable(ClientScreen.Theme.route) {
             ChangeThemeScreen(
+                modifier = modifier,
+                onGoBack = { navController.popBackStack() }
+            )
+        }
+        composable(ClientScreen.Language.route) {
+            ChangeLanguageScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )

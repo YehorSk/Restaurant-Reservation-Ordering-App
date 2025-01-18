@@ -88,7 +88,9 @@ class MainPreferencesRepository @Inject constructor(
     }
 
     suspend fun setAppLanguage(language: String) {
-        dataStore.edit { preferences -> preferences[APP_LANGUAGE] = language }
+        dataStore.edit { preferences ->
+            preferences[APP_LANGUAGE] = language
+        }
     }
 
     suspend fun setAppTheme(theme: Boolean) {

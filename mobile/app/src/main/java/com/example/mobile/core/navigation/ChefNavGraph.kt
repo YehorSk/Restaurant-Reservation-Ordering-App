@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.mobile.core.presentation.settings.ChangeLanguageScreen
 import com.example.mobile.core.presentation.settings.ChangeThemeScreen
 import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
@@ -42,7 +43,7 @@ fun ChefNavGraph(
                         ProfileDestination.Profile -> navController.navigate(ChefScreen.Profile.route)
                         ProfileDestination.Orders -> {}
                         ProfileDestination.Reservations -> {}
-                        ProfileDestination.Language -> {}
+                        ProfileDestination.Language -> navController.navigate(ChefScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(ChefScreen.Theme.route)
                     }
                 }
@@ -50,6 +51,12 @@ fun ChefNavGraph(
         }
         composable(ChefScreen.Theme.route) {
             ChangeThemeScreen(
+                modifier = modifier,
+                onGoBack = { navController.popBackStack() }
+            )
+        }
+        composable(ChefScreen.Language.route) {
+            ChangeLanguageScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )

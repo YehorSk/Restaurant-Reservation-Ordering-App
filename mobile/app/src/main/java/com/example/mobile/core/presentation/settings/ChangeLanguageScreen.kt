@@ -17,13 +17,14 @@ import com.example.mobile.core.presentation.settings.components.SettingsListItem
 import com.example.mobile.orders.presentation.components.NavBar
 
 @Composable
-fun ChangeThemeScreen(
+fun ChangeLanguageScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
     onGoBack: () -> Unit
 ){
 
-    val userTheme by viewModel.userTheme.collectAsStateWithLifecycle()
+    val userLang by viewModel.userLang.collectAsStateWithLifecycle()
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background),
@@ -36,26 +37,30 @@ fun ChangeThemeScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             item{
-                ProfileListHeader(
-                    text = stringResource(R.string.theme)
+                SettingsListItem(
+                    text = R.string.english,
+                    onClick = {
+                        viewModel.updateLanguage("en")
+                    },
+                    isActive = userLang == "en"
                 )
             }
             item{
                 SettingsListItem(
-                    text = R.string.theme_light,
+                    text = R.string.slovak,
                     onClick = {
-                        viewModel.updateTheme(false)
+                        viewModel.updateLanguage("sk")
                     },
-                    isActive = userTheme == false
+                    isActive = userLang == "sk"
                 )
             }
             item{
                 SettingsListItem(
-                    text = R.string.theme_dark,
+                    text = R.string.ukrainian,
                     onClick = {
-                        viewModel.updateTheme(true)
+                        viewModel.updateLanguage("uk")
                     },
-                    isActive = userTheme == true
+                    isActive = userLang == "uk"
                 )
             }
         }

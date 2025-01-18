@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.example.mobile.core.presentation.settings.ChangeLanguageScreen
 import com.example.mobile.core.presentation.settings.ChangeThemeScreen
 import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
@@ -63,7 +64,7 @@ fun WaiterNavGraph(
                         ProfileDestination.Profile -> navController.navigate(WaiterScreen.Profile.route)
                         ProfileDestination.Orders -> navController.navigate(WaiterScreen.Orders.route)
                         ProfileDestination.Reservations -> navController.navigate(WaiterScreen.Reservations.route)
-                        ProfileDestination.Language -> {}
+                        ProfileDestination.Language -> navController.navigate(WaiterScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(WaiterScreen.Theme.route)
                     }
                 }
@@ -71,6 +72,12 @@ fun WaiterNavGraph(
         }
         composable(WaiterScreen.Theme.route) {
             ChangeThemeScreen(
+                modifier = modifier,
+                onGoBack = { navController.popBackStack() }
+            )
+        }
+        composable(WaiterScreen.Language.route) {
+            ChangeLanguageScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )

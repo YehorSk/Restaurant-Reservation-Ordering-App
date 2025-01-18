@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ThemeListItem(
+fun SettingsListItem(
     modifier: Modifier = Modifier,
     @StringRes text: Int,
     onClick: () -> Unit,

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeliveryDining
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Restaurant
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -31,6 +33,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
@@ -40,7 +43,8 @@ import com.example.mobile.ui.theme.MobileTheme
 data class OrderOption(
     val  id: Int,
     val icon: ImageVector,
-    val text: Int
+    val text: Int,
+    val subText: Int
 )
 
 @Composable
@@ -52,9 +56,10 @@ fun OrderOptions(
 
 
     val options = listOf<OrderOption>(
-        OrderOption(id = 0, icon = Icons.Filled.DirectionsWalk, text = R.string.pickup_option),
-        OrderOption(id = 1, icon = Icons.Filled.DeliveryDining, text = R.string.delivery_option),
-        OrderOption(id = 2, icon = Icons.Filled.Restaurant, text = R.string.reservation_option)
+        OrderOption(id = 0, icon = Icons.Filled.DirectionsWalk, text = R.string.pickup_option, subText = R.string.pickup_time),
+        OrderOption(id = 1, icon = Icons.Filled.DeliveryDining, text = R.string.delivery_option, subText = R.string.delivery_time),
+        OrderOption(id = 2, icon = Icons.Filled.Restaurant, text = R.string.reservation_option, subText = R.string.select_date),
+        OrderOption(id = 3, icon = Icons.Filled.Schedule, text = R.string.schedule, subText = R.string.select_time),
     )
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(options[selected] ) }
     Card(
@@ -87,7 +92,7 @@ fun OrderOptions(
                         )
                     }
                 )
-                if(option.id !=2) HorizontalDivider()
+                if(option.id !=3) HorizontalDivider()
             }
         }
     }
@@ -104,7 +109,7 @@ fun OrderRadioOption(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp)
+            .height(IntrinsicSize.Max)
             .clickable {
                 onSelect(option)
             }
@@ -122,25 +127,46 @@ fun OrderRadioOption(
                 imageVector = option.icon,
                 contentDescription = ""
             )
-            Text(
-                modifier = Modifier
-                    .padding(start = 10.dp),
-                text = stringResource(id = option.text),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                style = LocalTextStyle.current.merge(
-                    TextStyle(
-                        lineHeightStyle = LineHeightStyle(
-                            alignment = LineHeightStyle.Alignment.Center,
-                            trim = LineHeightStyle.Trim.None
-                        ),
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false
-                        ),
-                        lineHeight = 2.5.em,
+            Column {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 10.dp),
+                    text = stringResource(id = option.text),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Center,
+                                trim = LineHeightStyle.Trim.None
+                            ),
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeight = 1.5.em,
+                        )
                     )
                 )
-            )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 10.dp),
+                    text = stringResource(id = option.subText),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    style = LocalTextStyle.current.merge(
+                        TextStyle(
+                            lineHeightStyle = LineHeightStyle(
+                                alignment = LineHeightStyle.Alignment.Center,
+                                trim = LineHeightStyle.Trim.None
+                            ),
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false
+                            ),
+                            lineHeight = 1.5.em,
+                        )
+                    )
+                )
+            }
         }
         RadioButton(
             selected = selected,
@@ -164,7 +190,7 @@ fun OrderOptionsPreview(){
     }
 }
 
-@Preview()
+@PreviewLightDark
 @Composable
 fun OrderRadioOptionPreview(){
     MobileTheme {
@@ -172,7 +198,8 @@ fun OrderRadioOptionPreview(){
             option = OrderOption(
                 id = 0,
                 icon = Icons.Filled.DirectionsWalk,
-                text = R.string.pickup_option
+                text = R.string.pickup_option,
+                subText = R.string.pickup_time
             ),
             onSelect = {}
         )

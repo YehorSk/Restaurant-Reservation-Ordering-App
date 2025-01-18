@@ -97,13 +97,3 @@ fun SearchScreen(
         }
     }
 }
-
-//@Composable
-//@PreviewLightDark
-//fun SearchScreenPreview(){
-//    MobileTheme {
-//        SearchScreen(
-//            onGoBack = {}
-//        )
-//    }
-//}

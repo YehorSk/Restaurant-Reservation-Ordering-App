@@ -13,6 +13,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -42,10 +43,15 @@ fun SearchBar(
             value = text,
             onValueChange = onValueChange,
             enabled = enabled,
-            leadingIcon = { Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search_icon)) },
+            leadingIcon = {
+                            Icon(
+                                Icons.Filled.Search,
+                                contentDescription = stringResource(R.string.search_icon)
+                            )
+                          },
             placeholder = {
                 Text(
-                    text = stringResource(R.string.search),
+                    text = stringResource(R.string.search)
                 )
             }
         )
