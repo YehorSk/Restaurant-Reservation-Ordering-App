@@ -2,10 +2,10 @@ package com.example.mobile.core.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberUpdatedState
-import kotlinx.coroutines.channels.ReceiveChannel
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.withContext
 
 @Composable

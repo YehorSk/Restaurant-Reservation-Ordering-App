@@ -3,7 +3,6 @@ package com.example.mobile.reservations.presentation.create_reservation.componen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,8 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mobile.ui.theme.MobileTheme
 import com.example.mobile.R
+import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
 fun PartySize(
@@ -36,11 +35,7 @@ fun PartySize(
     partySize: Int,
     onPartySizeChanged:(Int) -> Unit
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
+
     val items = (1..10).toList()
 
     Column(
@@ -55,7 +50,6 @@ fun PartySize(
                     bottom = 10.dp
                 ),
             text = stringResource(R.string.party_size),
-            color = contentColor,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -86,7 +80,6 @@ fun PartySize(
                         modifier = Modifier.padding(10.dp),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = contentColor,
                         text = item.toString()
                     )
                 }

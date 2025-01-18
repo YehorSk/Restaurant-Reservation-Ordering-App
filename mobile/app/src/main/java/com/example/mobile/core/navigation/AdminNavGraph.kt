@@ -7,9 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.mobile.core.presentation.settings.ChangeThemeScreen
+import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
-import com.example.mobile.core.presentation.settings.AccountScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
@@ -29,7 +30,7 @@ fun AdminNavGraph(
         startDestination = AdminScreen.Orders.route
     ){
         composable(AdminScreen.Account.route) {
-            AccountScreen(
+            MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
@@ -38,8 +39,16 @@ fun AdminNavGraph(
                         ProfileDestination.Profile -> navController.navigate(AdminScreen.Profile.route)
                         ProfileDestination.Orders -> navController.navigate(AdminScreen.Orders.route)
                         ProfileDestination.Reservations -> navController.navigate(AdminScreen.Reservations.route)
+                        ProfileDestination.Language -> {}
+                        ProfileDestination.Theme -> navController.navigate(AdminScreen.Theme.route)
                     }
                 }
+            )
+        }
+        composable(AdminScreen.Theme.route) {
+            ChangeThemeScreen(
+                modifier = modifier,
+                onGoBack = { navController.popBackStack() }
             )
         }
         composable(AdminScreen.Profile.route) {
@@ -117,4 +126,6 @@ sealed class AdminScreen(val route: String){
     data class ReservationDetails(val id: Int): AdminScreen(route = "RESERVATION_DETAILS")
     data object Profile: AdminScreen(route = "PROFILE")
     object Account: AdminScreen(route = "ACCOUNT")
+    data object Theme: AdminScreen(route = "THEME")
+    data object Language: AdminScreen(route = "LANGUAGE")
 }

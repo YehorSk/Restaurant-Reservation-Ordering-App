@@ -1,7 +1,5 @@
 package com.example.mobile.core.utils
 
-import kotlinx.serialization.json.Json
-import timber.log.Timber
 import java.text.NumberFormat
 import java.time.DayOfWeek
 import java.time.LocalDate

@@ -19,24 +19,25 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ahmadhamwi.tabsync_compose.lazyListTabSync
 import com.example.mobile.R
-import com.example.mobile.core.utils.EventConsumer
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.MenuItemModal
+import com.example.mobile.core.utils.EventConsumer
 import com.example.mobile.core.utils.toString
 import com.example.mobile.menu.data.db.model.MenuWithMenuItems
 import com.example.mobile.menu.presentation.MenuAction
-import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.components.MenuDetailsDialog
 import com.example.mobile.menu.presentation.components.MenuList
 import com.example.mobile.menu.presentation.components.MenuTabBar
 import com.example.mobile.menu.presentation.components.SearchBar
+import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
@@ -146,14 +147,21 @@ fun MenuScreen(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(16.dp),
+                    containerColor = MaterialTheme.colorScheme.primary,
                     onClick = { onCreateReservationClicked() },
                     icon = {
                         Icon(
                             imageVector = Icons.Filled.Event,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = Color.White
                         )
                     },
-                    text = { Text(text = stringResource(R.string.book)) },
+                    text = {
+                            Text(
+                                text = stringResource(R.string.book),
+                                color = Color.White
+                            )
+                           },
                 )
             }
         }

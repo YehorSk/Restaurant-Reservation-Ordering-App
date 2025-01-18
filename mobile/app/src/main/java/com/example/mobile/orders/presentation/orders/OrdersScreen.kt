@@ -7,19 +7,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.runtime.getValue
+import com.example.mobile.R
 import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.presentation.components.OrdersDropdownList
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
-import com.example.mobile.orders.presentation.orders.components.OrdersList
-import com.example.mobile.R
-import com.example.mobile.core.presentation.components.OrdersDropdownList
 import com.example.mobile.orders.presentation.components.NavBar
+import com.example.mobile.orders.presentation.orders.components.OrdersList
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,7 +1,5 @@
 package com.example.mobile.orders.presentation.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,12 +17,6 @@ fun OrderSpecialRequest(
     onRequestChange: (String) -> Unit
 ){
 
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
-
     TextField(
         modifier = Modifier
             .fillMaxWidth(),
@@ -32,7 +24,6 @@ fun OrderSpecialRequest(
         placeholder = {
             Text(
                 text = stringResource(R.string.notes_for_order),
-                color = contentColor
             )
         },
         onValueChange = {

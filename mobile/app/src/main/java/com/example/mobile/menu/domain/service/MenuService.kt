@@ -2,7 +2,6 @@ package com.example.mobile.menu.domain.service
 
 import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.menu.data.remote.dto.MenuDto
-import com.example.mobile.menu.data.remote.dto.MenuItemDto
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET

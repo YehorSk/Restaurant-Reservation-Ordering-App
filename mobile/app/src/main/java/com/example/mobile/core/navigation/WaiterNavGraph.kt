@@ -12,9 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.example.mobile.core.presentation.settings.ChangeThemeScreen
+import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
-import com.example.mobile.core.presentation.settings.AccountScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
@@ -53,7 +54,7 @@ fun WaiterNavGraph(
             )
         }
         composable(WaiterScreen.Account.route) {
-            AccountScreen(
+            MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
@@ -62,8 +63,16 @@ fun WaiterNavGraph(
                         ProfileDestination.Profile -> navController.navigate(WaiterScreen.Profile.route)
                         ProfileDestination.Orders -> navController.navigate(WaiterScreen.Orders.route)
                         ProfileDestination.Reservations -> navController.navigate(WaiterScreen.Reservations.route)
+                        ProfileDestination.Language -> {}
+                        ProfileDestination.Theme -> navController.navigate(WaiterScreen.Theme.route)
                     }
                 }
+            )
+        }
+        composable(WaiterScreen.Theme.route) {
+            ChangeThemeScreen(
+                modifier = modifier,
+                onGoBack = { navController.popBackStack() }
             )
         }
         composable(WaiterScreen.Profile.route) {
@@ -210,4 +219,6 @@ sealed class WaiterScreen(val route: String){
     data object Reservations: WaiterScreen(route = "RESERVATIONS")
     @Serializable
     data class ReservationDetails(val id: Int): WaiterScreen(route = "RESERVATION_DETAILS")
+    data object Theme: WaiterScreen(route = "THEME")
+    data object Language: WaiterScreen(route = "LANGUAGE")
 }

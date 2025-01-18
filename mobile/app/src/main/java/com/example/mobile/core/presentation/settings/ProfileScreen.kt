@@ -2,7 +2,6 @@ package com.example.mobile.core.presentation.settings
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,11 +15,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,12 +42,6 @@ fun ProfileScreen(
     val address by viewModel.userAddress.collectAsStateWithLifecycle()
     val phone by viewModel.userPhone.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-    val contentColor = if (isSystemInDarkTheme()) {
-        Color.White
-    } else {
-        Color.Black
-    }
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -77,7 +69,6 @@ fun ProfileScreen(
             ),
             text = stringResource(R.string.profile),
             fontSize = 18.sp,
-            color = contentColor,
             fontWeight = FontWeight.ExtraBold,
         )
         if(name != null){

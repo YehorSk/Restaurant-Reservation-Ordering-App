@@ -2,7 +2,6 @@ package com.example.mobile.orders.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,23 +16,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.mobile.R
-import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
-import com.example.mobile.orders.data.remote.dto.Pivot
-import com.example.mobile.ui.theme.MobileTheme
 import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.orders.data.db.model.OrderItemEntity
 import com.example.mobile.orders.data.db.model.PivotOrderItemEntity
-import com.example.mobile.orders.presentation.components.OrderDetailsListItem
+import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
 fun OrderDetailsListItem(
@@ -41,11 +35,7 @@ fun OrderDetailsListItem(
     modifier: Modifier = Modifier,
     onClick: (OrderItemEntity) -> Unit,
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
+
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -77,7 +67,6 @@ fun OrderDetailsListItem(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                color = contentColor
             )
             Text(
                 text =  menuItem.pivot.quantity.toString() +"x "+ " €"+ formattedPrice(menuItem.pivot.price.toDouble()),
@@ -87,7 +76,6 @@ fun OrderDetailsListItem(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp),
-                color = contentColor
             )
         }
     }

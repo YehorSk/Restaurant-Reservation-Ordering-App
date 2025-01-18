@@ -3,7 +3,6 @@ package com.example.mobile.core.presentation.components
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +27,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -51,9 +51,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.mobile.R
+import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.ui.theme.MobileTheme
-import com.example.mobile.core.utils.formattedPrice
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -111,11 +111,6 @@ fun MenuItemModalContent(
     showFavorite: Boolean = true,
     @StringRes buttonText: Int
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
@@ -143,7 +138,13 @@ fun MenuItemModalContent(
             ){
                 Card(
                     modifier = Modifier,
-                    shape = RoundedCornerShape(40.dp)
+                    shape = RoundedCornerShape(40.dp),
+                    colors = CardColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = Color.White,
+                        disabledContentColor = MaterialTheme.colorScheme.primary,
+                        disabledContainerColor = MaterialTheme.colorScheme.primary
+                    )
                 ) {
                     Row {
                         if(showFavorite){
@@ -162,14 +163,16 @@ fun MenuItemModalContent(
                                         imageVector = Icons.Filled.Favorite,
                                         contentDescription = "",
                                         modifier = Modifier
-                                            .size(30.dp)
+                                            .size(30.dp),
+                                        tint = Color.White
                                     )
                                 }else{
                                     Icon(
                                         imageVector = Icons.Filled.FavoriteBorder,
                                         contentDescription = "",
                                         modifier = Modifier
-                                            .size(30.dp)
+                                            .size(30.dp),
+                                        tint = Color.White
                                     )
                                 }
                             }
@@ -180,7 +183,8 @@ fun MenuItemModalContent(
                             Icon(
                                 imageVector = Icons.Filled.Close,
                                 contentDescription = "",
-                                modifier = Modifier.size(30.dp)
+                                modifier = Modifier.size(30.dp),
+                                tint = Color.White
                             )
                         }
                     }
@@ -196,19 +200,16 @@ fun MenuItemModalContent(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                color = contentColor
             )
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
                 fontSize = 16.sp,
                 text = "€"+formattedPrice(menuItem.price),
-                color = contentColor
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
                 fontSize = 16.sp,
                 text = menuItem.longDescription,
-                color = contentColor
             )
             Spacer(
                 modifier = Modifier
@@ -248,7 +249,13 @@ fun MenuItemModalContent(
                     modifier = Modifier
                         .wrapContentWidth()
                         .height(66.dp),
-                    shape = RoundedCornerShape(40.dp)
+                    shape = RoundedCornerShape(40.dp),
+                    colors = CardColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = Color.White,
+                        disabledContentColor = MaterialTheme.colorScheme.primary,
+                        disabledContainerColor = MaterialTheme.colorScheme.primary
+                    )
                 ) {
                     Row(
                         modifier = Modifier.fillMaxHeight(),
@@ -267,12 +274,14 @@ fun MenuItemModalContent(
                         ) {
                             Text(
                                 fontSize = 30.sp,
-                                text = "-"
+                                text = "-",
+                                color = Color.White
                             )
                         }
                         Text(
                             fontSize = 30.sp,
-                            text = cartForm.quantity.toString()
+                            text = cartForm.quantity.toString(),
+                            color = Color.White
                         )
                         TextButton(
                             shape = CircleShape,
@@ -284,7 +293,8 @@ fun MenuItemModalContent(
                         ) {
                             Text(
                                 fontSize = 30.sp,
-                                text = "+"
+                                text = "+",
+                                color = Color.White
                             )
                         }
                     }
@@ -304,11 +314,13 @@ fun MenuItemModalContent(
                     ) {
                         Text(
                             fontSize = 20.sp,
-                            text = stringResource(buttonText)
+                            text = stringResource(buttonText),
+                            color = Color.White
                         )
                         Text(
                             fontSize = 20.sp,
-                            text = "€"+ formattedPrice(cartForm.price)
+                            text = "€"+ formattedPrice(cartForm.price),
+                            color = Color.White
                         )
                     }
                 }

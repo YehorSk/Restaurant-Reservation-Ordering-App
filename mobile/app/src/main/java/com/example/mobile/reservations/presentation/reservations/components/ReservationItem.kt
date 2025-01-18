@@ -2,11 +2,9 @@ package com.example.mobile.reservations.presentation.reservations.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,11 +23,7 @@ fun ReservationItem(
     reservationEntity: ReservationEntity,
     onGoToReservationDetails: (Int) -> Unit
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
+
     Row(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
@@ -43,7 +37,6 @@ fun ReservationItem(
                 text = "#${reservationEntity.code}",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = contentColor,
             )
             Row(
                 modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
@@ -58,7 +51,6 @@ fun ReservationItem(
                     text = " ${reservationEntity.status}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = contentColor,
                 )
             }
         }

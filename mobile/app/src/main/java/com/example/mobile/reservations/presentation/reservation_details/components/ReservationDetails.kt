@@ -1,9 +1,7 @@
 package com.example.mobile.reservations.presentation.reservation_details.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
@@ -11,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,11 +28,7 @@ fun ReservationDetails(
     request: String,
     phone: String
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
@@ -49,7 +42,6 @@ fun ReservationDetails(
             text = stringResource(R.string.table, table),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = contentColor
         )
         Text(
             modifier = Modifier.padding(
@@ -59,7 +51,6 @@ fun ReservationDetails(
             text = stringResource(R.string.date_reservation, formatDateTime(date)),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = contentColor
         )
         Text(
             modifier = Modifier.padding(
@@ -70,7 +61,6 @@ fun ReservationDetails(
             text = stringResource(R.string.time_reservation, formatTime(time)),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = contentColor
         )
         HorizontalDivider()
         Text(
@@ -81,7 +71,6 @@ fun ReservationDetails(
             text = stringResource(R.string.special_request, request),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = contentColor
         )
         Text(
             modifier = Modifier.padding(
@@ -92,7 +81,6 @@ fun ReservationDetails(
             text = stringResource(R.string.phone_number, phone),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = contentColor
         )
     }
 }

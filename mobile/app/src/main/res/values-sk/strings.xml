@@ -61,6 +61,10 @@
     <string name="what_is_your_number">Aké je vaše číslo?</string>
     <string name="special_request">Špeciálna požiadavka: %1$s</string>
     <string name="phone_number">Telefónne číslo: %1$s</string>
+    <string name="theme">Téma</string>
+    <string name="language">Jazyk</string>
+    <string name="theme_light">Svetlá</string>
+    <string name="theme_dark">Tmavá</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>

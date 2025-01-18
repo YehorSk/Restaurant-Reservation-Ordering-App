@@ -1,12 +1,9 @@
 package com.example.mobile.core.presentation.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,20 +24,9 @@ fun ActionButton(
     @StringRes text: Int,
     enabled: Boolean
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
     Button(
         modifier = modifier
             .fillMaxWidth(),
-        colors = ButtonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = contentColor,
-            disabledContainerColor = MaterialTheme.colorScheme.errorContainer,
-            disabledContentColor = contentColor,
-        ),
         onClick = { onAction() },
         enabled = enabled
     ){
@@ -49,8 +35,9 @@ fun ActionButton(
                 .padding(10.dp),
             text = stringResource(text),
             textAlign = TextAlign.Center,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
         )
     }
 }

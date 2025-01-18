@@ -1,9 +1,9 @@
 package com.example.mobile.auth.presentation.register
 
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.presentation.BaseAuthViewModel
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError

@@ -3,7 +3,6 @@ package com.example.mobile.orders.presentation.components
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,15 +18,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mobile.ui.theme.MobileTheme
 import com.example.mobile.R
+import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
 fun OrderAddMore(
@@ -62,11 +60,6 @@ fun OrderButton(
     @StringRes text: Int,
     onClick: () -> Unit
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
 
     Row(
         modifier = modifier
@@ -87,7 +80,6 @@ fun OrderButton(
                 ),
             imageVector = icon,
             contentDescription = "",
-            tint = contentColor,
         )
         Text(
             modifier = Modifier
@@ -97,7 +89,6 @@ fun OrderButton(
                     bottom = 20.dp
                 ),
             text = stringResource(id = text),
-            color = contentColor,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
         )

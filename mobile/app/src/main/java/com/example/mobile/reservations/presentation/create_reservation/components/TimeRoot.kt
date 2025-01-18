@@ -3,7 +3,6 @@ package com.example.mobile.reservations.presentation.create_reservation.componen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,12 +40,6 @@ fun TimeRoot(
     onTimeChanged: (Int, String) -> Unit
 ){
 
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
-
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -59,7 +52,6 @@ fun TimeRoot(
                     bottom = 10.dp
                 ),
             text = formatDateTime(date),
-            color = contentColor,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -90,7 +82,6 @@ fun TimeRoot(
                         modifier = Modifier.padding(10.dp),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = contentColor,
                         text = formatTime(item.startTime.toString())
                     )
                 }

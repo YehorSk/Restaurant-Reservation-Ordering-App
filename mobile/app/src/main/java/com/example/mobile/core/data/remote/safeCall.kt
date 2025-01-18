@@ -6,7 +6,6 @@ import com.example.mobile.core.domain.remote.Result
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
-import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.coroutineContext
 

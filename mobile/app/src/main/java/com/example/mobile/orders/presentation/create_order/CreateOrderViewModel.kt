@@ -6,9 +6,9 @@ import com.example.mobile.core.domain.remote.Result
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
-import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.orders.data.dao.OrderDao
+import com.example.mobile.orders.data.remote.OrderRepositoryImpl
 import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.domain.repository.GooglePlacesRepository
 import com.example.mobile.orders.presentation.OrderBaseViewModel

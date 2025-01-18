@@ -61,6 +61,10 @@
     <string name="what_is_your_number">Який ваш номер?</string>
     <string name="special_request">Особливе побажання: %1$s</string>
     <string name="phone_number">Номер телефону: %1$s</string>
+    <string name="theme">Тема</string>
+    <string name="language">Мова</string>
+    <string name="theme_light">Світла</string>
+    <string name="theme_dark">Темна</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>

@@ -1,9 +1,9 @@
 package com.example.mobile.cart.domain.repository
 
-import com.example.mobile.core.presentation.components.CartForm
 import com.example.mobile.cart.data.remote.dto.CartItemDto
 import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.Result
+import com.example.mobile.core.presentation.components.CartForm
 
 interface CartRepository {
 

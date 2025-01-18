@@ -3,10 +3,6 @@ package com.example.mobile.orders.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import com.example.mobile.cart.data.db.model.CartItemEntity
-import com.example.mobile.cart.data.db.model.PivotCartItemEntity
-import com.example.mobile.menu.data.remote.dto.MenuItemDto
-import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 
 @Entity(
     tableName = "order_item_table",

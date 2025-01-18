@@ -2,7 +2,6 @@ package com.example.mobile.reservations.presentation.reservation_details
 
 import androidx.lifecycle.viewModelScope
 import com.example.mobile.core.data.repository.MainPreferencesRepository
-import com.example.mobile.core.domain.remote.ReservationFilter
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
@@ -14,7 +13,6 @@ import com.example.mobile.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

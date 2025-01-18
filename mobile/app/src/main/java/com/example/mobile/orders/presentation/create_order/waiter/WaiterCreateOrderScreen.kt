@@ -16,8 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,20 +28,18 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.formattedPrice
+import com.example.mobile.orders.presentation.components.DeliveryMap
 import com.example.mobile.orders.presentation.components.NavBar
 import com.example.mobile.orders.presentation.components.OrderAddMore
 import com.example.mobile.orders.presentation.components.OrderAddress
 import com.example.mobile.orders.presentation.components.OrderItemList
-import com.example.mobile.orders.presentation.components.DeliveryMap
 import com.example.mobile.orders.presentation.components.OrderSpecialRequest
 import com.example.mobile.orders.presentation.components.SelectTable
 import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
-import com.example.mobile.core.presentation.components.LoadingPart
 
 @Composable
 fun WaiterCreateOrderScreen(

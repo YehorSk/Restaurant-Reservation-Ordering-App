@@ -1,10 +1,8 @@
 package com.example.mobile.reservations.domain.service
 
 import com.example.mobile.core.data.remote.dto.ResponseDto
-import com.example.mobile.orders.data.remote.dto.OrderDto
-import com.example.mobile.reservations.data.remote.dto.ReservationDto
 import com.example.mobile.orders.data.remote.dto.TimeSlotDto
-import com.example.mobile.orders.presentation.OrderForm
+import com.example.mobile.reservations.data.remote.dto.ReservationDto
 import com.example.mobile.reservations.presentation.reservation_details.Status
 import com.example.mobile.reservations.presentation.reservations.ReservationForm
 import retrofit2.http.Body

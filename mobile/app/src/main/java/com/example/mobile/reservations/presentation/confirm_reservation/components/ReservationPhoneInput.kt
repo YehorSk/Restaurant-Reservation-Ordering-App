@@ -1,7 +1,6 @@
 package com.example.mobile.reservations.presentation.confirm_reservation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,10 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -30,11 +29,7 @@ fun ReservationPhoneInput(
     phone: String,
     onPhoneChanged: (String) -> Unit
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
+
     var phoneValue by rememberSaveable { mutableStateOf("") }
     val state = rememberKomposeCountryCodePickerState(
         showCountryCode = true,
@@ -54,7 +49,6 @@ fun ReservationPhoneInput(
                     bottom = 15.dp
                 ),
             text = stringResource(R.string.what_is_your_number),
-            color = contentColor,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )

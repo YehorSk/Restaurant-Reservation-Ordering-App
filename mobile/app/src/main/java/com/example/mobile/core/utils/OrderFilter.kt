@@ -1,8 +1,8 @@
 package com.example.mobile.core.utils
 
 import android.content.Context
-import com.example.mobile.core.domain.remote.OrderFilter
 import com.example.mobile.R
+import com.example.mobile.core.domain.remote.OrderFilter
 
 fun OrderFilter.toString(context: Context): String {
     val resId = when (this) {

@@ -2,7 +2,6 @@ package com.example.mobile.menu.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,9 +23,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.mobile.R
+import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.ui.theme.MobileTheme
-import com.example.mobile.core.utils.formattedPrice
 
 @Composable
 fun MenuItem(
@@ -35,11 +33,6 @@ fun MenuItem(
     modifier: Modifier = Modifier,
     onClick: (MenuItemEntity) -> Unit
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
     Row(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
             .height(IntrinsicSize.Max)
@@ -61,7 +54,6 @@ fun MenuItem(
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                color = contentColor
 
             )
             Text(
@@ -72,7 +64,6 @@ fun MenuItem(
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                color = contentColor
             )
             Text(
                 text = "€"+ formattedPrice(menuItem.price.toDouble()),
@@ -83,7 +74,6 @@ fun MenuItem(
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp),
-                color = contentColor
             )
         }
         AsyncImage(

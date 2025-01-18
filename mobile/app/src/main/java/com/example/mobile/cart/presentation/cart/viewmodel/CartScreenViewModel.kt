@@ -2,17 +2,17 @@ package com.example.mobile.cart.presentation.cart.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.cart.data.remote.CartRepositoryImpl
-import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.cart.data.dao.CartDao
 import com.example.mobile.cart.data.db.model.CartItemEntity
+import com.example.mobile.cart.data.remote.CartRepositoryImpl
 import com.example.mobile.cart.data.remote.dto.toCartItemEntity
 import com.example.mobile.cart.presentation.cart.CartAction
 import com.example.mobile.cart.presentation.cart.CartScreenUiState
+import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
-import com.example.mobile.menu.data.db.model.MenuItemEntity
 import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.menu.data.db.model.MenuItemEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

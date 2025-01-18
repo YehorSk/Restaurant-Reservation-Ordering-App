@@ -12,37 +12,34 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.CartItemEntity
 import com.example.mobile.cart.data.db.model.toMenuItem
-import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.cart.presentation.cart.components.CartItem
+import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
-import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.core.utils.toString
+import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
 import com.example.mobile.orders.presentation.components.NavBar
 
 @Composable
@@ -148,6 +145,7 @@ fun CartScreen(
                         Text(
                             modifier = Modifier.padding(8.dp),
                             style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White,
                             text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
                         )
                     }

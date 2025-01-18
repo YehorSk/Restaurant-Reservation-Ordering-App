@@ -1,38 +1,49 @@
 package com.example.mobile.core.presentation.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.mobile.core.presentation.settings.components.ProfileListItem
-import timber.log.Timber
 import com.example.mobile.R
+import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.presentation.settings.components.ProfileListHeader
+import com.example.mobile.core.presentation.settings.components.ProfileListItem
+import com.example.mobile.core.utils.toString
 import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
-fun AccountScreen(
+fun MainSettingsScreen(
     modifier: Modifier = Modifier,
-    settingsViewModel: SettingsViewModel = hiltViewModel(),
+    viewModel: SettingsViewModel = hiltViewModel(),
     onNavigate: (ProfileDestination) -> Unit
 ){
+    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
+    val userName by viewModel.userName.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+        when(sideEffect){
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+            is SideEffect.NavigateToNextScreen -> { onNavigate(ProfileDestination.Logout) }
+        }
+    }
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background),
     ) {
-        val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
-        val userRole by settingsViewModel.userRole.collectAsStateWithLifecycle()
-        val userName by settingsViewModel.userName.collectAsStateWithLifecycle()
-
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -49,16 +60,6 @@ fun AccountScreen(
                     }
                 )
             }
-//            if(userRole in arrayOf("user","waiter")){
-//                item{
-//                    ProfileListItem(
-//                        text = R.string.favorites,
-//                        onClick = {
-//                            onNavigate(ProfileDestination.Favorites)
-//                        }
-//                    )
-//                }
-//            }
             if(userRole in arrayOf("user","waiter","admin")){
                 item{
                     ProfileListItem(
@@ -81,17 +82,27 @@ fun AccountScreen(
             }
             item{
                 ProfileListItem(
-                    text = R.string.logout,
+                    text = R.string.theme,
                     onClick = {
-                        settingsViewModel.logout()
+                        onNavigate(ProfileDestination.Theme)
                     }
                 )
             }
-        }
-        LaunchedEffect(uiState.isLoggedOut) {
-            Timber.tag("LaunchedEffect").v("UI State Is Logged Out: ${uiState.isLoggedOut}")
-            if(uiState.isLoggedOut){
-                onNavigate(ProfileDestination.Logout)
+            item{
+                ProfileListItem(
+                    text = R.string.language,
+                    onClick = {
+                        onNavigate(ProfileDestination.Language)
+                    }
+                )
+            }
+            item{
+                ProfileListItem(
+                    text = R.string.logout,
+                    onClick = {
+                        viewModel.logout()
+                    }
+                )
             }
         }
     }
@@ -101,7 +112,7 @@ fun AccountScreen(
 @Composable
 fun ProfileScreenPreview(){
     MobileTheme {
-        AccountScreen(
+        MainSettingsScreen(
             onNavigate = {}
         )
     }

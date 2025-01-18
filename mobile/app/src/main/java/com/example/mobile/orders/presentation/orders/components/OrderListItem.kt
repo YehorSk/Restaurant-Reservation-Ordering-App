@@ -2,11 +2,9 @@ package com.example.mobile.orders.presentation.orders.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,11 +26,6 @@ fun OrderListItem(
     orderEntity: OrderEntity,
     onGoToOrderDetails: (Int) -> Unit
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
     Row(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
@@ -46,14 +39,12 @@ fun OrderListItem(
                 text = "#${orderEntity.code}",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = contentColor,
             )
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
                 text = "€${formattedPrice(orderEntity.price)}",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = contentColor,
             )
             Row(
                 modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
@@ -68,7 +59,6 @@ fun OrderListItem(
                     text = " ${orderEntity.status}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
-                    color = contentColor,
                 )
             }
         }

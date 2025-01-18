@@ -2,7 +2,6 @@ package com.example.mobile.orders.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
@@ -52,11 +50,6 @@ fun OrderOptions(
     onSelectedChange: (Int,String) -> Unit
 ){
 
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
 
     val options = listOf<OrderOption>(
         OrderOption(id = 0, icon = Icons.Filled.DirectionsWalk, text = R.string.pickup_option),
@@ -78,7 +71,6 @@ fun OrderOptions(
                         bottom = 10.dp
                     ),
                 text = stringResource(R.string.order_preferences),
-                color = contentColor,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -86,7 +78,6 @@ fun OrderOptions(
                 val text = stringResource(option.text)
                 OrderRadioOption(
                     option = option,
-                    contentColor = contentColor,
                     selected = (option.text == selectedOption.text),
                     onSelect = { option ->
                         onOptionSelected(option)
@@ -107,8 +98,7 @@ fun OrderRadioOption(
     modifier: Modifier = Modifier,
     selected : Boolean = false,
     onSelect: (OrderOption) -> Unit,
-    option: OrderOption,
-    contentColor: Color
+    option: OrderOption
 ){
 
     Row(
@@ -138,7 +128,6 @@ fun OrderRadioOption(
                 text = stringResource(id = option.text),
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = contentColor,
                 style = LocalTextStyle.current.merge(
                     TextStyle(
                         lineHeightStyle = LineHeightStyle(
@@ -185,8 +174,7 @@ fun OrderRadioOptionPreview(){
                 icon = Icons.Filled.DirectionsWalk,
                 text = R.string.pickup_option
             ),
-            onSelect = {},
-            contentColor = Color.White
+            onSelect = {}
         )
     }
 }

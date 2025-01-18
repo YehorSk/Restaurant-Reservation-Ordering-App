@@ -9,8 +9,8 @@ import com.example.mobile.core.domain.remote.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
 import com.example.mobile.reservations.data.dao.ReservationDao
 import com.example.mobile.reservations.data.db.model.ReservationEntity
-import com.example.mobile.reservations.data.remote.dto.toReservationEntity
 import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
+import com.example.mobile.reservations.data.remote.dto.toReservationEntity
 import com.example.mobile.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

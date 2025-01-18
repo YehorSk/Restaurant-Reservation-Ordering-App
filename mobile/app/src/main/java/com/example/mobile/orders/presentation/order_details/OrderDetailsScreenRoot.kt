@@ -14,29 +14,28 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.domain.remote.SideEffect
+import com.example.mobile.core.presentation.components.ActionButton
+import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.formattedPrice
+import com.example.mobile.core.utils.toString
+import com.example.mobile.orders.data.db.model.OrderWithOrderItems
+import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.components.NavBar
+import com.example.mobile.orders.presentation.components.OrderDetailsItemList
 import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.orders.presentation.order_details.components.DeliveryDetails
 import com.example.mobile.orders.presentation.order_details.components.OrderStatus
 import com.example.mobile.ui.theme.MobileTheme
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.unit.dp
-import com.example.mobile.core.presentation.components.ActionButton
-import com.example.mobile.core.presentation.components.LoadingPart
-import com.example.mobile.core.utils.toString
-import com.example.mobile.orders.data.db.model.OrderWithOrderItems
-import com.example.mobile.orders.presentation.components.OrderDetailsItemList
-import com.example.mobile.orders.presentation.OrderUiState
-import timber.log.Timber
 
 @Composable
 fun OrderDetailsScreenRoot(
@@ -135,30 +134,20 @@ fun OrderDetailsScreen(
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxWidth()
                     ) {
-//                        ActionButton(
-//                            modifier = Modifier
-//                                .padding(
-//                                    start = 20.dp,
-//                                    end = 20.dp,
-//                                    top = 10.dp,
-//                                    bottom = 5.dp
-//                                ),
-//                            onAction = { onAction(OrderDetailsAction.RepeatOrder((data.order.id))) },
-//                            text = R.string.repeat_order,
-//                            enabled = true
-//                        )
-                        ActionButton(
-                            modifier = Modifier
-                                .padding(
-                                    start = 20.dp,
-                                    end = 20.dp,
-                                    top = 5.dp,
-                                    bottom = 20.dp
-                                ),
-                            onAction = { onAction(OrderDetailsAction.UserCancelOrder((data.order.id))) },
-                            text = R.string.cancel_order,
-                            enabled = data.order.status == "Pending"
-                        )
+                        if(data.order.status == "Pending"){
+                            ActionButton(
+                                modifier = Modifier
+                                    .padding(
+                                        start = 20.dp,
+                                        end = 20.dp,
+                                        top = 5.dp,
+                                        bottom = 20.dp
+                                    ),
+                                onAction = { onAction(OrderDetailsAction.UserCancelOrder((data.order.id))) },
+                                text = R.string.cancel_order,
+                                enabled = data.order.status == "Pending"
+                            )
+                        }
                     }
                 }else{
                     Column(

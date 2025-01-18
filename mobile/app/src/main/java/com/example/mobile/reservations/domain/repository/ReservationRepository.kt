@@ -2,8 +2,8 @@ package com.example.mobile.reservations.domain.repository
 
 import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.Result
-import com.example.mobile.reservations.data.remote.dto.ReservationDto
 import com.example.mobile.orders.data.remote.dto.TimeSlotDto
+import com.example.mobile.reservations.data.remote.dto.ReservationDto
 import com.example.mobile.reservations.presentation.reservation_details.Status
 import com.example.mobile.reservations.presentation.reservations.ReservationForm
 

@@ -15,7 +15,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.core.domain.remote.SideEffect
-import com.example.mobile.core.presentation.components.OrdersDropdownList
 import com.example.mobile.core.presentation.components.ReservationDropdownList
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString

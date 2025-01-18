@@ -8,9 +8,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.mobile.core.presentation.settings.ChangeThemeScreen
+import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
-import com.example.mobile.core.presentation.settings.AccountScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
@@ -32,7 +33,7 @@ fun ChefNavGraph(
         startDestination = ChefScreen.Orders.route
     ){
         composable(ChefScreen.Account.route) {
-            AccountScreen(
+            MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
@@ -41,8 +42,16 @@ fun ChefNavGraph(
                         ProfileDestination.Profile -> navController.navigate(ChefScreen.Profile.route)
                         ProfileDestination.Orders -> {}
                         ProfileDestination.Reservations -> {}
+                        ProfileDestination.Language -> {}
+                        ProfileDestination.Theme -> navController.navigate(ChefScreen.Theme.route)
                     }
                 }
+            )
+        }
+        composable(ChefScreen.Theme.route) {
+            ChangeThemeScreen(
+                modifier = modifier,
+                onGoBack = { navController.popBackStack() }
             )
         }
         composable(ChefScreen.Profile.route) {
@@ -112,4 +121,6 @@ sealed class ChefScreen(val route: String){
     data class OrderDetails(val id: Int): ChefScreen(route = "ORDER_DETAILS")
     @Serializable
     data class OrderItemDetails(val id: Int): ChefScreen(route = "ORDER_ITEM_DETAILS")
+    data object Theme: AdminScreen(route = "THEME")
+    data object Language: AdminScreen(route = "LANGUAGE")
 }

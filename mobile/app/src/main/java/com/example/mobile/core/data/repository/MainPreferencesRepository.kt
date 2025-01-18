@@ -2,6 +2,7 @@ package com.example.mobile.core.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.mobile.auth.data.remote.model.AuthDataDto
@@ -19,6 +20,9 @@ class MainPreferencesRepository @Inject constructor(
         val USER_ROLE = stringPreferencesKey("USER_ROLE")
         val USER_PHONE = stringPreferencesKey("USER_PHONE")
         val USER_ADDRESS = stringPreferencesKey("USER_ADDRESS")
+
+        val APP_LANGUAGE = stringPreferencesKey("APP_LANGUAGE")
+        val APP_THEME = booleanPreferencesKey("APP_THEME")
     }
 
     val userNameFlow: Flow<String?> = dataStore.data
@@ -38,6 +42,14 @@ class MainPreferencesRepository @Inject constructor(
 
     val jwtTokenFlow: Flow<String?> = dataStore.data
         .map { preferences -> preferences[JWT_TOKEN] }
+
+    val appLanguageFlow: Flow<String?> = dataStore.data.map { preferences ->
+        preferences[APP_LANGUAGE]
+    }
+
+    val appIsDarkThemeFlow: Flow<Boolean?> = dataStore.data.map { preferences ->
+        preferences[APP_THEME]
+    }
 
     suspend fun saveUserName(userName: String) {
         dataStore.edit { preferences ->
@@ -73,6 +85,14 @@ class MainPreferencesRepository @Inject constructor(
         dataStore.edit { preferences ->
             preferences[JWT_TOKEN] = jwtToken
         }
+    }
+
+    suspend fun setAppLanguage(language: String) {
+        dataStore.edit { preferences -> preferences[APP_LANGUAGE] = language }
+    }
+
+    suspend fun setAppTheme(theme: Boolean) {
+        dataStore.edit { preferences -> preferences[APP_THEME] = theme }
     }
 
     suspend fun saveUser(authData: AuthDataDto){

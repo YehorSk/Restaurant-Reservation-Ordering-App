@@ -2,7 +2,6 @@ package com.example.mobile.orders.presentation.order_details
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -68,11 +66,6 @@ fun OrderItemDetailsScreen(
     onGoBack: () -> Unit
 ){
     val orderItem = ordersUiState.flatMap { it.orderItems }.find { it.pivot.menuItemId == id }
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -103,13 +96,11 @@ fun OrderItemDetailsScreen(
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    color = contentColor
                 )
                 Text(
                     modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
                     fontSize = 16.sp,
                     text = orderItem.recipe,
-                    color = contentColor
                 )
             }
         }

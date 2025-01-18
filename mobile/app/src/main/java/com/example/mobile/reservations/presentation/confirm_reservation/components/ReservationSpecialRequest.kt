@@ -1,7 +1,6 @@
 package com.example.mobile.reservations.presentation.confirm_reservation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,11 +24,6 @@ fun ReservationSpecialRequest(
     request: String,
     onRequestChange: (String) -> Unit
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
 
     Column(
         modifier = Modifier
@@ -43,7 +37,6 @@ fun ReservationSpecialRequest(
                     bottom = 15.dp
                 ),
             text = stringResource(R.string.reservation_special_request),
-            color = contentColor,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -53,7 +46,6 @@ fun ReservationSpecialRequest(
             placeholder = {
                 Text(
                     text = stringResource(R.string.type_request_here),
-                    color = contentColor
                 )
             },
             maxLines = 2,

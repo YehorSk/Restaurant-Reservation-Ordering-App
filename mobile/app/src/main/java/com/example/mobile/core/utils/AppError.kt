@@ -1,8 +1,8 @@
 package com.example.mobile.core.utils
 
 import android.content.Context
-import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.R
+import com.example.mobile.core.domain.remote.AppError
 
 fun AppError.toString(context: Context): String {
     val resId = when (this) {

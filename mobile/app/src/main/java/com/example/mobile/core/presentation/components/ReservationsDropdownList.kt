@@ -1,7 +1,6 @@
 package com.example.mobile.core.presentation.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -13,10 +12,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.example.mobile.core.domain.remote.OrderFilter
 import com.example.mobile.core.domain.remote.ReservationFilter
 import com.example.mobile.core.utils.toString
 
@@ -29,12 +26,6 @@ fun ReservationDropdownList(
 ){
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
-
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
 
     Box(
         modifier = modifier
@@ -53,10 +44,7 @@ fun ReservationDropdownList(
                         expanded = false
                     },
                     text = {
-                        Text(
-                            text = filter.toString(context),
-                            color = contentColor
-                            )
+                        Text(text = filter.toString(context),)
                     }
                 )
             }

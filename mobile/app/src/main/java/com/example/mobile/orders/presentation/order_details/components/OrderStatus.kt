@@ -1,7 +1,6 @@
 package com.example.mobile.orders.presentation.order_details.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,10 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,11 +26,6 @@ fun OrderStatus(
     date: String,
     code: String
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
     Card(
     ) {
         Column {
@@ -49,7 +41,6 @@ fun OrderStatus(
                     ),
                     text = stringResource(R.string.order, code),
                     fontSize = 18.sp,
-                    color = contentColor,
                     fontWeight = FontWeight.Bold,
                 )
             }
@@ -65,7 +56,6 @@ fun OrderStatus(
                         bottom = 10.dp
                     ),
                     text = status,
-                    color = contentColor,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -77,7 +67,6 @@ fun OrderStatus(
                         bottom = 10.dp
                     ),
                     text = formatOrderDateTime(date),
-                    color = contentColor,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )

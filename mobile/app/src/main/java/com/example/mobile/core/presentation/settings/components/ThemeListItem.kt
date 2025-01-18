@@ -8,28 +8,25 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.RadioButtonChecked
+import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mobile.R
-import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
-fun ProfileListItem(
+fun ThemeListItem(
     modifier: Modifier = Modifier,
     @StringRes text: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isActive: Boolean
 ){
-
     Row(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
@@ -37,35 +34,28 @@ fun ProfileListItem(
                 onClick()
             }
     ){
-        Text(
-            modifier = Modifier
-                .padding(16.dp)
-                .weight(1f),
-            text = stringResource(text),
-            fontSize = 18.sp,
-        )
         Box(
             modifier = Modifier
                 .padding(16.dp)
-                .weight(1f),
-            contentAlignment = Alignment.CenterEnd
         ){
-            Icon(
-                imageVector = Icons.Filled.ArrowForwardIos,
-                contentDescription = ""
-            )
+            if(isActive) {
+                Icon(
+                    imageVector = Icons.Filled.RadioButtonChecked,
+                    contentDescription = ""
+                )
+            }else{
+                Icon(
+                    imageVector = Icons.Filled.RadioButtonUnchecked,
+                    contentDescription = ""
+                )
+            }
         }
-    }
-    HorizontalDivider()
-}
-
-@Preview
-@Composable
-fun ProfileListItemPreview(){
-    MobileTheme {
-        ProfileListItem(
-            text = R.string.favorites,
-            onClick = {}
+        Text(
+            modifier = Modifier
+                .padding(16.dp),
+            text = stringResource(text),
+            fontSize = 18.sp,
         )
     }
+    HorizontalDivider()
 }

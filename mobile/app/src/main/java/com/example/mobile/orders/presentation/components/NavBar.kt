@@ -29,8 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.example.mobile.ui.theme.MobileTheme
 import com.example.mobile.R
+import com.example.mobile.ui.theme.MobileTheme
 
 @Composable
 fun NavBar(

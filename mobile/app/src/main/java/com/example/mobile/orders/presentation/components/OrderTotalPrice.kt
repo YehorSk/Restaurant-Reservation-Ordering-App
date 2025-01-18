@@ -1,7 +1,6 @@
 package com.example.mobile.orders.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -10,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -25,11 +23,6 @@ fun TotalPrice(
     price: String,
     modifier: Modifier = Modifier
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
     Card {
         Column(
             modifier = modifier
@@ -47,7 +40,6 @@ fun TotalPrice(
                         .weight(1f),
                     text = stringResource(R.string.total),
                     fontSize = 18.sp,
-                    color = contentColor,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
@@ -61,7 +53,6 @@ fun TotalPrice(
                         .weight(1f),
                     text = "€ $price",
                     textAlign = TextAlign.End,
-                    color = contentColor,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                 )

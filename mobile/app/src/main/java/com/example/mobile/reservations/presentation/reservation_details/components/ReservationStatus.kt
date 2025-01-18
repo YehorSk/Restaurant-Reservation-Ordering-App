@@ -1,7 +1,6 @@
 package com.example.mobile.reservations.presentation.reservation_details.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,11 +26,7 @@ fun ReservationStatus(
     date: String,
     code: String
 ){
-    val contentColor = if(isSystemInDarkTheme()){
-        Color.White
-    }else{
-        Color.Black
-    }
+
     Card(
     ) {
         Column {
@@ -49,7 +43,6 @@ fun ReservationStatus(
                     text = stringResource(R.string.reservation_code, code),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = contentColor
                 )
             }
             Row(
@@ -66,7 +59,6 @@ fun ReservationStatus(
                     text = status,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = contentColor
                 )
 
                 Text(
@@ -78,7 +70,6 @@ fun ReservationStatus(
                     text = formatOrderDateTime(date),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = contentColor
                 )
             }
         }

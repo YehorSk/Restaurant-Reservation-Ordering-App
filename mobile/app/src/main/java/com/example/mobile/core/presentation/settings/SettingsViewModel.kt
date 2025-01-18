@@ -2,13 +2,12 @@ package com.example.mobile.core.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.auth.data.repository.AuthRepository
+import com.example.mobile.core.data.repository.MainPreferencesRepository
 import com.example.mobile.core.data.repository.ProfileRepositoryImpl
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
-import com.example.mobile.core.domain.repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -44,6 +43,10 @@ class SettingsViewModel @Inject constructor(
     val userPhone: StateFlow<String?> = preferencesRepository.userPhoneFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    val userTheme: StateFlow<Boolean?> = preferencesRepository.appIsDarkThemeFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, false)
+
+
     val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
 
@@ -59,14 +62,31 @@ class SettingsViewModel @Inject constructor(
                 )
             }
             authRepository.logout()
-            preferencesRepository.clearAllTokens()
-            _uiState.update { currentState ->
-                currentState.copy(
-                    isLoading = false,
-                    isLoggedOut = true
-                )
-            }
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    preferencesRepository.clearAllTokens()
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            isLoading = false,
+                            isLoggedOut = true
+                        )
+                    }
+                    _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            isLoading = false,
+                        )
+                    }
+                }
+        }
+    }
 
+    fun updateTheme(value: Boolean){
+        viewModelScope.launch{
+            preferencesRepository.setAppTheme(value)
         }
     }
 

@@ -11,19 +11,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
-import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.example.mobile.core.presentation.settings.ChangeThemeScreen
+import com.example.mobile.core.presentation.settings.MainSettingsScreen
 import com.example.mobile.core.presentation.settings.ProfileDestination
 import com.example.mobile.core.presentation.settings.ProfileScreen
-import com.example.mobile.menu.presentation.menu.MenuScreenRoot
-import com.example.mobile.orders.presentation.orders.OrdersScreen
-import com.example.mobile.core.presentation.settings.AccountScreen
 import com.example.mobile.menu.presentation.favorites.FavoritesScreen
+import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
 import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreenRoot
-import com.example.mobile.reservations.presentation.create_reservation.CreateReservationScreen
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
+import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.reservations.presentation.confirm_reservation.ConfirmReservationScreen
+import com.example.mobile.reservations.presentation.create_reservation.CreateReservationScreen
 import com.example.mobile.reservations.presentation.create_reservation.CreateReservationViewModel
 import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.example.mobile.reservations.presentation.reservations.ReservationScreenRoot
@@ -59,7 +59,7 @@ fun ClientNavGraph(
             )
         }
         composable(ClientScreen.Account.route) {
-            AccountScreen(
+            MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 onNavigate = { destination ->
                     when(destination){
@@ -68,6 +68,8 @@ fun ClientNavGraph(
                         ProfileDestination.Profile -> navController.navigate(ClientScreen.Profile.route)
                         ProfileDestination.Orders -> navController.navigate(ClientScreen.Orders.route)
                         ProfileDestination.Reservations -> navController.navigate(ClientScreen.Reservations.route)
+                        ProfileDestination.Language -> {}
+                        ProfileDestination.Theme -> { navController.navigate(ClientScreen.Theme.route) }
                     }
                 }
             )
@@ -178,6 +180,12 @@ fun ClientNavGraph(
                 id = args.id
             )
         }
+        composable(ClientScreen.Theme.route) {
+            ChangeThemeScreen(
+                modifier = modifier,
+                onGoBack = { navController.popBackStack() }
+            )
+        }
         composable(ClientScreen.Favorites.route) {
             FavoritesScreen(
                 modifier = modifier,
@@ -243,4 +251,6 @@ sealed class ClientScreen(val route: String){
     data object Profile: ClientScreen(route = "PROFILE")
     data object Favorites: AdminScreen(route = "FAVORITES")
     data object Search: ClientScreen(route = "SEARCH")
+    data object Theme: ClientScreen(route = "THEME")
+    data object Language: ClientScreen(route = "LANGUAGE")
 }

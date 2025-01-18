@@ -61,6 +61,10 @@
     <string name="what_is_your_number">What\'s your number?</string>
     <string name="special_request">Special request: %1$s</string>
     <string name="phone_number">Phone number: %1$s</string>
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
 
     <!-- Profile Items -->
 

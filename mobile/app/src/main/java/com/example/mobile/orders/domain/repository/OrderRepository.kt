@@ -1,6 +1,5 @@
 package com.example.mobile.orders.domain.repository
 
-import com.example.mobile.core.data.remote.dto.ResponseDto
 import com.example.mobile.core.domain.remote.AppError
 import com.example.mobile.core.domain.remote.Result
 import com.example.mobile.orders.data.remote.dto.OrderDto
