@@ -99,6 +99,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
 
         //User
         Route::post('/user/getTimeSlots','getAvailableTimeSlots');
+        Route::post('/user/getTimeSlotsTest','getAvailableTimeSlotsTest');
         Route::post('/user/createReservation','createReservation');
         Route::get('/user/reservations','getReservations');
         Route::get('/user/reservations/{id}','getReservationsDetails');

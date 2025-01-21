@@ -9,5 +9,7 @@ data class TimeSlotDto(
     @SerialName("start_time")
     val startTime: String,
     @SerialName("end_time")
-    val endTime: String
+    val endTime: String,
+    @SerialName("available_tables")
+    val availableTables: Int
 )

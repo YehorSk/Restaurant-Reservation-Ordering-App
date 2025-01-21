@@ -63,7 +63,7 @@ fun TimeRoot(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(slots){ item ->
+            items(slots.filter { it.availableTables > 0 }){ item ->
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(5.dp))
@@ -94,16 +94,16 @@ fun TimeRoot(
 @Composable
 fun TimeRootPreview(){
     val timeSlots = listOf(
-        TimeSlotDto(id = 1, startTime = "08:00:00", endTime = "09:00:00"),
-        TimeSlotDto(id = 2, startTime = "09:00:00", endTime = "10:00:00"),
-        TimeSlotDto(id = 3, startTime = "10:00:00", endTime = "11:00:00"),
-        TimeSlotDto(id = 4, startTime = "11:00:00", endTime = "12:00:00"),
-        TimeSlotDto(id = 5, startTime = "12:00:00", endTime = "13:00:00"),
-        TimeSlotDto(id = 6, startTime = "13:00:00", endTime = "14:00:00"),
-        TimeSlotDto(id = 7, startTime = "14:00:00", endTime = "15:00:00"),
-        TimeSlotDto(id = 8, startTime = "15:00:00", endTime = "16:00:00"),
-        TimeSlotDto(id = 9, startTime = "16:00:00", endTime = "17:00:00"),
-        TimeSlotDto(id = 10, startTime = "17:00:00", endTime = "18:00:00")
+        TimeSlotDto(id = 1, startTime = "08:00:00", endTime = "09:00:00", availableTables = 0),
+        TimeSlotDto(id = 2, startTime = "09:00:00", endTime = "10:00:00", availableTables = 8),
+        TimeSlotDto(id = 3, startTime = "10:00:00", endTime = "11:00:00", availableTables = 8),
+        TimeSlotDto(id = 4, startTime = "11:00:00", endTime = "12:00:00", availableTables = 8),
+        TimeSlotDto(id = 5, startTime = "12:00:00", endTime = "13:00:00", availableTables = 8),
+        TimeSlotDto(id = 6, startTime = "13:00:00", endTime = "14:00:00", availableTables = 8),
+        TimeSlotDto(id = 7, startTime = "14:00:00", endTime = "15:00:00", availableTables = 8),
+        TimeSlotDto(id = 8, startTime = "15:00:00", endTime = "16:00:00", availableTables = 8),
+        TimeSlotDto(id = 9, startTime = "16:00:00", endTime = "17:00:00", availableTables = 8),
+        TimeSlotDto(id = 10, startTime = "17:00:00", endTime = "18:00:00", availableTables = 8)
     )
     MobileTheme {
         TimeRoot(

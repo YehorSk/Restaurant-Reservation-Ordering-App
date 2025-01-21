@@ -103,6 +103,7 @@ class CreateReservationViewModel @Inject constructor(
             reservationRepositoryImpl.createReservation(uiState.value.reservationForm)
                 .onSuccess { data, message ->
                     _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    clearForm()
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                 }
                 .onError { error ->

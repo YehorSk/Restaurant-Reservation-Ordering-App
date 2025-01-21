@@ -93,18 +93,37 @@ class ReservationController extends Controller
 
             $currentTime = now()->setTimezone('Europe/Bratislava')->format('H:i:s');
 
+            // Fetch time slots
             $timeSlots = TimeSlot::query()
                 ->when($date === now()->format('Y-m-d'), function ($query) use ($currentTime) {
                     $query->where('start_time', '>=', $currentTime);
                 })
-                ->whereDoesntHave('reservations', function ($query) use ($date, $partySize) {
-                    $query->where('date', $date)
-                        ->whereHas('table', function ($tableQuery) use ($partySize) {
-                            $tableQuery->where('capacity', '>=', $partySize);
-                        });
-                })
                 ->orderBy('start_time')
                 ->get();
+
+            $timeSlots = $timeSlots->map(function ($timeSlot) use ($date, $partySize) {
+                $availableTablesCount = Table::query()
+                    ->whereDoesntHave('reservations', function ($query) use ($date, $timeSlot) {
+                        $startTime = \Carbon\Carbon::createFromFormat('H:i:s', $timeSlot->start_time);
+                        $adjustedStartTime = $startTime->copy()->subMinutes(75);
+                        $adjustedEndTime = $startTime->copy()->addMinutes(120);
+
+                        $query->where('date', $date)
+                            ->whereHas('timeSlot', function ($timeSlotQuery) use ($adjustedStartTime, $adjustedEndTime) {
+                                $timeSlotQuery
+                                    ->whereBetween('start_time', [
+                                        $adjustedStartTime->format('H:i:s'),
+                                        $adjustedEndTime->format('H:i:s'),
+                                    ]);
+                            });
+                    })
+                    ->where('capacity', '>=', $partySize)
+                    ->count();
+
+                $timeSlot->available_tables = $availableTablesCount;
+
+                return $timeSlot;
+            });
 
             return $this->success(data: $timeSlots, message: "");
         }
@@ -112,8 +131,62 @@ class ReservationController extends Controller
         return $this->error('', 'No user', 401);
     }
 
+    public function createReservation(Request $request){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $date = $request->input('reservation_date', '');
+            $size = $request->input('party_size', '');
+            $timeSlotId = $request->input('time_slot_id', '');
 
+            $timeSlot = TimeSlot::find($timeSlotId);
 
+            if (!$date || !$size || !$timeSlotId) {
+                return $this->error('', 'Reservation date, party size, and time slot are required', 400);
+            }
+
+            $availableTable = Table::query()
+                ->whereDoesntHave('reservations', function ($query) use ($date, $timeSlot) {
+                    $startTime = \Carbon\Carbon::createFromFormat('H:i:s', $timeSlot->start_time);
+                    $adjustedStartTime = $startTime->copy()->subMinutes(75);
+                    $adjustedEndTime = $startTime->copy()->addMinutes(120);
+
+                    $query->where('date', $date)
+                        ->whereHas('timeSlot', function ($timeSlotQuery) use ($adjustedStartTime, $adjustedEndTime) {
+                            $timeSlotQuery
+                                ->whereBetween('start_time', [
+                                    $adjustedStartTime->format('H:i:s'),
+                                    $adjustedEndTime->format('H:i:s'),
+                                ]);
+                        });
+                })
+                ->where('capacity', '>=', $size)->first();
+
+            if (!$availableTable) {
+                return $this->error('', 'No available tables for the selected time slot', 400);
+            }
+
+            $reservation = Reservation::create([
+                "client_id" => $user->id,
+                "table_id" => $availableTable->id,
+                "time_slot_id" => $timeSlotId,
+                "party_size" => $size,
+                "date" => $date,
+                "status" => "Pending",
+                "special_request" => $request->input('special_request', ''),
+                "phone" => $request->input('phone', ''),
+                "code" => $this->generate_code()
+            ]);
+
+            $item = $user->reservations()->with('table')->with('timeSlot')->find($reservation->id);
+
+            $item->table_number = $item->table->number ?? null;
+            $item->start_time = $item->timeSlot->start_time ?? null;
+            unset($item->table);
+            unset($item->timeSlot);
+            return $this->success(data: [$item], message: __("messages.reservation_was_created_successfully"));
+        }
+        return $this->error('', 'No user', 401);
+    }
 
     public function getReservations(Request $request){
         $user = auth('sanctum')->user();
@@ -175,52 +248,6 @@ class ReservationController extends Controller
 
         }
 
-        return $this->error('', 'No user', 401);
-    }
-
-    public function createReservation(Request $request){
-        $user = auth('sanctum')->user();
-        if($user instanceof User){
-            $date = $request->input('reservation_date', '');
-            $size = $request->input('party_size', '');
-            $timeSlotId = $request->input('time_slot_id', '');
-
-            if (!$date || !$size || !$timeSlotId) {
-                return $this->error('', 'Reservation date, party size, and time slot are required', 400);
-            }
-
-            $availableTable = Table::query()
-                ->where('capacity', '>=', $size)
-                ->whereDoesntHave('reservations', function ($query) use ($timeSlotId, $date) {
-                    $query->where('time_slot_id', $timeSlotId)
-                        ->where('date', $date);
-                })
-                ->first();
-
-            if (!$availableTable) {
-                return $this->error('', 'No available tables for the selected time slot', 400);
-            }
-
-            $reservation = Reservation::create([
-                "client_id" => $user->id,
-                "table_id" => $availableTable->id,
-                "time_slot_id" => $timeSlotId,
-                "party_size" => $size,
-                "date" => $date,
-                "status" => "Pending",
-                "special_request" => $request->input('special_request', ''),
-                "phone" => $request->input('phone', ''),
-                "code" => $this->generate_code()
-            ]);
-
-            $item = $user->reservations()->with('table')->with('timeSlot')->find($reservation->id);
-
-            $item->table_number = $item->table->number ?? null;
-            $item->start_time = $item->timeSlot->start_time ?? null;
-            unset($item->table);
-            unset($item->timeSlot);
-            return $this->success(data: [$item], message: __("messages.reservation_was_created_successfully"));
-        }
         return $this->error('', 'No user', 401);
     }
 
