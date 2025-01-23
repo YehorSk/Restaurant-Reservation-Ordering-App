@@ -17,10 +17,16 @@ class AuthInterceptor(
                 it
             }
         }
+        val lang = runBlocking {
+            prefs.appLanguageFlow.firstOrNull()?.also {
+                it
+            }
+        }
         Timber.d("Token: $token")
         val requestBuilder = chain.request().newBuilder()
         if (!token.isNullOrEmpty()) {
             requestBuilder.addHeader("Authorization", "Bearer $token")
+            requestBuilder.addHeader("lang", "$lang")
         }
 
         val request = requestBuilder.build()

@@ -53,7 +53,7 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return $this->error((object)[], 'Credentials do not match', 401);
+            return $this->error((object)[], 'Credentials do not match', 422);
         }
 
         $user = User::where('email',$request->email)->first();
