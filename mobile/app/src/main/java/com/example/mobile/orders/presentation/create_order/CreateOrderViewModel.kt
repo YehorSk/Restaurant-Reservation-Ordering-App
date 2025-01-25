@@ -38,6 +38,7 @@ class CreateOrderViewModel @Inject constructor(
             )
             is CreateOrderAction.UpdateRequest -> updateRequest(action.request)
             is CreateOrderAction.UpdatePlace -> updatePlace(action.place)
+            is CreateOrderAction.MakeWaiterOrder -> makeWaiterOrder()
         }
     }
 

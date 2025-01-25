@@ -24,7 +24,7 @@ import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
-import com.example.mobile.orders.presentation.create_order.waiter.WaiterCreateOrderScreen
+import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreenRoot
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
@@ -178,7 +178,7 @@ fun WaiterNavGraph(
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) {
-            WaiterCreateOrderScreen(
+            UserCreateOrderScreenRoot(
                 modifier = modifier,
                 onGoToCart = {
                     navController.navigate(WaiterScreen.Cart.route){
@@ -194,6 +194,7 @@ fun WaiterNavGraph(
                         }
                     }
                 },
+                onGoToMakeReservation = {},
                 onGoToOrders = {
                     navController.navigate(WaiterScreen.Orders.route){
                         popUpTo(WaiterScreen.Orders.route){

@@ -26,7 +26,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mobile.R
 import com.example.mobile.cart.data.db.model.CartItemEntity
@@ -36,7 +35,6 @@ import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.presentation.components.MenuItemModal
 import com.example.mobile.core.presentation.components.SingleEventEffect
-import com.example.mobile.core.presentation.components.SwipeToDeleteContainer
 import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.core.utils.toString
 import com.example.mobile.menu.data.remote.dto.toMenuItemEntity
@@ -105,22 +103,14 @@ fun CartScreen(
                         items = cartItems,
                         key = {it.pivot.id}
                     ) { item ->
-                        SwipeToDeleteContainer(
-                            item = item,
-                            onDelete = {
-                                onAction(CartAction.SetItem(item))
-                                onAction(CartAction.DeleteItem)
-                            }
-                        ) {
-                            CartItem(
-                                cartItem = item,
-                                onClick = { cartItem ->
-                                    onAction(CartAction.SetItem(cartItem))
-                                    onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
-                                    onAction(CartAction.ShowBottomSheet)
-                                },
-                            )
-                        }
+                        CartItem(
+                            cartItem = item,
+                            onClick = { cartItem ->
+                                onAction(CartAction.SetItem(cartItem))
+                                onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
+                                onAction(CartAction.ShowBottomSheet)
+                            },
+                        )
                         HorizontalDivider()
                     }
                     item {

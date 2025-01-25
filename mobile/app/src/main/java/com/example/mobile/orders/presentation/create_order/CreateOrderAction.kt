@@ -14,6 +14,6 @@ sealed interface CreateOrderAction {
 
     data object MakeOrder: CreateOrderAction
 
-
+    data object MakeWaiterOrder: CreateOrderAction
 
 }

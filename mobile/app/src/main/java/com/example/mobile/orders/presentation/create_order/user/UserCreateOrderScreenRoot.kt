@@ -35,6 +35,7 @@ import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.core.utils.toString
+import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.components.DeliveryMap
 import com.example.mobile.orders.presentation.components.NavBar
@@ -44,6 +45,7 @@ import com.example.mobile.orders.presentation.components.OrderItemList
 import com.example.mobile.orders.presentation.components.OrderOptions
 import com.example.mobile.orders.presentation.components.OrderSpecialRequest
 import com.example.mobile.orders.presentation.components.PickupMap
+import com.example.mobile.orders.presentation.components.SelectTable
 import com.example.mobile.orders.presentation.components.TotalPrice
 import com.example.mobile.orders.presentation.create_order.CreateOrderAction
 import com.example.mobile.orders.presentation.create_order.CreateOrderViewModel
@@ -62,9 +64,11 @@ fun UserCreateOrderScreenRoot(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
+    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getUserOrderItems()
+        viewModel.getTables()
     }
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
@@ -81,10 +85,11 @@ fun UserCreateOrderScreenRoot(
         isConnected = isConnected,
         onGoToCart = onGoToCart,
         onGoToMenu = onGoToMenu,
-        onGoToOrders = onGoToOrders,
         onGoToMakeReservation = onGoToMakeReservation,
         validateForm = viewModel.validateForm(),
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        userRole = userRole.toString(),
+        onTableNumberUpdate = { viewModel.updateTableNumber(it) }
     )
 
 }
@@ -96,10 +101,11 @@ fun UserCreateOrderScreen(
     isConnected: Boolean,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
-    onGoToOrders: () -> Unit,
     onGoToMakeReservation: () -> Unit,
+    onTableNumberUpdate: (TableDto) -> Unit,
     validateForm: Boolean,
-    onAction: (CreateOrderAction) -> Unit
+    onAction: (CreateOrderAction) -> Unit,
+    userRole: String
 ){
 
     var isMapLoaded by remember { mutableStateOf(false) }
@@ -130,33 +136,51 @@ fun UserCreateOrderScreen(
                 onRequestChange = {request -> onAction(CreateOrderAction.UpdateRequest(request)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
-            OrderOptions(
-                selected = uiState.orderForm.orderType,
-                onSelectedChange = { type,text -> onAction(CreateOrderAction.UpdateOrderType(type,text)) }
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            if (uiState.orderForm.orderType == 0 && isConnected){
-                PickupMap(
-                    onMapLoaded = {
-                        isMapLoaded = true
-                    }
+            if(userRole == "user"){
+                OrderOptions(
+                    selected = uiState.orderForm.orderType,
+                    onSelectedChange = { type,text -> onAction(CreateOrderAction.UpdateOrderType(type,text)) }
                 )
-            }
-            if (uiState.orderForm.orderType == 1 && isConnected){
-                if(!uiState.places.isNullOrEmpty()){
-                    DeliveryMap()
+            }else{
+                if(uiState.tables !=null){
+                    SelectTable(
+                        tables = uiState.tables!!,
+                        selectedTable = uiState.orderForm.selectedTable,
+                        onTableChanged = { onTableNumberUpdate(it) }
+                    )
                 }
-                OrderAddress(
-                    address = uiState.orderForm.address,
-                    instructions = uiState.orderForm.instructions,
-                    places = uiState.places,
-                    onAddressChange = {
-                        address -> onAction(CreateOrderAction.UpdateAddress(address))
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            if(userRole == "user") {
+                if (uiState.orderForm.orderType == 0 && isConnected) {
+                    PickupMap(
+                        onMapLoaded = {
+                            isMapLoaded = true
+                        }
+                    )
+                }
+                if (uiState.orderForm.orderType == 1 && isConnected) {
+                    if (!uiState.places.isNullOrEmpty()) {
+                        DeliveryMap()
+                    }
+                    OrderAddress(
+                        address = uiState.orderForm.address,
+                        instructions = uiState.orderForm.instructions,
+                        places = uiState.places,
+                        onAddressChange = { address ->
+                            onAction(CreateOrderAction.UpdateAddress(address))
 //                                   onAction(CreateOrderAction.UpdatePlace(address))
-                                      },
-                    onInstructionsChange = {instructions -> onAction(CreateOrderAction.UpdateInstructions(instructions)) }
-                )
-                Spacer(modifier = Modifier.height(10.dp))
+                        },
+                        onInstructionsChange = { instructions ->
+                            onAction(
+                                CreateOrderAction.UpdateInstructions(
+                                    instructions
+                                )
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
             }
             if (isConnected){
                 val checkout = uiState.orderItems.sumOf {
@@ -177,10 +201,14 @@ fun UserCreateOrderScreen(
                         .fillMaxWidth(),
                     enabled = validateForm,
                     onClick = {
-                        if (uiState.orderForm.orderType==2){
-                            onGoToMakeReservation()
+                        if(userRole == "user"){
+                            if (uiState.orderForm.orderType==2){
+                                onGoToMakeReservation()
+                            }else{
+                                onAction(CreateOrderAction.MakeOrder)
+                            }
                         }else{
-                            onAction(CreateOrderAction.MakeOrder)
+                            onAction(CreateOrderAction.MakeWaiterOrder)
                         }
                     }
                 ) {
