@@ -40,7 +40,8 @@
         "registered_successfully" => "Реєстрація успішно виконана",
         "logged_in_successfully" => "Вхід успішно виконано",
         "authenticated_successfully" => "Аутентифікація успішно виконана",
-        "language_changed_successfully" => "Мову успішно змінено"
+        "language_changed_successfully" => "Мову успішно змінено",
+        "reservation_cancelled_successfully" => "Бронювання успішно скасовано",
     ];
 
 ?>

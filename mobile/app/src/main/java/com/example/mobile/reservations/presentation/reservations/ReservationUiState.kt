@@ -1,6 +1,7 @@
 package com.example.mobile.reservations.presentation.reservations
 
 import com.example.mobile.orders.data.remote.dto.TimeSlotDto
+import com.example.mobile.orders.presentation.OrderForm
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
@@ -22,5 +23,9 @@ data class ReservationForm(
     val selectedTime:String = "",
     @SerialName("special_request")
     val specialRequest: String = "",
-    val phone: String = ""
+    val phone: String = "",
+    @SerialName("with_order")
+    val withOrder: Boolean = false,
+    @SerialName("order_form")
+    val orderForm: OrderForm = OrderForm()
 )

@@ -137,6 +137,7 @@ class ReservationController extends Controller
             $date = $request->input('reservation_date', '');
             $size = $request->input('party_size', '');
             $timeSlotId = $request->input('time_slot_id', '');
+            $withOrder = $request->input('with_order',false);
 
             $timeSlot = TimeSlot::find($timeSlotId);
 
@@ -183,6 +184,27 @@ class ReservationController extends Controller
             $item->start_time = $item->timeSlot->start_time ?? null;
             unset($item->table);
             unset($item->timeSlot);
+            if($withOrder){
+                $total_price = $user->menuItems()->get()->sum('pivot.price');
+                $order = new Order([
+                    'price' => $total_price,
+                    'special_request' => $request->input('order_form.special_request', ''),
+                    'order_type' =>  "2",
+                    'client_id' => $user->id,
+                    'reservation_id' => $reservation->id,
+                    'code' => $this->generate_code(),
+                    'status' => 'Pending',
+                ]);
+                $order->save();
+                $items = $user->menuItems()->get();
+                foreach ($items as $menu_item) {
+                    $order->orderItems()->attach($menu_item->id, [
+                        'quantity' => $menu_item->pivot->quantity,
+                        'price' => $menu_item->pivot->price,
+                    ]);
+                    $user->menuItems()->detach($menu_item->id);
+                }
+            }
             return $this->success(data: [$item], message: __("messages.reservation_was_created_successfully"));
         }
         return $this->error('', 'No user', 401);
@@ -296,6 +318,7 @@ class ReservationController extends Controller
             if ($item) {
                 if ($item->status == "Pending") {
                     $item->update(['status' => 'Cancelled']);
+                    $item->orders()->update(['status' => 'Cancelled']);
                     $item->table_number = $item->table->number ?? null;
                     $item->start_time = $item->timeSlot->start_time ?? null;
                     unset($item->table);

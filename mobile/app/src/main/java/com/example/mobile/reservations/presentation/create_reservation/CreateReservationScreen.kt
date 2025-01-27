@@ -18,6 +18,7 @@ import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.presentation.components.LoadingPart
 import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.toString
+import com.example.mobile.orders.presentation.OrderForm
 import com.example.mobile.orders.presentation.components.NavBar
 import com.example.mobile.reservations.presentation.create_reservation.components.CalendarRoot
 import com.example.mobile.reservations.presentation.create_reservation.components.PartySize
@@ -28,7 +29,9 @@ fun CreateReservationScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateReservationViewModel,
     goBack: ()-> Unit,
-    goToFinishReservation: () -> Unit
+    goToFinishReservation: () -> Unit,
+    orderForm: OrderForm,
+    withOrder: Boolean
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -73,6 +76,7 @@ fun CreateReservationScreen(
                     selectedSlot = uiState.reservationForm.selectedTimeSlot,
                     onTimeChanged = {id, time ->
                         viewModel.updateTimeSlot(id, time)
+                        viewModel.updateWithOrder(withOrder = withOrder, form = orderForm)
                         goToFinishReservation()
                     }
                 )

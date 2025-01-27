@@ -36,6 +36,7 @@ import com.example.mobile.core.presentation.components.SingleEventEffect
 import com.example.mobile.core.utils.formattedPrice
 import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.data.remote.dto.TableDto
+import com.example.mobile.orders.presentation.OrderForm
 import com.example.mobile.orders.presentation.OrderUiState
 import com.example.mobile.orders.presentation.components.DeliveryMap
 import com.example.mobile.orders.presentation.components.NavBar
@@ -58,7 +59,7 @@ fun UserCreateOrderScreenRoot(
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
     onGoToOrders: () -> Unit,
-    onGoToMakeReservation: () -> Unit
+    onGoToMakeReservation: (OrderForm) -> Unit
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -85,7 +86,7 @@ fun UserCreateOrderScreenRoot(
         isConnected = isConnected,
         onGoToCart = onGoToCart,
         onGoToMenu = onGoToMenu,
-        onGoToMakeReservation = onGoToMakeReservation,
+        onGoToMakeReservation = { onGoToMakeReservation(uiState.orderForm) },
         validateForm = viewModel.validateForm(),
         onAction = viewModel::onAction,
         userRole = userRole.toString(),

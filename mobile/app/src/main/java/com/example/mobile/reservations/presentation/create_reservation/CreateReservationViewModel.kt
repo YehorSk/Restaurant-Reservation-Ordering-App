@@ -6,6 +6,7 @@ import com.example.mobile.core.domain.remote.SideEffect
 import com.example.mobile.core.domain.remote.onError
 import com.example.mobile.core.domain.remote.onSuccess
 import com.example.mobile.core.utils.ConnectivityObserver
+import com.example.mobile.orders.presentation.OrderForm
 import com.example.mobile.reservations.data.dao.ReservationDao
 import com.example.mobile.reservations.data.remote.ReservationRepositoryImpl
 import com.example.mobile.reservations.presentation.ReservationBaseViewModel
@@ -72,6 +73,17 @@ class CreateReservationViewModel @Inject constructor(
                 reservationForm = it.reservationForm.copy(
                     selectedTimeSlot = slot,
                     selectedTime = time
+                )
+            )
+        }
+    }
+
+    fun updateWithOrder(withOrder: Boolean, form: OrderForm){
+        _uiState.update {
+            it.copy(
+                reservationForm = it.reservationForm.copy(
+                    orderForm = form,
+                    withOrder = withOrder
                 )
             )
         }

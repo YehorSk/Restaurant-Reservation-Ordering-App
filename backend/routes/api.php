@@ -109,6 +109,4 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         Route::get('/stats/{year}','getStats');
     });
 
-
-
 });

@@ -41,6 +41,7 @@
         "logged_in_successfully" => "Prihlásenie bolo úspešné",
         "authenticated_successfully" => "Autentifikácia bola úspešná",
         "language_changed_successfully" => "Jazyk bol úspešne zmenený",
+        "reservation_cancelled_successfully" => "Rezervácia bola úspešne zrušená",
     ];
 
 ?>

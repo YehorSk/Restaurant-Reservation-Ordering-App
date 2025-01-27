@@ -40,7 +40,8 @@
         "registered_successfully" => "Registered successfully",
         "logged_in_successfully" => "Logged in successfully",
         "authenticated_successfully" => "Authenticated successfully",
-        "language_changed_successfully" => "Language changed successfully"
+        "language_changed_successfully" => "Language changed successfully",
+        "reservation_cancelled_successfully" => "Reservation canceled successfully",
     ];
 
 ?>

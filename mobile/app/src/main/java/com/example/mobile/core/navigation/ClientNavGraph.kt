@@ -1,9 +1,7 @@
 package com.example.mobile.core.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.mobile.cart.presentation.cart.CartScreenRoot
 import com.example.mobile.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.example.mobile.core.navigation.navTypes.OrderFormNavType
 import com.example.mobile.core.presentation.settings.ChangeLanguageScreen
 import com.example.mobile.core.presentation.settings.ChangeThemeScreen
 import com.example.mobile.core.presentation.settings.MainSettingsScreen
@@ -24,6 +23,7 @@ import com.example.mobile.menu.presentation.favorites.FavoritesScreen
 import com.example.mobile.menu.presentation.menu.MenuScreenRoot
 import com.example.mobile.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.example.mobile.menu.presentation.search.SearchScreen
+import com.example.mobile.orders.presentation.OrderForm
 import com.example.mobile.orders.presentation.create_order.user.UserCreateOrderScreenRoot
 import com.example.mobile.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.example.mobile.orders.presentation.orders.OrdersScreen
@@ -33,6 +33,7 @@ import com.example.mobile.reservations.presentation.create_reservation.CreateRes
 import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.example.mobile.reservations.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
+import kotlin.reflect.typeOf
 
 @Composable
 fun ClientNavGraph(
@@ -61,7 +62,7 @@ fun ClientNavGraph(
                     navController.navigate(ClientScreen.Search.route)
                 },
                 onCreateReservationClicked = {
-                    navController.navigate(ClientScreen.CreateReservation.route)
+                    navController.navigate(ClientScreen.CreateReservation(false))
                 },
                 viewModel = menuScreenViewModel,
                 isUser = true
@@ -116,11 +117,14 @@ fun ClientNavGraph(
                 showGoBack = true
             )
         }
-        composable(
-            route = ClientScreen.CreateReservation.route,
+        composable<ClientScreen.CreateReservation>(
+            typeMap = mapOf(
+                typeOf<OrderForm>() to OrderFormNavType.OrderFormType
+            ),
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) {
+            val args = it.toRoute<ClientScreen.CreateReservation>()
             CreateReservationScreen(
                 modifier = modifier,
                 viewModel = createReservationViewModel,
@@ -129,7 +133,9 @@ fun ClientNavGraph(
                 },
                 goToFinishReservation = {
                     navController.navigate(ClientScreen.ConfirmReservation.route)
-                }
+                },
+                orderForm = args.orderForm,
+                withOrder = args.withOrder
             )
         }
         composable(
@@ -181,7 +187,7 @@ fun ClientNavGraph(
                     }
                 },
                 onGoToMakeReservation = {
-                    navController.navigate(ClientScreen.CreateReservation.route){}
+                    navController.navigate(ClientScreen.CreateReservation(true, it)){}
                 }
             )
         }
@@ -301,7 +307,8 @@ sealed class ClientScreen(val route: String){
     data object Cart: ClientScreen(route = "CART")
     data object Orders: ClientScreen(route = "ORDERS")
     data object CreateOrder: ClientScreen(route = "CREATE_ORDER")
-    data object CreateReservation: ClientScreen(route = "MAKE_RESERVATION")
+    @Serializable
+    data class CreateReservation(val withOrder: Boolean, val orderForm: OrderForm = OrderForm()): ClientScreen(route = "MAKE_RESERVATION")
     data object ConfirmReservation: ClientScreen(route = "CONFIRM_RESERVATION")
     @Serializable
     data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")

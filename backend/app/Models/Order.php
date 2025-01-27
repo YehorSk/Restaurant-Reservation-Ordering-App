@@ -28,6 +28,11 @@ class Order extends Model
         return $this->belongsToMany(User::class);
     }
 
+    public function reservation()
+    {
+        return $this->belongsToMany(Reservation::class);
+    }
+
     public function orderItems()
     {
         return $this->belongsToMany(MenuItem::class, 'menu_items_orders')
