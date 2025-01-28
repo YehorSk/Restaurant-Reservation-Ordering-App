@@ -41,7 +41,7 @@ class CreateOrderViewModel @Inject constructor(
             is CreateOrderAction.MakeWaiterOrder -> makeWaiterOrder()
             CreateOrderAction.CloseBottomSheet -> closeBottomSheet()
             CreateOrderAction.OpenBottomSheet -> showBottomSheet()
-            is CreateOrderAction.UpdateTime -> updateTime(action.time)
+            is CreateOrderAction.UpdateTime -> updateTime(start = action.start, end = action.end)
         }
     }
 
@@ -68,11 +68,12 @@ class CreateOrderViewModel @Inject constructor(
         }
     }
 
-    fun updateTime(time: String){
+    fun updateTime(start: String, end: String){
         _uiState.update {
             it.copy(
                 orderForm = it.orderForm.copy(
-                    selectedTime = time
+                    startTime = start,
+                    endTime = end
                 )
             )
         }

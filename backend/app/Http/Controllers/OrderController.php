@@ -146,7 +146,9 @@ class OrderController extends Controller
                 'order_type' =>  $request->input('order_type'),
                 'client_id' => $user->id,
                 'code' => $this->generate_code(),
-                'status' => 'Pending'
+                'status' => 'Pending',
+                'start_time' =>  $request->input('start_time'),
+                'end_time' =>  $request->input('end_time'),
             ]);
             $order->save();
             $items = $user->menuItems()->get();
@@ -175,7 +177,9 @@ class OrderController extends Controller
                 'code' => $this->generate_code(),
                 'status' => 'Confirmed',
                 'table_id' => $table['id'],
-                'waiter_id' => $user->id
+                'waiter_id' => $user->id,
+                'start_time' =>  $request->input('start_time'),
+                'end_time' =>  $request->input('end_time'),
             ]);
             $order->save();
             $items = $user->menuItems()->get();
@@ -202,9 +206,11 @@ class OrderController extends Controller
                 'order_type' =>  $request->input('order_type'),
                 'address' =>  $request->input('address'),
                 'instructions' =>  $request->input('instructions'),
+                'start_time' =>  $request->input('start_time'),
+                'end_time' =>  $request->input('end_time'),
                 'client_id' => $user->id,
                 'code' => $this->generate_code(),
-                'status' => 'Pending'
+                'status' => 'Pending',
             ]);
             $order->save();
             $items = $user->menuItems()->get();

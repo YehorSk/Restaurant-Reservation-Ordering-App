@@ -6,6 +6,7 @@ import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.data.remote.dto.TableDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -40,6 +41,51 @@ data class OrderForm(
     ),
     @SerialName("table_number")
     val selectedTableNumber:Int = 0,
-    @SerialName("selected_time")
-    val selectedTime: String = ""
+    @SerialName("start_time")
+    val startTime: String = getStartTime(),
+    @SerialName("end_time")
+    val endTime: String = getEndTime()
 )
+
+fun getStartTime(): String {
+    val currentTime = LocalDateTime.now()
+    return if (currentTime.hour >= 20) {
+        "08:00"
+    } else {
+        val minute = currentTime.minute
+        val roundedMinute = when {
+            minute < 15 -> 0
+            minute < 30 -> 15
+            minute < 45 -> 30
+            else -> 45
+        }
+        val roundedTime = currentTime.withMinute(roundedMinute).withSecond(0).withNano(0)
+        formatTime(roundedTime)
+    }
+}
+
+fun getEndTime(): String {
+    val startTime = if (LocalDateTime.now().hour >= 20) {
+        LocalDateTime.now().withHour(8).withMinute(30).withSecond(0).withNano(0)
+    } else {
+        val minute = LocalDateTime.now().minute
+        val roundedMinute = getRoundedMinute(minute)
+        LocalDateTime.now()
+            .withMinute(roundedMinute)
+            .withSecond(0)
+            .withNano(0)
+            .plusMinutes(30)
+    }
+    return formatTime(startTime)
+}
+
+fun getRoundedMinute(minute: Int): Int = when {
+    minute < 15 -> 0
+    minute < 30 -> 15
+    minute < 45 -> 30
+    else -> 45
+}
+
+fun formatTime(time: LocalDateTime): String {
+    return time.format(DateTimeFormatter.ofPattern("HH:mm"))
+}

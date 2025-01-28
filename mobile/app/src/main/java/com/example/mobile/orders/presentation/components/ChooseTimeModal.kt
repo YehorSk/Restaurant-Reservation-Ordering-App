@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import com.example.mobile.R
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import kotlin.collections.get
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,11 +49,13 @@ fun ChooseTimeModal(
     modifier: Modifier = Modifier,
     onDismiss: ()->Unit,
     onOrderTypeSelect: (Int,String)-> Unit,
-    onTimeSelect: (String) -> Unit,
+    onTimeSelect: (String, String) -> Unit,
     selectedTime: String,
     selected: Int
 ){
+
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
     ModalBottomSheet(
         modifier = modifier,
         onDismissRequest = onDismiss,
@@ -76,7 +78,7 @@ fun ChooseTimeModalContent(
     modifier: Modifier = Modifier,
     onDismiss:()->Unit,
     onOrderTypeSelect: (Int,String)-> Unit,
-    onTimeSelect: (String) -> Unit,
+    onTimeSelect: (String, String) -> Unit,
     selectedTime: String,
     selectedOrderType: Int
 ){
@@ -129,59 +131,13 @@ fun ChooseTimeModalContent(
                 }
             }
         }
-        Box(
-            modifier = Modifier
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp
-                )
-        ) {
-            TabRow(
-                selectedTabIndex = selectedOrderType,
-                modifier = Modifier
-                    .padding(vertical = 4.dp, horizontal = 8.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(MaterialTheme.colorScheme.surfaceDim)
-                    .padding(5.dp),
-                containerColor = Color.Transparent,
-                indicator = { tabPositions: List<TabPosition> ->
-
-                },
-                divider = {}
-            ) {
-                list.forEachIndexed { index, item ->
-                    val selected = selectedOrderType == item.orderType
-                    val text = stringResource(item.title)
-                    Tab(
-                        modifier = if (selected) Modifier
-                            .clip(RoundedCornerShape(50))
-                            .background(MaterialTheme.colorScheme.primary)
-                        else Modifier
-                            .clip(RoundedCornerShape(50))
-                            .background(MaterialTheme.colorScheme.surfaceDim),
-                        selected = selected,
-                        onClick = {
-                            onOrderTypeSelect(item.orderType, text)
-                        },
-                        text = {
-                            Text(
-                                text = stringResource(item.title),
-                                color = Color.White,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                            )
-                        }
-                    )
-                }
-            }
-        }
         LazyColumn(modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)) {
             items(timeSlots){ item ->
                 TimeSlotItem(
                     timeItem = item,
-                    onTimeSelect = { onTimeSelect(it) },
+                    onTimeSelect = { start, end -> onTimeSelect(start, end) },
                     selectedTime = selectedTime
                 )
             }
@@ -192,14 +148,14 @@ fun ChooseTimeModalContent(
 @Composable
 fun TimeSlotItem(
     timeItem: TimeItem,
-    onTimeSelect: (String) -> Unit,
+    onTimeSelect: (String, String) -> Unit,
     selectedTime: String
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onTimeSelect("${timeItem.startTime} - ${timeItem.endTime}")
+                onTimeSelect(timeItem.startTime, timeItem.endTime)
             }
             .padding(
                 top = 8.dp,
@@ -207,16 +163,24 @@ fun TimeSlotItem(
                 start = 20.dp,
                 end = 20.dp
             ),
-        shape = MaterialTheme.shapes.medium
+        shape = MaterialTheme.shapes.medium,
+        colors = CardDefaults.cardColors(
+            containerColor = if (!selectedTime.equals("${timeItem.startTime} - ${timeItem.endTime}"))
+                MaterialTheme.colorScheme.onPrimary
+            else
+                MaterialTheme.colorScheme.surfaceTint
+        )
     ) {
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                color = if("${timeItem.startTime} - ${timeItem.endTime}".equals(selectedTime))
-                    MaterialTheme.colorScheme.primary else Color.White,
                 text = "${timeItem.startTime} - ${timeItem.endTime}",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
         }

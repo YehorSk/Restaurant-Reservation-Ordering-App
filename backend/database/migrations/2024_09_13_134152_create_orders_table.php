@@ -25,6 +25,8 @@ return new class extends Migration
             $table->longText("address")->nullable();
             $table->longText("instructions")->nullable();
             $table->integer("order_type")->default(false);
+            $table->time("start_time");
+            $table->time("end_time");
             $table->foreign("client_id")->references("id")->on("users")->onDelete("cascade");
             $table->foreign("table_id")->references("id")->on("tables")->onDelete("cascade");
             $table->foreign("waiter_id")->references("id")->on("users")->onDelete("cascade");

@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.mobile.orders.data.remote.dto.OrderDto
 import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
+import kotlinx.serialization.SerialName
 
 @Entity("order_table")
 data class OrderEntity(
@@ -31,6 +32,10 @@ data class OrderEntity(
     val instructions: String? = null,
     @ColumnInfo("order_type")
     val orderType: Int,
+    @ColumnInfo("start_time")
+    val startTime: String,
+    @ColumnInfo("end_time")
+    val endTime: String,
 )
 
 fun OrderEntity.toOrderDto(items: List<OrderMenuItemDto>): OrderDto{
@@ -49,6 +54,8 @@ fun OrderEntity.toOrderDto(items: List<OrderMenuItemDto>): OrderDto{
         orderItems = items,
         code = this.code,
         address = this.address,
-        instructions = this.instructions
+        instructions = this.instructions,
+        startTime = this.startTime,
+        endTime = this.endTime
     )
 }

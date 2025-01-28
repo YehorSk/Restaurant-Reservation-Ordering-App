@@ -83,7 +83,9 @@ fun OrderItemPreview(){
         status = "PREPARING",
         specialRequest = "Extra spicy",
         orderType = 1,
-        code = "F6JKN1"
+        code = "F6JKN1",
+        startTime = "",
+        endTime = ""
     )
     MobileTheme {
         OrderListItem(

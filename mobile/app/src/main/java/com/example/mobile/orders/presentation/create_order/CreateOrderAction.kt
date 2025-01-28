@@ -14,7 +14,7 @@ sealed interface CreateOrderAction {
 
     data class UpdatePlace(val place: String): CreateOrderAction
 
-    data class UpdateTime(val time: String): CreateOrderAction
+    data class UpdateTime(val start: String, val end: String): CreateOrderAction
 
     data object MakeOrder: CreateOrderAction
 

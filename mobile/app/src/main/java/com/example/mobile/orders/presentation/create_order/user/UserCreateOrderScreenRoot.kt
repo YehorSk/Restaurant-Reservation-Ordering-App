@@ -147,7 +147,7 @@ fun UserCreateOrderScreen(
                             onAction(CreateOrderAction.OpenBottomSheet)
                         }
                     },
-                    selectedTime = uiState.orderForm.selectedTime
+                    selectedTime = "${uiState.orderForm.startTime} - ${uiState.orderForm.endTime}"
                 )
             }else{
                 if(uiState.tables !=null){
@@ -238,12 +238,12 @@ fun UserCreateOrderScreen(
             ChooseTimeModal(
                 onDismiss = { onAction(CreateOrderAction.CloseBottomSheet) },
                 onOrderTypeSelect = { type,text -> onAction(CreateOrderAction.UpdateOrderType(type,text)) },
-                onTimeSelect = { time ->
-                                    onAction(CreateOrderAction.UpdateTime(time))
+                onTimeSelect = { start, end ->
+                                    onAction(CreateOrderAction.UpdateTime(start, end))
                                     onAction(CreateOrderAction.CloseBottomSheet)
                                     onAction(CreateOrderAction.UpdateOrderType(uiState.orderForm.orderType,uiState.orderForm.orderText))
                                },
-                selectedTime = uiState.orderForm.selectedTime,
+                selectedTime = "${uiState.orderForm.startTime} - ${uiState.orderForm.endTime}",
                 selected = uiState.orderForm.orderType
             )
         }

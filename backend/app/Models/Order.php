@@ -20,7 +20,9 @@ class Order extends Model
         'special_request',
         'instructions',
         'address',
-        'order_type'
+        'order_type',
+        'start_time',
+        'end_time'
     ];
 
     public function users()
