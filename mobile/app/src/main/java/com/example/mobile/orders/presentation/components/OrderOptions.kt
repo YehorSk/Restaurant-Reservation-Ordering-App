@@ -51,6 +51,7 @@ data class OrderOption(
 fun OrderOptions(
     modifier: Modifier = Modifier,
     selected: Int,
+    selectedTime: String,
     onSelectedChange: (Int,String) -> Unit
 ){
 
@@ -85,12 +86,15 @@ fun OrderOptions(
                     option = option,
                     selected = (option.text == selectedOption.text),
                     onSelect = { option ->
-                        onOptionSelected(option)
+                        if(option.id != 3){
+                            onOptionSelected(option)
+                        }
                         onSelectedChange(
                             option.id,
                             text
                         )
-                    }
+                    },
+                    selectedTime = selectedTime
                 )
                 if(option.id !=3) HorizontalDivider()
             }
@@ -102,6 +106,7 @@ fun OrderOptions(
 fun OrderRadioOption(
     modifier: Modifier = Modifier,
     selected : Boolean = false,
+    selectedTime: String,
     onSelect: (OrderOption) -> Unit,
     option: OrderOption
 ){
@@ -150,7 +155,10 @@ fun OrderRadioOption(
                 Text(
                     modifier = Modifier
                         .padding(start = 10.dp),
-                    text = stringResource(id = option.subText),
+                    text = if(selected && selectedTime.length > 0)
+                                selectedTime
+                            else
+                                stringResource(id = option.subText),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     style = LocalTextStyle.current.merge(
@@ -185,7 +193,8 @@ fun OrderOptionsPreview(){
             selected = 0,
             onSelectedChange = {
                 id,text ->
-            }
+            },
+            selectedTime = ""
         )
     }
 }
@@ -201,7 +210,8 @@ fun OrderRadioOptionPreview(){
                 text = R.string.pickup_option,
                 subText = R.string.pickup_time
             ),
-            onSelect = {}
+            onSelect = {},
+            selectedTime = ""
         )
     }
 }

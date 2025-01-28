@@ -1,5 +1,7 @@
 package com.example.mobile.orders.presentation.create_order
 
+import com.example.mobile.menu.presentation.MenuAction
+
 sealed interface CreateOrderAction {
 
     data class UpdateRequest(val request: String): CreateOrderAction
@@ -12,8 +14,14 @@ sealed interface CreateOrderAction {
 
     data class UpdatePlace(val place: String): CreateOrderAction
 
+    data class UpdateTime(val time: String): CreateOrderAction
+
     data object MakeOrder: CreateOrderAction
 
     data object MakeWaiterOrder: CreateOrderAction
+
+    data object CloseBottomSheet: CreateOrderAction
+
+    data object OpenBottomSheet: CreateOrderAction
 
 }

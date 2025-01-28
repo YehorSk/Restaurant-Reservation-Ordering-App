@@ -6,6 +6,8 @@ import com.example.mobile.orders.data.remote.dto.OrderMenuItemDto
 import com.example.mobile.orders.data.remote.dto.TableDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 data class OrderUiState(
     val orderItems: List<OrderMenuItemDto>? = null,
@@ -14,7 +16,8 @@ data class OrderUiState(
     val isLoading: Boolean = false,
     val isLoadingPlaces: Boolean = false,
     val tables: List<TableDto>? = null,
-    val places: List<GooglePredictionDto>? = null
+    val places: List<GooglePredictionDto>? = null,
+    val showBottomSheet: Boolean = false,
 )
 
 @Serializable
@@ -37,4 +40,6 @@ data class OrderForm(
     ),
     @SerialName("table_number")
     val selectedTableNumber:Int = 0,
+    @SerialName("selected_time")
+    val selectedTime: String = ""
 )

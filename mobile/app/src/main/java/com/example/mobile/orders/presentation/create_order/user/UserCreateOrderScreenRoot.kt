@@ -38,6 +38,7 @@ import com.example.mobile.core.utils.toString
 import com.example.mobile.orders.data.remote.dto.TableDto
 import com.example.mobile.orders.presentation.OrderForm
 import com.example.mobile.orders.presentation.OrderUiState
+import com.example.mobile.orders.presentation.components.ChooseTimeModal
 import com.example.mobile.orders.presentation.components.DeliveryMap
 import com.example.mobile.orders.presentation.components.NavBar
 import com.example.mobile.orders.presentation.components.OrderAddMore
@@ -92,7 +93,6 @@ fun UserCreateOrderScreenRoot(
         userRole = userRole.toString(),
         onTableNumberUpdate = { viewModel.updateTableNumber(it) }
     )
-
 }
 
 @Composable
@@ -140,7 +140,14 @@ fun UserCreateOrderScreen(
             if(userRole == "user"){
                 OrderOptions(
                     selected = uiState.orderForm.orderType,
-                    onSelectedChange = { type,text -> onAction(CreateOrderAction.UpdateOrderType(type,text)) }
+                    onSelectedChange = { type,text ->
+                        if(type != 3){
+                            onAction(CreateOrderAction.UpdateOrderType(type,text))
+                        }else{
+                            onAction(CreateOrderAction.OpenBottomSheet)
+                        }
+                    },
+                    selectedTime = uiState.orderForm.selectedTime
                 )
             }else{
                 if(uiState.tables !=null){
@@ -170,7 +177,6 @@ fun UserCreateOrderScreen(
                         places = uiState.places,
                         onAddressChange = { address ->
                             onAction(CreateOrderAction.UpdateAddress(address))
-//                                   onAction(CreateOrderAction.UpdatePlace(address))
                         },
                         onInstructionsChange = { instructions ->
                             onAction(
@@ -227,6 +233,19 @@ fun UserCreateOrderScreen(
                     )
                 }
             }
+        }
+        if(uiState.showBottomSheet){
+            ChooseTimeModal(
+                onDismiss = { onAction(CreateOrderAction.CloseBottomSheet) },
+                onOrderTypeSelect = { type,text -> onAction(CreateOrderAction.UpdateOrderType(type,text)) },
+                onTimeSelect = { time ->
+                                    onAction(CreateOrderAction.UpdateTime(time))
+                                    onAction(CreateOrderAction.CloseBottomSheet)
+                                    onAction(CreateOrderAction.UpdateOrderType(uiState.orderForm.orderType,uiState.orderForm.orderText))
+                               },
+                selectedTime = uiState.orderForm.selectedTime,
+                selected = uiState.orderForm.orderType
+            )
         }
     }else{
         LoadingPart()

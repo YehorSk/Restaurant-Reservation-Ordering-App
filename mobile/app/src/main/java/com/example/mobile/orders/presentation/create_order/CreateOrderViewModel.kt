@@ -39,6 +39,21 @@ class CreateOrderViewModel @Inject constructor(
             is CreateOrderAction.UpdateRequest -> updateRequest(action.request)
             is CreateOrderAction.UpdatePlace -> updatePlace(action.place)
             is CreateOrderAction.MakeWaiterOrder -> makeWaiterOrder()
+            CreateOrderAction.CloseBottomSheet -> closeBottomSheet()
+            CreateOrderAction.OpenBottomSheet -> showBottomSheet()
+            is CreateOrderAction.UpdateTime -> updateTime(action.time)
+        }
+    }
+
+    fun showBottomSheet(){
+        _uiState.update {
+            it.copy(showBottomSheet = true)
+        }
+    }
+
+    fun closeBottomSheet(){
+        _uiState.update {
+            it.copy(showBottomSheet = false)
         }
     }
 
@@ -50,6 +65,16 @@ class CreateOrderViewModel @Inject constructor(
                                     orderText = text
                     )
                 )
+        }
+    }
+
+    fun updateTime(time: String){
+        _uiState.update {
+            it.copy(
+                orderForm = it.orderForm.copy(
+                    selectedTime = time
+                )
+            )
         }
     }
 
