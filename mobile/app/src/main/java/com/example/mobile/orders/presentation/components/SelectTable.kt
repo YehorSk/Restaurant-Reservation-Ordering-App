@@ -37,7 +37,7 @@ import com.example.mobile.ui.theme.MobileTheme
 fun SelectTable(
     modifier: Modifier = Modifier,
     tables: List<TableDto>,
-    selectedTable: TableDto,
+    selectedTable: TableDto?,
     onTableChanged: (TableDto) -> Unit
 ){
     var expanded by remember { mutableStateOf(false) }
@@ -57,7 +57,7 @@ fun SelectTable(
                 .fillMaxWidth()
         ) {
             OutlinedTextField(
-                value = selectedTable.number.toString(),
+                value = selectedTable?.number?.toString() ?: "",
                 onValueChange = { onTableChanged },
                 modifier = Modifier
                     .fillMaxWidth()

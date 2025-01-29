@@ -36,6 +36,8 @@ data class OrderEntity(
     val startTime: String,
     @ColumnInfo("end_time")
     val endTime: String,
+    @ColumnInfo("completed_at")
+    val completedAt: String? = null,
 )
 
 fun OrderEntity.toOrderDto(items: List<OrderMenuItemDto>): OrderDto{
@@ -56,6 +58,7 @@ fun OrderEntity.toOrderDto(items: List<OrderMenuItemDto>): OrderDto{
         address = this.address,
         instructions = this.instructions,
         startTime = this.startTime,
-        endTime = this.endTime
+        endTime = this.endTime,
+        completedAt = this.completedAt
     )
 }

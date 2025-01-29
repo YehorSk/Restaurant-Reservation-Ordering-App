@@ -85,7 +85,8 @@ fun OrderItemPreview(){
         orderType = 1,
         code = "F6JKN1",
         startTime = "",
-        endTime = ""
+        endTime = "",
+        completedAt = "2024-12-01T12:34:56"
     )
     MobileTheme {
         OrderListItem(

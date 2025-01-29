@@ -36,7 +36,7 @@ import com.example.mobile.ui.theme.MobileTheme
 fun NavBar(
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit,
-    @StringRes title: Int,
+    @StringRes title: Int = R.string.go_back,
     showGoBack: Boolean = true
 ){
     Row(

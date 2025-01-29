@@ -32,13 +32,7 @@ data class OrderForm(
     val address: String = "",
     val instructions: String = "",
     @SerialName("table_id")
-    val selectedTable: TableDto = TableDto(
-        id = "1",
-        createdAt = "2024-12-22 12:40:32",
-        updatedAt = "2024-12-22 12:40:32",
-        number = "1",
-        capacity = 4
-    ),
+    val selectedTable: TableDto? = null,
     @SerialName("table_number")
     val selectedTableNumber:Int = 0,
     @SerialName("start_time")

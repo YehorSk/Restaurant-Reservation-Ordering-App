@@ -48,6 +48,7 @@
     <string name="time_reservation">Час: %1$s</string>
     <string name="reservation_code">Код бронювання #%1$s</string>
     <string name="search_icon">Іконка пошуку</string>
+    <string name="order_button_place">Створити замовлення</string>
     <string name="order_button_pickup">Замовити самовивіз</string>
     <string name="order_button_delivery">Замовити доставку</string>
     <string name="order_button_reservation">Зробити резервацію</string>
@@ -68,6 +69,7 @@
     <string name="english">English</string>
     <string name="ukrainian">Українська</string>
     <string name="slovak">Slovenčina</string>
+    <string name="german">Deutsch</string>
     <string name="pickup_time">30-45 хв</string>
     <string name="delivery_time">45-55 хв</string>
     <string name="select_date">Вибрати дату</string>

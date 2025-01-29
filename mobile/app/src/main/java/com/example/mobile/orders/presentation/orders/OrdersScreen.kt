@@ -1,6 +1,7 @@
 package com.example.mobile.orders.presentation.orders
 
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +29,8 @@ fun OrdersScreen(
     onGoToOrderDetails: (Int) -> Unit,
     viewModel: OrdersViewModel = hiltViewModel(),
     onGoBack: () -> Unit,
-    showGoBack: Boolean
+    showGoBack: Boolean,
+    @StringRes title: Int = R.string.go_back
 ){
 
     val context = LocalContext.current
@@ -55,7 +57,7 @@ fun OrdersScreen(
         ) {
             NavBar(
                 onGoBack = onGoBack,
-                title = R.string.go_back,
+                title = title,
                 showGoBack = showGoBack
             )
             OrdersDropdownList(

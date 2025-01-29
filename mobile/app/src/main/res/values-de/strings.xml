@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PLATEA</string>
+    <string name="retry">Wiederholen</string>
+    <string name="operation_success">Aktion erfolgreich abgeschlossen!</string>
+    <string name="operation_failed">Bitte versuchen Sie es erneut.</string>
+    <string name="loading">Laden</string>
+    <string name="loading_failed">Laden fehlgeschlagen</string>
+    <string name="UPDATE">Aktualisieren</string>
+    <string name="DELETE">Löschen</string>
+    <string name="Add">Hinzufügen</string>
+    <string name="btn_yes">Ja</string>
+    <string name="btn_no">Nein</string>
+    <string name="delete_confirmation">Dieses Element löschen?</string>
+    <string name="pickup_option">Abholung</string>
+    <string name="delivery_option">Lieferung</string>
+    <string name="reservation_option">Reservierung vornehmen</string>
+    <string name="complete_order_navbar_title">Bestellung abschließen</string>
+    <string name="notes_for_order">Optional: Fügen Sie besondere Hinweise zu Ihrer Bestellung hinzu.</string>
+    <string name="edit_cart">Warenkorb bearbeiten</string>
+    <string name="add_to_cart">Mehr hinzufügen</string>
+    <string name="required_fields">*Erforderliche Felder</string>
+    <string name="delivery_address">123 Hauptstraße, Wohnung 4B</string>
+    <string name="instructions_for_the_courier">Anweisungen für den Kurier</string>
+    <string name="order_preferences">Bestellpräferenzen</string>
+    <string name="go_back">Zurück</string>
+    <string name="delivery_details">Lieferdetails</string>
+    <string name="cancel_reservation">Reservierung stornieren</string>
+    <string name="cancel_order">Bestellung stornieren</string>
+    <string name="repeat_order">Bestellung wiederholen</string>
+    <string name="confirm_order">Bestellung bestätigen</string>
+    <string name="complete_order">Bestellung abschließen</string>
+    <string name="prepare_order">Bestellung vorbereiten</string>
+    <string name="ready_order">Bereit zur Abholung oder Lieferung</string>
+    <string name="party_size">Gruppengröße</string>
+    <string name="your_number">Wie lautet Ihre Nummer?</string>
+    <string name="date">Datum</string>
+    <string name="book">Buchen</string>
+    <string name="go_to_checkout">Zur Kasse gehen € %s</string>
+    <string name="quantity">Menge %s x</string>
+    <string name="price">Preis %s €</string>
+    <string name="search">Suchen</string>
+    <string name="submit_order">Bestellung absenden</string>
+    <string name="table_number">Tischnummer</string>
+    <string name="total">Gesamt</string>
+    <string name="table">Tisch: %1$s</string>
+    <string name="date_reservation">Datum: %1$s</string>
+    <string name="time_reservation">Uhrzeit: %1$s</string>
+    <string name="reservation_code">Reservierung #%1$s</string>
+    <string name="search_icon">Suchsymbol</string>
+    <string name="order_button_place">Bestellung erstellen</string>
+    <string name="order_button_pickup">Abholung bestellen</string>
+    <string name="order_button_delivery">Lieferung bestellen</string>
+    <string name="order_button_reservation">Reservierung vornehmen</string>
+    <string name="confirm_reservation">Reservierung bestätigen</string>
+    <string name="pending_reservation">Ausstehende Reservierung</string>
+    <string name="order">Bestellung #%1$s</string>
+    <string name="cart">Warenkorb</string>
+    <string name="at">um %1$s</string>
+    <string name="platea_restaurant">PLATEA Restaurant</string>
+    <string name="reservation_special_request">Sonderwünsche</string>
+    <string name="type_request_here">Ihre Sonderwünsche…</string>
+    <string name="what_is_your_number">Wie lautet Ihre Nummer?</string>
+    <string name="special_request">Sonderwunsch: %1$s</string>
+    <string name="phone_number">Telefonnummer: %1$s</string>
+    <string name="theme">Thema</string>
+    <string name="language">Sprache</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="english">Englisch</string>
+    <string name="ukrainian">Українська</string>
+    <string name="slovak">Slovenčina</string>
+    <string name="german">Deutsch</string>
+    <string name="pickup_time">30-45 Min.</string>
+    <string name="delivery_time">45-55 Min.</string>
+    <string name="select_date">Datum auswählen</string>
+    <string name="select_time">Uhrzeit auswählen</string>
+    <string name="schedule">Planen</string>
+
+    <!-- Profile Items -->
+    <string name="favorites">Favoriten</string>
+    <string name="reservations">Reservierungen</string>
+    <string name="orders">Bestellungen</string>
+    <string name="order_history">Bestellverlauf</string>
+    <string name="reservation_history">Reservierungsverlauf</string>
+    <string name="logout">Abmelden</string>
+    <string name="hello_user">Hallo, %1$s</string>
+
+    <!-- Errors -->
+    <string name="error_no_internet">Keine Internetverbindung.</string>
+    <string name="error_serialization">Es gab ein Problem bei der Verarbeitung Ihrer Anfrage. Bitte versuchen Sie es später erneut.</string>
+    <string name="error_unauthorized">Sie sind nicht autorisiert. Bitte melden Sie sich erneut an.</string>
+    <string name="error_request_timeout">Die Anfrage ist abgelaufen. Bitte versuchen Sie es erneut.</string>
+    <string name="error_http">Ein HTTP-Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.</string>
+    <string name="error_unknown">Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.</string>
+    <string name="error_incorrect_data">Bitte überprüfen Sie Ihre Daten und versuchen Sie es erneut.</string>
+
+    <!-- Filters -->
+    <string name="filter">Filter: %s</string>
+    <string name="filter_all_orders">Alle Bestellungen</string>
+    <string name="filter_all_reservations">Alle Reservierungen</string>
+    <string name="filter_pending">Ausstehend</string>
+    <string name="filter_confirmed">Bestätigt</string>
+    <string name="filter_preparing">In Vorbereitung</string>
+    <string name="filter_ready">Bereit zur Abholung</string>
+    <string name="filter_completed">Abgeschlossen</string>
+    <string name="filter_cancelled">Storniert</string>
+
+    <!-- Auth Screen-->
+    <string name="hide_password">Passwort verbergen</string>
+    <string name="show_password">Passwort anzeigen</string>
+    <string name="user_email">Benutzer-E-Mail</string>
+    <string name="user_password">Benutzer-Passwort</string>
+    <string name="user_address">Benutzer-Adresse</string>
+    <string name="user_phone">Benutzer-Telefon</string>
+    <string name="forgot_password">Passwort vergessen?</string>
+    <string name="sign_up">Registrieren</string>
+    <string name="log_in">Anmelden</string>
+    <string name="password_confirm">Passwort bestätigen</string>
+    <string name="reset_password">Passwort zurücksetzen</string>
+    <string name="user_name">Benutzername</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Einstellungen</string>
+    <string name="profile">Profil</string>
+    <string name="update_profile">Profil aktualisieren</string>
+
+    <!-- Bottom Bar Items -->
+    <string name="home_item">Startseite</string>
+    <string name="cart_item">Warenkorb</string>
+    <string name="orders_item">Bestellungen</string>
+    <string name="account_item">Konto</string>
+    <string name="reservations_item">Reservierungen</string>
+    <string name="favorites_item">Favoriten</string>
+
+    <!-- Statuses -->
+    <string name="status_pending">Ausstehend</string>
+    <string name="status_confirmed">Bestätigt</string>
+    <string name="status_preparing">In Vorbereitung</string>
+    <string name="status_ready_pickup">Bereit zur Abholung</string>
+    <string name="status_on_the_way">Unterwegs</string>
+    <string name="status_completed">Abgeschlossen</string>
+    <string name="status_cancelled">Storniert</string>
+    <string name="status_rejected">Abgelehnt</string>
+    <string name="status_ready_dinein">Bereit für Vor-Ort-Verzehr</string>
+</resources>

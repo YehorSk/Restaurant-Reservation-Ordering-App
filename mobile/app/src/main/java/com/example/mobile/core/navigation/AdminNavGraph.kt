@@ -21,6 +21,7 @@ import com.example.mobile.orders.presentation.orders.OrdersScreen
 import com.example.mobile.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.example.mobile.reservations.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
+import com.example.mobile.R
 
 @Composable
 fun AdminNavGraph(
@@ -100,7 +101,8 @@ fun AdminNavGraph(
                 onGoBack = {
                     navController.popBackStack()
                 },
-                showGoBack = false
+                showGoBack = false,
+                title = R.string.orders
             )
         }
         composable<AdminScreen.OrderDetails>(
@@ -133,7 +135,8 @@ fun AdminNavGraph(
                 onGoBack = {
                     navController.popBackStack()
                 },
-                showGoBack = false
+                showGoBack = false,
+                title = R.string.reservations
             )
         }
         composable<AdminScreen.ReservationDetails>(

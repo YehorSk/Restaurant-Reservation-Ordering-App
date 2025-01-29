@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.example.mobile.R
 import com.example.mobile.core.presentation.settings.ChangeLanguageScreen
 import com.example.mobile.core.presentation.settings.ChangeThemeScreen
 import com.example.mobile.core.presentation.settings.MainSettingsScreen
@@ -103,7 +104,8 @@ fun ChefNavGraph(
                 onGoBack = {
                     navController.popBackStack()
                 },
-                showGoBack = false
+                showGoBack = false,
+                title = R.string.orders
             )
         }
         composable(

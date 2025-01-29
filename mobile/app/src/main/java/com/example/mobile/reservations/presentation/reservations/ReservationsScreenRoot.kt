@@ -1,6 +1,7 @@
 package com.example.mobile.reservations.presentation.reservations
 
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +29,8 @@ fun ReservationScreenRoot(
     viewModel: ReservationScreenViewModel = hiltViewModel(),
     onGoToReservationDetails: (Int) -> Unit,
     onGoBack: () -> Unit,
-    showGoBack: Boolean
+    showGoBack: Boolean,
+    @StringRes title: Int = R.string.go_back
 ){
 
     val context = LocalContext.current
@@ -54,7 +56,7 @@ fun ReservationScreenRoot(
         ) {
             NavBar(
                 onGoBack = onGoBack,
-                title = R.string.go_back,
+                title = title,
                 showGoBack = showGoBack
             )
             ReservationDropdownList(

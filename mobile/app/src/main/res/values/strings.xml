@@ -47,6 +47,7 @@
     <string name="time_reservation">Time: %1$s</string>
     <string name="reservation_code">Reservation #%1$s</string>
     <string name="search_icon">Search Icon</string>
+    <string name="order_button_place">Place Order</string>
     <string name="order_button_pickup">Order Pickup</string>
     <string name="order_button_delivery">Order Delivery</string>
     <string name="order_button_reservation">Make Reservation</string>
@@ -68,6 +69,7 @@
     <string name="english">English</string>
     <string name="ukrainian">Українська</string>
     <string name="slovak">Slovenčina</string>
+    <string name="german">Deutsch</string>
     <string name="pickup_time">30-45 min</string>
     <string name="delivery_time">45-55 min</string>
     <string name="select_date">Select date</string>

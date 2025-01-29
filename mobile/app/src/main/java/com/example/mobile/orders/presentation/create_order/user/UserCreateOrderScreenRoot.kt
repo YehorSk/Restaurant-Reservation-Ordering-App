@@ -189,7 +189,7 @@ fun UserCreateOrderScreen(
                     Spacer(modifier = Modifier.height(10.dp))
                 }
             }
-            if (isConnected){
+            if (isConnected && uiState.orderForm.selectedTable != null){
                 val checkout = uiState.orderItems.sumOf {
                     it.pivot.price
                 }
@@ -221,10 +221,14 @@ fun UserCreateOrderScreen(
                 ) {
                     Text(
                         text = stringResource(
-                            id = when (uiState.orderForm.orderType) {
-                                0 -> R.string.order_button_pickup
-                                1 -> R.string.order_button_delivery
-                                2 -> R.string.order_button_reservation
+                            id = when (userRole) {
+                                "waiter" -> R.string.order_button_place
+                                "user" -> when (uiState.orderForm.orderType) {
+                                    0 -> R.string.order_button_pickup
+                                    1 -> R.string.order_button_delivery
+                                    2 -> R.string.order_button_reservation
+                                    else -> R.string.order_button_pickup
+                                }
                                 else -> R.string.order_button_pickup
                             }
                         ),

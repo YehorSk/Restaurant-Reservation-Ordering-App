@@ -61,6 +61,15 @@ fun ChangeLanguageScreen(
                     isActive = userLang == "uk"
                 )
             }
+            item{
+                SettingsListItem(
+                    text = R.string.german,
+                    onClick = {
+                        viewModel.updateLanguage("de")
+                    },
+                    isActive = userLang == "de"
+                )
+            }
         }
     }
 }

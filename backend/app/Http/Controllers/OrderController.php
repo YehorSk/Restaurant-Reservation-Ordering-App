@@ -304,6 +304,7 @@ class OrderController extends Controller
             $order = Order::with('orderItems')->find($id);
             if ($order) {
                 $order->update(['status' => 'Completed']);
+                $order->update(['completed_at' => now()]);
                 $order = Order::with('orderItems')->find($id);
                 return $this->success(data: [$order], message: __('messages.order_completed_successfully'));
             }

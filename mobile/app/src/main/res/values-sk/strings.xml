@@ -48,6 +48,7 @@
     <string name="time_reservation">Čas: %1$s</string>
     <string name="reservation_code">Rezervácia #%1$s</string>
     <string name="search_icon">Ikona vyhľadávania</string>
+    <string name="order_button_place">Vytvoriť objednávku</string>
     <string name="order_button_pickup">Objednať osobný odber</string>
     <string name="order_button_delivery">Objednať doručenie</string>
     <string name="order_button_reservation">Vytvoriť rezerváciu</string>
@@ -68,6 +69,7 @@
     <string name="english">English</string>
     <string name="ukrainian">Українська</string>
     <string name="slovak">Slovenčina</string>
+    <string name="german">Deutsch</string>
     <string name="pickup_time">30-45 min</string>
     <string name="delivery_time">45-55 min</string>
     <string name="select_date">Vybrať dátum</string>
