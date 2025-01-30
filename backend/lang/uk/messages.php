@@ -42,6 +42,8 @@
         "authenticated_successfully" => "Аутентифікація успішно виконана",
         "language_changed_successfully" => "Мову успішно змінено",
         "reservation_cancelled_successfully" => "Бронювання успішно скасовано",
+        'reset_link_sent_successfully' => 'Посилання для скидання пароля надіслано на вашу електронну пошту.',
+        'reset_link_failed' => 'Не вдалося надіслати посилання для скидання пароля. Перевірте свою електронну пошту і спробуйте ще раз.',
     ];
 
 ?>

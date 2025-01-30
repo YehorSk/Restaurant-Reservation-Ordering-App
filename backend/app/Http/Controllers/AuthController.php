@@ -130,9 +130,11 @@ class AuthController extends Controller
             $request->only('email')
         );
 
-        return $status === Password::RESET_LINK_SENT
-            ? response()->json(['status' => __($status)], 200)
-            : response()->json(['error' => __($status)], 400);
+        if ($status === Password::RESET_LINK_SENT) {
+            return $this->success([""], __("messages.reset_link_sent_successfully"));
+        }
+
+        return $this->error([], __("messages.reset_link_failed"), 400);
     }
 
 }

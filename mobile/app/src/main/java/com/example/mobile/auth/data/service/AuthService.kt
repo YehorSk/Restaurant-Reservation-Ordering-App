@@ -1,6 +1,7 @@
 package com.example.mobile.auth.data.service
 
 import com.example.mobile.auth.data.remote.model.AuthDataDto
+import com.example.mobile.auth.presentation.forgot.ForgotFormState
 import com.example.mobile.auth.presentation.login.LoginForm
 import com.example.mobile.auth.presentation.register.RegisterForm
 import com.example.mobile.core.data.remote.dto.ResponseDto
@@ -39,6 +40,13 @@ interface AuthService {
     )
     @GET("user")
     suspend fun authenticate() : ResponseDto<AuthDataDto>
+
+    @Headers(
+        "Accept: application/vnd.api+json",
+        "Content-Type: application/vnd.api+json"
+    )
+    @POST("forgot-password")
+    suspend fun forgotPassword(@Body forgotFormState: ForgotFormState) : ResponseDto<String>
 
     @Headers(
         "Accept: application/vnd.api+json",

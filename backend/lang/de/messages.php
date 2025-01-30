@@ -42,6 +42,8 @@
         "authenticated_successfully" => "Erfolgreich authentifiziert",
         "language_changed_successfully" => "Sprache erfolgreich geändert",
         "reservation_cancelled_successfully" => "Reservierung erfolgreich storniert",
+        'reset_link_sent_successfully' => 'Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail gesendet.',
+        'reset_link_failed' => 'Der Link zum Zurücksetzen des Passworts konnte nicht gesendet werden. Bitte überprüfen Sie Ihre E-Mail und versuchen Sie es erneut.',
     ];
 
 

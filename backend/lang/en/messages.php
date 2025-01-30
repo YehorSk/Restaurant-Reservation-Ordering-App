@@ -42,6 +42,8 @@
         "authenticated_successfully" => "Authenticated successfully",
         "language_changed_successfully" => "Language changed successfully",
         "reservation_cancelled_successfully" => "Reservation canceled successfully",
+        'reset_link_sent_successfully' => 'A password reset link has been sent to your email.',
+        'reset_link_failed' => 'We could not send the password reset link. Please check your email and try again.',
     ];
 
 ?>

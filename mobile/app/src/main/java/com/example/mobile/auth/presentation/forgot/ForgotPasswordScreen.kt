@@ -35,21 +35,16 @@ import com.example.mobile.core.utils.toString
 @Composable
 fun ForgotPasswordScreen(
     modifier: Modifier = Modifier,
-    forgotViewModel: ForgotViewModel = hiltViewModel()
+    viewModel: ForgotViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
-    val uiState by forgotViewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    SingleEventEffect(forgotViewModel.sideEffectFlow) { sideEffect ->
+    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
             is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
-        }
-    }
-    LaunchedEffect(uiState.internetError) {
-        if(uiState.internetError){
-            Toast.makeText(context,"No internet connection!",Toast.LENGTH_LONG).show()
         }
     }
     Box(
@@ -68,6 +63,8 @@ fun ForgotPasswordScreen(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .fillMaxWidth(),
+                onValueChange = { viewModel.updateforgotUiState(it) },
+                onUpdateClick = { viewModel.forgotPassword() }
             )
         }
     }
@@ -76,7 +73,9 @@ fun ForgotPasswordScreen(
 @Composable
 fun ForgotBody(
     itemUiState: ForgotState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onValueChange: (ForgotFormState) -> Unit,
+    onUpdateClick: () -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -90,11 +89,12 @@ fun ForgotBody(
             textAlign = TextAlign.Center
         )
         ForgotForm(
-            forgotForm = itemUiState.form
+            forgotForm = itemUiState.form,
+            onValueChange = onValueChange
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = {},
+            onClick = { onUpdateClick() },
             enabled = itemUiState.isEntryValid,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -107,7 +107,7 @@ fun ForgotBody(
 fun ForgotForm(
     modifier: Modifier = Modifier,
     forgotForm: ForgotFormState,
-    onValueChange: (ForgotFormState) -> Unit = {}
+    onValueChange: (ForgotFormState) -> Unit
 ) {
     Column(
         modifier = modifier,

@@ -6,6 +6,7 @@ import com.example.mobile.core.domain.remote.Result
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
+import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.coroutineContext
 
@@ -39,6 +40,7 @@ suspend inline fun <reified T> safeCall(
         Result.Error(error = error)
     } catch (e: Exception) {
         coroutineContext.ensureActive()
+        Timber.d("Error $e")
         val error = AppError.UNKNOWN_ERROR
         onFailure(error)
         Result.Error(error = error)

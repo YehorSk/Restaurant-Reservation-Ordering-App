@@ -6,6 +6,7 @@ data class ForgotState(
     val form: ForgotFormState = ForgotFormState(),
     val isEntryValid: Boolean = false,
     val internetError: Boolean = false,
+    val isLoading: Boolean = false
 )
 
 @Serializable

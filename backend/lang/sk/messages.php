@@ -42,6 +42,8 @@
         "authenticated_successfully" => "Autentifikácia bola úspešná",
         "language_changed_successfully" => "Jazyk bol úspešne zmenený",
         "reservation_cancelled_successfully" => "Rezervácia bola úspešne zrušená",
+        'reset_link_sent_successfully' => 'Odkaz na obnovenie hesla bol odoslaný na váš e-mail.',
+        'reset_link_failed' => 'Nepodarilo sa odoslať odkaz na obnovenie hesla. Skontrolujte svoj e-mail a skúste to znova.',
     ];
 
 ?>

@@ -4,6 +4,7 @@ import androidx.compose.ui.text.intl.Locale
 import com.example.mobile.auth.data.remote.model.AuthDataDto
 import com.example.mobile.auth.data.repository.AuthRepository
 import com.example.mobile.auth.data.service.AuthService
+import com.example.mobile.auth.presentation.forgot.ForgotFormState
 import com.example.mobile.auth.presentation.login.LoginForm
 import com.example.mobile.auth.presentation.register.RegisterForm
 import com.example.mobile.core.data.db.MainRoomDatabase
@@ -76,6 +77,15 @@ class AuthRepositoryImpl @Inject constructor(
                 withContext(Dispatchers.IO) {
                     mainRoomDatabase.clearAllTables()
                 }
+            }
+        )
+    }
+
+    override suspend fun forgotPassword(forgotFormState: ForgotFormState): Result<List<String>, AppError> {
+        Timber.d("Auth forgotPassword")
+        return safeCall<String>(
+            execute = {
+                authService.forgotPassword(forgotFormState)
             }
         )
     }

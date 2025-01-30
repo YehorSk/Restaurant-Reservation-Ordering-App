@@ -25,15 +25,14 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::get('/reset-password/{token}/{email}', 'reset_password')->name('password.reset');
     Route::post('/update-password', 'update_password');
-    Route::post('/update-profile', 'updateProfile');
-
+    Route::post('/forgot-password','forgotPassword');
     Route::get('/users/stats','getStats');
 });
 
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
+    Route::post('/update-profile', [AuthController::class, 'updateProfile']);
     Route::get('/logout',[AuthController::class,'logout']);
-    Route::get('/forgot-password',[AuthController::class,'forgotPassword']);
     Route::get('/user', [AuthController::class, 'authenticate']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('menu', MenuController::class);
