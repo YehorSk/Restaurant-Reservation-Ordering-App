@@ -6,14 +6,15 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.mobile"
+    namespace = "com.yehorsk.platea"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.mobile"
+        applicationId = "com.yehorsk.platea"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -63,6 +64,14 @@ android {
 }
 
 dependencies {
+
+    // Firebase
+
+    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+
+    implementation("com.google.firebase:firebase-analytics")
+    
+    implementation("com.google.firebase:firebase-messaging")
 
     implementation("io.github.joelkanyi:komposecountrycodepicker:1.3.1")
 
