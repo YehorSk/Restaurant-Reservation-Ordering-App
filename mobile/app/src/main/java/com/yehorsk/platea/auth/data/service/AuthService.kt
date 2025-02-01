@@ -53,7 +53,7 @@ interface AuthService {
         "Accept: application/vnd.api+json",
         "Content-Type: application/vnd.api+json"
     )
-    @GET("locale/{locale}")
-    suspend fun setLocale(@Path("locale") lang: String) : ResponseDto<String>
+    @GET("update-language/{language}")
+    suspend fun setLocale(@Path("language") language: String) : ResponseDto<AuthDataDto>
 
 }

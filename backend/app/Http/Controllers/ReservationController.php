@@ -7,12 +7,14 @@ use App\Models\Reservation;
 use App\Models\Table;
 use App\Models\TimeSlot;
 use App\Models\User;
+use App\Traits\FCMNotificationTrait;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
 
+    use FCMNotificationTrait;
     use HttpResponses;
 
     public function getStats($year){
@@ -360,6 +362,11 @@ class ReservationController extends Controller
             $item->update($data);
             $item->table_number = $item->table->number ?? null;
             $item->start_time = $item->timeSlot->start_time ?? null;
+            if($item->client_id != null){
+                $owner = User::find($item->client_id);
+                $token = $owner->devices->pluck('device_token')->first();
+                $this->sendFCMNotification($token, "PLATEA", $this->getReservationStatusMessage($request->input("status"),$item->code,$owner->language));
+            }
             unset($item->table);
             unset($item->timeSlot);
             return $this->success(
@@ -368,6 +375,30 @@ class ReservationController extends Controller
             );
         }
         return $this->error('', __('messages.no_user'), 401);
+    }
+
+    function getReservationStatusMessage($status, $reservationId, $lang = 'en')
+    {
+        switch ($status) {
+            case 'Pending':
+                $statusKey = 'messages.reservation_pending';
+                break;
+
+            case 'Confirmed':
+                $statusKey = 'messages.reservation_confirmed';
+                break;
+
+            case 'Cancelled':
+                $statusKey = 'messages.reservation_cancelled';
+                break;
+
+            default:
+                $statusKey = 'messages.reservation_unknown';
+                break;
+        }
+        $message = __($statusKey, ['reservationId' => $reservationId], $lang);
+
+        return $message;
     }
 
     private function generate_code(): String

@@ -7,6 +7,8 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -69,9 +71,12 @@ dependencies {
 
     implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
 
+    implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
     
     implementation("com.google.firebase:firebase-messaging")
+
+    implementation("com.google.firebase:firebase-perf")
 
     implementation("io.github.joelkanyi:komposecountrycodepicker:1.3.1")
 

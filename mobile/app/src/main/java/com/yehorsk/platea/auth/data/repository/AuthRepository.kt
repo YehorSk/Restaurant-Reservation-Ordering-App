@@ -19,5 +19,5 @@ interface AuthRepository {
 
     suspend fun forgotPassword(forgotFormState: ForgotFormState) : Result<List<String>, AppError>
 
-    suspend fun setLocale(lang: String) : Result<List<String>, AppError>
+    suspend fun setLocale(lang: String) : Result<List<AuthDataDto>, AppError>
 }

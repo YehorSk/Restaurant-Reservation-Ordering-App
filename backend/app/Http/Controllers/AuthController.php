@@ -143,6 +143,16 @@ class AuthController extends Controller
         return $this->error('', 'No user', 401);
     }
 
+    public function updateLanguage($language) {
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $user->language = $language;
+            $user->save();
+            return $this->success(data: [$user], message: __("messages.profile_updated_successfully"));
+        }
+        return $this->error('', 'No user', 401);
+    }
+
     public function forgotPassword(Request $request)
     {
         $request->validate(['email' => 'required|email']);

@@ -48,7 +48,6 @@ class AuthRepositoryImpl @Inject constructor(
             },
             onSuccess = { result ->
                 prefs.saveUser(result.first())
-                setLocale(Locale.current.language)
             }
         )
     }
@@ -95,17 +94,11 @@ class AuthRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun setLocale(lang: String): Result<List<String>, AppError> {
+    override suspend fun setLocale(lang: String): Result<List<AuthDataDto>, AppError> {
         Timber.d("Auth setLocale")
-        return safeCall<String>(
+        return safeCall<AuthDataDto>(
             execute = {
                 authService.setLocale(lang)
-            },
-            onSuccess = { result ->
-                prefs.clearAllTokens()
-                withContext(Dispatchers.IO) {
-                    mainRoomDatabase.clearAllTables()
-                }
             }
         )
     }

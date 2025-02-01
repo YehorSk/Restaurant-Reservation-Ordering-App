@@ -11,7 +11,6 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\Localization;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
@@ -34,6 +33,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
     Route::post('/user', [AuthController::class, 'authenticate']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/update-language/{language}', [AuthController::class, 'updateLanguage']);
     Route::apiResource('menu', MenuController::class);
     Route::apiResource('timeSlots', TimeSlotController::class);
     Route::apiResource('tables', TableController::class);

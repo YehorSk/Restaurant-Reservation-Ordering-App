@@ -44,6 +44,16 @@
         "reservation_cancelled_successfully" => "Rezervácia bola úspešne zrušená",
         'reset_link_sent_successfully' => 'Odkaz na obnovenie hesla bol odoslaný na váš e-mail.',
         'reset_link_failed' => 'Nepodarilo sa odoslať odkaz na obnovenie hesla. Skontrolujte svoj e-mail a skúste to znova.',
+        'pending' => 'Vaša objednávka #:orderId je v čakacom stave. Čoskoro ju potvrdíme.',
+        'confirmed' => 'Vaša objednávka #:orderId bola potvrdená. Pripravujeme ju teraz.',
+        'preparing' => 'Vaša objednávka #:orderId sa pripravuje. Prosím, počkajte ešte chvíľu.',
+        'ready_for_pickup' => 'Vaša objednávka #:orderId je pripravená na vyzdvihnutie alebo odoslaná na doručenie.',
+        'completed' => 'Vaša objednávka #:orderId bola dokončená. Ďakujeme za objednávku!',
+        'unknown' => 'Stav vašej objednávky #:orderId je neznámy. Kontaktujte podporu.',
+        'cancelled' => 'Vaša objednávka #:orderId bola zrušená.',
+        'reservation_pending' => 'Vaša rezervácia #:reservationId je v čakacom stave. Čoskoro ju potvrdíme.',
+        'reservation_confirmed' => 'Vaša rezervácia #:reservationId bola potvrdená.',
+        'reservation_cancelled' => 'Vaša rezervácia #:reservationId bola zrušená.',
     ];
 
 ?>

@@ -94,7 +94,20 @@ class SettingsViewModel @Inject constructor(
 
     fun updateLanguage(value: String){
         viewModelScope.launch{
+            _uiState.update {
+                it.copy(isLoading = true)
+            }
             preferencesRepository.setAppLanguage(value)
+            authRepository.setLocale(value)
+                .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                }
+                .onError { error ->
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                }
+            _uiState.update {
+                it.copy(isLoading = false)
+            }
         }
     }
 

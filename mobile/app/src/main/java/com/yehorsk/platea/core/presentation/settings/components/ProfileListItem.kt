@@ -40,7 +40,7 @@ fun ProfileListItem(
         Text(
             modifier = Modifier
                 .padding(16.dp)
-                .weight(1f),
+                .weight(2f),
             text = stringResource(text),
             fontSize = 18.sp,
         )

@@ -59,20 +59,6 @@ class OrderController extends Controller
         return $this->error('', __('messages.no_user'), 401);
     }
 
-    public function adminUpdateOrder(Request $request, $id){
-        $user = auth('sanctum')->user();
-        if ($user instanceof User) {
-            $item = Order::all()->find($id);
-            $data = $request->validate([
-                "status" => "required",
-            ]);
-            $item->update($data);
-            return $this->success(data: [$item], message: __('messages.order_updated_successfully'));
-        }
-        return $this->error('', __('messages.no_user'), 401);
-    }
-
-
     public function adminDeleteOrder($id){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
@@ -282,7 +268,7 @@ class OrderController extends Controller
                 if($order->client_id != null){
                     $owner = User::find($order->client_id);
                     $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "Hello 2", "Cancelled");
+                    $this->sendFCMNotification($token, "PLATEA", __('messages.cancelled', ['orderId' => $order->code], $owner->language));
                 }
                 return $this->success(data: [$order], message: __('messages.order_canceled_successfully'));
             }
@@ -301,7 +287,7 @@ class OrderController extends Controller
                 if($order->client_id != null){
                     $owner = User::find($order->client_id);
                     $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "Hello 2", "Confirmed");
+                    $this->sendFCMNotification($token, "PLATEA", __('messages.confirmed', ['orderId' => $order->code], $owner->language));
                 }
                 return $this->success(data: [$order], message: __('messages.order_confirmed_successfully'));
             }
@@ -321,7 +307,7 @@ class OrderController extends Controller
                 if($order->client_id != null){
                     $owner = User::find($order->client_id);
                     $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "Hello 2", "Completed");
+                    $this->sendFCMNotification($token, "PLATEA", __('messages.completed', ['orderId' => $order->code], $owner->language));
                 }
                 return $this->success(data: [$order], message: __('messages.order_completed_successfully'));
             }
@@ -340,7 +326,7 @@ class OrderController extends Controller
                 if($order->client_id != null){
                     $owner = User::find($order->client_id);
                     $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "Hello 2", "Preparing");
+                    $this->sendFCMNotification($token, "PLATEA", __('messages.preparing', ['orderId' => $order->code], $owner->language));
                 }
                 return $this->success(data: [$order], message: __('messages.order_marked_as_preparing'));
             }
@@ -359,7 +345,7 @@ class OrderController extends Controller
                 if($order->client_id != null){
                     $owner = User::find($order->client_id);
                     $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "Hello 2", "Ready For Pickup");
+                    $this->sendFCMNotification($token, "PLATEA", __('messages.ready_for_pickup', ['orderId' => $order->code], $owner->language));
                 }
                 return $this->success(data: [$order], message: __('messages.order_ready_for_pickup'));
             }
@@ -367,6 +353,20 @@ class OrderController extends Controller
         }
         return $this->error('', __('messages.no_user'), 401);
     }
+
+    public function adminUpdateOrder(Request $request, $id){
+        $user = auth('sanctum')->user();
+        if ($user instanceof User) {
+            $item = Order::all()->find($id);
+            $data = $request->validate([
+                "status" => "required",
+            ]);
+            $item->update($data);
+            return $this->success(data: [$item], message: __('messages.order_updated_successfully'));
+        }
+        return $this->error('', __('messages.no_user'), 401);
+    }
+
 
     private function generate_code(): String
     {
