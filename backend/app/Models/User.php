@@ -66,6 +66,11 @@ class User extends Authenticatable
         return $this->hasMany(Reservation::class, 'client_id');
     }
 
+    public function devices()
+    {
+        return $this->hasMany(UserDevice::class, 'user_id');
+    }
+
     public function clientOrders()
     {
         return $this->hasMany(Order::class, 'client_id');

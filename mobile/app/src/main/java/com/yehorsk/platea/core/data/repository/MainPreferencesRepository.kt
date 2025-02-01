@@ -20,9 +20,9 @@ class MainPreferencesRepository @Inject constructor(
         val USER_ROLE = stringPreferencesKey("USER_ROLE")
         val USER_PHONE = stringPreferencesKey("USER_PHONE")
         val USER_ADDRESS = stringPreferencesKey("USER_ADDRESS")
-
         val APP_LANGUAGE = stringPreferencesKey("APP_LANGUAGE")
         val APP_THEME = booleanPreferencesKey("APP_THEME")
+        val FCM_TOKEN = stringPreferencesKey("FCM_TOKEN")
     }
 
     val userNameFlow: Flow<String?> = dataStore.data
@@ -42,6 +42,9 @@ class MainPreferencesRepository @Inject constructor(
 
     val jwtTokenFlow: Flow<String?> = dataStore.data
         .map { preferences -> preferences[JWT_TOKEN] }
+
+    val fcmTokenFlow: Flow<String?> = dataStore.data
+        .map { preferences -> preferences[FCM_TOKEN] }
 
     val appLanguageFlow: Flow<String?> = dataStore.data.map { preferences ->
         preferences[APP_LANGUAGE]

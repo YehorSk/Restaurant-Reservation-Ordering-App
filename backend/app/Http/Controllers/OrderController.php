@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\User;
+use App\Traits\FCMNotificationTrait;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
@@ -11,6 +12,7 @@ use Illuminate\Validation\Validator;
 class OrderController extends Controller
 {
     use HttpResponses;
+    use FCMNotificationTrait;
 
     public function getStats($year){
         $user = auth('sanctum')->user();
@@ -277,6 +279,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Cancelled']);
                 $order = Order::with('orderItems')->find($id);
+                if($order->client_id != null){
+                    $owner = User::find($order->client_id);
+                    $token = $owner->devices->pluck('device_token')->first();
+                    $this->sendFCMNotification($token, "Hello 2", "Cancelled");
+                }
                 return $this->success(data: [$order], message: __('messages.order_canceled_successfully'));
             }
             return $this->error('', __('messages.order_not_found'), 404);
@@ -291,6 +298,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Confirmed']);
                 $order = Order::with('orderItems')->find($id);
+                if($order->client_id != null){
+                    $owner = User::find($order->client_id);
+                    $token = $owner->devices->pluck('device_token')->first();
+                    $this->sendFCMNotification($token, "Hello 2", "Confirmed");
+                }
                 return $this->success(data: [$order], message: __('messages.order_confirmed_successfully'));
             }
             return $this->error('', __('messages.order_not_found'), 404);
@@ -306,6 +318,11 @@ class OrderController extends Controller
                 $order->update(['status' => 'Completed']);
                 $order->update(['completed_at' => now()]);
                 $order = Order::with('orderItems')->find($id);
+                if($order->client_id != null){
+                    $owner = User::find($order->client_id);
+                    $token = $owner->devices->pluck('device_token')->first();
+                    $this->sendFCMNotification($token, "Hello 2", "Completed");
+                }
                 return $this->success(data: [$order], message: __('messages.order_completed_successfully'));
             }
             return $this->error('', __('messages.order_not_found'), 404);
@@ -320,6 +337,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Preparing']);
                 $order = Order::with('orderItems')->find($id);
+                if($order->client_id != null){
+                    $owner = User::find($order->client_id);
+                    $token = $owner->devices->pluck('device_token')->first();
+                    $this->sendFCMNotification($token, "Hello 2", "Preparing");
+                }
                 return $this->success(data: [$order], message: __('messages.order_marked_as_preparing'));
             }
             return $this->error('', __('messages.order_not_found'), 404);
@@ -334,6 +356,11 @@ class OrderController extends Controller
             if ($order) {
                 $order->update(['status' => 'Ready for Pickup']);
                 $order = Order::with('orderItems')->find($id);
+                if($order->client_id != null){
+                    $owner = User::find($order->client_id);
+                    $token = $owner->devices->pluck('device_token')->first();
+                    $this->sendFCMNotification($token, "Hello 2", "Ready For Pickup");
+                }
                 return $this->success(data: [$order], message: __('messages.order_ready_for_pickup'));
             }
             return $this->error('', __('messages.order_not_found'), 404);

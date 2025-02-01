@@ -6,6 +6,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-curl": "*",
+        "google/apiclient": "^2.18",
+        "google/auth": "^1.45",
+        "kreait/laravel-firebase": "^5.10",
         "laravel-lang/lang": "^15.11",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",

@@ -34,6 +34,14 @@ class AuthController extends Controller
         $user = $request->user();
         $token = $request->bearerToken();
 
+        $user->devices()->updateOrCreate(
+            ['device_id' => $request->device_id],
+            [
+                'device_token' => $request->fcm_token,
+                'device_type' => $request->device_type,
+            ]
+        );
+
         return $this->success(data: [[
             'user' => [
                 'name' => $user->name,
@@ -58,6 +66,14 @@ class AuthController extends Controller
 
         $user = User::where('email',$request->email)->first();
 
+        $user->devices()->updateOrCreate(
+            ['device_id' => $request->device_id],
+            [
+                'device_token' => $request->fcm_token,
+                'device_type' => $request->device_type,
+            ]
+        );
+
         return $this->success(data: [[
             'user' => $user,
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken,
@@ -70,6 +86,11 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+        ]);
+        $user->devices()->create([
+            'device_token' => $request->fcm_token,
+            'device_id' => $request->device_id,
+            'device_type' => $request->device_type,
         ]);
         return $this->success(data: [[
             'user' => $user,

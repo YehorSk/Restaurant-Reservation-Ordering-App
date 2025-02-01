@@ -2,6 +2,7 @@ package com.yehorsk.platea.auth.data.service
 
 import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
 import com.yehorsk.platea.auth.presentation.forgot.ForgotFormState
+import com.yehorsk.platea.auth.presentation.login.AuthState
 import com.yehorsk.platea.auth.presentation.login.LoginForm
 import com.yehorsk.platea.auth.presentation.register.RegisterForm
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
@@ -38,8 +39,8 @@ interface AuthService {
         "Accept: application/vnd.api+json",
         "Content-Type: application/vnd.api+json"
     )
-    @GET("user")
-    suspend fun authenticate() : ResponseDto<AuthDataDto>
+    @POST("user")
+    suspend fun authenticate(@Body authState: AuthState) : ResponseDto<AuthDataDto>
 
     @Headers(
         "Accept: application/vnd.api+json",

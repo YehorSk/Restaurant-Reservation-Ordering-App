@@ -32,8 +32,7 @@ Route::controller(AuthController::class)->group(function () {
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
-    Route::get('/logout',[AuthController::class,'logout']);
-    Route::get('/user', [AuthController::class, 'authenticate']);
+    Route::post('/user', [AuthController::class, 'authenticate']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::apiResource('menu', MenuController::class);
     Route::apiResource('timeSlots', TimeSlotController::class);

@@ -24,6 +24,7 @@ data class UserDto(
     val message: String? = "",
     val role: String? = "",
     val address: String? = "",
+    val language: String? = "",
     val phone: String? = ""
 )
 

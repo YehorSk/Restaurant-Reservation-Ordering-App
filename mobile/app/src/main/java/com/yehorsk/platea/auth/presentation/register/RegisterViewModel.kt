@@ -1,6 +1,11 @@
 package com.yehorsk.platea.auth.presentation.register
 
+import android.app.Application
+import android.content.Context
+import android.provider.Settings
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.yehorsk.platea.auth.data.repository.AuthRepository
 import com.yehorsk.platea.auth.presentation.BaseAuthViewModel
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
@@ -9,13 +14,16 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.Utility
 import com.yehorsk.platea.core.utils.cleanError
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,7 +32,8 @@ class RegisterViewModel @Inject constructor(
     authRepository: AuthRepository,
     preferencesRepository: MainPreferencesRepository,
     networkConnectivityObserver: ConnectivityObserver,
-): BaseAuthViewModel(authRepository, preferencesRepository, networkConnectivityObserver) {
+    @ApplicationContext context: Context
+): BaseAuthViewModel(authRepository, preferencesRepository, networkConnectivityObserver, context) {
 
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState.asStateFlow()
@@ -47,6 +56,17 @@ class RegisterViewModel @Inject constructor(
     fun register() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
+            val fcmToken = Firebase.messaging.token.await()
+            val deviceId = Utility.getDeviceId(context)
+            val deviceType = "android"
+            _uiState.update { state ->
+                val updatedRegisterForm = state.registerForm.copy(
+                    fcmToken = fcmToken,
+                    deviceId = deviceId,
+                    deviceType = deviceType
+                )
+                state.copy(registerForm = updatedRegisterForm)
+            }
             authRepository.register(registerForm = uiState.value.registerForm)
                 .onSuccess { data, _ ->
                 Timber.tag("Authorized").v(data.toString())

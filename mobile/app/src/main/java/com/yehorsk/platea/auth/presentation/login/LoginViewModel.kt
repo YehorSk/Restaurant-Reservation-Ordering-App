@@ -1,6 +1,9 @@
 package com.yehorsk.platea.auth.presentation.login
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.yehorsk.platea.auth.data.repository.AuthRepository
 import com.yehorsk.platea.auth.presentation.BaseAuthViewModel
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
@@ -9,7 +12,9 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.Utility
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,7 +32,8 @@ class LoginViewModel @Inject constructor(
     authRepository: AuthRepository,
     preferencesRepository: MainPreferencesRepository,
     networkConnectivityObserver: ConnectivityObserver,
-): BaseAuthViewModel(authRepository, preferencesRepository, networkConnectivityObserver) {
+    @ApplicationContext context: Context
+): BaseAuthViewModel(authRepository, preferencesRepository, networkConnectivityObserver, context) {
 
     private val _uiState = MutableStateFlow(LoginState())
     val uiState: StateFlow<LoginState> = _uiState.asStateFlow()
@@ -39,12 +46,10 @@ class LoginViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Main){
-            isNetwork.collect{ available ->
-                if (available == true && userToken.toString().isNotEmpty()){
-                    authenticate()
-                }else{
-                    checkIfLoggedIn()
-                }
+            if (userToken.toString().isNotEmpty()){
+                authenticate()
+            }else{
+                checkIfLoggedIn()
             }
         }
     }
@@ -79,8 +84,15 @@ class LoginViewModel @Inject constructor(
     private fun authenticate() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-
-            authRepository.authenticate()
+            val fcmToken = Firebase.messaging.token.await()
+            val deviceId = Utility.getDeviceId(context)
+            val deviceType = "android"
+            val authState = AuthState(
+                fcmToken = fcmToken,
+                deviceId = deviceId,
+                deviceType = deviceType
+            )
+            authRepository.authenticate(authState)
                 .onSuccess { data, _ ->
                 preferencesRepository.saveUser(data.first())
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
@@ -102,7 +114,17 @@ class LoginViewModel @Inject constructor(
     fun login() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-
+            val fcmToken = Firebase.messaging.token.await()
+            val deviceId = Utility.getDeviceId(context)
+            val deviceType = "android"
+            _uiState.update { state ->
+                val updatedLoginForm = state.loginForm.copy(
+                    fcmToken = fcmToken,
+                    deviceId = deviceId,
+                    deviceType = deviceType
+                )
+                state.copy(loginForm = updatedLoginForm)
+            }
             val result = authRepository.login(loginForm = uiState.value.loginForm)
 
             result.onSuccess { data, message ->

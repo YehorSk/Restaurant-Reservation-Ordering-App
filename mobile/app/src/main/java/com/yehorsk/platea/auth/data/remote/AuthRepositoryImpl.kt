@@ -1,10 +1,14 @@
 package com.yehorsk.platea.auth.data.remote
 
+import android.provider.Settings
 import androidx.compose.ui.text.intl.Locale
+import com.google.firebase.Firebase
+import com.google.firebase.messaging.messaging
 import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
 import com.yehorsk.platea.auth.data.repository.AuthRepository
 import com.yehorsk.platea.auth.data.service.AuthService
 import com.yehorsk.platea.auth.presentation.forgot.ForgotFormState
+import com.yehorsk.platea.auth.presentation.login.AuthState
 import com.yehorsk.platea.auth.presentation.login.LoginForm
 import com.yehorsk.platea.auth.presentation.register.RegisterForm
 import com.yehorsk.platea.core.data.db.MainRoomDatabase
@@ -13,6 +17,7 @@ import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -48,11 +53,11 @@ class AuthRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun authenticate(): Result<List<AuthDataDto>, AppError> {
+    override suspend fun authenticate(authState: AuthState): Result<List<AuthDataDto>, AppError> {
         Timber.d("Auth authenticate")
         return safeCall<AuthDataDto>(
             execute = {
-                authService.authenticate()
+                authService.authenticate(authState)
             },
             onSuccess = { result ->
                 prefs.saveUser(result.first())

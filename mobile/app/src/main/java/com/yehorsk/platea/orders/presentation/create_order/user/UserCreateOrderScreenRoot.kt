@@ -189,7 +189,7 @@ fun UserCreateOrderScreen(
                     Spacer(modifier = Modifier.height(10.dp))
                 }
             }
-            if (isConnected && uiState.orderForm.selectedTable != null){
+            if (isConnected){
                 val checkout = uiState.orderItems.sumOf {
                     it.pivot.price
                 }
