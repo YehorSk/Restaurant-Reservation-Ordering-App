@@ -6,6 +6,7 @@ import com.yehorsk.platea.orders.data.remote.dto.OrderDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.presentation.OrderForm
+import com.yehorsk.platea.orders.presentation.order_details.Status
 
 interface OrderRepository {
 
@@ -27,13 +28,6 @@ interface OrderRepository {
 
     suspend fun getTables() : Result<List<TableDto>, AppError>
 
-    suspend fun markOrderAsCancelled(id: String) : Result<List<OrderDto>, AppError>
+    suspend fun updateOrderStatus(id: String, status: Status) : Result<List<OrderDto>, AppError>
 
-    suspend fun markOrderAsCompleted(id: String) : Result<List<OrderDto>, AppError>
-
-    suspend fun markOrderAsConfirmed(id: String) : Result<List<OrderDto>, AppError>
-
-    suspend fun markOrderAsPreparing(id: String) : Result<List<OrderDto>, AppError>
-
-    suspend fun markOrderAsReadyForPickup(id: String) : Result<List<OrderDto>, AppError>
 }

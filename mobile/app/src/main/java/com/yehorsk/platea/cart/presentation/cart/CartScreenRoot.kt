@@ -96,65 +96,52 @@ fun CartScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ){
-            if(cartItems.isNotEmpty()){
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    items(
-                        items = cartItems,
-                        key = {it.pivot.id}
-                    ) { item ->
-                        CartItem(
-                            cartItem = item,
-                            onClick = { cartItem ->
-                                onAction(CartAction.SetItem(cartItem))
-                                onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
-                                onAction(CartAction.ShowBottomSheet)
-                            },
-                        )
-                        HorizontalDivider()
-                    }
-                    item {
-                        if(cartItems.isNotEmpty()){
-                            Spacer(modifier = Modifier.height(60.dp))
-                        }
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(
+                    items = cartItems,
+                    key = {it.pivot.id}
+                ) { item ->
+                    CartItem(
+                        cartItem = item,
+                        onClick = { cartItem ->
+                            onAction(CartAction.SetItem(cartItem))
+                            onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
+                            onAction(CartAction.ShowBottomSheet)
+                        },
+                    )
+                    HorizontalDivider()
+                }
+                item {
+                    if(cartItems.isNotEmpty()){
+                        Spacer(modifier = Modifier.height(60.dp))
                     }
                 }
-                val checkout = cartItems.sumOf {
-                    it.pivot.price
-                }
-                if(isConnected){
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
-                            .align(Alignment.BottomCenter),
-                        onClick = {
-                            onGoToCheckoutClick()
-                        }
-                    ) {
-                        Text(
-                            modifier = Modifier.padding(8.dp),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
-                        )
-                    }
-                }
-            }else{
-                Column(
+            }
+            val checkout = cartItems.sumOf {
+                it.pivot.price
+            }
+            if(cartItems.isNotEmpty() && isConnected){
+                Button(
                     modifier = Modifier
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
+                        .align(Alignment.BottomCenter),
+                    onClick = {
+                        onGoToCheckoutClick()
+                    }
                 ) {
-                    Image(
-                        painterResource(R.drawable.empty_cart),
-                        contentDescription = ""
+                    Text(
+                        modifier = Modifier.padding(8.dp),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
                     )
                 }
             }
+
         }
     }
 

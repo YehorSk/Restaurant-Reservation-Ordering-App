@@ -163,7 +163,7 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.ConfirmOrder((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetConfirmedStatus((data.order.id))) },
                             text = R.string.confirm_order,
                             enabled = data.order.status != "Confirmed"
                         )
@@ -175,7 +175,7 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.PrepareOrder((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetPreparingStatus((data.order.id))) },
                             text = R.string.prepare_order,
                             enabled = data.order.status != "Preparing"
                         )
@@ -187,7 +187,7 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.CompleteOrder((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetCompletedStatus((data.order.id))) },
                             text = R.string.complete_order,
                             enabled = data.order.status != "Completed"
                         )
@@ -199,7 +199,7 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.ReadyForPickupOrder((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetReadyForPickupStatus((data.order.id))) },
                             text = R.string.ready_order,
                             enabled = data.order.status != "Ready for Pickup"
                         )
@@ -211,7 +211,7 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.WaiterCancelOrder((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetCancelledStatus((data.order.id))) },
                             text = R.string.cancel_order,
                             enabled = data.order.status != "Cancelled"
                         )

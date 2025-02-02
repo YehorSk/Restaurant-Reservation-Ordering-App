@@ -15,6 +15,7 @@ import com.yehorsk.platea.orders.data.remote.dto.toOrderMenuItemEntity
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.domain.service.OrderService
 import com.yehorsk.platea.orders.presentation.OrderForm
+import com.yehorsk.platea.orders.presentation.order_details.Status
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -174,71 +175,11 @@ class OrderRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun markOrderAsCancelled(id: String): Result<List<OrderDto>, AppError> {
-        Timber.d("Order markOrderAsCancelled $id")
-        return safeCall<OrderDto>(
-            execute = {
-                orderService.markOrderAsCancelled(id)
-            },
-            onSuccess = { data ->
-                orderDao.insertOrder(data.first().toOrderEntity())
-                orderDao.insertOrderItems(data.first().orderItems.map {
-                    it.toOrderMenuItemEntity()
-                })
-            }
-        )
-    }
-
-    override suspend fun markOrderAsCompleted(id: String): Result<List<OrderDto>, AppError> {
+    override suspend fun updateOrderStatus(id: String, status: Status): Result<List<OrderDto>, AppError> {
         Timber.d("Order markOrderAsCompleted $id")
         return safeCall<OrderDto>(
             execute = {
-                orderService.markOrderAsCompleted(id)
-            },
-            onSuccess = { data ->
-                orderDao.insertOrder(data.first().toOrderEntity())
-                orderDao.insertOrderItems(data.first().orderItems.map {
-                    it.toOrderMenuItemEntity()
-                })
-            }
-        )
-    }
-
-    override suspend fun markOrderAsConfirmed(id: String): Result<List<OrderDto>, AppError> {
-        Timber.d("Order markOrderAsConfirmed $id")
-        return safeCall<OrderDto>(
-            execute = {
-                orderService.markOrderAsConfirmed(id)
-            },
-            onSuccess = { data ->
-                orderDao.insertOrder(data.first().toOrderEntity())
-                orderDao.insertOrderItems(data.first().orderItems.map {
-                    it.toOrderMenuItemEntity()
-                })
-            }
-        )
-    }
-
-    override suspend fun markOrderAsPreparing(id: String): Result<List<OrderDto>, AppError> {
-        Timber.d("Order markOrderAsPreparing $id")
-        return safeCall<OrderDto>(
-            execute = {
-                orderService.markOrderAsPreparing(id)
-            },
-            onSuccess = { data ->
-                orderDao.insertOrder(data.first().toOrderEntity())
-                orderDao.insertOrderItems(data.first().orderItems.map {
-                    it.toOrderMenuItemEntity()
-                })
-            }
-        )
-    }
-
-    override suspend fun markOrderAsReadyForPickup(id: String): Result<List<OrderDto>, AppError> {
-        Timber.d("Order markOrderAsReadyForPickup $id")
-        return safeCall<OrderDto>(
-            execute = {
-                orderService.markOrderAsReadyForPickup(id)
+                orderService.updateOrderStatus(id, status = status)
             },
             onSuccess = { data ->
                 orderDao.insertOrder(data.first().toOrderEntity())

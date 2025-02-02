@@ -5,9 +5,11 @@ import com.yehorsk.platea.orders.data.remote.dto.OrderDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.presentation.OrderForm
+import com.yehorsk.platea.orders.presentation.order_details.Status
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface OrderService {
@@ -39,19 +41,7 @@ interface OrderService {
     @GET("table/waiter/tables")
     suspend fun getTables() : ResponseDto<TableDto>
 
-    @GET("order/waiter/orders/cancel/{id}")
-    suspend fun markOrderAsCancelled(@Path("id") id: String) : ResponseDto<OrderDto>
-
-    @GET("order/waiter/orders/complete/{id}")
-    suspend fun markOrderAsCompleted(@Path("id") id: String) : ResponseDto<OrderDto>
-
-    @GET("order/waiter/orders/confirm/{id}")
-    suspend fun markOrderAsConfirmed(@Path("id") id: String) : ResponseDto<OrderDto>
-
-    @GET("order/chef/orders/prepare/{id}")
-    suspend fun markOrderAsPreparing(@Path("id") id: String) : ResponseDto<OrderDto>
-
-    @GET("order/chef/orders/ready/{id}")
-    suspend fun markOrderAsReadyForPickup(@Path("id") id: String) : ResponseDto<OrderDto>
+    @PUT("order/admin/updateOrder/{id}")
+    suspend fun updateOrderStatus(@Path("id") id: String, @Body status: Status) : ResponseDto<OrderDto>
 
 }

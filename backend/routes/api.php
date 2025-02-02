@@ -59,14 +59,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         Route::delete('/admin/deleteOrder/{id}','adminDeleteOrder');
 
         // Waiter
-        Route::get('/waiter/orders/confirm/{id}','markOrderAsConfirmed');
-        Route::get('/waiter/orders/complete/{id}','markOrderAsCompleted');
-        Route::get('/waiter/orders/cancel/{id}','markOrderAsCancelled');
         Route::post('/waiter/order','makeWaiterOrder');
-
-        // Chef
-        Route::get('/chef/orders/prepare/{id}','markOrderAsPreparing');
-        Route::get('/chef/orders/ready/{id}','markOrderAsReadyForPickup');
 
         //User
         Route::post('/user/pickup','makeUserPickUpOrder');

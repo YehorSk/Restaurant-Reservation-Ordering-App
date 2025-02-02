@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Exception;
 use Google\Auth\ApplicationDefaultCredentials;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;

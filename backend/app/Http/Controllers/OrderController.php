@@ -233,140 +233,58 @@ class OrderController extends Controller
         return $this->error('', __('messages.no_user'), 401);
     }
 
-    public function repeatOrder($id){
-        $user = auth('sanctum')->user();
-        if($user instanceof User){
-            $order = $user->clientOrders()->with('orderItems')->find($id);
-            foreach ($order->orderItems as $item){
-                $exists = $user->menuItems()
-                    ->where('menu_item_id', $item->id)
-                    ->first();
-                if($exists) {
-                    $user->menuItems()->updateExistingPivot($item->id, [
-                        'quantity' => $exists->pivot->quantity + $item->pivot->quantity,
-                        'price' => $exists->pivot->price + $item->pivot->price
-                    ]);
-                }else{
-                    $user->menuItems()->attach($item->id, [
-                        'quantity' => $item->pivot->quantity,
-                        'price' => $item->pivot->price,
-                    ]);
-                }
-            }
-            return $this->success(data: [$order], message: __('messages.items_added_to_cart_successfully'));
-        }
-        return $this->error('', 'No user', 401);
-    }
-
-    public function markOrderAsCancelled($id){
-        $user = auth('sanctum')->user();
-        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
-            $order = Order::with('orderItems')->find($id);
-            if ($order) {
-                $order->update(['status' => 'Cancelled']);
-                $order = Order::with('orderItems')->find($id);
-                if($order->client_id != null){
-                    $owner = User::find($order->client_id);
-                    $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "PLATEA", __('messages.cancelled', ['orderId' => $order->code], $owner->language));
-                }
-                return $this->success(data: [$order], message: __('messages.order_canceled_successfully'));
-            }
-            return $this->error('', __('messages.order_not_found'), 404);
-        }
-        return $this->error('', __('messages.no_user'), 401);
-    }
-
-    public function markOrderAsConfirmed($id){
-        $user = auth('sanctum')->user();
-        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
-            $order = Order::with('orderItems')->find($id);
-            if ($order) {
-                $order->update(['status' => 'Confirmed']);
-                $order = Order::with('orderItems')->find($id);
-                if($order->client_id != null){
-                    $owner = User::find($order->client_id);
-                    $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "PLATEA", __('messages.confirmed', ['orderId' => $order->code], $owner->language));
-                }
-                return $this->success(data: [$order], message: __('messages.order_confirmed_successfully'));
-            }
-            return $this->error('', __('messages.order_not_found'), 404);
-        }
-        return $this->error('', __('messages.no_user'), 401);
-    }
-
-    public function markOrderAsCompleted($id){
-        $user = auth('sanctum')->user();
-        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
-            $order = Order::with('orderItems')->find($id);
-            if ($order) {
-                $order->update(['status' => 'Completed']);
-                $order->update(['completed_at' => now()]);
-                $order = Order::with('orderItems')->find($id);
-                if($order->client_id != null){
-                    $owner = User::find($order->client_id);
-                    $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "PLATEA", __('messages.completed', ['orderId' => $order->code], $owner->language));
-                }
-                return $this->success(data: [$order], message: __('messages.order_completed_successfully'));
-            }
-            return $this->error('', __('messages.order_not_found'), 404);
-        }
-        return $this->error('', __('messages.no_user'), 401);
-    }
-
-    public function markOrderAsPreparing($id){
-        $user = auth('sanctum')->user();
-        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
-            $order = Order::with('orderItems')->find($id);
-            if ($order) {
-                $order->update(['status' => 'Preparing']);
-                $order = Order::with('orderItems')->find($id);
-                if($order->client_id != null){
-                    $owner = User::find($order->client_id);
-                    $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "PLATEA", __('messages.preparing', ['orderId' => $order->code], $owner->language));
-                }
-                return $this->success(data: [$order], message: __('messages.order_marked_as_preparing'));
-            }
-            return $this->error('', __('messages.order_not_found'), 404);
-        }
-        return $this->error('', __('messages.no_user'), 401);
-    }
-
-    public function markOrderAsReadyForPickup($id){
-        $user = auth('sanctum')->user();
-        if($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])){
-            $order = Order::with('orderItems')->find($id);
-            if ($order) {
-                $order->update(['status' => 'Ready for Pickup']);
-                $order = Order::with('orderItems')->find($id);
-                if($order->client_id != null){
-                    $owner = User::find($order->client_id);
-                    $token = $owner->devices->pluck('device_token')->first();
-                    $this->sendFCMNotification($token, "PLATEA", __('messages.ready_for_pickup', ['orderId' => $order->code], $owner->language));
-                }
-                return $this->success(data: [$order], message: __('messages.order_ready_for_pickup'));
-            }
-            return $this->error('', __('messages.order_not_found'), 404);
-        }
-        return $this->error('', __('messages.no_user'), 401);
-    }
-
     public function adminUpdateOrder(Request $request, $id){
         $user = auth('sanctum')->user();
-        if ($user instanceof User) {
-            $item = Order::all()->find($id);
+        if ($user instanceof User && in_array($user->role, ['waiter', 'chef', 'admin'])) {
+            $order = Order::with('orderItems')->find($id);
             $data = $request->validate([
                 "status" => "required",
             ]);
-            $item->update($data);
-            return $this->success(data: [$item], message: __('messages.order_updated_successfully'));
+            if($order->client_id != null){
+                $owner = User::find($order->client_id);
+                $token = $owner->devices->pluck('device_token')->first();
+                $this->sendFCMNotification($token, "PLATEA", $this->getOrderStatusMessage($request->input("status"), $order->code, $owner->language));
+            }
+            $order->update($data);
+            return $this->success(data: [$order], message: __('messages.order_updated_successfully'));
         }
         return $this->error('', __('messages.no_user'), 401);
     }
 
+    function getOrderStatusMessage($status, $orderId, $lang = 'en')
+    {
+        switch ($status) {
+            case 'Pending':
+                $statusKey = 'messages.pending';
+                break;
+
+            case 'Confirmed':
+                $statusKey = 'messages.confirmed';
+                break;
+
+            case 'Cancelled':
+                $statusKey = 'messages.cancelled';
+                break;
+
+            case 'Preparing':
+                $statusKey = 'messages.preparing';
+                break;
+
+            case 'Completed':
+                $statusKey = 'messages.completed';
+                break;
+
+            case 'Ready for Pickup':
+                $statusKey = 'messages.ready_for_pickup';
+                break;
+
+            default:
+                $statusKey = 'messages.order_unknown';
+                break;
+        }
+
+        return __($statusKey, ['orderId' => $orderId], $lang);
+    }
 
     private function generate_code(): String
     {
