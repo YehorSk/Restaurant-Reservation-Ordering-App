@@ -38,7 +38,6 @@ import com.yehorsk.platea.menu.presentation.components.MenuDetailsDialog
 import com.yehorsk.platea.menu.presentation.components.MenuList
 import com.yehorsk.platea.menu.presentation.components.MenuTabBar
 import com.yehorsk.platea.menu.presentation.components.SearchBar
-import com.yehorsk.platea.menu.presentation.menu.viewmodel.MenuScreenViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 

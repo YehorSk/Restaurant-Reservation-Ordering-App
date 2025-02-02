@@ -78,6 +78,7 @@
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>
+    <string name="notifications">Сповіщення</string>
     <string name="reservations">Резервації</string>
     <string name="orders">Замовлення</string>
     <string name="order_history">Історія замовлень</string>

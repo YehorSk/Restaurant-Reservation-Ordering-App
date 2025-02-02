@@ -1,4 +1,4 @@
-package com.yehorsk.platea.menu.presentation.favorites
+package com.yehorsk.platea.notifications.presentation.notifications
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -14,26 +14,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.SideEffect
-import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.utils.EventConsumer
 import com.yehorsk.platea.core.utils.toString
-import com.yehorsk.platea.menu.presentation.components.MenuItem
-import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
+import com.yehorsk.platea.notifications.presentation.NotificationViewModel
+import com.yehorsk.platea.notifications.presentation.components.NotificationItem
 import com.yehorsk.platea.orders.presentation.components.NavBar
 
 @Composable
-fun FavoritesScreen(
+fun NotificationsScreen(
     modifier: Modifier = Modifier,
-    viewModel: MenuScreenViewModel,
+    viewModel: NotificationViewModel = hiltViewModel(),
     onGoBack: () -> Unit,
     showGoBack: Boolean = false
 ){
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val favoriteUiState by viewModel.favoriteUiState.collectAsStateWithLifecycle()
+    val notificationUiState by viewModel.notificationUiState.collectAsStateWithLifecycle()
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
@@ -49,59 +49,27 @@ fun FavoritesScreen(
             .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    ){
         NavBar(
             onGoBack = onGoBack,
-            title = R.string.favorites,
+            title = R.string.notifications,
             showGoBack = showGoBack
         )
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
             items(
-                items = favoriteUiState,
+                items = notificationUiState,
                 key = { it.id }
             ){ item ->
-                MenuItem(
-                    menuItem = item,
+                NotificationItem(
+                    notification = item,
                     onClick = { menuItem ->
-                        viewModel.setMenu(menuItem)
-                        viewModel.updatePrice(menuItem.price.toDouble())
-                        viewModel.setMenuItemId(menuItem.id)
-                        viewModel.setMenuItemFavorite(menuItem.isFavorite)
-                        viewModel.showBottomSheet()
                     }
                 )
                 HorizontalDivider()
             }
 
-        }
-    }
-    if (uiState.showBottomSheet) {
-        uiState.currentMenuItem?.let {
-            MenuItemModal(
-                menuItem = it,
-                onDismiss = {
-                    viewModel.closeBottomSheet()
-                    viewModel.clearForm()
-                },
-                cartForm = uiState.cartForm,
-                onQuantityChange = {viewModel.updateQuantity(it)},
-                onPriceChange = {viewModel.updatePrice(it)},
-                addUserCartItem = {
-                    viewModel.closeBottomSheet()
-                    viewModel.addUserCartItem()
-                },
-                buttonText = R.string.Add,
-                addFavoriteItem = {
-                    viewModel.addUserFavoriteItem()
-                    viewModel.setMenuItemFavorite(true)
-                },
-                deleteFavoriteItem = {
-                    viewModel.deleteUserFavoriteItem()
-                    viewModel.setMenuItemFavorite(false)
-                }
-            )
         }
     }
 }

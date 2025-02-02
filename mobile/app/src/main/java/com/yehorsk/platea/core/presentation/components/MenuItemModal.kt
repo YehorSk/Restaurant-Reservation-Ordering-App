@@ -275,13 +275,17 @@ fun MenuItemModalContent(
                             Text(
                                 fontSize = 30.sp,
                                 text = "-",
-                                color = Color.White
+                                color = Color.White,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
                             )
                         }
                         Text(
                             fontSize = 30.sp,
                             text = cartForm.quantity.toString(),
-                            color = Color.White
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
                         )
                         TextButton(
                             shape = CircleShape,
@@ -294,7 +298,9 @@ fun MenuItemModalContent(
                             Text(
                                 fontSize = 30.sp,
                                 text = "+",
-                                color = Color.White
+                                color = Color.White,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
                             )
                         }
                     }
@@ -315,12 +321,16 @@ fun MenuItemModalContent(
                         Text(
                             fontSize = 20.sp,
                             text = stringResource(buttonText),
-                            color = Color.White
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
                         )
                         Text(
                             fontSize = 20.sp,
                             text = "€"+ formattedPrice(cartForm.price),
-                            color = Color.White
+                            color = Color.White,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
                         )
                     }
                 }

@@ -30,7 +30,7 @@ import com.yehorsk.platea.core.utils.EventConsumer
 import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.menu.presentation.components.MenuItem
 import com.yehorsk.platea.menu.presentation.components.SearchBar
-import com.yehorsk.platea.menu.presentation.menu.viewmodel.MenuScreenViewModel
+import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 
 @Composable
 fun SearchScreen(

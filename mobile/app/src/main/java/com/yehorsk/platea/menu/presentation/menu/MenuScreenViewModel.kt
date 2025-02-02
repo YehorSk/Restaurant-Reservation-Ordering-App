@@ -1,4 +1,4 @@
-package com.yehorsk.platea.menu.presentation.menu.viewmodel
+package com.yehorsk.platea.menu.presentation.menu
 
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl

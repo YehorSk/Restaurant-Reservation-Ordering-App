@@ -20,7 +20,7 @@ import com.yehorsk.platea.core.presentation.settings.ProfileScreen
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenRoot
-import com.yehorsk.platea.menu.presentation.menu.viewmodel.MenuScreenViewModel
+import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.menu.presentation.search.SearchScreen
 import com.yehorsk.platea.orders.presentation.create_order.user.UserCreateOrderScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
@@ -77,6 +77,7 @@ fun WaiterNavGraph(
                         ProfileDestination.Reservations -> navController.navigate(WaiterScreen.Reservations.route)
                         ProfileDestination.Language -> navController.navigate(WaiterScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(WaiterScreen.Theme.route)
+                        ProfileDestination.Notifications -> {}
                     }
                 }
             )

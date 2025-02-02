@@ -7,6 +7,8 @@ import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuEntity
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
+import com.yehorsk.platea.notifications.data.dao.NotificationDao
+import com.yehorsk.platea.notifications.data.db.model.NotificationEntity
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.data.db.model.OrderItemEntity
@@ -20,7 +22,8 @@ import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
         MenuEntity::class,
         OrderEntity::class,
         OrderItemEntity::class,
-        ReservationEntity::class
+        ReservationEntity::class,
+        NotificationEntity::class
     ],
     version = 1
 )
@@ -30,5 +33,6 @@ abstract class MainRoomDatabase : RoomDatabase() {
     abstract val menuDao: MenuDao
     abstract val orderDao: OrderDao
     abstract val reservationDao: ReservationDao
+    abstract val notificationDao: NotificationDao
 
 }

@@ -90,6 +90,8 @@ dependencies {
     // The compose calendar library for Android
     implementation("com.kizitonwose.calendar:compose:2.6.1")
 
+    implementation(libs.kotlinx.metadata.jvm)
+
     //Google Maps
     implementation(libs.maps.compose)
     implementation(libs.places)

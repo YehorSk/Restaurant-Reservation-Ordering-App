@@ -21,8 +21,10 @@ import com.yehorsk.platea.core.presentation.settings.ProfileScreen
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenRoot
-import com.yehorsk.platea.menu.presentation.menu.viewmodel.MenuScreenViewModel
+import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.menu.presentation.search.SearchScreen
+import com.yehorsk.platea.notifications.presentation.NotificationViewModel
+import com.yehorsk.platea.notifications.presentation.notifications.NotificationsScreen
 import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.create_order.user.UserCreateOrderScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
@@ -85,6 +87,7 @@ fun ClientNavGraph(
                         ProfileDestination.Reservations -> navController.navigate(ClientScreen.Reservations.route)
                         ProfileDestination.Language -> navController.navigate(ClientScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(ClientScreen.Theme.route)
+                        ProfileDestination.Notifications -> navController.navigate(ClientScreen.Notifications.route)
                     }
                 }
             )
@@ -99,6 +102,19 @@ fun ClientNavGraph(
                 onGoBack = {
                     navController.popBackStack()
                 }
+            )
+        }
+        composable(
+            route = ClientScreen.Notifications.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
+            NotificationsScreen(
+                modifier = modifier,
+                onGoBack = {
+                    navController.popBackStack()
+                },
+                showGoBack = true
             )
         }
         composable(
@@ -313,6 +329,7 @@ sealed class ClientScreen(val route: String){
     @Serializable
     data class OrderDetails(val id: Int): ClientScreen(route = "ORDER_DETAILS")
     data object Account: ClientScreen(route = "ACCOUNT")
+    data object Notifications: ClientScreen(route = "NOTIFICATIONS")
     data object Reservations: ClientScreen(route = "RESERVATIONS")
     @Serializable
     data class ReservationDetails(val id: Int): ClientScreen(route = "RESERVATION_DETAILS")

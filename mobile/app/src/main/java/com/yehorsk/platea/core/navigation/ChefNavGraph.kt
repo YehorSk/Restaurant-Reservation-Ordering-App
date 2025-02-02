@@ -18,7 +18,7 @@ import com.yehorsk.platea.core.presentation.settings.ProfileDestination
 import com.yehorsk.platea.core.presentation.settings.ProfileScreen
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
-import com.yehorsk.platea.menu.presentation.menu.viewmodel.MenuScreenViewModel
+import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderItemDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
@@ -55,6 +55,7 @@ fun ChefNavGraph(
                         ProfileDestination.Reservations -> {}
                         ProfileDestination.Language -> navController.navigate(ChefScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(ChefScreen.Theme.route)
+                        ProfileDestination.Notifications -> {}
                     }
                 }
             )

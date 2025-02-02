@@ -79,6 +79,7 @@
 
     <!-- Profile Items -->
     <string name="favorites">Favoriten</string>
+    <string name="notifications">Benachrichtigungen</string>
     <string name="reservations">Reservierungen</string>
     <string name="orders">Bestellungen</string>
     <string name="order_history">Bestellverlauf</string>

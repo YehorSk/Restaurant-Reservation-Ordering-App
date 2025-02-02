@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Reservation;
 use App\Models\Table;
@@ -365,6 +366,12 @@ class ReservationController extends Controller
             if($item->client_id != null){
                 $owner = User::find($item->client_id);
                 $token = $owner->devices->pluck('device_token')->first();
+                $notification = new Notification([
+                   'user_id' => $owner->id,
+                   'title' => "PLATEA",
+                    'body' => $this->getReservationStatusMessage($request->input("status"),$item->code,$owner->language)
+                ]);
+                $notification->save();
                 $this->sendFCMNotification($token, "PLATEA", $this->getReservationStatusMessage($request->input("status"),$item->code,$owner->language));
             }
             unset($item->table);

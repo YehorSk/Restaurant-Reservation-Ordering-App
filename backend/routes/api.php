@@ -6,6 +6,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TableController;
@@ -44,6 +45,11 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
     });
 
     Route::get('/menuItems/stats', [MenuItemController::class, 'getStats']);
+
+    Route::prefix("notifications")->controller(NotificationController::class)->group(function () {
+        Route::get('/index','index');
+        Route::put('/read/{id}','read');
+    });
 
     Route::prefix("cart")->controller(CartController::class)->group(function (){
         Route::get('/user','getUserCartItems');

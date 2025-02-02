@@ -59,7 +59,6 @@ class MenuRepositoryImpl @Inject constructor(
     override suspend fun getAllMenus(): Result<List<MenuDto>, AppError> {
         Timber.d("Menu getAllMenus")
         return safeCall<MenuDto>(
-            
             execute = {
                 menuService.getAllMenus()
             },
