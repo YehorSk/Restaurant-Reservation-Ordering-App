@@ -29,6 +29,31 @@ export const UseAuthStore = defineStore("auth",{
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
         },
+        async authenticate() {
+            try {
+                await this.getToken();
+                const response = await axios.post('user', null, {
+                    headers: {
+                        'Accept': 'application/vnd.api+json',
+                        "Content-Type": "application/json",
+                        "Access-Control-Allow-Origin":"*",
+                        'Authorization': `Bearer ${this.token}`
+                    }
+                });
+                this.user = response.data.data[0].user;
+                this.token = response.data.data[0].token;
+                console.log("Auth "+this.token);
+            } catch (error) {
+                console.log(error.response.data.message);
+                if (error.response.status === 422) {
+                    this.errors = error.response.data.message;
+                }
+                if (error.response.status === 401) {
+                    this.user = {};
+                    this.token = null;
+                }
+            }
+        },
         async login(email,password){
             await this.getToken();
             try {

@@ -47,11 +47,11 @@ class MainPreferencesRepository @Inject constructor(
         .map { preferences -> preferences[FCM_TOKEN] }
 
     val appLanguageFlow: Flow<String?> = dataStore.data.map { preferences ->
-        preferences[APP_LANGUAGE]
+        preferences[APP_LANGUAGE] ?: "en"
     }
 
     val appIsDarkThemeFlow: Flow<Boolean?> = dataStore.data.map { preferences ->
-        preferences[APP_THEME]
+        preferences[APP_THEME] ?: false
     }
 
     suspend fun saveUserName(userName: String) {

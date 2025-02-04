@@ -13,7 +13,7 @@ import ResetPasswordView from "@/views/ResetPasswordView.vue";
 
 async function checkAuth(roleCheck, next) {
   const authStore = UseAuthStore();
-  // await authStore.fetchUser();
+  await authStore.authenticate();
   if (roleCheck(authStore.user)) {
     next();
   } else {
