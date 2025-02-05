@@ -4,22 +4,26 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.yehorsk.platea.auth.presentation.login.LoginViewModel
 import com.yehorsk.platea.core.data.remote.UserRoles
 import com.yehorsk.platea.core.presentation.MainScreenGraph
 
 @Composable
-fun MainNavigation(
-    navController: NavHostController
+fun RootNavGraph(
+    navController: NavHostController,
+    loginViewModel: LoginViewModel,
+    startDestination: String
 ) {
 
     NavHost(
         navController = navController,
         route = Graph.ROOT,
-        startDestination = Graph.AUTHENTICATION
+        startDestination = startDestination
     ) {
 
         authNavGraph(
-            navController = navController
+            navController = navController,
+            loginViewModel = loginViewModel
         )
 
         composable(route = Graph.HOME) {

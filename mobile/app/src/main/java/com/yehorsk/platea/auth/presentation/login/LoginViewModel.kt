@@ -46,10 +46,12 @@ class LoginViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Main){
-            if (userToken.toString().isNotEmpty()){
+            if (isNetwork.value){
+                Timber.d("Auth authenticate")
                 authenticate()
             }else{
-                checkIfLoggedIn()
+                Timber.d("Auth authenticateOffline")
+                authenticateOffline()
             }
         }
     }
@@ -63,13 +65,18 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun checkIfLoggedIn(){
+    private fun authenticateOffline(){
         viewModelScope.launch {
+            _uiState.update { it.copy(
+                isLoading = true,
+                isAuthenticating = true
+            )
+            }
             preferencesRepository.jwtTokenFlow.collect { token ->
                 Timber.tag("NetworkCheck ").v("checkIfLoggedIn Token received: $token")
                 val isLoggedIn = token != null
                 _uiState.update { currentState ->
-                    currentState.copy(isLoggedIn = isLoggedIn)
+                    currentState.copy(isLoading = false, isAuthenticating = false, isLoggedIn = isLoggedIn)
                 }
             }
         }
@@ -83,7 +90,11 @@ class LoginViewModel @Inject constructor(
 
     private fun authenticate() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update { it.copy(
+                    isLoading = true,
+                    isAuthenticating = true
+                )
+            }
             val fcmToken = Firebase.messaging.token.await()
             val deviceId = Utility.getDeviceId(context)
             val deviceType = "android"
@@ -94,16 +105,14 @@ class LoginViewModel @Inject constructor(
             )
             authRepository.authenticate(authState)
                 .onSuccess { data, _ ->
-                preferencesRepository.saveUser(data.first())
-                _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
+                _uiState.update { it.copy(isLoading = false,isAuthenticating = false, isLoggedIn = true) }
             }.onError { error ->
                 when (error) {
                     AppError.UNAUTHORIZED -> {
-                        preferencesRepository.clearAllTokens()
-                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
+                        _uiState.update { it.copy(isLoading = false,isAuthenticating = false , isLoggedIn = false) }
                     }
                     else -> {
-                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
+                        _uiState.update { it.copy(isLoading = false,isAuthenticating = false , isLoggedIn = false) }
                     }
                 }
             }
@@ -128,13 +137,11 @@ class LoginViewModel @Inject constructor(
             val result = authRepository.login(loginForm = uiState.value.loginForm)
 
             result.onSuccess { data, message ->
-                preferencesRepository.saveUser(data.first())
                 _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onError { error ->
                 when (error) {
                     AppError.UNAUTHORIZED -> {
-                        preferencesRepository.clearAllTokens()
                         _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                         _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }

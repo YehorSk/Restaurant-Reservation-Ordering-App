@@ -48,6 +48,11 @@ class AuthRepositoryImpl @Inject constructor(
             },
             onSuccess = { result ->
                 prefs.saveUser(result.first())
+            },
+            onFailure = { error ->
+                if (error == AppError.UNAUTHORIZED) {
+                    prefs.clearAllTokens()
+                }
             }
         )
     }

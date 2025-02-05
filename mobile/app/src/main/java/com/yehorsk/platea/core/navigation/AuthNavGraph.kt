@@ -6,11 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.yehorsk.platea.auth.presentation.forgot.ForgotPasswordScreen
 import com.yehorsk.platea.auth.presentation.login.LoginScreen
+import com.yehorsk.platea.auth.presentation.login.LoginViewModel
 import com.yehorsk.platea.auth.presentation.register.RegisterScreen
 import timber.log.Timber
 
 fun NavGraphBuilder.authNavGraph(
-    navController: NavController
+    navController: NavController,
+    loginViewModel: LoginViewModel
 ){
     navigation(
         route = Graph.AUTHENTICATION,
@@ -34,6 +36,7 @@ fun NavGraphBuilder.authNavGraph(
 
         composable(AuthScreen.Login.route) {
             LoginScreen(
+                loginViewModel = loginViewModel,
                 onRegClick = {
                     navController.navigate(AuthScreen.SignUp.route)
                 },

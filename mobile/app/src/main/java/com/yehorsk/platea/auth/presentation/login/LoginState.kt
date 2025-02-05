@@ -8,6 +8,7 @@ data class LoginState(
     val isEntryValid: Boolean = false,
     val isLoggedIn: Boolean = false,
     val isLoading: Boolean = false,
+    val isAuthenticating: Boolean = true,
     val error: String = "",
     val role: String = ""
 )

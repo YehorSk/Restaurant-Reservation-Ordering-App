@@ -54,7 +54,7 @@ import timber.log.Timber
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = hiltViewModel(),
+    loginViewModel: LoginViewModel,
     onSuccessClient: () -> Unit,
     onSuccessWaiter: () -> Unit,
     onSuccessAdmin: () -> Unit,
@@ -108,25 +108,11 @@ fun LoginScreen(
             Timber.tag("LaunchedEffect").v("UI State Is Logged In: ${uiState.isLoggedIn} $role")
             if(uiState.isLoggedIn){
                 when(role.toString()){
-                    "user" -> {
-                        Timber.d("Navigating to home screen from Login User")
-                        onSuccessClient()
-                    }
-                    "waiter" -> {
-                        Timber.d("Navigating to home screen from Login Waiter")
-                        onSuccessWaiter()
-                    }
-                    "admin" -> {
-                        Timber.d("Navigating to home screen from Login Admin")
-                        onSuccessAdmin()
-                    }
-                    "chef" -> {
-                        Timber.d("Navigating to home screen from Login Chef")
-                        onSuccessChef()
-                    }
-                    else -> {
-
-                    }
+                    "user" -> onSuccessClient()
+                    "waiter" -> onSuccessWaiter()
+                    "admin" -> onSuccessAdmin()
+                    "chef" -> onSuccessChef()
+                    else -> {}
                 }
             }
         }
