@@ -46,6 +46,43 @@ trait FCMNotificationTrait
         }
     }
 
+    public function sendFCMNotificationToEveryone($title, $body, $data = []){
+        $fcmurl = "https://fcm.googleapis.com/v1/projects/platea-75c01/messages:send";
+
+        $notification = [
+            'message' => [
+                'topic' => 'all',
+                'notification' => [
+                    'title' => $title,
+                    'body' => $body,
+                ],
+                'data' => !empty($data) ? $data : null,
+            ],
+        ];
+
+        try {
+            $accessToken = $this->getAccessToken();
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $accessToken,
+                'Content-Type' => 'application/json',
+            ])->post($fcmurl, $notification);
+
+            if ($response->failed()) {
+                Log::error('FCM request failed', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
+                return false;
+            }
+
+            return $response->json();
+        } catch (Exception $e) {
+            Log::error('Error sending notification: ' . $e->getMessage());
+            return false;
+        }
+    }
+
     private function getAccessToken(){
         $keyPath = config('services.firebase.key_path');
 

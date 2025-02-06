@@ -61,25 +61,25 @@ fun PickupMap(
                 compassEnabled = false
             )
         }
-        var mapVisible by remember { mutableStateOf(true) }
-        if(mapVisible){
-            GoogleMap(
-                modifier = Modifier
-                    .height(300.dp)
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp)) ,
-                cameraPositionState = cameraPositionState,
-                properties = mapProperties,
-                uiSettings = mapUiSettings,
-                onMapLoaded = onMapLoaded
-            ) {
-                Marker(
-                    state = charmMarkerState,
-                    title = stringResource(R.string.platea_restaurant),
-                    snippet = stringResource(R.string.app_name)
-                )
-            }
-        }
+//        var mapVisible by remember { mutableStateOf(true) }
+//        if(mapVisible){
+//            GoogleMap(
+//                modifier = Modifier
+//                    .height(300.dp)
+//                    .fillMaxWidth()
+//                    .clip(RoundedCornerShape(8.dp)) ,
+//                cameraPositionState = cameraPositionState,
+//                properties = mapProperties,
+//                uiSettings = mapUiSettings,
+//                onMapLoaded = onMapLoaded
+//            ) {
+//                Marker(
+//                    state = charmMarkerState,
+//                    title = stringResource(R.string.platea_restaurant),
+//                    snippet = stringResource(R.string.app_name)
+//                )
+//            }
+//        }
         Text(
             modifier = Modifier
                 .padding(

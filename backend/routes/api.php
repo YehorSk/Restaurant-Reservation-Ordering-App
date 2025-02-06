@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::prefix("notifications")->controller(NotificationController::class)->group(function () {
         Route::get('/index','index');
         Route::put('/read/{id}','read');
+        Route::post('/admin/sendToEveryone', 'sendToAll');
     });
 
     Route::prefix("cart")->controller(CartController::class)->group(function (){

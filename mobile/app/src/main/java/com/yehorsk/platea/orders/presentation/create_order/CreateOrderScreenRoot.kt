@@ -1,4 +1,4 @@
-package com.yehorsk.platea.orders.presentation.create_order.user
+package com.yehorsk.platea.orders.presentation.create_order
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -49,12 +49,10 @@ import com.yehorsk.platea.orders.presentation.components.OrderSpecialRequest
 import com.yehorsk.platea.orders.presentation.components.PickupMap
 import com.yehorsk.platea.orders.presentation.components.SelectTable
 import com.yehorsk.platea.orders.presentation.components.TotalPrice
-import com.yehorsk.platea.orders.presentation.create_order.CreateOrderAction
-import com.yehorsk.platea.orders.presentation.create_order.CreateOrderViewModel
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
-fun UserCreateOrderScreenRoot(
+fun CreateOrderScreenRoot(
     viewModel: CreateOrderViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     onGoToCart: () -> Unit,
@@ -81,7 +79,7 @@ fun UserCreateOrderScreenRoot(
         }
     }
 
-    UserCreateOrderScreen(
+    CreateOrderScreen(
         modifier = modifier,
         uiState = uiState,
         isConnected = isConnected,
@@ -96,7 +94,7 @@ fun UserCreateOrderScreenRoot(
 }
 
 @Composable
-fun UserCreateOrderScreen(
+fun CreateOrderScreen(
     modifier: Modifier = Modifier,
     uiState: OrderUiState,
     isConnected: Boolean,
@@ -261,7 +259,7 @@ fun UserCreateOrderScreen(
 @Composable
 fun CreateOrderScreenPreview(){
     MobileTheme {
-        UserCreateOrderScreenRoot(
+        CreateOrderScreenRoot(
             onGoToMenu = {},
             onGoToCart = {},
             onGoToOrders = {},

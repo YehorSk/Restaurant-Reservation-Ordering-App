@@ -46,13 +46,7 @@ class LoginViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Main){
-            if (isNetwork.value){
-                Timber.d("Auth authenticate")
-                authenticate()
-            }else{
-                Timber.d("Auth authenticateOffline")
-                authenticateOffline()
-            }
+            authenticate()
         }
     }
 
@@ -66,6 +60,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun authenticateOffline(){
+        Timber.d("Auth authenticateOffline")
         viewModelScope.launch {
             _uiState.update { it.copy(
                 isLoading = true,
@@ -110,6 +105,9 @@ class LoginViewModel @Inject constructor(
                 when (error) {
                     AppError.UNAUTHORIZED -> {
                         _uiState.update { it.copy(isLoading = false,isAuthenticating = false , isLoggedIn = false) }
+                    }
+                    AppError.NO_INTERNET -> {
+                        authenticateOffline()
                     }
                     else -> {
                         _uiState.update { it.copy(isLoading = false,isAuthenticating = false , isLoggedIn = false) }

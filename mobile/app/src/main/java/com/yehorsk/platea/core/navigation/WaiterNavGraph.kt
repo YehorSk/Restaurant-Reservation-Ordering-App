@@ -22,7 +22,7 @@ import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenRoot
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.menu.presentation.search.SearchScreen
-import com.yehorsk.platea.orders.presentation.create_order.user.UserCreateOrderScreenRoot
+import com.yehorsk.platea.orders.presentation.create_order.CreateOrderScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
@@ -177,7 +177,7 @@ fun WaiterNavGraph(
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) {
-            UserCreateOrderScreenRoot(
+            CreateOrderScreenRoot(
                 modifier = modifier,
                 onGoToCart = {
                     navController.navigate(WaiterScreen.Cart.route){

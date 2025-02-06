@@ -2,8 +2,6 @@ import axios from "axios";
 import {useStorage} from "@vueuse/core";
 import {defineStore} from "pinia";
 
-axios.defaults.baseURL = "http://localhost/SavchukBachelor/backend/public/api/";
-
 export const UseHomeStore = defineStore("home", {
    state:() => ({
        user: useStorage('user',{}),

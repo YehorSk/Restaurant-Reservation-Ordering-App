@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import androidx.core.content.getSystemService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -19,44 +20,53 @@ class NetworkConnectivityObserver(
 
     private val connectivityManager = context.getSystemService<ConnectivityManager>()!!
 
-    override fun observe(): Flow<Boolean> {
-        return callbackFlow {
-            val callback = object : NetworkCallback() {
+    override val isAvailable: Boolean
+        get() {
+            val caps = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            return isNetworkAvailable(caps)
+        }
 
-                override fun onCapabilitiesChanged(
-                    network: Network,
-                    networkCapabilities: NetworkCapabilities
-                ) {
-                    super.onCapabilitiesChanged(network, networkCapabilities)
-                    val connected = networkCapabilities.hasCapability(
-                        NetworkCapabilities.NET_CAPABILITY_VALIDATED
-                    )
-                    trySend(connected)
-                }
+    private val request = NetworkRequest.Builder()
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+        .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+        .build()
 
-                override fun onUnavailable() {
-                    super.onUnavailable()
-                    trySend(false)
-                }
-
-                override fun onLost(network: Network) {
-                    super.onLost(network)
-                    trySend(false)
-                }
-
-                override fun onAvailable(network: Network) {
-                    super.onAvailable(network)
-                    trySend(true)
-                }
+    override fun observe(): Flow<Boolean> = callbackFlow {
+        val callback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                trySend(true)
             }
 
-            connectivityManager.registerDefaultNetworkCallback(callback)
-
-            awaitClose {
-                connectivityManager.unregisterNetworkCallback(callback)
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                trySend(false)
             }
-        }.distinctUntilChanged()
-            .flowOn(Dispatchers.IO)
+
+            override fun onCapabilitiesChanged(
+                network: Network,
+                networkCapabilities: NetworkCapabilities
+            ) {
+                super.onCapabilitiesChanged(network, networkCapabilities)
+                trySend(isNetworkAvailable(networkCapabilities))
+            }
+
+            override fun onUnavailable() {
+                super.onUnavailable()
+                trySend(false)
+            }
+        }
+
+        connectivityManager.registerNetworkCallback(request, callback)
+        awaitClose { connectivityManager.unregisterNetworkCallback(callback) }
+    }
+
+    private fun isNetworkAvailable(capabilities: NetworkCapabilities?): Boolean {
+        if (capabilities == null) return false
+        return (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || capabilities.hasTransport(
+            NetworkCapabilities.TRANSPORT_WIFI
+        ))
     }
 
 }

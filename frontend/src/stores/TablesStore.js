@@ -2,8 +2,6 @@ import axios from "axios";
 import {defineStore} from "pinia";
 import {useStorage} from "@vueuse/core";
 
-axios.defaults.baseURL = "http://localhost/SavchukBachelor/backend/public/api/";
-
 export const UseTableStore = defineStore("table",{
     state:() => ({
         isLoading: false,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Traits\FCMNotificationTrait;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,7 @@ class NotificationController extends Controller
 {
 
     use HttpResponses;
+    use FCMNotificationTrait;
 
     public function index(){
         $user = auth('sanctum')->user();
@@ -26,6 +28,16 @@ class NotificationController extends Controller
             $notification = $user->notifications()->find($id);
             $notification->update(['read' => true]);
             return $this->success([$notification]);
+        }
+    }
+
+    public function sendToAll(Request $request){
+        $user = auth('sanctum')->user();
+        if($user instanceof User && $user->role == "admin"){
+            $title = $request->input('title');
+            $body = $request->input('body');
+            $this->sendFCMNotificationToEveryone( $title, $body);
+            return $this->success([],"Success");
         }
     }
 
