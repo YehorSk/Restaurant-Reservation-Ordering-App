@@ -45,13 +45,7 @@ open class BaseMenuViewModel @Inject constructor(
             initialValue = listOf()
         )
 
-    val isNetwork = networkConnectivityObserver
-        .observe()
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            false
-        )
+    val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)
 
     protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffect: ReceiveChannel<SideEffect> = _sideEffectChannel
@@ -71,6 +65,11 @@ open class BaseMenuViewModel @Inject constructor(
         )
 
     init {
+        viewModelScope.launch{
+            networkConnectivityObserver.observe().collect { status ->
+                isNetwork.value = status
+            }
+        }
         getMenus()
     }
 

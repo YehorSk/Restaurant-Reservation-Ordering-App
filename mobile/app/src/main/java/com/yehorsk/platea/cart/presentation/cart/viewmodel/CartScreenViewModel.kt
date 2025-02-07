@@ -37,13 +37,7 @@ class CartScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CartScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    val isNetwork = networkConnectivityObserver
-        .observe()
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            false
-        )
+    val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)
 
     val cartItemUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
         .stateIn(
@@ -57,6 +51,11 @@ class CartScreenViewModel @Inject constructor(
         get() = _sideEffectChannel.receiveAsFlow()
 
     init {
+        viewModelScope.launch{
+            networkConnectivityObserver.observe().collect { status ->
+                isNetwork.value = status
+            }
+        }
         Timber.d("Cart items get init")
         getItems()
     }

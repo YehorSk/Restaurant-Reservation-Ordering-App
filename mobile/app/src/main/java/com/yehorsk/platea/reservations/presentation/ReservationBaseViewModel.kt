@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,17 +36,25 @@ open class ReservationBaseViewModel @Inject constructor(
     protected val _uiState = MutableStateFlow(ReservationUiState())
     val uiState = _uiState.asStateFlow()
 
-    val isNetwork = networkConnectivityObserver.observe()
+    val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)
 
     protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
 
+    init {
+        viewModelScope.launch{
+            networkConnectivityObserver.observe().collect { status ->
+                isNetwork.value = status
+            }
+        }
+    }
+
     protected fun setLoadingState(isLoading: Boolean) {
         _uiState.update { it.copy(isLoading = isLoading) }
     }
 
-    public fun clearForm(){
+    fun clearForm(){
         _uiState.update { it.copy(reservationForm = ReservationForm()) }
     }
 }

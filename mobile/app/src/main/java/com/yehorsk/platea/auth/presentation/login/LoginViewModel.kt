@@ -109,6 +109,9 @@ class LoginViewModel @Inject constructor(
                     AppError.NO_INTERNET -> {
                         authenticateOffline()
                     }
+                    AppError.UNKNOWN_ERROR -> {
+                        authenticateOffline()
+                    }
                     else -> {
                         _uiState.update { it.copy(isLoading = false,isAuthenticating = false , isLoggedIn = false) }
                     }

@@ -40,19 +40,18 @@ class NotificationViewModel @Inject constructor(
     protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffect: ReceiveChannel<SideEffect> = _sideEffectChannel
 
-    val isNetwork = networkConnectivityObserver
-        .observe()
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            false
-        )
+    val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)
 
     protected fun setLoadingState(isLoading: Boolean) {
         _uiState.update { it.copy(isLoading = isLoading) }
     }
 
     init {
+        viewModelScope.launch{
+            networkConnectivityObserver.observe().collect { status ->
+                isNetwork.value = status
+            }
+        }
         getNotifications()
     }
 

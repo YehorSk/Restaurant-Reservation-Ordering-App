@@ -39,7 +39,8 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             buildConfigField("String", "BASE_URL", "\"http://192.168.1.18/SavchukBachelor/backend/public/api/\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

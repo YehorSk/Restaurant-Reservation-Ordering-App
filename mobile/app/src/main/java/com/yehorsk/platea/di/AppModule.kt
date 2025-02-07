@@ -71,7 +71,7 @@ object AppModule {
     @Provides
     fun providesClient(authInterceptor: AuthInterceptor): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(authInterceptor)
-        .connectTimeout(30, TimeUnit.SECONDS)
+        .connectTimeout(10, TimeUnit.SECONDS)
         .writeTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .build()
