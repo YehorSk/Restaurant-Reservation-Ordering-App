@@ -1,7 +1,7 @@
 <template>
   <NavComponent/>
   <div class="p-4 sm:ml-64">
-    <h2 class="text-4xl font-extrabold dark:text-white">All Reservation's</h2>
+    <h2 class="text-4xl font-extrabold dark:text-white">All Order's</h2>
     <br>
     <form class="flex items-center max-w-sm mx-auto" @submit.prevent="onSearch">
       <div class="relative w-full">
