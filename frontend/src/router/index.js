@@ -10,6 +10,7 @@ import UsersView from "@/views/UsersView.vue";
 import OrdersView from "@/views/OrdersView.vue";
 import ReservationsView from "@/views/ReservationsView.vue";
 import ResetPasswordView from "@/views/ResetPasswordView.vue";
+import NotificationsView from "@/views/NotificationsView.vue";
 
 async function checkAuth(roleCheck, next) {
   const authStore = UseAuthStore();
@@ -80,6 +81,12 @@ const router = createRouter({
       path: '/reservations',
       name: 'reservations',
       component: ReservationsView,
+      beforeEnter: adminGuard
+    },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: NotificationsView,
       beforeEnter: adminGuard
     },
     {

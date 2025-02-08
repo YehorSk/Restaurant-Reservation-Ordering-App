@@ -43,7 +43,8 @@ suspend inline fun <reified T> safeCall(
             422 -> {
                 AppError.INCORRECT_DATA
             }
-            else -> AppError.HTTP_ERROR
+            in 500..599 -> AppError.SERVER_ERROR
+            else -> AppError.UNKNOWN_ERROR
         }
         onFailure(error)
         Result.Error(error = error)

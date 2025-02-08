@@ -7,5 +7,6 @@ enum class AppError: Error{
     TIMEOUT,
     HTTP_ERROR,
     UNKNOWN_ERROR,
-    INCORRECT_DATA
+    INCORRECT_DATA,
+    SERVER_ERROR
 }

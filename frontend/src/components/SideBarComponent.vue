@@ -80,6 +80,16 @@
           </RouterLink>
         </li>
         <li>
+          <RouterLink to="/notifications" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                 viewBox="0 0 20 20">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2a6 6 0 0 0-6 6v4.5l-1.5 1.5a1 1 0 0 0 .7 1.7h13.6a1 1 0 0 0 .7-1.7L16 12.5V8a6 6 0 0 0-6-6Zm-4 6a4 4 0 1 1 8 0v4.5a1 1 0 0 0 .3.7l1 1H4.7l1-1a1 1 0 0 0 .3-.7V8Zm2 8a2 2 0 1 0 4 0H8Z" />
+            </svg>
+            <span class="flex-1 ms-3 whitespace-nowrap">Notifications</span>
+          </RouterLink>
+        </li>
+        <li>
           <RouterLink @click="authStore.logout()" to="/login" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
               <path d="M7 2a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0V4h6v10H8v-1a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H7ZM4.707 11.707a1 1 0 0 0 1.414-1.414L5.414 10H10a1 1 0 1 0 0-2H5.414l.707-.707a1 1 0 1 0-1.414-1.414l-2.5 2.5a1 1 0 0 0 0 1.414l2.5 2.5Z"/>

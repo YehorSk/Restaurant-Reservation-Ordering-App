@@ -18,7 +18,7 @@ export const UseNotificationStore = defineStore("notifications", {
             this.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.post('admin/sendToEveryone',{
+                const response = await axios.post('notifications/admin/sendToEveryone',{
                         title: title,
                         body: body,
                     },
@@ -31,6 +31,7 @@ export const UseNotificationStore = defineStore("notifications", {
                         }
                     });
                 console.log(response.data.data)
+                this.success = response.data.message;
                 this.users = response.data.data;
             }catch (error) {
                 console.log(error);

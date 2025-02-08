@@ -68,7 +68,9 @@ fun CreateOrderScreenRoot(
 
     LaunchedEffect(Unit) {
         viewModel.getUserOrderItems()
-        viewModel.getTables()
+        if(userRole == "waiter"){
+            viewModel.getTables()
+        }
     }
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->

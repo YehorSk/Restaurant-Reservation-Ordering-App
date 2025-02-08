@@ -1,9 +1,6 @@
 package com.yehorsk.platea.auth.data.remote
 
-import android.provider.Settings
 import androidx.compose.ui.text.intl.Locale
-import com.google.firebase.Firebase
-import com.google.firebase.messaging.messaging
 import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
 import com.yehorsk.platea.auth.data.repository.AuthRepository
 import com.yehorsk.platea.auth.data.service.AuthService
@@ -17,7 +14,6 @@ import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -35,7 +31,7 @@ class AuthRepositoryImpl @Inject constructor(
                 authService.register(registerForm)
             },
             onSuccess = {
-                login(LoginForm(email = registerForm.email, password = registerForm.password))
+
             }
         )
     }

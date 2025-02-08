@@ -94,6 +94,7 @@
     <string name="error_http">Сталася помилка HTTP. Будь ласка, спробуйте пізніше.</string>
     <string name="error_unknown">Сталася невідома помилка. Будь ласка, спробуйте ще раз.</string>
     <string name="error_incorrect_data">Будь ласка, перевірте ваші дані та спробуйте ще раз.</string>
+    <string name="error_server_error_uk">Сталася помилка сервера. Будь ласка, спробуйте пізніше.</string>
 
     <!-- Filters-->
 

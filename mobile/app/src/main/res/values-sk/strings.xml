@@ -94,6 +94,7 @@
     <string name="error_http">Došlo k HTTP chybe. Skúste to prosím neskôr.</string>
     <string name="error_unknown">Došlo k neznámej chybe. Skúste to prosím znova.</string>
     <string name="error_incorrect_data">Skontrolujte svoje údaje a skúste to znova.</string>
+    <string name="error_server_error_sk">Vyskytla sa chyba servera. Skúste to znova neskôr.</string>
 
     <!-- Filters-->
 

@@ -13,6 +13,7 @@ fun AppError.toString(context: Context): String {
         AppError.HTTP_ERROR -> R.string.error_http
         AppError.UNKNOWN_ERROR -> R.string.error_unknown
         AppError.INCORRECT_DATA -> R.string.error_incorrect_data
+        AppError.SERVER_ERROR -> R.string.error_server_error
     }
     return context.getString(resId)
 }
