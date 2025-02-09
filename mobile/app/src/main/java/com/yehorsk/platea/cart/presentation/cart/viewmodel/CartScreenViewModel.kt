@@ -12,6 +12,8 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -140,7 +142,11 @@ class CartScreenViewModel @Inject constructor(
                     }
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
             _uiState.update { it.copy(isLoading = false) }
         }
@@ -164,10 +170,18 @@ class CartScreenViewModel @Inject constructor(
         viewModelScope.launch {
             cartRepositoryImpl.updateUserCartItem(_uiState.value.cartForm)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
         clearForm()
@@ -177,10 +191,18 @@ class CartScreenViewModel @Inject constructor(
         viewModelScope.launch {
             cartRepositoryImpl.deleteUserCartItem(_uiState.value.cartForm)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
         clearForm()

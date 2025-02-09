@@ -1,7 +1,5 @@
 package com.yehorsk.platea.cart.presentation.cart
 
-import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,8 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,7 +33,6 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.formattedPrice
-import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
 import com.yehorsk.platea.orders.presentation.components.NavBar
 
@@ -47,15 +42,12 @@ fun CartScreenRoot(
     viewModel: CartScreenViewModel,
     onGoToCheckoutClick: () -> Unit
 ){
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
         }
     }

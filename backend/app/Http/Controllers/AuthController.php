@@ -92,6 +92,7 @@ class AuthController extends Controller
             'device_id' => $request->device_id,
             'device_type' => $request->device_type,
         ]);
+        $user->sendEmailVerificationNotification();
         return $this->success(data: [[
             'user' => $user,
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken

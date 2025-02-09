@@ -16,5 +16,4 @@ fun <T> EventConsumer(channel: ReceiveChannel<T>, block: (T) -> Unit){
             for(event in channel) blockState(event)
         }
     }
-
 }

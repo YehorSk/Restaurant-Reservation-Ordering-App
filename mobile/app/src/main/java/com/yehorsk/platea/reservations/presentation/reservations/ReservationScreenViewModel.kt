@@ -7,6 +7,8 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
@@ -75,7 +77,11 @@ class ReservationScreenViewModel @Inject constructor(
                     }
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
             _uiState.update { it.copy(isLoading = false) }
         }

@@ -7,6 +7,8 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
@@ -120,7 +122,7 @@ class CreateOrderViewModel @Inject constructor(
     }
 
     fun updatePlace(address: String){
-        getPlaces(address)
+//        getPlaces(address)
     }
 
     fun validateForm(): Boolean{
@@ -159,7 +161,11 @@ class CreateOrderViewModel @Inject constructor(
                     }
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }
@@ -169,11 +175,19 @@ class CreateOrderViewModel @Inject constructor(
         viewModelScope.launch{
             orderRepositoryImpl.makeUserPickUpOrder(uiState.value.orderForm)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }
@@ -183,11 +197,19 @@ class CreateOrderViewModel @Inject constructor(
         viewModelScope.launch{
             orderRepositoryImpl.makeUserDeliveryOrder(uiState.value.orderForm)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }
@@ -197,11 +219,19 @@ class CreateOrderViewModel @Inject constructor(
         viewModelScope.launch{
             orderRepositoryImpl.makeWaiterOrder(uiState.value.orderForm)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }
@@ -218,30 +248,13 @@ class CreateOrderViewModel @Inject constructor(
                     setLoadingState(false)
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                     setLoadingState(false)
                 }
-        }
-    }
-
-    fun getPlaces(address: String){
-        Timber.d("getPlaces")
-        viewModelScope.launch{
-            val response = googlePlacesRepository.getPredictions(address)
-            setPlacesLoadingState(true)
-            when(response){
-                is Result.Success -> {
-                    _uiState.update {
-                        it.copy(places = response.data.predictions)
-                    }
-                    Timber.d("Prediction: " + response.data.predictions)
-                    setPlacesLoadingState(false)
-                }
-                is Result.Error -> {
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(response.error))
-                    setPlacesLoadingState(false)
-                }
-            }
         }
     }
 

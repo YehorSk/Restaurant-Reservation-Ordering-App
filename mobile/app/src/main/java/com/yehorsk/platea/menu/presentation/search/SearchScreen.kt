@@ -1,6 +1,5 @@
 package com.yehorsk.platea.menu.presentation.search
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,12 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.utils.EventConsumer
-import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.menu.presentation.components.MenuItem
 import com.yehorsk.platea.menu.presentation.components.SearchBar
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
@@ -41,12 +38,9 @@ fun SearchScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchUiState = viewModel.searchUiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
         }
     }

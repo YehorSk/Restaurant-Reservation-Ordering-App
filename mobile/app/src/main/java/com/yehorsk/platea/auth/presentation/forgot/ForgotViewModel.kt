@@ -7,6 +7,8 @@ import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -53,10 +55,18 @@ class ForgotViewModel @Inject constructor(
             val result = authRepository.forgotPassword(forgotFormState = uiState.value.form)
 
             result.onSuccess { data, message ->
-                _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(
+                        message = message.toString()
+                    )
+                )
                 _uiState.update { it.copy(isLoading = false) }
             }.onError { error ->
-                _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(
+                        error = error
+                    )
+                )
                 _uiState.update { it.copy(isLoading = false) }
             }
         }

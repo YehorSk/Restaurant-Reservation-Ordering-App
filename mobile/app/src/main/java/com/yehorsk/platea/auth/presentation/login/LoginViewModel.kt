@@ -13,6 +13,8 @@ import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.Utility
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -120,7 +122,6 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
     fun login() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -138,16 +139,23 @@ class LoginViewModel @Inject constructor(
             val result = authRepository.login(loginForm = uiState.value.loginForm)
 
             result.onSuccess { data, message ->
-                _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onError { error ->
                 when (error) {
                     AppError.UNAUTHORIZED -> {
-                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = error
+                            )
+                        )
                         _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }
                     else -> {
-                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = error
+                            )
+                        )
                         _uiState.update { it.copy(isLoading = false) }
                     }
                 }

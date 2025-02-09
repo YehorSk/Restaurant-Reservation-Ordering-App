@@ -6,6 +6,8 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
@@ -99,7 +101,11 @@ class CreateReservationViewModel @Inject constructor(
                     }
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }
@@ -114,12 +120,20 @@ class CreateReservationViewModel @Inject constructor(
         viewModelScope.launch{
             reservationRepositoryImpl.createReservation(uiState.value.reservationForm)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                     clearForm()
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }

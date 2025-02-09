@@ -16,6 +16,8 @@ import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.Utility
 import com.yehorsk.platea.core.utils.cleanError
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -105,7 +107,11 @@ class RegisterViewModel @Inject constructor(
                     }
                     AppError.INCORRECT_DATA -> {
                         _uiState.update { it.copy(isLoading = false) }
-                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = error
+                            )
+                        )
                     }
                     else -> {
                         _uiState.update { it.copy(isLoading = false) }

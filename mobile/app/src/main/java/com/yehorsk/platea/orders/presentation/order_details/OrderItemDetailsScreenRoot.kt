@@ -1,6 +1,5 @@
 package com.yehorsk.platea.orders.presentation.order_details
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +25,6 @@ import coil.compose.AsyncImage
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
 import com.yehorsk.platea.orders.presentation.components.NavBar
 import kotlin.collections.List
@@ -41,13 +38,10 @@ fun OrderItemDetailsScreenRoot(
 ){
 
     val ordersUiState by viewModel.ordersUiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> onGoBack()
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }
     }
     OrderItemDetailsScreen(

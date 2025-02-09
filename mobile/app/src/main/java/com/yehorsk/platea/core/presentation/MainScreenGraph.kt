@@ -6,10 +6,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -22,6 +29,10 @@ import com.yehorsk.platea.core.navigation.AdminNavGraph
 import com.yehorsk.platea.core.navigation.ChefNavGraph
 import com.yehorsk.platea.core.navigation.ClientNavGraph
 import com.yehorsk.platea.core.navigation.WaiterNavGraph
+import com.yehorsk.platea.core.utils.snackbar.ObserveAsEvents
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.toString
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -30,11 +41,38 @@ fun MainScreenGraph(
     userRoles: UserRoles,
     onLoggedOut:() -> Unit
 ){
+    val snackbarHostState = remember {
+        SnackbarHostState()
+    }
+
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
+        scope.launch{
+            snackbarHostState.currentSnackbarData?.dismiss()
+
+            val result = snackbarHostState.showSnackbar(
+                message = if(event.error != null) event.error.toString(context) else event.message!!,
+                actionLabel = event.action?.name,
+                duration = SnackbarDuration.Short
+            )
+            if(result == SnackbarResult.ActionPerformed){
+                event.action?.action?.invoke()
+            }
+        }
+    }
+
     Scaffold(
         bottomBar = {
             BottomBar(
                 navController = navController,
                 userRoles = userRoles
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState
             )
         }
     ) { contentPadding ->

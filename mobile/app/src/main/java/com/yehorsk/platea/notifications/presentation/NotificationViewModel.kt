@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.notifications.data.dao.NotificationDao
 import com.yehorsk.platea.notifications.data.db.model.NotificationEntity
 import com.yehorsk.platea.notifications.data.remote.NotificationRepositoryImpl
@@ -59,7 +61,11 @@ class NotificationViewModel @Inject constructor(
         viewModelScope.launch{
             notificationRepositoryImpl.getAllNotifications()
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }

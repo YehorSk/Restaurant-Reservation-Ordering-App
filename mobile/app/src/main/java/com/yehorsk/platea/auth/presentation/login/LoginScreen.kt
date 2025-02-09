@@ -1,6 +1,5 @@
 package com.yehorsk.platea.auth.presentation.login
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +45,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.core.utils.toString
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -68,8 +66,6 @@ fun LoginScreen(
 
     SingleEventEffect(loginViewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
         }
     }

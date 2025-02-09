@@ -1,6 +1,5 @@
 package com.yehorsk.platea.menu.presentation.menu
 
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,7 +29,6 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.utils.EventConsumer
-import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
 import com.yehorsk.platea.menu.presentation.MenuAction
 import com.yehorsk.platea.menu.presentation.components.MenuDetailsDialog
@@ -66,15 +63,12 @@ fun MenuScreenRoot(
         }
     }
 
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle()
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
         }
     }

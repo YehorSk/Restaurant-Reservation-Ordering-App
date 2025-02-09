@@ -2,10 +2,11 @@ package com.yehorsk.platea.menu.presentation.menu
 
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
-import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuEntity
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
@@ -125,10 +126,18 @@ class MenuScreenViewModel @Inject constructor(
         viewModelScope.launch {
             cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
             setLoadingState(false)
         }
@@ -139,10 +148,18 @@ class MenuScreenViewModel @Inject constructor(
         viewModelScope.launch {
             menuRepositoryImpl.addFavorite(_uiState.value.currentMenuItem!!.id.toString())
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }
@@ -152,10 +169,18 @@ class MenuScreenViewModel @Inject constructor(
         viewModelScope.launch {
             menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenuItem!!.id.toString())
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
         }
     }

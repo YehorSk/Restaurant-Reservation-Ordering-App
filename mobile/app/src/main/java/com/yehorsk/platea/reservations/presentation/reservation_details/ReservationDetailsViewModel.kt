@@ -6,6 +6,8 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
@@ -50,7 +52,11 @@ class ReservationDetailsViewModel @Inject constructor(
             }
             reservationRepositoryImpl.getUserReservationDetails(id)
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
             _uiState.update {
                 it.copy(isLoading = false)
@@ -65,10 +71,18 @@ class ReservationDetailsViewModel @Inject constructor(
             }
             reservationRepositoryImpl.cancelUserReservation(id)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
             _uiState.update {
                 it.copy(isLoading = false)
@@ -83,10 +97,18 @@ class ReservationDetailsViewModel @Inject constructor(
             }
             reservationRepositoryImpl.updateReservation(id, status)
                 .onSuccess { data, message ->
-                    _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            message = message.toString()
+                        )
+                    )
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
             _uiState.update {
                 it.copy(isLoading = false)

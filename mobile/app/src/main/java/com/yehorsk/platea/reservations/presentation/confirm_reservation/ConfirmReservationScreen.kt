@@ -1,6 +1,5 @@
 package com.yehorsk.platea.reservations.presentation.confirm_reservation
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,7 +23,6 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.orders.presentation.components.NavBar
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ConfirmReservationDetails
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ReservationPhoneInput
@@ -41,12 +38,9 @@ fun ConfirmReservationScreen(
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> { goBackToMenu() }
         }
     }

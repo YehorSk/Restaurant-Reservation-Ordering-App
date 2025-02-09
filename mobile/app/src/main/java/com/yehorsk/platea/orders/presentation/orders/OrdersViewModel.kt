@@ -7,6 +7,8 @@ import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
@@ -68,7 +70,11 @@ class OrdersViewModel @Inject constructor(
 
                 }
                 .onError { result ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(result))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = result
+                        )
+                    )
                     setLoadingState(false)
                 }
             setLoadingState(false)

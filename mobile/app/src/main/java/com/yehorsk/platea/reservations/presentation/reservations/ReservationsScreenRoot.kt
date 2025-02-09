@@ -1,6 +1,5 @@
 package com.yehorsk.platea.reservations.presentation.reservations
 
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,7 +17,6 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.ReservationDropdownList
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.orders.presentation.components.NavBar
 import com.yehorsk.platea.reservations.presentation.reservations.components.ReservationsList
 
@@ -40,8 +38,6 @@ fun ReservationScreenRoot(
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
         }
     }

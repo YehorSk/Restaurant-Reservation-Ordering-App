@@ -6,6 +6,8 @@ import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
@@ -88,7 +90,11 @@ open class BaseMenuViewModel @Inject constructor(
             setLoadingState(true)
             menuRepositoryImpl.getAllMenus()
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                 }
             setLoadingState(false)
         }

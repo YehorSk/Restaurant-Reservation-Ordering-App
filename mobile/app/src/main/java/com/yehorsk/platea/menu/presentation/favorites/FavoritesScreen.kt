@@ -19,7 +19,6 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.utils.EventConsumer
-import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.menu.presentation.components.MenuItem
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.orders.presentation.components.NavBar
@@ -31,14 +30,11 @@ fun FavoritesScreen(
     onGoBack: () -> Unit,
     showGoBack: Boolean = false
 ){
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val favoriteUiState by viewModel.favoriteUiState.collectAsStateWithLifecycle()
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
         }
     }

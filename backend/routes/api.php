@@ -11,10 +11,13 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
+
+Route::get('/email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify');
 
 //Public routes
 Route::controller(AuthController::class)->group(function () {

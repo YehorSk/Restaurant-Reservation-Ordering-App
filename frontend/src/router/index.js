@@ -11,6 +11,7 @@ import OrdersView from "@/views/OrdersView.vue";
 import ReservationsView from "@/views/ReservationsView.vue";
 import ResetPasswordView from "@/views/ResetPasswordView.vue";
 import NotificationsView from "@/views/NotificationsView.vue";
+import NotFoundView from "@/views/NotFoundView.vue";
 
 async function checkAuth(roleCheck, next) {
   const authStore = UseAuthStore();
@@ -93,6 +94,11 @@ const router = createRouter({
       path: '/reset-password/:token',
       name: 'reset-password',
       component: ResetPasswordView
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFoundView
     },
   ]
 })

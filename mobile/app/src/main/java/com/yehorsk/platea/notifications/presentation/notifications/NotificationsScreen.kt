@@ -1,6 +1,5 @@
 package com.yehorsk.platea.notifications.presentation.notifications
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,13 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.utils.EventConsumer
-import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.notifications.presentation.NotificationViewModel
 import com.yehorsk.platea.notifications.presentation.components.NotificationItem
 import com.yehorsk.platea.orders.presentation.components.NavBar
@@ -31,14 +28,11 @@ fun NotificationsScreen(
     onGoBack: () -> Unit,
     showGoBack: Boolean = false
 ){
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val notificationUiState by viewModel.notificationUiState.collectAsStateWithLifecycle()
 
     EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
         }
     }
