@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.SideEffect
@@ -26,7 +27,7 @@ import com.yehorsk.platea.orders.presentation.components.NavBar
 @Composable
 fun FavoritesScreen(
     modifier: Modifier = Modifier,
-    viewModel: MenuScreenViewModel,
+    viewModel: MenuScreenViewModel = hiltViewModel(),
     onGoBack: () -> Unit,
     showGoBack: Boolean = false
 ){

@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ahmadhamwi.tabsync_compose.lazyListTabSync
 import com.yehorsk.platea.R
@@ -44,7 +45,7 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 @Composable
 fun MenuScreenRoot(
     modifier: Modifier = Modifier,
-    viewModel: MenuScreenViewModel,
+    viewModel: MenuScreenViewModel = hiltViewModel(),
     onSearchClicked: () -> Unit,
     onCreateReservationClicked: () -> Unit,
     isUser: Boolean

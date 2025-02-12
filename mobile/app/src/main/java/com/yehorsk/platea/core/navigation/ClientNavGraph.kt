@@ -42,9 +42,9 @@ fun ClientNavGraph(
     modifier: Modifier,
     onLoggedOut: () -> Unit
 ){
-    val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
+//    val cartViewModel: CartScreenViewModel = hiltViewModel()
+//    val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
     val createReservationViewModel: CreateReservationViewModel = hiltViewModel()
-    val cartViewModel: CartScreenViewModel = hiltViewModel()
     val settingsViewModel: SettingsViewModel = hiltViewModel()
 
     NavHost(
@@ -65,7 +65,6 @@ fun ClientNavGraph(
                 onCreateReservationClicked = {
                     navController.navigate(ClientScreen.CreateReservation(false))
                 },
-                viewModel = menuScreenViewModel,
                 isUser = true
             )
         }
@@ -268,7 +267,6 @@ fun ClientNavGraph(
         ) {
             FavoritesScreen(
                 modifier = modifier,
-                viewModel = menuScreenViewModel,
                 onGoBack = { navController.popBackStack() }
             )
         }
@@ -279,7 +277,6 @@ fun ClientNavGraph(
             ) {
             CartScreenRoot(
                 modifier = modifier,
-                viewModel = cartViewModel,
                 onGoToCheckoutClick = { navController.navigate(ClientScreen.CreateOrder.route) }
             )
         }
@@ -309,8 +306,7 @@ fun ClientNavGraph(
                             inclusive = true
                         }
                     }
-                },
-                viewModel = menuScreenViewModel
+                }
             )
         }
     }

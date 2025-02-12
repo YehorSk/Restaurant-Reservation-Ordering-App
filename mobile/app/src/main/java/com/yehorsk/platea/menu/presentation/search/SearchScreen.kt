@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.utils.EventConsumer
@@ -33,7 +34,7 @@ import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 fun SearchScreen(
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit,
-    viewModel: MenuScreenViewModel
+    viewModel: MenuScreenViewModel = hiltViewModel()
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

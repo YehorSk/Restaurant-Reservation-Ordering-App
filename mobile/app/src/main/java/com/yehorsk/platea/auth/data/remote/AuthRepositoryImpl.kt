@@ -30,8 +30,8 @@ class AuthRepositoryImpl @Inject constructor(
             execute = {
                 authService.register(registerForm)
             },
-            onSuccess = {
-
+            onSuccess = { result ->
+                prefs.saveUser(result.first())
             }
         )
     }
@@ -44,6 +44,7 @@ class AuthRepositoryImpl @Inject constructor(
             },
             onSuccess = { result ->
                 prefs.saveUser(result.first())
+                setLocale(Locale.current.language)
             },
             onFailure = { error ->
                 if (error == AppError.UNAUTHORIZED) {
@@ -81,6 +82,17 @@ class AuthRepositoryImpl @Inject constructor(
                 prefs.clearAllTokens()
                 withContext(Dispatchers.IO) {
                     mainRoomDatabase.clearAllTables()
+                }
+            },
+            onFailure = { error ->
+                when(error){
+                    AppError.UNAUTHORIZED -> {
+                        prefs.clearAllTokens()
+                        withContext(Dispatchers.IO) {
+                            mainRoomDatabase.clearAllTables()
+                        }
+                    }
+                    else -> {}
                 }
             }
         )

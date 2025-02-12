@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
@@ -39,7 +40,7 @@ import com.yehorsk.platea.orders.presentation.components.NavBar
 @Composable
 fun CartScreenRoot(
     modifier: Modifier = Modifier,
-    viewModel: CartScreenViewModel,
+    viewModel: CartScreenViewModel = hiltViewModel(),
     onGoToCheckoutClick: () -> Unit
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

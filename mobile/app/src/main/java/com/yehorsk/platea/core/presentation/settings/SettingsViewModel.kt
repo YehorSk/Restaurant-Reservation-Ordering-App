@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.auth.data.repository.AuthRepository
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.data.repository.ProfileRepositoryImpl
+import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
@@ -82,15 +83,29 @@ class SettingsViewModel @Inject constructor(
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                 }
                 .onError { error ->
-                                        SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            error = error
-                        )
-                    )
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            isLoading = false,
-                        )
+                    when(error){
+                        AppError.UNAUTHORIZED -> {
+                            preferencesRepository.clearAllTokens()
+                            _uiState.update { currentState ->
+                                currentState.copy(
+                                    isLoading = false,
+                                    isLoggedOut = true
+                                )
+                            }
+                            _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                        }
+                        else -> {
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    error = error
+                                )
+                            )
+                            _uiState.update { currentState ->
+                                currentState.copy(
+                                    isLoading = false,
+                                )
+                            }
+                        }
                     }
                 }
         }
