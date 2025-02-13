@@ -14,7 +14,7 @@ class MenuController extends Controller
     public function index(Request $request){
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
-            if(!in_array($user->role, ['waiter', 'chef', 'user'])){
+            if(in_array($user->role, ['waiter', 'chef', 'user'])){
                 $menus = Menu::with('items')->get()->map(function ($menu) use ($user) {
                     $menu->items = $menu->items->map(function ($item) use ($user) {
                         $item->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $item->id)->exists();

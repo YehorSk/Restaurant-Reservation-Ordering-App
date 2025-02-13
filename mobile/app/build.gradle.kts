@@ -28,22 +28,15 @@ android {
         }
     }
 
-    flavorDimensions += "environment"
-
-    productFlavors{
-        create("server") {
-            dimension = "environment"
-            buildConfigField("String", "BASE_URL", "\"https://api.platea.site/backend/public/api/\"")
-        }
-        create("local") {
-            dimension = "environment"
-            buildConfigField("String", "BASE_URL", "\"http://localhost/SavchukBachelor/backend/public/api/\"")
-        }
-    }
-
     buildTypes {
         debug{
             isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", "\"http://192.168.1.18/SavchukBachelor/backend/public/api/\"")
+        }
+        create("university"){
+            isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2/SavchukBachelor/backend/public/api/\"")
+            signingConfig = signingConfigs.getByName("debug")
         }
         release {
             isMinifyEnabled = true

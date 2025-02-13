@@ -15,7 +15,7 @@ import axios from "axios";
 
 const app = createApp(App);
 
-axios.defaults.baseURL = "https://api.platea.site/backend/public/api/";
+axios.defaults.baseURL = "http://localhost/SavchukBachelor/backend/public/api/";
 
 app.use(createPinia());
 app.use(router);

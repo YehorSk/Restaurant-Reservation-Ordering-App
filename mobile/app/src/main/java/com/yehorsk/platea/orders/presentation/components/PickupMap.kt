@@ -44,42 +44,42 @@ fun PickupMap(
                 bottom = 10.dp
             ),
     ) {
-//        val charm = LatLng(48.310755785251786, 18.086364404594054)
-//        val charmMarkerState = rememberMarkerState(position = charm)
-//        val cameraPositionState = rememberCameraPositionState {
-//            position = CameraPosition.fromLatLngZoom(charm, 10f)
-//        }
-//        val mapProperties = remember {
-//            MapProperties(
-//                isMyLocationEnabled = true,
-//                mapType = MapType.NORMAL
-//            )
-//        }
-//        val mapUiSettings = remember {
-//            MapUiSettings(
-//                zoomControlsEnabled = false,
-//                compassEnabled = false
-//            )
-//        }
-//        var mapVisible by remember { mutableStateOf(true) }
-//        if(mapVisible){
-//            GoogleMap(
-//                modifier = Modifier
-//                    .height(300.dp)
-//                    .fillMaxWidth()
-//                    .clip(RoundedCornerShape(8.dp)) ,
-//                cameraPositionState = cameraPositionState,
-//                properties = mapProperties,
-//                uiSettings = mapUiSettings,
-//                onMapLoaded = onMapLoaded
-//            ) {
-//                Marker(
-//                    state = charmMarkerState,
-//                    title = stringResource(R.string.platea_restaurant),
-//                    snippet = stringResource(R.string.app_name)
-//                )
-//            }
-//        }
+        val charm = LatLng(48.310755785251786, 18.086364404594054)
+        val charmMarkerState = rememberMarkerState(position = charm)
+        val cameraPositionState = rememberCameraPositionState {
+            position = CameraPosition.fromLatLngZoom(charm, 10f)
+        }
+        val mapProperties = remember {
+            MapProperties(
+                isMyLocationEnabled = true,
+                mapType = MapType.NORMAL
+            )
+        }
+        val mapUiSettings = remember {
+            MapUiSettings(
+                zoomControlsEnabled = false,
+                compassEnabled = false
+            )
+        }
+        var mapVisible by remember { mutableStateOf(true) }
+        if(mapVisible){
+            GoogleMap(
+                modifier = Modifier
+                    .height(300.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp)) ,
+                cameraPositionState = cameraPositionState,
+                properties = mapProperties,
+                uiSettings = mapUiSettings,
+                onMapLoaded = onMapLoaded
+            ) {
+                Marker(
+                    state = charmMarkerState,
+                    title = stringResource(R.string.platea_restaurant),
+                    snippet = stringResource(R.string.app_name)
+                )
+            }
+        }
         Text(
             modifier = Modifier
                 .padding(
