@@ -105,13 +105,9 @@ class RegisterViewModel @Inject constructor(
                     AppError.UNKNOWN_ERROR -> {
                         _uiState.update { it.copy(isLoading = false) }
                     }
-                    AppError.INCORRECT_DATA -> {
+                    is AppError.IncorrectData -> {
                         _uiState.update { it.copy(isLoading = false) }
-                        SnackbarController.sendEvent(
-                            event = SnackbarEvent(
-                                error = error
-                            )
-                        )
+                        // Need to figure out how to show errors
                     }
                     else -> {
                         _uiState.update { it.copy(isLoading = false) }

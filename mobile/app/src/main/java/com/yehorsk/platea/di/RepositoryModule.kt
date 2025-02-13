@@ -21,11 +21,8 @@ import com.yehorsk.platea.notifications.data.remote.NotificationRepositoryImpl
 import com.yehorsk.platea.notifications.domain.repository.NotificationRepository
 import com.yehorsk.platea.notifications.domain.service.NotificationService
 import com.yehorsk.platea.orders.data.dao.OrderDao
-import com.yehorsk.platea.orders.data.remote.GooglePlacesRepositoryImpl
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
-import com.yehorsk.platea.orders.domain.repository.GooglePlacesRepository
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
-import com.yehorsk.platea.orders.domain.service.GooglePlacesApi
 import com.yehorsk.platea.orders.domain.service.OrderService
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
@@ -68,9 +65,5 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesNotificationRepositoryImpl(notificationDao: NotificationDao, notificationService: NotificationService) : NotificationRepository = NotificationRepositoryImpl(notificationService, notificationDao)
-
-    @Provides
-    @Singleton
-    fun provideGooglePlacesRepositoryImpl(googlePlacesApi: GooglePlacesApi) : GooglePlacesRepository = GooglePlacesRepositoryImpl(googlePlacesApi)
 
 }

@@ -125,8 +125,8 @@ class CreateReservationViewModel @Inject constructor(
                             message = message.toString()
                         )
                     )
-                    clearForm()
                     _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                    clearForm()
                 }
                 .onError { error ->
                     SnackbarController.sendEvent(

@@ -20,27 +20,31 @@ class OrderController extends Controller
         if($user instanceof User && $user->role === "admin"){
             $data_today = Order::whereDay('created_at', now()->day)->get();
             $data_all = Order::all();
-            $data_stats = Order::selectRaw('SUM(price) as total_price')
+            
+            $data_stats = Order::selectRaw('SUM(price) as total_price, MONTHNAME(created_at) AS month_name, MONTH(created_at) AS month_number')
                 ->whereYear('created_at', $year)
-                ->groupByRaw('MONTHNAME(created_at)')
-                ->orderByRaw('MONTH(created_at) DESC')
+                ->groupByRaw('MONTHNAME(created_at), MONTH(created_at)')
+                ->orderByRaw('month_number DESC')
                 ->pluck('total_price');
+
             $years = Order::selectRaw('YEAR(created_at) as year')
                 ->groupBy('year')
                 ->orderByRaw('year ASC')
                 ->pluck('year');
-            $months = Order::selectRaw('MONTHNAME(created_at) as month')
+
+            $months = Order::selectRaw('MONTHNAME(created_at) as month, MONTH(created_at) as month_number')
                 ->whereYear('created_at', $year)
-                ->groupBy('month')
-                ->orderByRaw('month DESC')
+                ->groupByRaw('MONTHNAME(created_at), MONTH(created_at)')
+                ->orderByRaw('month_number DESC')
                 ->pluck('month');
-            return $this->success([[
+
+            return $this->success([
                 'data_today' => $data_today->count(),
                 'data_all_count' => $data_all->count(),
                 'years' => $years,
                 'months' => $months,
                 'data_stats' => $data_stats
-            ]]);
+            ]);
         }
         return $this->error('', 'No user', 401);
     }

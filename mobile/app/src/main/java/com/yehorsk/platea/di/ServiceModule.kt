@@ -5,7 +5,6 @@ import com.yehorsk.platea.cart.domain.service.CartService
 import com.yehorsk.platea.core.domain.remote.ProfileService
 import com.yehorsk.platea.menu.domain.service.MenuService
 import com.yehorsk.platea.notifications.domain.service.NotificationService
-import com.yehorsk.platea.orders.domain.service.GooglePlacesApi
 import com.yehorsk.platea.orders.domain.service.OrderService
 import com.yehorsk.platea.reservations.domain.service.ReservationService
 import dagger.Module
@@ -47,7 +46,4 @@ object ServiceModule {
     @Singleton
     fun provideNotificationApiService(retrofit: Retrofit): NotificationService = retrofit.create(NotificationService::class.java)
 
-    @Provides
-    @Singleton
-    fun provideGooglePlacesApi(retrofit: Retrofit): GooglePlacesApi = retrofit.create(GooglePlacesApi::class.java)
 }

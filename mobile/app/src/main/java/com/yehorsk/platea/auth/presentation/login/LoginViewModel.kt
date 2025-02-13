@@ -151,12 +151,8 @@ class LoginViewModel @Inject constructor(
                         _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
                     }
                     else -> {
-                        SnackbarController.sendEvent(
-                            event = SnackbarEvent(
-                                error = error
-                            )
-                        )
-                        _uiState.update { it.copy(isLoading = false) }
+                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
+                        // Need to figure out how to show errors
                     }
                 }
             }

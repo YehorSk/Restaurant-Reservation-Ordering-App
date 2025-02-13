@@ -12,7 +12,6 @@ import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
-import com.yehorsk.platea.orders.domain.repository.GooglePlacesRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -26,7 +25,6 @@ class CreateOrderViewModel @Inject constructor(
      orderRepositoryImpl: OrderRepositoryImpl,
      orderDao: OrderDao,
      preferencesRepository: MainPreferencesRepository,
-     private val googlePlacesRepository: GooglePlacesRepository
 ): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository){
 
     fun onAction(action: CreateOrderAction){

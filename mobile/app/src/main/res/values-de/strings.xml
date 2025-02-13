@@ -95,7 +95,7 @@
     <string name="error_http">Ein HTTP-Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.</string>
     <string name="error_unknown">Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.</string>
     <string name="error_incorrect_data">Bitte überprüfen Sie Ihre Daten und versuchen Sie es erneut.</string>
-    <string name="error_server_error_de">Ein Serverfehler ist aufgetreten. Bitte versuchen Sie es später erneut.</string>
+    <string name="error_server_error">Ein Serverfehler ist aufgetreten. Bitte versuchen Sie es später erneut.</string>
 
     <!-- Filters -->
     <string name="filter">Filter: %s</string>

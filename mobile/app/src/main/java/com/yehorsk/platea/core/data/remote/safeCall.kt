@@ -3,6 +3,7 @@ package com.yehorsk.platea.core.data.remote
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
+import com.yehorsk.platea.core.utils.getCredentialErrors
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
@@ -41,7 +42,11 @@ suspend inline fun <reified T> safeCall(
             401 -> AppError.UNAUTHORIZED
             408 -> AppError.TIMEOUT
             422 -> {
-                AppError.INCORRECT_DATA
+                val errorBodyString = getCredentialErrors(e.response()?.errorBody()?.string()!!)
+                Timber.d("ERROR $errorBodyString")
+                AppError.IncorrectData(
+                    validationErrors = errorBodyString
+                )
             }
             in 500..599 -> AppError.SERVER_ERROR
             else -> AppError.UNKNOWN_ERROR
