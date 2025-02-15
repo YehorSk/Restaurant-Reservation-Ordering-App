@@ -34,13 +34,15 @@ class AuthController extends Controller
         $user = $request->user();
         $token = $request->bearerToken();
 
-        $user->devices()->updateOrCreate(
-            ['device_id' => $request->device_id],
-            [
-                'device_token' => $request->fcm_token,
-                'device_type' => $request->device_type,
-            ]
-        );
+        if($user->role != "admin"){
+            $user->devices()->updateOrCreate(
+                ['device_id' => $request->device_id],
+                [
+                    'device_token' => $request->fcm_token,
+                    'device_type' => $request->device_type,
+                ]
+            );
+        }
 
         return $this->success(data: [[
             'user' => [
@@ -61,7 +63,7 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return $this->error((object)[], 'Credentials do not match', 422);
+            return $this->error((object)[], __("messages.incorrect_credentials"), 422);
         }
 
         $user = User::where('email',$request->email)->first();
@@ -86,6 +88,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user'
         ]);
         $user->devices()->create([
             'device_token' => $request->fcm_token,
@@ -94,7 +97,17 @@ class AuthController extends Controller
         ]);
         $user->sendEmailVerificationNotification();
         return $this->success(data: [[
-            'user' => $user,
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'updated_at' => $user->updated_at,
+                'created_at' => $user->created_at,
+                'email_verified_at' => $user->email_verified_at,
+                'id' => $user->id,
+                'role' => $user->role,
+                'address' => $user->address,
+                'phone' => $user->phone,
+            ],
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken
         ]], message: __("messages.registered_successfully"));
     }

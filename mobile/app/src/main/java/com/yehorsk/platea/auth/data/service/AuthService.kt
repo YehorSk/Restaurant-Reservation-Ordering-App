@@ -14,45 +14,21 @@ import retrofit2.http.Path
 
 interface AuthService {
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @POST("register")
     suspend fun register(@Body registerForm: RegisterForm) : ResponseDto<AuthDataDto>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @POST("login")
     suspend fun login(@Body loginForm: LoginForm) : ResponseDto<AuthDataDto>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @POST("logout")
     suspend fun logout() : ResponseDto<AuthDataDto>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @POST("user")
     suspend fun authenticate(@Body authState: AuthState) : ResponseDto<AuthDataDto>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @POST("forgot-password")
     suspend fun forgotPassword(@Body forgotFormState: ForgotFormState) : ResponseDto<String>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @GET("update-language/{language}")
     suspend fun setLocale(@Path("language") language: String) : ResponseDto<AuthDataDto>
 

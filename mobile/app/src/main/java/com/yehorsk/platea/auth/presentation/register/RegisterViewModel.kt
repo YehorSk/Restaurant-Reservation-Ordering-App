@@ -1,8 +1,6 @@
 package com.yehorsk.platea.auth.presentation.register
 
-import android.app.Application
 import android.content.Context
-import android.provider.Settings
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
@@ -10,14 +8,11 @@ import com.yehorsk.platea.auth.data.repository.AuthRepository
 import com.yehorsk.platea.auth.presentation.BaseAuthViewModel
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
-import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.Utility
 import com.yehorsk.platea.core.utils.cleanError
-import com.yehorsk.platea.core.utils.snackbar.SnackbarController
-import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -106,8 +101,19 @@ class RegisterViewModel @Inject constructor(
                         _uiState.update { it.copy(isLoading = false) }
                     }
                     is AppError.IncorrectData -> {
-                        _uiState.update { it.copy(isLoading = false) }
-                        // Need to figure out how to show errors
+                        val validationErrors = error.validationErrors?.errors ?: emptyMap()
+                        _uiState.update { currentState ->
+                            currentState.copy(
+                                isLoggedIn = false,
+                                isLoading = false,
+                                registerFormErrors = RegisterFormErrors(
+                                    email = cleanError((validationErrors["email"]?:"").toString()),
+                                    password = cleanError((validationErrors["password"]?:"").toString()),
+                                    passwordConfirm = cleanError((validationErrors["password_confirmation"]?:"").toString()),
+                                    name = cleanError((validationErrors["name"]?:"").toString())
+                                )
+                            )
+                        }
                     }
                     else -> {
                         _uiState.update { it.copy(isLoading = false) }

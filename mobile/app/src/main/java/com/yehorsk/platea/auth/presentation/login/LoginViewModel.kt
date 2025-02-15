@@ -8,13 +8,11 @@ import com.yehorsk.platea.auth.data.repository.AuthRepository
 import com.yehorsk.platea.auth.presentation.BaseAuthViewModel
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
-import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.Utility
-import com.yehorsk.platea.core.utils.snackbar.SnackbarController
-import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -143,16 +141,14 @@ class LoginViewModel @Inject constructor(
             }.onError { error ->
                 when (error) {
                     AppError.UNAUTHORIZED -> {
-                        SnackbarController.sendEvent(
-                            event = SnackbarEvent(
-                                error = error
-                            )
-                        )
                         _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
+                    }
+                    is AppError.IncorrectData -> {
+                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
+                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                     }
                     else -> {
                         _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
-                        // Need to figure out how to show errors
                     }
                 }
             }

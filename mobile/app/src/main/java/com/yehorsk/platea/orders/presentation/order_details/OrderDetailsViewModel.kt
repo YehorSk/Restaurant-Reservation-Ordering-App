@@ -2,7 +2,6 @@ package com.yehorsk.platea.orders.presentation.order_details
 
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
-import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver

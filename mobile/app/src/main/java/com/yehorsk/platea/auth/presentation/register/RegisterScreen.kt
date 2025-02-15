@@ -1,5 +1,6 @@
 package com.yehorsk.platea.auth.presentation.register
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,6 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,8 +46,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
+import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.ui.theme.MobileTheme
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -57,12 +60,15 @@ fun RegisterScreen(
     onLogClick: () -> Unit,
     onSuccess: () -> Unit
 ) {
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> {}
+            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
+            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
         }
     }
 

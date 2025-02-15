@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.ActionButton
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
@@ -50,6 +50,8 @@ fun OrderDetailsScreenRoot(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> onGoBack()
+            is SideEffect.ShowErrorToast -> {}
+            is SideEffect.ShowSuccessToast -> {}
         }
     }
 

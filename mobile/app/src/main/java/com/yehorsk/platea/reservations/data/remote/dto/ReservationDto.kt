@@ -23,7 +23,7 @@ data class ReservationDto(
     val status: String,
     val code: String,
     @SerialName("special_request")
-    val specialRequest: String,
+    val specialRequest: String? = null,
     val phone: String,
     @SerialName("table_number")
     val tableNumber: String,

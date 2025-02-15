@@ -24,6 +24,8 @@ class AuthInterceptor(
         }
         Timber.d("Token: $token")
         val requestBuilder = chain.request().newBuilder()
+        requestBuilder.header("Content-Type", "application/vnd.api+json")
+        requestBuilder.header("Accept", "application/vnd.api+json")
         if (!token.isNullOrEmpty()) {
             requestBuilder.addHeader("Authorization", "Bearer $token")
             requestBuilder.addHeader("lang", "$lang")

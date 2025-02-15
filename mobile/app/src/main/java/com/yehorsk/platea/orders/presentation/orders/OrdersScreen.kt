@@ -10,13 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.OrdersDropdownList
-import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.orders.presentation.components.NavBar
 import com.yehorsk.platea.orders.presentation.orders.components.OrdersList
 
@@ -31,16 +28,10 @@ fun OrdersScreen(
     @StringRes title: Int = R.string.go_back
 ){
 
-    val context = LocalContext.current
     val orders by viewModel.orderItemsUiState.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
 
-    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
-        when(sideEffect){
-            is SideEffect.NavigateToNextScreen -> {}
-        }
-    }
 
     PullToRefreshBox(
         isRefreshing = uiState.isLoading,

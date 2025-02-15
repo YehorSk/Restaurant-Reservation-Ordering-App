@@ -1,5 +1,6 @@
 package com.yehorsk.platea.core.presentation.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,12 +9,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.presentation.settings.components.SettingsListItem
+import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.orders.presentation.components.NavBar
 
 @Composable
@@ -23,10 +26,13 @@ fun ChangeLanguageScreen(
     onGoBack: () -> Unit
 ){
 
+    val context = LocalContext.current
     val userLang by viewModel.userLang.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
+            is SideEffect.ShowErrorToast -> {}
+            is SideEffect.ShowSuccessToast -> {}
             is SideEffect.NavigateToNextScreen -> onGoBack()
         }
     }

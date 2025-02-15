@@ -1,12 +1,13 @@
 package com.yehorsk.platea.menu.presentation.components
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.yehorsk.platea.menu.data.db.model.MenuEntity
 
 @Composable
@@ -28,7 +29,8 @@ fun MenuTabBar(
                 text = {
                     Text(
                         text = menu.name,
-                        fontSize = 16.sp,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             )

@@ -2,7 +2,7 @@ package com.yehorsk.platea.notifications.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.core.domain.remote.SideEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController

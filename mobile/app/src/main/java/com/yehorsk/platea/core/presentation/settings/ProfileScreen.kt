@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.orders.presentation.components.NavBar
 
@@ -42,6 +43,8 @@ fun ProfileScreen(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> onGoBack()
+            is SideEffect.ShowErrorToast -> {}
+            is SideEffect.ShowSuccessToast -> {}
         }
     }
 
@@ -121,7 +124,12 @@ fun ProfileScreenForm(
             enabled = nameInput.length != 0 && addressInput.length != 0 && phoneInput.length != 0,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.update_profile))
+            Text(
+                text = stringResource(R.string.update_profile),
+                color = Color.White,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
         }
     }
 }

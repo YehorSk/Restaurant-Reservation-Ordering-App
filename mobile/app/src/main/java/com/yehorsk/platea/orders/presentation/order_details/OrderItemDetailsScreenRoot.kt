@@ -23,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
 import com.yehorsk.platea.orders.presentation.components.NavBar
@@ -42,6 +42,8 @@ fun OrderItemDetailsScreenRoot(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> onGoBack()
+            is SideEffect.ShowErrorToast -> {}
+            is SideEffect.ShowSuccessToast -> {}
         }
     }
     OrderItemDetailsScreen(

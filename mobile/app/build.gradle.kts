@@ -35,13 +35,14 @@ android {
         }
         create("server"){
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"https://api.platea.site/backend/public/api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.test-platea.mojawebka.eu/backend/public/api/\"")
             signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            buildConfigField("String", "BASE_URL", "\"http://192.168.1.18/SavchukBachelor/backend/public/api/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.test-platea.mojawebka.eu/backend/public/api/\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

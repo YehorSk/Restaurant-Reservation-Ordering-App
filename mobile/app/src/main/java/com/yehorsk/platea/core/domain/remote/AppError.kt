@@ -11,6 +11,6 @@ sealed class AppError(val details: ValidationErrorsDto? = null): Error {
     object SERIALIZATION_ERROR : AppError()
     object HTTP_ERROR : AppError()
 
-    data class IncorrectData(val validationErrors: ValidationErrorsDto?) :
+    data class IncorrectData(val validationErrors: ValidationErrorsDto?, val message: String? = null) :
         AppError(validationErrors)
 }

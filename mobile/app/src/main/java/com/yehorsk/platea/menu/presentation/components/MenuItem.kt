@@ -53,7 +53,7 @@ fun MenuItem(
                 modifier = modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                    .padding(top = 12.dp, start = 16.dp, end = 16.dp),
 
             )
             Text(
@@ -63,7 +63,7 @@ fun MenuItem(
                 modifier = modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp),
+                    .padding(start = 16.dp, end = 16.dp, top = 6.dp),
             )
             Text(
                 text = "€"+ formattedPrice(menuItem.price.toDouble()),
@@ -73,14 +73,14 @@ fun MenuItem(
                 modifier = modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp, top = 8.dp),
+                    .padding(bottom = 12.dp, start = 16.dp, end = 16.dp, top = 6.dp),
             )
         }
         AsyncImage(
             model = menuItem.picture,
             modifier = Modifier
                 .weight(1f)
-                .padding(32.dp)
+                .padding(26.dp)
                 .clip(RoundedCornerShape(10.dp)),
             contentDescription = menuItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),

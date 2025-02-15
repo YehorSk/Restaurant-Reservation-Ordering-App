@@ -1,5 +1,6 @@
 package com.yehorsk.platea.core.data.remote
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
@@ -23,7 +24,7 @@ suspend inline fun <reified T> safeCall(
         Result.Success(data = response.data, message = response.message)
     }catch (e: UnknownHostException) {
         Timber.d("ERROR UnknownHostException")
-        val error = AppError.UNKNOWN_ERROR
+        val error = AppError.NO_INTERNET
         onFailure(error)
         Result.Error(error = error)
     } catch (e: IOException) {
@@ -33,6 +34,7 @@ suspend inline fun <reified T> safeCall(
         Result.Error(error = error)
     } catch (e: SerializationException) {
         Timber.d("ERROR SerializationException")
+        FirebaseCrashlytics.getInstance().recordException(e)
         val error = AppError.SERIALIZATION_ERROR
         onFailure(error)
         Result.Error(error = error)
@@ -45,10 +47,14 @@ suspend inline fun <reified T> safeCall(
                 val errorBodyString = getCredentialErrors(e.response()?.errorBody()?.string()!!)
                 Timber.d("ERROR $errorBodyString")
                 AppError.IncorrectData(
-                    validationErrors = errorBodyString
+                    validationErrors = errorBodyString,
+                    message = errorBodyString.message
                 )
             }
-            in 500..599 -> AppError.SERVER_ERROR
+            in 500..599 -> {
+                FirebaseCrashlytics.getInstance().recordException(e)
+                AppError.SERVER_ERROR
+            }
             else -> AppError.UNKNOWN_ERROR
         }
         onFailure(error)

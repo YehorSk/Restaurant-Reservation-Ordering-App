@@ -29,9 +29,7 @@ import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.db.model.toMenuItem
 import com.yehorsk.platea.cart.presentation.cart.components.CartItem
 import com.yehorsk.platea.cart.presentation.cart.viewmodel.CartScreenViewModel
-import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
-import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
 import com.yehorsk.platea.orders.presentation.components.NavBar
@@ -46,11 +44,6 @@ fun CartScreenRoot(
     val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
-    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
-        when(sideEffect){
-            is SideEffect.NavigateToNextScreen -> {}
-        }
-    }
 
     CartScreen(
         modifier = modifier,

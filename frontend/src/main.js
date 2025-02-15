@@ -15,7 +15,7 @@ import axios from "axios";
 
 const app = createApp(App);
 
-axios.defaults.baseURL = "http://localhost/SavchukBachelor/backend/public/api/";
+axios.defaults.baseURL = "http://192.168.1.18/SavchukBachelor/backend/public/api/";
 
 app.use(createPinia());
 app.use(router);

@@ -102,9 +102,9 @@ class MainPreferencesRepository @Inject constructor(
 
     suspend fun saveUser(authData: AuthDataDto){
         saveJwtToken(authData.token ?: "")
+        saveUserRole(authData.user?.role ?: "")
         saveUserName(authData.user?.name ?: "")
         saveUserEmail(authData.user?.email ?: "")
-        saveUserRole(authData.user?.role ?: "")
         saveUserPhone(authData.user?.phone ?: "")
         saveUserAddress(authData.user?.address ?: "")
     }

@@ -10,7 +10,7 @@ data class LoginState(
     val isLoading: Boolean = false,
     val isAuthenticating: Boolean = true,
     val error: String = "",
-    val role: String = ""
+    val role: String = "",
 )
 
 @Serializable

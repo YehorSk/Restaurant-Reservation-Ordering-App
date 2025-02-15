@@ -3,6 +3,7 @@ package com.yehorsk.platea.core.presentation
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -177,7 +178,11 @@ fun RowScope.AddItem(
     } == true
     NavigationBarItem(
         label = {
-            Text(text = stringResource(screen.title))
+            Text(
+                text = stringResource(screen.title),
+                style = MaterialTheme.typography.labelSmall,
+                maxLines = 1,
+            )
         },
         icon = {
             if(isSelected){

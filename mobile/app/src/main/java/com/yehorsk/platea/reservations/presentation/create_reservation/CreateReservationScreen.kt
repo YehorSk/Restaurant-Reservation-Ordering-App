@@ -12,7 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.orders.presentation.OrderForm
@@ -40,6 +40,8 @@ fun CreateReservationScreen(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> { goBack() }
+            is SideEffect.ShowErrorToast -> {}
+            is SideEffect.ShowSuccessToast -> {}
         }
     }
     if(!uiState.isLoading){

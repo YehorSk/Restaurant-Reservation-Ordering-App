@@ -25,7 +25,7 @@ data class ReservationEntity(
     val status: String,
     val code: String,
     @ColumnInfo("special_request")
-    val specialRequest: String,
+    val specialRequest: String? = null,
     val phone: String,
     @ColumnInfo("table_number")
     val tableNumber: String,

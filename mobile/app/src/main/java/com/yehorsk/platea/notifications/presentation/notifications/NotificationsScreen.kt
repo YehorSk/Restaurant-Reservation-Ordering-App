@@ -15,8 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
-import com.yehorsk.platea.core.utils.EventConsumer
 import com.yehorsk.platea.notifications.presentation.NotificationViewModel
 import com.yehorsk.platea.notifications.presentation.components.NotificationItem
 import com.yehorsk.platea.orders.presentation.components.NavBar
@@ -31,11 +29,6 @@ fun NotificationsScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val notificationUiState by viewModel.notificationUiState.collectAsStateWithLifecycle()
 
-    EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
-        when(sideEffect){
-            is SideEffect.NavigateToNextScreen -> {}
-        }
-    }
 
     Column(
         modifier = modifier

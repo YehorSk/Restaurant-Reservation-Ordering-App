@@ -16,17 +16,9 @@ interface CartService {
     @POST("cart/user/delete")
     suspend fun deleteUserCartItem(@Body cartForm: CartForm): ResponseDto<CartItemDto>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @POST("cart/user/add")
     suspend fun addUserCartItem(@Body cartForm: CartForm): ResponseDto<CartItemDto>
 
-    @Headers(
-        "Accept: application/vnd.api+json",
-        "Content-Type: application/vnd.api+json"
-    )
     @POST("cart/user/update")
     suspend fun updateUserCartItem(
         @Body cartForm: CartForm

@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -35,7 +36,7 @@ fun ActionButton(
                 .padding(10.dp),
             text = stringResource(text),
             textAlign = TextAlign.Center,
-            fontSize = 20.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )

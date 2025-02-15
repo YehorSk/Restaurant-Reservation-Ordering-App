@@ -25,7 +25,7 @@ fun ReservationDetails(
     time: String,
     table: String,
     date: String,
-    request: String,
+    request: String? = null,
     phone: String
 ){
 
@@ -68,7 +68,7 @@ fun ReservationDetails(
                 start = 20.dp,
                 top = 15.dp,
             ),
-            text = stringResource(R.string.special_request, request),
+            text = stringResource(R.string.special_request, request?: ""),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )

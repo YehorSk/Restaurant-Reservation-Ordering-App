@@ -25,10 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ahmadhamwi.tabsync_compose.lazyListTabSync
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.domain.remote.SideEffect
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
-import com.yehorsk.platea.core.utils.EventConsumer
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
 import com.yehorsk.platea.menu.presentation.MenuAction
 import com.yehorsk.platea.menu.presentation.components.MenuDetailsDialog
@@ -67,11 +65,6 @@ fun MenuScreenRoot(
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle()
 
-    EventConsumer(channel = viewModel.sideEffect) { sideEffect ->
-        when(sideEffect){
-            is SideEffect.NavigateToNextScreen -> {}
-        }
-    }
     if(uiState.isLoading){
         LoadingPart()
     }else {

@@ -66,6 +66,9 @@ class AuthRepositoryImpl @Inject constructor(
             onFailure = { error ->
                 if (error == AppError.UNAUTHORIZED) {
                     prefs.clearAllTokens()
+                    withContext(Dispatchers.IO) {
+                        mainRoomDatabase.clearAllTables()
+                    }
                 }
             }
         )
@@ -81,6 +84,17 @@ class AuthRepositoryImpl @Inject constructor(
                 prefs.clearAllTokens()
                 withContext(Dispatchers.IO) {
                     mainRoomDatabase.clearAllTables()
+                }
+            },
+            onFailure = { error ->
+                when (error) {
+                    AppError.UNAUTHORIZED -> {
+                        prefs.clearAllTokens()
+                        withContext(Dispatchers.IO) {
+                            mainRoomDatabase.clearAllTables()
+                        }
+                    }
+                    else -> {}
                 }
             }
         )
