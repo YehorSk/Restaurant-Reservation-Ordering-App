@@ -11,6 +11,7 @@ import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.Utility
 import com.yehorsk.platea.core.utils.cleanError
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -84,6 +85,7 @@ class RegisterViewModel @Inject constructor(
                 when (error) {
                     AppError.UNAUTHORIZED -> {
                         preferencesRepository.clearAllTokens()
+                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                         _uiState.update { currentState ->
                             currentState.copy(
                                 isLoggedIn = false,
@@ -98,6 +100,7 @@ class RegisterViewModel @Inject constructor(
                         }
                     }
                     AppError.UNKNOWN_ERROR -> {
+                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                         _uiState.update { it.copy(isLoading = false) }
                     }
                     is AppError.IncorrectData -> {
@@ -117,6 +120,7 @@ class RegisterViewModel @Inject constructor(
                     }
                     else -> {
                         _uiState.update { it.copy(isLoading = false) }
+                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
                         Timber.tag("UnhandledError").e(error.toString())
                     }
                 }

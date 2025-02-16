@@ -26,9 +26,9 @@ class AuthInterceptor(
         val requestBuilder = chain.request().newBuilder()
         requestBuilder.header("Content-Type", "application/vnd.api+json")
         requestBuilder.header("Accept", "application/vnd.api+json")
+        requestBuilder.addHeader("lang", "$lang")
         if (!token.isNullOrEmpty()) {
             requestBuilder.addHeader("Authorization", "Bearer $token")
-            requestBuilder.addHeader("lang", "$lang")
         }
 
         val request = requestBuilder.build()

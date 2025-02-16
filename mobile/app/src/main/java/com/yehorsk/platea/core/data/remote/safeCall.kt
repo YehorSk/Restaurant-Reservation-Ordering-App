@@ -39,7 +39,7 @@ suspend inline fun <reified T> safeCall(
         onFailure(error)
         Result.Error(error = error)
     } catch (e: HttpException) {
-        Timber.d("ERROR HttpException")
+        Timber.d("ERROR HttpException - ${e.code()} ${e.response()!!.errorBody()}")
         val error = when (e.code()) {
             401 -> AppError.UNAUTHORIZED
             408 -> AppError.TIMEOUT

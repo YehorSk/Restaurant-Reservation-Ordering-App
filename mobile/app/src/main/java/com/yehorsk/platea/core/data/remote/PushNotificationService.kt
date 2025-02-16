@@ -23,9 +23,9 @@ class PushNotificationService: FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        CoroutineScope(Dispatchers.IO).launch {
-            notificationRepositoryImpl.getAllNotifications()
-        }
+//        CoroutineScope(Dispatchers.IO).launch {
+//            notificationRepositoryImpl.getAllNotifications()
+//        }
     }
 
 }

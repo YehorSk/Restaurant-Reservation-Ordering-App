@@ -139,18 +139,8 @@ class LoginViewModel @Inject constructor(
             result.onSuccess { data, message ->
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onError { error ->
-                when (error) {
-                    AppError.UNAUTHORIZED -> {
-                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
-                    }
-                    is AppError.IncorrectData -> {
-                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
-                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
-                    }
-                    else -> {
-                        _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
-                    }
-                }
+                _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
+                _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
             }
         }
     }
