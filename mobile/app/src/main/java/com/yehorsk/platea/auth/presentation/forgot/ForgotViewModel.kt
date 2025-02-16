@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.auth.data.repository.AuthRepository
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
+import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
@@ -55,19 +56,24 @@ class ForgotViewModel @Inject constructor(
             val result = authRepository.forgotPassword(forgotFormState = uiState.value.form)
 
             result.onSuccess { data, message ->
-                SnackbarController.sendEvent(
-                    event = SnackbarEvent(
-                        message = message.toString()
+                _sideEffectChannel.send(SideEffect.ShowSuccessToast(message.toString()))
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        form = ForgotFormState()
                     )
-                )
-                _uiState.update { it.copy(isLoading = false) }
+                }
             }.onError { error ->
-                SnackbarController.sendEvent(
-                    event = SnackbarEvent(
-                        error = error
-                    )
-                )
-                _uiState.update { it.copy(isLoading = false) }
+                when(error){
+                    is AppError.IncorrectData -> {
+                        _sideEffectChannel.send(SideEffect.ShowSuccessToast(error.details!!.message.toString()))
+                        _uiState.update { it.copy(isLoading = false) }
+                    }
+                    else -> {
+                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        _uiState.update { it.copy(isLoading = false) }
+                    }
+                }
             }
         }
     }

@@ -18,6 +18,6 @@ class VerificationController extends Controller
             $user->markEmailAsVerified();
         }
 
-        return redirect()->to('http://localhost:5173/');
+        return redirect()->to('https://admin.platea.site/');
     }
 }

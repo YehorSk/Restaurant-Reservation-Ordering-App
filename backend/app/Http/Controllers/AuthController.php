@@ -117,7 +117,7 @@ class AuthController extends Controller
         return $this->success(data: [], message: __("messages.logged_out_successfully"));
     }
     public function reset_password($token,$email) {
-        return redirect()->to('http://localhost:5173/reset-password/' . $token . '?email=' . urlencode($email));
+        return redirect()->to('https://admin.platea.site/reset-password/' . $token . '?email=' . urlencode($email));
     }
 
     public function update_password(Request $request) {
@@ -179,7 +179,7 @@ class AuthController extends Controller
             return $this->success([""], __("messages.reset_link_sent_successfully"));
         }
 
-        return $this->error([], __("messages.reset_link_failed"), 400);
+        return $this->error([], __("messages.reset_link_failed"), 422);
     }
 
 }
