@@ -60,7 +60,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesReservationRepositoryImpl(reservationDao: ReservationDao, reservationService: ReservationService) : ReservationRepository = ReservationRepositoryImpl(reservationDao, reservationService)
+    fun providesReservationRepositoryImpl(reservationDao: ReservationDao, orderDao: OrderDao, reservationService: ReservationService) : ReservationRepository = ReservationRepositoryImpl(reservationDao, orderDao, reservationService)
 
     @Provides
     @Singleton

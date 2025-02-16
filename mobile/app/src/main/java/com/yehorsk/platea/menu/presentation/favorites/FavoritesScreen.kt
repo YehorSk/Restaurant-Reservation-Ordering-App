@@ -78,6 +78,7 @@ fun FavoritesScreen(
                 addUserCartItem = {
                     viewModel.closeBottomSheet()
                     viewModel.addUserCartItem()
+                    viewModel.clearForm()
                 },
                 buttonText = R.string.Add,
                 addFavoriteItem = {

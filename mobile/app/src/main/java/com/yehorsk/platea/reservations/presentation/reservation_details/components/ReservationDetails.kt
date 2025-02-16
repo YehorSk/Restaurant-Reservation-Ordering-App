@@ -26,7 +26,8 @@ fun ReservationDetails(
     table: String,
     date: String,
     request: String? = null,
-    phone: String
+    phone: String,
+    partySize: String
 ){
 
     Column(
@@ -56,9 +57,18 @@ fun ReservationDetails(
             modifier = Modifier.padding(
                 start = 20.dp,
                 top = 15.dp,
-                bottom = 10.dp
             ),
             text = stringResource(R.string.time_reservation, formatTime(time)),
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+        )
+        Text(
+            modifier = Modifier.padding(
+                start = 20.dp,
+                top = 15.dp,
+                bottom = 10.dp
+            ),
+            text = stringResource(R.string.party_size) + ": $partySize",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )
@@ -94,7 +104,8 @@ fun ReservationDetailsPreview(){
             table = "3",
             date = "2024-12-27",
             request = "Lorem ipsum dolor sit amet",
-            phone = "0680000000"
+            phone = "0680000000",
+            partySize = "5"
         )
     }
 }

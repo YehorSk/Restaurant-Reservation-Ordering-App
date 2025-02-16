@@ -112,6 +112,7 @@ class ReservationController extends Controller
                         $adjustedEndTime = $startTime->copy()->addMinutes(120);
 
                         $query->where('date', $date)
+                            ->where('status', '!=', 'Cancelled')
                             ->whereHas('timeSlot', function ($timeSlotQuery) use ($adjustedStartTime, $adjustedEndTime) {
                                 $timeSlotQuery
                                     ->whereBetween('start_time', [
@@ -155,6 +156,7 @@ class ReservationController extends Controller
                     $adjustedEndTime = $startTime->copy()->addMinutes(120);
 
                     $query->where('date', $date)
+                        ->where('status', '!=', 'Cancelled')
                         ->whereHas('timeSlot', function ($timeSlotQuery) use ($adjustedStartTime, $adjustedEndTime) {
                             $timeSlotQuery
                                 ->whereBetween('start_time', [
@@ -197,8 +199,8 @@ class ReservationController extends Controller
                     'reservation_id' => $reservation->id,
                     'code' => $this->generate_code(),
                     'status' => 'Pending',
-                    'start_time' =>  $request->input('start_time'),
-                    'end_time' =>  $request->input('end_time'),
+                    'start_time' =>  $request->input('order_form.start_time'),
+                    'end_time' =>  $request->input('order_form.end_time'),
                 ]);
                 $order->save();
                 $items = $user->menuItems()->get();

@@ -9,6 +9,8 @@ sealed interface CartAction {
 
     data class SetMenuItem(val item: MenuItemEntity): CartAction
 
+    data object GetItems: CartAction
+
     data object DeleteItem: CartAction
 
     data object ShowBottomSheet: CartAction

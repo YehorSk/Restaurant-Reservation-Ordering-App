@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -44,7 +46,6 @@ fun CartScreenRoot(
     val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
-
     CartScreen(
         modifier = modifier,
         uiState = uiState,
@@ -55,6 +56,7 @@ fun CartScreenRoot(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(
     modifier: Modifier = Modifier,
@@ -64,69 +66,74 @@ fun CartScreen(
     onGoToCheckoutClick: () -> Unit,
     onAction: (CartAction) -> Unit
 ){
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    PullToRefreshBox(
+        isRefreshing = uiState.isLoading,
+        onRefresh = { onAction(CartAction.GetItems) }
     ) {
-        NavBar(
-            onGoBack = {  },
-            title = R.string.cart,
-            showGoBack = false
-        )
-        Box(
-            modifier = Modifier
+        Column(
+            modifier = modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ){
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(
-                    items = cartItems,
-                    key = {it.pivot.id}
-                ) { item ->
-                    CartItem(
-                        cartItem = item,
-                        onClick = { cartItem ->
-                            onAction(CartAction.SetItem(cartItem))
-                            onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
-                            onAction(CartAction.ShowBottomSheet)
-                        },
-                    )
-                    HorizontalDivider()
-                }
-                item {
-                    if(cartItems.isNotEmpty()){
-                        Spacer(modifier = Modifier.height(60.dp))
-                    }
-                }
-            }
-            val checkout = cartItems.sumOf {
-                it.pivot.price
-            }
-            if(cartItems.isNotEmpty() && isConnected){
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
-                        .align(Alignment.BottomCenter),
-                    onClick = {
-                        onGoToCheckoutClick()
-                    }
+                .background(MaterialTheme.colorScheme.background),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            NavBar(
+                onGoBack = {  },
+                title = R.string.cart,
+                showGoBack = false
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+            ){
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
-                    )
+                    items(
+                        items = cartItems,
+                        key = {it.pivot.id}
+                    ) { item ->
+                        CartItem(
+                            cartItem = item,
+                            onClick = { cartItem ->
+                                onAction(CartAction.SetItem(cartItem))
+                                onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
+                                onAction(CartAction.ShowBottomSheet)
+                            },
+                        )
+                        HorizontalDivider()
+                    }
+                    item {
+                        if(cartItems.isNotEmpty()){
+                            Spacer(modifier = Modifier.height(60.dp))
+                        }
+                    }
                 }
-            }
+                val checkout = cartItems.sumOf {
+                    it.pivot.price
+                }
+                if(cartItems.isNotEmpty() && isConnected){
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
+                            .align(Alignment.BottomCenter),
+                        onClick = {
+                            onGoToCheckoutClick()
+                        }
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(8.dp),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
+                        )
+                    }
+                }
 
+            }
         }
     }
 

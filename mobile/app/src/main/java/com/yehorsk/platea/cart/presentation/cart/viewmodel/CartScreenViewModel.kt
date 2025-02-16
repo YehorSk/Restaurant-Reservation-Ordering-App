@@ -64,6 +64,7 @@ class CartScreenViewModel @Inject constructor(
 
     fun onAction(action: CartAction){
         when(action){
+            CartAction.GetItems -> getItems()
             CartAction.CloseBottomSheet -> closeBottomSheet()
             CartAction.DeleteItem -> {
                 deleteItem()

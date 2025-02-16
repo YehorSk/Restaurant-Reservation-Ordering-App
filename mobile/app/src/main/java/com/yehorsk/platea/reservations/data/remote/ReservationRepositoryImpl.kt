@@ -3,6 +3,7 @@ package com.yehorsk.platea.reservations.data.remote
 import com.yehorsk.platea.core.data.remote.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
+import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.remote.dto.ReservationDto
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 class ReservationRepositoryImpl @Inject constructor(
     private val reservationDao: ReservationDao,
+    private val orderDao: OrderDao,
     private val reservationService: ReservationService
 ) : ReservationRepository {
 
@@ -36,6 +38,9 @@ class ReservationRepositoryImpl @Inject constructor(
             },
             onSuccess = { data ->
                 reservationDao.insertReservation(data.first().toReservationEntity())
+                if(reservationForm.withOrder){
+                    orderDao.deleteAllCartItems()
+                }
             }
         )
     }

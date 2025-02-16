@@ -39,7 +39,10 @@ class MenuScreenViewModel @Inject constructor(
 
     fun onAction(action: MenuAction){
         when(action){
-            MenuAction.AddCartItem -> addUserCartItem()
+            MenuAction.AddCartItem -> {
+                addUserCartItem()
+                clearForm()
+            }
             MenuAction.AddFavoriteItem -> addUserFavoriteItem()
             MenuAction.ClearForm -> clearForm()
             MenuAction.CloseBottomSheet -> closeBottomSheet()

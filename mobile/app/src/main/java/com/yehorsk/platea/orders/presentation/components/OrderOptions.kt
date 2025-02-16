@@ -155,7 +155,7 @@ fun OrderRadioOption(
                 Text(
                     modifier = Modifier
                         .padding(start = 10.dp),
-                    text = if(selected && selectedTime.length > 5)
+                    text = if(selected && selectedTime.length > 5 && option.id != 2)
                                 selectedTime
                             else
                                 stringResource(id = option.subText),
