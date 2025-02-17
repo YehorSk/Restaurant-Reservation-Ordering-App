@@ -32,6 +32,7 @@ Route::controller(AuthController::class)->group(function () {
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
+    Route::post('/delete-account', [AuthController::class, 'deleteAccount']);
     Route::post('/user', [AuthController::class, 'authenticate']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/update-language/{language}', [AuthController::class, 'updateLanguage']);

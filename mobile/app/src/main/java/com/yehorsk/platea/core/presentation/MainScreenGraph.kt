@@ -56,7 +56,8 @@ fun MainScreenGraph(
             val result = snackbarHostState.showSnackbar(
                 message = if(event.error != null) event.error.toString(context) else event.message!!,
                 actionLabel = event.action?.name,
-                duration = SnackbarDuration.Short
+                duration = SnackbarDuration.Short,
+                withDismissAction = true
             )
             if(result == SnackbarResult.ActionPerformed){
                 event.action?.action?.invoke()

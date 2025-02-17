@@ -12,7 +12,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,28 +23,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
+import com.yehorsk.platea.core.presentation.components.ConfirmDialog
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
-    onGoBack: () -> Unit
-) {
+    onGoBack: () -> Unit,
+    onDeleteAccount: () -> Unit
+ ) {
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     val name by viewModel.userName.collectAsStateWithLifecycle()
     val address by viewModel.userAddress.collectAsStateWithLifecycle()
     val phone by viewModel.userPhone.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.NavigateToNextScreen -> onGoBack()
+            is SideEffect.NavigateToNextScreen -> onDeleteAccount()
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
         }
@@ -73,9 +83,22 @@ fun ProfileScreen(
                 name = name ?: "",
                 address = address ?: "",
                 phone = phone ?: "",
-                onUpdateProfile = { name,address,phone -> viewModel.updateProfile(name,address,phone) }
+                onUpdateProfile = { name,address,phone -> viewModel.updateProfile(name,address,phone) },
+                onOpenDialog = { viewModel.showDeleteDialog() }
             )
         }
+    }
+    if(uiState.showDeleteAccountDialog){
+        ConfirmDialog(
+            dialogTitle = stringResource(id = R.string.delete_account_dialog_title),
+            dialogText = stringResource(id = R.string.delete_account_dialog_text),
+            onDismissRequest = {
+                viewModel.hideDeleteDialog()
+            },
+            onConfirmation = {
+                viewModel.deleteAccount()
+            },
+        )
     }
 }
 
@@ -85,6 +108,7 @@ fun ProfileScreenForm(
     address: String,
     phone: String,
     onUpdateProfile: (String,String,String) -> Unit,
+    onOpenDialog: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -131,5 +155,33 @@ fun ProfileScreenForm(
                 fontWeight = FontWeight.Bold,
             )
         }
+        TextButton(
+            onClick = { onOpenDialog() },
+            modifier = Modifier
+                .background(Color.Transparent)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.delete_profile),
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                textDecoration = TextDecoration.Underline
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+fun ProfileScreenFormPreview(){
+    MobileTheme {
+        ProfileScreenForm(
+            name = "Test",
+            address = "Test",
+            phone = "Test",
+            onUpdateProfile = { one, two, three -> },
+            onOpenDialog = {}
+        )
     }
 }

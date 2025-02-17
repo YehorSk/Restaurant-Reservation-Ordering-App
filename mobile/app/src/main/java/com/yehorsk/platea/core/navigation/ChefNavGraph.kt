@@ -89,6 +89,9 @@ fun ChefNavGraph(
                 modifier = modifier,
                 onGoBack = {
                     navController.popBackStack()
+                },
+                onDeleteAccount = {
+                    onLoggedOut()
                 }
             )
         }

@@ -126,6 +126,11 @@
     <string name="settings">Einstellungen</string>
     <string name="profile">Profil</string>
     <string name="update_profile">Profil aktualisieren</string>
+    <string name="delete_profile">Mein Konto löschen</string>
+    <string name="delete_account_dialog_title">Löschung des Kontos bestätigen</string>
+    <string name="delete_account_dialog_text">Sind Sie sicher, dass Sie Ihr Konto löschen möchten?</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="dismiss">Abbrechen</string>
 
     <!-- Bottom Bar Items -->
     <string name="home_item">Startseite</string>

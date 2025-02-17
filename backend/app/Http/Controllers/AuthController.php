@@ -182,4 +182,13 @@ class AuthController extends Controller
         return $this->error([], __("messages.reset_link_failed"), 422);
     }
 
+    public function deleteAccount(Request $request){
+        $user = auth('sanctum')->user();
+        if($user instanceof User){
+            $user->delete();
+            return $this->success([""], __("messages.account_deleted_successfully"));
+        }
+        return $this->error('', 'No user', 401);
+    }
+
 }

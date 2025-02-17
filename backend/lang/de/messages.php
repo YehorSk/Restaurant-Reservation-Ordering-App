@@ -54,6 +54,7 @@
         'reservation_pending' => 'Ihre Reservierung #:reservationId ist noch ausstehend. Wir werden sie bald bestätigen.',
         'reservation_confirmed' => 'Ihre Reservierung #:reservationId wurde bestätigt.',
         'reservation_cancelled' => 'Ihre Reservierung #:reservationId wurde storniert.',
+        'account_deleted_successfully' => 'Ihr Konto wurde erfolgreich gelöscht.',
     ];
 
 

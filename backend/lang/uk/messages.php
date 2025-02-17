@@ -54,6 +54,7 @@
         'reservation_pending' => 'Ваше бронювання #:reservationId знаходиться на стадії очікування. Ми скоро підтвердимо його.',
         'reservation_confirmed' => 'Ваше бронювання #:reservationId підтверджено.',
         'reservation_cancelled' => 'Ваше бронювання #:reservationId було скасовано.',
+        'account_deleted_successfully' => 'Ваш обліковий запис було успішно видалено.',
     ];
 
 ?>

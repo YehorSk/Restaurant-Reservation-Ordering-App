@@ -54,6 +54,7 @@
         'reservation_pending' => 'Vaša rezervácia #:reservationId je v čakacom stave. Čoskoro ju potvrdíme.',
         'reservation_confirmed' => 'Vaša rezervácia #:reservationId bola potvrdená.',
         'reservation_cancelled' => 'Vaša rezervácia #:reservationId bola zrušená.',
+        'account_deleted_successfully' => 'Váš účet bol úspešne vymazaný.',
     ];
 
 ?>

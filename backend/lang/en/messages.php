@@ -54,6 +54,7 @@
         'reservation_pending' => 'Your reservation #:reservationId is pending. We will confirm it soon.',
         'reservation_confirmed' => 'Your reservation #:reservationId has been confirmed.',
         'reservation_cancelled' => 'Your reservation #:reservationId has been cancelled.',
+        'account_deleted_successfully' => 'Your account has been successfully deleted.',
     ];
 
 ?>

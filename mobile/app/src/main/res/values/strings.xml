@@ -127,6 +127,11 @@
     <string name="settings">Settings</string>
     <string name="profile">Profile</string>
     <string name="update_profile">Update Profile</string>
+    <string name="delete_profile">Delete My Account</string>
+    <string name="delete_account_dialog_title">Confirm Account Deletion</string>
+    <string name="delete_account_dialog_text">Are you sure you want to delete your account?</string>
+    <string name="confirm">Confirm</string>
+    <string name="dismiss">Dismiss</string>
 
     <!-- Bottom Bar Items -->
     <string name="home_item">Home</string>

@@ -86,6 +86,9 @@ fun AdminNavGraph(
                 modifier = modifier,
                 onGoBack = {
                     navController.popBackStack()
+                },
+                onDeleteAccount = {
+                    onLoggedOut()
                 }
             )
         }

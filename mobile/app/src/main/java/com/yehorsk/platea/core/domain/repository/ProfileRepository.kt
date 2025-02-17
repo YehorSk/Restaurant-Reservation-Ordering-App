@@ -12,4 +12,6 @@ interface ProfileRepository {
         phone: String
     ): Result<List<UserDto>, AppError>
 
+    suspend fun deleteAccount(): Result<List<String>, AppError>
+
 }

@@ -126,6 +126,11 @@
     <string name="settings">Nastavenia</string>
     <string name="profile">Profil</string>
     <string name="update_profile">Aktualizovať profil</string>
+    <string name="delete_profile">Vymazať môj účet</string>
+    <string name="delete_account_dialog_title">Potvrdenie vymazania účtu</string>
+    <string name="delete_account_dialog_text">Ste si istý, že chcete vymazať svoj účet?</string>
+    <string name="confirm">Potvrdiť</string>
+    <string name="dismiss">Zrušiť</string>
 
     <!-- Bottom Bar Items -->
     <string name="home_item">Domov</string>

@@ -59,6 +59,69 @@ class SettingsViewModel @Inject constructor(
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
 
+    fun showDeleteDialog(){
+        _uiState.update { currentState ->
+            currentState.copy(
+                showDeleteAccountDialog = true
+            )
+        }
+    }
+
+    fun hideDeleteDialog(){
+        _uiState.update { currentState ->
+            currentState.copy(
+                showDeleteAccountDialog = false
+            )
+        }
+    }
+
+    fun deleteAccount(){
+        viewModelScope.launch{
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isLoading = true
+                )
+            }
+            hideDeleteDialog()
+            profileRepositoryImpl.deleteAccount()
+                .onSuccess { data,message ->
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            isLoading = false,
+                        )
+                    }
+                    _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                }
+                .onError { error ->
+                    when (error) {
+                        AppError.UNAUTHORIZED -> {
+                            preferencesRepository.clearAllTokens()
+                            _uiState.update { currentState ->
+                                currentState.copy(
+                                    isLoading = false,
+                                    isLoggedOut = true
+                                )
+                            }
+                            _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                        }
+
+                        else -> {
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    error = error
+                                )
+                            )
+                            _uiState.update { currentState ->
+                                currentState.copy(
+                                    isLoading = false,
+                                )
+                            }
+                        }
+                    }
+                }
+        }
+    }
+
     fun logout(){
         viewModelScope.launch {
             _uiState.update { currentState ->

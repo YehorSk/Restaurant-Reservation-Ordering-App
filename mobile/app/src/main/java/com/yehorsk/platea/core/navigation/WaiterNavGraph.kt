@@ -111,6 +111,9 @@ fun WaiterNavGraph(
                 modifier = modifier,
                 onGoBack = {
                     navController.popBackStack()
+                },
+                onDeleteAccount = {
+                    onLoggedOut()
                 }
             )
         }

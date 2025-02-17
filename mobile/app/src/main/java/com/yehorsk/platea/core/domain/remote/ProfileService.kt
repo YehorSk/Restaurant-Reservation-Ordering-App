@@ -16,4 +16,7 @@ interface ProfileService {
         @Field("phone") phone: String
     ): ResponseDto<UserDto>
 
+    @POST("delete-account")
+    suspend fun deleteAccount(): ResponseDto<String>
+
 }

@@ -52,7 +52,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepositoryImpl(profileService: ProfileService, mainPreferencesRepository: MainPreferencesRepository) : ProfileRepository = ProfileRepositoryImpl(profileService, mainPreferencesRepository)
+    fun provideProfileRepositoryImpl(profileService: ProfileService, mainPreferencesRepository: MainPreferencesRepository, mainRoomDatabase: MainRoomDatabase) : ProfileRepository = ProfileRepositoryImpl(profileService, mainPreferencesRepository, mainRoomDatabase)
 
     @Provides
     @Singleton
