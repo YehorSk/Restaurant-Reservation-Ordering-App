@@ -23,7 +23,11 @@ data class ReservationForm(
     val selectedTime:String = "",
     @SerialName("special_request")
     val specialRequest: String = "",
+    @SerialName("full_phone")
+    val fullPhone: String = "",
     val phone: String = "",
+    @SerialName("country_code")
+    val countryCode: String = "",
     @SerialName("with_order")
     val withOrder: Boolean = false,
     @SerialName("order_form")

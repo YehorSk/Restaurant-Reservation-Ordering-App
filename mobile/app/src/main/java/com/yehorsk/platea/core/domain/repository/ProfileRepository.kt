@@ -9,7 +9,8 @@ interface ProfileRepository {
     suspend fun updateProfile(
         name: String,
         address: String,
-        phone: String
+        phone: String,
+        countryCode: String
     ): Result<List<UserDto>, AppError>
 
     suspend fun deleteAccount(): Result<List<String>, AppError>

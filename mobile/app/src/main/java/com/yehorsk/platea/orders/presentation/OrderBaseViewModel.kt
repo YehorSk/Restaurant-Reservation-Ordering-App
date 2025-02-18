@@ -32,6 +32,9 @@ open class OrderBaseViewModel @Inject constructor(
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    val userAddress: StateFlow<String?> = preferencesRepository.userAddressFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
     protected val _uiState = MutableStateFlow(OrderUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -54,6 +57,11 @@ open class OrderBaseViewModel @Inject constructor(
                 isNetwork.value = status
             }
         }
+        viewModelScope.launch {
+            userAddress.collect { address ->
+                _uiState.update { it.copy(orderForm = it.orderForm.copy(address = address ?: "")) }
+            }
+        }
     }
 
     protected fun setLoadingState(isLoading: Boolean) {
@@ -63,4 +71,5 @@ open class OrderBaseViewModel @Inject constructor(
     protected fun setPlacesLoadingState(isLoading: Boolean) {
         _uiState.update { it.copy(isLoadingPlaces = isLoading) }
     }
+
 }

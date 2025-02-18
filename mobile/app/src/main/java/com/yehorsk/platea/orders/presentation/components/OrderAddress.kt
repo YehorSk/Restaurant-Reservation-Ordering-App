@@ -31,8 +31,6 @@ fun OrderAddress(
     onInstructionsChange: (String) -> Unit
 ) {
 
-    var placesExpanded = remember { mutableListOf(false) }
-
     Card(
     ) {
         Column(

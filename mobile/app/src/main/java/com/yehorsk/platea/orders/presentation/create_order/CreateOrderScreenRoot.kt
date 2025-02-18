@@ -55,7 +55,6 @@ fun CreateOrderScreenRoot(
     modifier: Modifier = Modifier,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
-    onGoToOrders: () -> Unit,
     onGoToMakeReservation: (OrderForm) -> Unit
 ){
 
@@ -63,6 +62,7 @@ fun CreateOrderScreenRoot(
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val context = LocalContext.current
     val userRole by viewModel.userRole.collectAsStateWithLifecycle()
+    val userAddress by viewModel.userAddress.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getUserOrderItems()
@@ -71,7 +71,7 @@ fun CreateOrderScreenRoot(
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.NavigateToNextScreen -> onGoToOrders()
+            is SideEffect.NavigateToNextScreen -> onGoToCart()
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
         }
@@ -87,6 +87,7 @@ fun CreateOrderScreenRoot(
         validateForm = viewModel.validateForm(),
         onAction = viewModel::onAction,
         userRole = userRole.toString(),
+        userAddress = userAddress.toString(),
         onTableNumberUpdate = { viewModel.updateTableNumber(it) }
     )
 }
@@ -102,7 +103,8 @@ fun CreateOrderScreen(
     onTableNumberUpdate: (TableDto) -> Unit,
     validateForm: Boolean,
     onAction: (CreateOrderAction) -> Unit,
-    userRole: String
+    userRole: String,
+    userAddress: String,
 ){
 
     var isMapLoaded by remember { mutableStateOf(false) }
@@ -260,7 +262,6 @@ fun CreateOrderScreenPreview(){
         CreateOrderScreenRoot(
             onGoToMenu = {},
             onGoToCart = {},
-            onGoToOrders = {},
             onGoToMakeReservation = {}
         )
     }

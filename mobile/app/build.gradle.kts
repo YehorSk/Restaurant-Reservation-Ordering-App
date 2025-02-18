@@ -80,7 +80,7 @@ dependencies {
 
     implementation("com.google.firebase:firebase-perf")
 
-    implementation("io.github.joelkanyi:komposecountrycodepicker:1.3.1")
+    implementation("io.github.joelkanyi:komposecountrycodepicker:1.3.5")
 
     implementation(libs.accompanist.permissions)
 

@@ -14,7 +14,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +48,7 @@ fun ProfileScreen(
     val name by viewModel.userName.collectAsStateWithLifecycle()
     val address by viewModel.userAddress.collectAsStateWithLifecycle()
     val phone by viewModel.userPhone.collectAsStateWithLifecycle()
+    val code by viewModel.userCountryCode.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -83,7 +83,8 @@ fun ProfileScreen(
                 name = name ?: "",
                 address = address ?: "",
                 phone = phone ?: "",
-                onUpdateProfile = { name,address,phone -> viewModel.updateProfile(name,address,phone) },
+                code = code ?: "",
+                onUpdateProfile = { name,address,phone,code -> viewModel.updateProfile(name,address,phone,code) },
                 onOpenDialog = { viewModel.showDeleteDialog() }
             )
         }
@@ -107,7 +108,8 @@ fun ProfileScreenForm(
     name: String,
     address: String,
     phone: String,
-    onUpdateProfile: (String,String,String) -> Unit,
+    code: String,
+    onUpdateProfile: (String,String,String,String) -> Unit,
     onOpenDialog: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -115,6 +117,7 @@ fun ProfileScreenForm(
     var nameInput by remember { mutableStateOf(name) }
     var addressInput by remember { mutableStateOf(address) }
     var phoneInput by remember { mutableStateOf(phone) }
+    var codeInput by remember { mutableStateOf(code) }
 
     Column(
         modifier = modifier
@@ -144,7 +147,7 @@ fun ProfileScreenForm(
             singleLine = true,
         )
         Button(
-            onClick = { onUpdateProfile(nameInput,addressInput,phoneInput) },
+            onClick = { onUpdateProfile(nameInput,addressInput,phoneInput,codeInput) },
             enabled = nameInput.length != 0 && addressInput.length != 0 && phoneInput.length != 0,
             modifier = Modifier.fillMaxWidth()
         ) {
@@ -180,7 +183,8 @@ fun ProfileScreenFormPreview(){
             name = "Test",
             address = "Test",
             phone = "Test",
-            onUpdateProfile = { one, two, three -> },
+            code = "421",
+            onUpdateProfile = { one, two, three, four -> },
             onOpenDialog = {}
         )
     }

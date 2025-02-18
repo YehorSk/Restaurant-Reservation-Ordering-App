@@ -197,13 +197,6 @@ fun WaiterNavGraph(
                     }
                 },
                 onGoToMakeReservation = {},
-                onGoToOrders = {
-                    navController.navigate(WaiterScreen.Orders.route){
-                        popUpTo(WaiterScreen.Orders.route){
-                            inclusive = true
-                        }
-                    }
-                }
             )
         }
         composable<WaiterScreen.OrderDetails>(

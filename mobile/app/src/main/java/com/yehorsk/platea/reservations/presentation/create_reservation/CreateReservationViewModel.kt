@@ -62,7 +62,7 @@ class CreateReservationViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 reservationForm = it.reservationForm.copy(
-                    phone = phone
+                    fullPhone = phone
                 )
             )
         }
@@ -111,7 +111,7 @@ class CreateReservationViewModel @Inject constructor(
     }
 
     fun validatePhoneNumber(): Boolean{
-        val phoneRegex = "^[+]?[0-9]{10,15}$"
+        val phoneRegex = "^[0-9]{10,15}$"
         return _uiState.value.reservationForm.phone.matches(phoneRegex.toRegex())
     }
 

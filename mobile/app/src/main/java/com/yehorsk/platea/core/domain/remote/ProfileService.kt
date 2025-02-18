@@ -13,7 +13,8 @@ interface ProfileService {
     suspend fun updateProfile(
         @Field("name") name: String,
         @Field("address") address: String,
-        @Field("phone") phone: String
+        @Field("phone") phone: String,
+        @Field("country_code") countryCode: String,
     ): ResponseDto<UserDto>
 
     @POST("delete-account")

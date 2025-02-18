@@ -19,6 +19,7 @@ class MainPreferencesRepository @Inject constructor(
         val JWT_TOKEN = stringPreferencesKey("JWT_TOKEN")
         val USER_ROLE = stringPreferencesKey("USER_ROLE")
         val USER_PHONE = stringPreferencesKey("USER_PHONE")
+        val USER_COUNTRY_CODE = stringPreferencesKey("COUNTRY_CODE")
         val USER_ADDRESS = stringPreferencesKey("USER_ADDRESS")
         val APP_LANGUAGE = stringPreferencesKey("APP_LANGUAGE")
         val APP_THEME = booleanPreferencesKey("APP_THEME")
@@ -36,6 +37,9 @@ class MainPreferencesRepository @Inject constructor(
 
     val userPhoneFlow: Flow<String?> = dataStore.data
         .map { preferences -> preferences[USER_PHONE] }
+
+    val userCountryCodeFlow: Flow<String?> = dataStore.data
+        .map { preferences -> preferences[USER_COUNTRY_CODE] }
 
     val userAddressFlow: Flow<String?> = dataStore.data
         .map { preferences -> preferences[USER_ADDRESS] }
@@ -78,6 +82,12 @@ class MainPreferencesRepository @Inject constructor(
         }
     }
 
+    suspend fun saveUserCountryCode(code: String) {
+        dataStore.edit { preferences ->
+            preferences[USER_COUNTRY_CODE] = code
+        }
+    }
+
     suspend fun saveUserAddress(userAddress: String) {
         dataStore.edit { preferences ->
             preferences[USER_ADDRESS] = userAddress
@@ -106,6 +116,7 @@ class MainPreferencesRepository @Inject constructor(
         saveUserName(authData.user?.name ?: "")
         saveUserEmail(authData.user?.email ?: "")
         saveUserPhone(authData.user?.phone ?: "")
+        saveUserCountryCode(authData.user?.countryCode ?: "")
         saveUserAddress(authData.user?.address ?: "")
     }
 
@@ -114,6 +125,7 @@ class MainPreferencesRepository @Inject constructor(
             preferences.remove(USER_NAME)
             preferences.remove(USER_EMAIL)
             preferences.remove(USER_ROLE)
+            preferences.remove(USER_COUNTRY_CODE)
             preferences.remove(USER_PHONE)
             preferences.remove(USER_ADDRESS)
             preferences.remove(JWT_TOKEN)

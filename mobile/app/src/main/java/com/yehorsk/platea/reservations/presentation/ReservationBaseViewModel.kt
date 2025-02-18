@@ -33,6 +33,12 @@ open class ReservationBaseViewModel @Inject constructor(
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    val userPhone: StateFlow<String?> = preferencesRepository.userPhoneFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
+    val userCountryCode: StateFlow<String?> = preferencesRepository.userCountryCodeFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
     protected val _uiState = MutableStateFlow(ReservationUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -46,6 +52,24 @@ open class ReservationBaseViewModel @Inject constructor(
         viewModelScope.launch{
             networkConnectivityObserver.observe().collect { status ->
                 isNetwork.value = status
+            }
+        }
+        viewModelScope.launch {
+            userPhone.collect { phone ->
+                _uiState.update { state ->
+                    val updatedPhone = phone ?: ""
+                    val updatedFullPhone = "${state.reservationForm.countryCode}${updatedPhone}"
+                    state.copy(reservationForm = state.reservationForm.copy(phone = updatedPhone, fullPhone = updatedFullPhone))
+                }
+            }
+        }
+        viewModelScope.launch {
+            userCountryCode.collect { code ->
+                _uiState.update { state ->
+                    val updatedCountryCode = code ?: ""
+                    val updatedFullPhone = "${updatedCountryCode}${state.reservationForm.phone}"
+                    state.copy(reservationForm = state.reservationForm.copy(countryCode = updatedCountryCode, fullPhone = updatedFullPhone))
+                }
             }
         }
     }

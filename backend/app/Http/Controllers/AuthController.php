@@ -55,6 +55,7 @@ class AuthController extends Controller
                 'role' => $user->role,
                 'address' => $user->address,
                 'phone' => $user->phone,
+                'country_code' => $user->country_code,
             ],
             'token' => $token
         ]], message: __("messages.authenticated_successfully"));
@@ -107,6 +108,7 @@ class AuthController extends Controller
                 'role' => $user->role,
                 'address' => $user->address,
                 'phone' => $user->phone,
+                'country_code' => $user->country_code,
             ],
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken
         ]], message: __("messages.registered_successfully"));
@@ -127,7 +129,7 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
-        $status = Password::reset(
+        Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function (User $user, string $password) {
                 $user->forceFill([
@@ -147,9 +149,11 @@ class AuthController extends Controller
         if($user instanceof User){
             $name = $request->input('name');
             $address = $request->input('address');
+            $countryCode = $request->input('country_code');
             $phone = $request->input('phone');
             $user->name = $name;
             $user->address = $address;
+            $user->country_code = $countryCode;
             $user->phone = $phone;
             $user->save();
             return $this->success(data: [$user], message: __("messages.profile_updated_successfully"));

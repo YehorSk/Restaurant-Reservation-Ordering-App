@@ -46,6 +46,9 @@ class SettingsViewModel @Inject constructor(
     val userPhone: StateFlow<String?> = preferencesRepository.userPhoneFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    val userCountryCode: StateFlow<String?> = preferencesRepository.userCountryCodeFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
     val userTheme: StateFlow<Boolean?> = preferencesRepository.appIsDarkThemeFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, false)
 
@@ -211,13 +214,14 @@ class SettingsViewModel @Inject constructor(
     fun updateProfile(
         name: String,
         address: String,
-        phone: String
+        phone: String,
+        countryCode: String
     ){
         viewModelScope.launch{
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            profileRepositoryImpl.updateProfile(name,address,phone)
+            profileRepositoryImpl.updateProfile(name, address, phone, countryCode)
                 .onSuccess { data,message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

@@ -20,16 +20,18 @@ class ProfileRepositoryImpl @Inject constructor(
     override suspend fun updateProfile(
         name: String,
         address: String,
-        phone: String
+        phone: String,
+        countryCode: String
     ): Result<List<UserDto>, AppError> {
         return safeCall<UserDto>(
             execute = {
-                profileService.updateProfile(name,address,phone)
+                profileService.updateProfile(name, address, phone, countryCode)
             },
             onSuccess = { data ->
                 mainPreferencesRepository.saveUserPhone(phone)
                 mainPreferencesRepository.saveUserAddress(address)
                 mainPreferencesRepository.saveUserName(name)
+                mainPreferencesRepository.saveUserCountryCode(countryCode)
             }
         )
     }

@@ -23,18 +23,23 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.ui.theme.MobileTheme
 import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
 import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryCodePickerState
+import timber.log.Timber
 
 @Composable
 fun ReservationPhoneInput(
     phone: String,
+    code: String,
     onPhoneChanged: (String) -> Unit
 ){
 
-    var phoneValue by rememberSaveable { mutableStateOf("") }
+    var phoneValue by rememberSaveable { mutableStateOf(phone) }
+
+    Timber.d("Code $code")
+
     val state = rememberKomposeCountryCodePickerState(
         showCountryCode = true,
         showCountryFlag = true,
-        defaultCountryCode = "SK",
+        defaultCountryCode = "+421"
     )
 
     Column(
@@ -75,6 +80,7 @@ fun ReservationPhoneInputPreview(){
     MobileTheme {
         ReservationPhoneInput(
             phone = "680000000",
+            code = "+421",
             onPhoneChanged = {}
         )
     }

@@ -25,7 +25,9 @@ data class UserDto(
     val role: String? = "",
     val address: String? = "",
     val language: String? = "",
-    val phone: String? = ""
+    val phone: String? = "",
+    @SerialName("country_code")
+    val countryCode: String? = ""
 )
 
 @Serializable

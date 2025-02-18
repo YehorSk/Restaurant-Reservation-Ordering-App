@@ -197,13 +197,6 @@ fun ClientNavGraph(
                         }
                     }
                 },
-                onGoToOrders = {
-                    navController.navigate(ClientScreen.Orders.route){
-                        popUpTo(ClientScreen.CreateOrder.route){
-                            inclusive = true
-                        }
-                    }
-                },
                 onGoToMakeReservation = {
                     navController.navigate(ClientScreen.CreateReservation(true, it)){}
                 }

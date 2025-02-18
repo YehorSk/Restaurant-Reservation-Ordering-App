@@ -179,7 +179,7 @@ class ReservationController extends Controller
                 "date" => $date,
                 "status" => "Pending",
                 "special_request" => $request->input('special_request', ''),
-                "phone" => $request->input('phone', ''),
+                "phone" => $request->input('full_phone', ''),
                 "code" => $this->generate_code()
             ]);
 

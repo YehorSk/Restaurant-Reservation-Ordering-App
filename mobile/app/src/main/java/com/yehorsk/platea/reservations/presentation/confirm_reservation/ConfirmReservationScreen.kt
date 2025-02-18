@@ -69,6 +69,7 @@ fun ConfirmReservationScreen(
             )
             ReservationPhoneInput(
                 phone = uiState.reservationForm.phone,
+                code = uiState.reservationForm.countryCode,
                 onPhoneChanged = { viewModel.updatePhone(it) }
             )
             Button(
