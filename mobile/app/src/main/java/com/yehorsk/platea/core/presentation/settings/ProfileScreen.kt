@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.ConfirmDialog
+import com.yehorsk.platea.core.presentation.components.PhoneInput
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.orders.presentation.components.NavBar
@@ -132,12 +133,20 @@ fun ProfileScreenForm(
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
-        OutlinedTextField(
-            value = phoneInput,
-            onValueChange = { phoneInput = it },
-            label = { Text(text = stringResource(R.string.user_phone)) },
+//        OutlinedTextField(
+//            value = phoneInput,
+//            onValueChange = { phoneInput = it },
+//            label = { Text(text = stringResource(R.string.user_phone)) },
+//            modifier = Modifier.fillMaxWidth(),
+//            singleLine = true,
+//        )
+        PhoneInput(
             modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
+            phone = phoneInput,
+            code = codeInput,
+            onPhoneChanged = { phoneInput = it },
+            onCodeChanged = { codeInput = it },
+            showText = false
         )
         OutlinedTextField(
             value = addressInput,

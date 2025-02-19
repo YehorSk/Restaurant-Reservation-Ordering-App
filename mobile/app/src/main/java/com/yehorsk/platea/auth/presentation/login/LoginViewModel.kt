@@ -46,7 +46,13 @@ class LoginViewModel @Inject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.Main){
-            authenticate()
+            if(networkConnectivityObserver.isAvailable){
+                Timber.d("Auth online")
+                authenticate()
+            }else{
+                Timber.d("Auth offline")
+                authenticateOffline()
+            }
         }
     }
 

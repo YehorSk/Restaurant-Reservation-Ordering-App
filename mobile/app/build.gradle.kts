@@ -69,6 +69,8 @@ android {
 
 dependencies {
 
+    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.26")
+
     // Firebase
 
     implementation(platform("com.google.firebase:firebase-bom:33.8.0"))

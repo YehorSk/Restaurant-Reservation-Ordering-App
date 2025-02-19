@@ -25,7 +25,7 @@ import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.orders.presentation.components.NavBar
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ConfirmReservationDetails
-import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ReservationPhoneInput
+import com.yehorsk.platea.core.presentation.components.PhoneInput
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ReservationSpecialRequest
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationViewModel
 
@@ -67,10 +67,14 @@ fun ConfirmReservationScreen(
                 request = uiState.reservationForm.specialRequest,
                 onRequestChange = { viewModel.updateSpecialRequest(it) }
             )
-            ReservationPhoneInput(
+            PhoneInput(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
                 phone = uiState.reservationForm.phone,
                 code = uiState.reservationForm.countryCode,
-                onPhoneChanged = { viewModel.updatePhone(it) }
+                onPhoneChanged = { viewModel.updatePhone(it) },
+                showText = true
             )
             Button(
                 modifier = Modifier

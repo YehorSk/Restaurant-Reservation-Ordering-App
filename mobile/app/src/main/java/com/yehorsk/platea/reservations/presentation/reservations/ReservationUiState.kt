@@ -9,6 +9,7 @@ import java.time.LocalDate
 data class ReservationUiState(
     val isLoading: Boolean = false,
     val timeSlots: List<TimeSlotDto>? = null,
+    val validPhoneNumber: Boolean = false,
     val reservationForm: ReservationForm = ReservationForm()
 )
 

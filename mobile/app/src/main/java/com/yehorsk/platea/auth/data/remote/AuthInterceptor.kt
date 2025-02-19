@@ -12,16 +12,10 @@ class AuthInterceptor(
 ): Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val token = runBlocking {
-            prefs.jwtTokenFlow.firstOrNull()?.also {
-                it
-            }
-        }
-        val lang = runBlocking {
-            prefs.appLanguageFlow.firstOrNull()?.also {
-                it
-            }
-        }
+
+        val token = runBlocking { prefs.getToken() }
+        val lang = runBlocking { prefs.getLang() }
+
         Timber.d("Token: $token")
         val requestBuilder = chain.request().newBuilder()
         requestBuilder.header("Content-Type", "application/vnd.api+json")

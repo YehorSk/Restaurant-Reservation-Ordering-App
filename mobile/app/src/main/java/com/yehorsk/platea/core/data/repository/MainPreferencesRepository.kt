@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -56,6 +57,18 @@ class MainPreferencesRepository @Inject constructor(
 
     val appIsDarkThemeFlow: Flow<Boolean?> = dataStore.data.map { preferences ->
         preferences[APP_THEME] ?: false
+    }
+
+    suspend fun getToken(): String? {
+        return dataStore.data.map { prefs ->
+            prefs[JWT_TOKEN] ?: ""
+        }.first()
+    }
+
+    suspend fun getLang(): String? {
+        return dataStore.data.map { prefs ->
+            prefs[APP_LANGUAGE] ?: ""
+        }.first()
     }
 
     suspend fun saveUserName(userName: String) {
