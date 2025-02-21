@@ -41,9 +41,6 @@ class LoginViewModel @Inject constructor(
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    val userToken: StateFlow<String?> = preferencesRepository.jwtTokenFlow
-        .stateIn(viewModelScope, SharingStarted.Lazily, null)
-
     init {
         viewModelScope.launch(Dispatchers.Main){
             if(networkConnectivityObserver.isAvailable){
@@ -104,7 +101,11 @@ class LoginViewModel @Inject constructor(
                 deviceId = deviceId,
                 deviceType = deviceType
             )
-            authRepository.authenticate(authState)
+            val startTime = System.currentTimeMillis()
+            val result = authRepository.authenticate(authState)
+            val duration = System.currentTimeMillis() - startTime
+            Timber.d("authenticate() took $duration ms")
+            result
                 .onSuccess { data, _ ->
                 _uiState.update { it.copy(isLoading = false,isAuthenticating = false, isLoggedIn = true) }
             }.onError { error ->
@@ -112,14 +113,8 @@ class LoginViewModel @Inject constructor(
                     AppError.UNAUTHORIZED -> {
                         _uiState.update { it.copy(isLoading = false,isAuthenticating = false , isLoggedIn = false) }
                     }
-                    AppError.NO_INTERNET -> {
-                        authenticateOffline()
-                    }
-                    AppError.UNKNOWN_ERROR -> {
-                        authenticateOffline()
-                    }
                     else -> {
-                        _uiState.update { it.copy(isLoading = false,isAuthenticating = false , isLoggedIn = false) }
+                        authenticateOffline()
                     }
                 }
             }

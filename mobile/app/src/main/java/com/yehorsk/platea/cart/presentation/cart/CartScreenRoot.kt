@@ -31,6 +31,7 @@ import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.db.model.toMenuItem
 import com.yehorsk.platea.cart.presentation.cart.components.CartItem
 import com.yehorsk.platea.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
@@ -123,7 +124,14 @@ fun CartScreen(
                             onGoToCheckoutClick()
                         }
                     ) {
-                        Text(
+//                        Text(
+//                            modifier = Modifier.padding(8.dp),
+//                            style = MaterialTheme.typography.titleMedium,
+//                            fontWeight = FontWeight.Bold,
+//                            color = Color.White,
+//                            text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
+//                        )
+                        AutoResizedText(
                             modifier = Modifier.padding(8.dp),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,

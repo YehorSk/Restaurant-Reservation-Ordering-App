@@ -9,6 +9,7 @@ import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainPreferencesRepository @Inject constructor(
@@ -60,9 +61,13 @@ class MainPreferencesRepository @Inject constructor(
     }
 
     suspend fun getToken(): String? {
-        return dataStore.data.map { prefs ->
+        val startTime = System.currentTimeMillis()
+        val token = dataStore.data.map { prefs ->
             prefs[JWT_TOKEN] ?: ""
         }.first()
+        val endTime = System.currentTimeMillis()
+        Timber.d("getToken() took ${endTime - startTime} ms")
+        return token
     }
 
     suspend fun getLang(): String? {

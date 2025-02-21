@@ -54,24 +54,36 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun authenticate(authState: AuthState): Result<List<AuthDataDto>, AppError> {
-        Timber.d("Auth authenticate")
-        return safeCall<AuthDataDto>(
+        Timber.d("Auth authenticate START")
+        val totalStart = System.currentTimeMillis()
+
+        val httpStart = System.currentTimeMillis()
+        val result = safeCall<AuthDataDto>(
             execute = {
                 authService.authenticate(authState)
             },
             onSuccess = { result ->
+                val successStart = System.currentTimeMillis()
+                Timber.d("Auth HTTP request took ${successStart - httpStart} ms")
                 prefs.saveUser(result.first())
-                setLocale(Locale.current.language)
+                Timber.d("Auth prefs.saveUser() took ${System.currentTimeMillis() - successStart} ms")
+//                setLocale(Locale.current.language)
+//                Timber.d("Auth setLocale() took ${System.currentTimeMillis() - successStart} ms")
             },
             onFailure = { error ->
+                val failureStart = System.currentTimeMillis()
                 if (error == AppError.UNAUTHORIZED) {
                     prefs.clearAllTokens()
                     withContext(Dispatchers.IO) {
                         mainRoomDatabase.clearAllTables()
                     }
                 }
+                Timber.d("Auth Failure handling took ${System.currentTimeMillis() - failureStart} ms")
             }
         )
+
+        Timber.d("Auth authenticate() took ${System.currentTimeMillis() - totalStart} ms")
+        return result
     }
 
     override suspend fun logout(): Result<List<AuthDataDto>, AppError> {

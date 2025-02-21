@@ -10,7 +10,9 @@ data class ReservationUiState(
     val isLoading: Boolean = false,
     val timeSlots: List<TimeSlotDto>? = null,
     val validPhoneNumber: Boolean = false,
-    val reservationForm: ReservationForm = ReservationForm()
+    val reservationForm: ReservationForm = ReservationForm(),
+    val countryCode: String = "",
+    val phone: String = "",
 )
 
 @Serializable
@@ -26,9 +28,6 @@ data class ReservationForm(
     val specialRequest: String = "",
     @SerialName("full_phone")
     val fullPhone: String = "",
-    val phone: String = "",
-    @SerialName("country_code")
-    val countryCode: String = "",
     @SerialName("with_order")
     val withOrder: Boolean = false,
     @SerialName("order_form")

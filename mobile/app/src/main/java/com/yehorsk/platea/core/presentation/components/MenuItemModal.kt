@@ -209,7 +209,7 @@ fun MenuItemModalContent(
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
                 fontSize = 16.sp,
-                text = menuItem.longDescription,
+                text = menuItem.shortDescription,
             )
             Spacer(
                 modifier = Modifier

@@ -71,8 +71,8 @@ fun ConfirmReservationScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp),
-                phone = uiState.reservationForm.phone,
-                code = uiState.reservationForm.countryCode,
+                phone = uiState.phone,
+                code = uiState.countryCode,
                 onPhoneChanged = { viewModel.updatePhone(it) },
                 showText = true
             )

@@ -38,14 +38,14 @@ fun PhoneInput(
 ){
 
     var phoneValue by rememberSaveable { mutableStateOf(phone) }
-    val formattedCode = Utility.getCountryCodeFromPhoneNumber(code)
+//    val formattedCode = Utility.getCountryCodeFromPhoneNumber(code)
 
     Timber.d("Code $code")
 
     val state = rememberKomposeCountryCodePickerState(
         showCountryCode = true,
         showCountryFlag = true,
-        defaultCountryCode = formattedCode
+        defaultCountryCode = code
     )
 
     Column(

@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.File
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,6 +12,14 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
+}
+
+val localProps = Properties()
+val localPropertiesFile = File(rootProject.rootDir,"local.properties")
+if (localPropertiesFile.exists() && localPropertiesFile.isFile) {
+    localPropertiesFile.inputStream().use {
+        localProps.load(it)
+    }
 }
 
 android {
@@ -31,11 +42,11 @@ android {
     buildTypes {
         debug{
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"http://192.168.1.18/SavchukBachelor/backend/public/api/\"")
+            buildConfigField("String", "BASE_URL", localProps.getProperty("LOCAL_SERVER"))
         }
         create("server"){
             isMinifyEnabled = false
-            buildConfigField("String", "BASE_URL", "\"https://api.platea.site/backend/public/api/\"")
+            buildConfigField("String", "BASE_URL", localProps.getProperty("ONLINE_SERVER"))
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
         }

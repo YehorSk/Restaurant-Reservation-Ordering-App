@@ -30,6 +30,7 @@ import com.yehorsk.platea.core.navigation.AdminNavGraph
 import com.yehorsk.platea.core.navigation.ChefNavGraph
 import com.yehorsk.platea.core.navigation.ClientNavGraph
 import com.yehorsk.platea.core.navigation.WaiterNavGraph
+import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.utils.snackbar.ObserveAsEvents
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.toString
@@ -179,10 +180,14 @@ fun RowScope.AddItem(
     } == true
     NavigationBarItem(
         label = {
-            Text(
+//            Text(
+//                text = stringResource(screen.title),
+//                style = MaterialTheme.typography.labelSmall,
+//                maxLines = 1,
+//            )
+            AutoResizedText(
                 text = stringResource(screen.title),
-                style = MaterialTheme.typography.labelSmall,
-                maxLines = 1,
+                style = MaterialTheme.typography.labelSmall
             )
         },
         icon = {

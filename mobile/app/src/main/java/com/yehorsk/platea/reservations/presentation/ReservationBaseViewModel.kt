@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,8 +59,11 @@ open class ReservationBaseViewModel @Inject constructor(
             userPhone.collect { phone ->
                 _uiState.update { state ->
                     val updatedPhone = phone ?: ""
-                    val updatedFullPhone = "${state.reservationForm.countryCode}${updatedPhone}"
-                    state.copy(reservationForm = state.reservationForm.copy(phone = updatedPhone, fullPhone = updatedFullPhone))
+                    val updatedFullPhone = "${state.countryCode}${updatedPhone}"
+                    state.copy(
+                        phone = updatedPhone,
+                        reservationForm = state.reservationForm.copy(fullPhone = updatedFullPhone)
+                    )
                 }
             }
         }
@@ -67,8 +71,9 @@ open class ReservationBaseViewModel @Inject constructor(
             userCountryCode.collect { code ->
                 _uiState.update { state ->
                     val updatedCountryCode = code ?: ""
-                    val updatedFullPhone = "${updatedCountryCode}${state.reservationForm.phone}"
-                    state.copy(reservationForm = state.reservationForm.copy(countryCode = updatedCountryCode, fullPhone = updatedFullPhone))
+                    val updatedFullPhone = "${updatedCountryCode}${state.phone}"
+                    state.copy(reservationForm = state.reservationForm.copy(fullPhone = updatedFullPhone))
+                    state.copy(countryCode = updatedCountryCode)
                 }
             }
         }
@@ -79,6 +84,12 @@ open class ReservationBaseViewModel @Inject constructor(
     }
 
     fun clearForm(){
-        _uiState.update { it.copy(reservationForm = ReservationForm()) }
+        _uiState.update {
+            it.copy(
+                timeSlots = null,
+                reservationForm = ReservationForm()
+            )
+        }
+        Timber.d("Reservation state: ${_uiState.value}")
     }
 }
