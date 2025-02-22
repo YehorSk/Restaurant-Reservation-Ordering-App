@@ -16,10 +16,6 @@ import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
 import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import com.yehorsk.platea.menu.domain.service.MenuService
-import com.yehorsk.platea.notifications.data.dao.NotificationDao
-import com.yehorsk.platea.notifications.data.remote.NotificationRepositoryImpl
-import com.yehorsk.platea.notifications.domain.repository.NotificationRepository
-import com.yehorsk.platea.notifications.domain.service.NotificationService
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
@@ -61,9 +57,5 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesReservationRepositoryImpl(reservationDao: ReservationDao, orderDao: OrderDao, reservationService: ReservationService) : ReservationRepository = ReservationRepositoryImpl(reservationDao, orderDao, reservationService)
-
-    @Provides
-    @Singleton
-    fun providesNotificationRepositoryImpl(notificationDao: NotificationDao, notificationService: NotificationService) : NotificationRepository = NotificationRepositoryImpl(notificationService, notificationDao)
 
 }

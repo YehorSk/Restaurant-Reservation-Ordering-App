@@ -35,6 +35,12 @@ open class OrderBaseViewModel @Inject constructor(
     val userAddress: StateFlow<String?> = preferencesRepository.userAddressFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
+    val userPhone: StateFlow<String?> = preferencesRepository.userPhoneFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
+    val userCountryCode: StateFlow<String?> = preferencesRepository.userCountryCodeFlow
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+
     protected val _uiState = MutableStateFlow(OrderUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -62,14 +68,32 @@ open class OrderBaseViewModel @Inject constructor(
                 _uiState.update { it.copy(orderForm = it.orderForm.copy(address = address ?: "")) }
             }
         }
+        viewModelScope.launch {
+            userPhone.collect { phone ->
+                _uiState.update { state ->
+                    val updatedPhone = phone ?: ""
+                    val updatedFullPhone = "${state.countryCode}${updatedPhone}"
+                    state.copy(
+                        phone = updatedPhone,
+                        orderForm = state.orderForm.copy(fullPhone = updatedFullPhone)
+                    )
+                }
+            }
+        }
+        viewModelScope.launch {
+            userCountryCode.collect { code ->
+                _uiState.update { state ->
+                    val updatedCountryCode = code ?: ""
+                    val updatedFullPhone = "${updatedCountryCode}${state.phone}"
+                    state.copy(orderForm = state.orderForm.copy(fullPhone = updatedFullPhone))
+                    state.copy(countryCode = updatedCountryCode)
+                }
+            }
+        }
     }
 
     protected fun setLoadingState(isLoading: Boolean) {
         _uiState.update { it.copy(isLoading = isLoading) }
-    }
-
-    protected fun setPlacesLoadingState(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoadingPlaces = isLoading) }
     }
 
 }

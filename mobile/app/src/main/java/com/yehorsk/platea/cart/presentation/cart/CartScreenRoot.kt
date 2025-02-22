@@ -124,19 +124,13 @@ fun CartScreen(
                             onGoToCheckoutClick()
                         }
                     ) {
-//                        Text(
-//                            modifier = Modifier.padding(8.dp),
-//                            style = MaterialTheme.typography.titleMedium,
-//                            fontWeight = FontWeight.Bold,
-//                            color = Color.White,
-//                            text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
-//                        )
                         AutoResizedText(
                             modifier = Modifier.padding(8.dp),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
-                            text = stringResource(R.string.go_to_checkout, formattedPrice(checkout))
+                            text = stringResource(R.string.go_to_checkout, formattedPrice(checkout)),
+                            maxLines = 2
                         )
                     }
                 }

@@ -20,7 +20,7 @@ class OrderController extends Controller
         if($user instanceof User && $user->role === "admin"){
             $data_today = Order::whereDay('created_at', now()->day)->get();
             $data_all = Order::all();
-            
+
             $data_stats = Order::selectRaw('SUM(price) as total_price, MONTHNAME(created_at) AS month_name, MONTH(created_at) AS month_number')
                 ->whereYear('created_at', $year)
                 ->groupByRaw('MONTHNAME(created_at), MONTH(created_at)')
@@ -198,6 +198,7 @@ class OrderController extends Controller
                 'special_request' => $request->input('special_request', ''),
                 'order_type' =>  $request->input('order_type'),
                 'address' =>  $request->input('address'),
+                'phone' =>  $request->input('full_phone'),
                 'instructions' =>  $request->input('instructions'),
                 'start_time' =>  $request->input('start_time'),
                 'end_time' =>  $request->input('end_time'),

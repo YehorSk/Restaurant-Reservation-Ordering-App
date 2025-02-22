@@ -16,8 +16,9 @@ data class OrderUiState(
     val isLoading: Boolean = false,
     val isLoadingPlaces: Boolean = false,
     val tables: List<TableDto>? = null,
-    val places: List<GooglePredictionDto>? = null,
     val showBottomSheet: Boolean = false,
+    val countryCode: String = "",
+    val phone: String = "",
 )
 
 @Serializable
@@ -34,6 +35,8 @@ data class OrderForm(
     val selectedTable: TableDto? = null,
     @SerialName("table_number")
     val selectedTableNumber:Int = 0,
+    @SerialName("full_phone")
+    val fullPhone: String = "",
     @SerialName("start_time")
     val startTime: String = getStartTime(),
     @SerialName("end_time")

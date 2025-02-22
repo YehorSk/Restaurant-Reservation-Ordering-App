@@ -59,14 +59,6 @@ fun MainSettingsScreen(
                         }
                     )
                 }
-//                item{
-//                    ProfileListItem(
-//                        text = R.string.notifications,
-//                        onClick = {
-//                            onNavigate(ProfileDestination.Notifications)
-//                        }
-//                    )
-//                }
                 if(userRole in arrayOf("user","waiter","admin")){
                     item{
                         ProfileListItem(

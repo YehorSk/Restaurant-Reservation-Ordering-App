@@ -125,6 +125,11 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun validatePhoneNumber(phone: String): Boolean{
+        val phoneRegex = "^[+]?[0-9]{10,15}$"
+        return phone.matches(phoneRegex.toRegex())
+    }
+
     fun logout(){
         viewModelScope.launch {
             _uiState.update { currentState ->

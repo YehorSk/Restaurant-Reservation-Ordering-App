@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float("price");
             $table->string("status");
             $table->longText("special_request")->nullable();
+            $table->longText("phone")->nullable();
             $table->longText("address")->nullable();
             $table->longText("instructions")->nullable();
             $table->integer("order_type")->default(false);

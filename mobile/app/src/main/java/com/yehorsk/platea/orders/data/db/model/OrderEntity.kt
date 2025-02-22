@@ -25,6 +25,7 @@ data class OrderEntity(
     val reservationId: Int? = null,
     val price: Double,
     val status: String,
+    val phone: String? = null,
     @ColumnInfo("special_request")
     val specialRequest: String? = null,
     val address: String? = null,
@@ -58,6 +59,7 @@ fun OrderEntity.toOrderDto(items: List<OrderMenuItemDto>): OrderDto{
         instructions = this.instructions,
         startTime = this.startTime,
         endTime = this.endTime,
-        completedAt = this.completedAt
+        completedAt = this.completedAt,
+        phone = this.phone
     )
 }

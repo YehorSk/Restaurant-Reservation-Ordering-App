@@ -40,7 +40,7 @@ import com.yehorsk.platea.orders.presentation.components.ChooseTimeModal
 import com.yehorsk.platea.orders.presentation.components.DeliveryMap
 import com.yehorsk.platea.orders.presentation.components.NavBar
 import com.yehorsk.platea.orders.presentation.components.OrderAddMore
-import com.yehorsk.platea.orders.presentation.components.OrderAddress
+import com.yehorsk.platea.orders.presentation.components.DeliveryDetails
 import com.yehorsk.platea.orders.presentation.components.OrderItemList
 import com.yehorsk.platea.orders.presentation.components.OrderOptions
 import com.yehorsk.platea.orders.presentation.components.OrderSpecialRequest
@@ -166,13 +166,9 @@ fun CreateOrderScreen(
                     )
                 }
                 if (uiState.orderForm.orderType == 1 && isConnected) {
-                    if (!uiState.places.isNullOrEmpty()) {
-                        DeliveryMap()
-                    }
-                    OrderAddress(
+                    DeliveryDetails(
                         address = uiState.orderForm.address,
                         instructions = uiState.orderForm.instructions,
-                        places = uiState.places,
                         onAddressChange = { address ->
                             onAction(CreateOrderAction.UpdateAddress(address))
                         },
@@ -182,7 +178,11 @@ fun CreateOrderScreen(
                                     instructions
                                 )
                             )
-                        }
+                        },
+                        onPhoneValidated = {},
+                        onPhoneChanged = {},
+                        code = uiState.countryCode,
+                        phone = uiState.phone
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                 }

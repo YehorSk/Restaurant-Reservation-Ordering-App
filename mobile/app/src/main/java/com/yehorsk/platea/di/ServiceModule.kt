@@ -4,7 +4,6 @@ import com.yehorsk.platea.auth.data.service.AuthService
 import com.yehorsk.platea.cart.domain.service.CartService
 import com.yehorsk.platea.core.domain.remote.ProfileService
 import com.yehorsk.platea.menu.domain.service.MenuService
-import com.yehorsk.platea.notifications.domain.service.NotificationService
 import com.yehorsk.platea.orders.domain.service.OrderService
 import com.yehorsk.platea.reservations.domain.service.ReservationService
 import dagger.Module
@@ -41,9 +40,5 @@ object ServiceModule {
     @Provides
     @Singleton
     fun provideReservationApiService(retrofit: Retrofit): ReservationService = retrofit.create(ReservationService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideNotificationApiService(retrofit: Retrofit): NotificationService = retrofit.create(NotificationService::class.java)
 
 }

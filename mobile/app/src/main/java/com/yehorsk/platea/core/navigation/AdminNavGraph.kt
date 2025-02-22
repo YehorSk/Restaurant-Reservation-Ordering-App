@@ -52,7 +52,6 @@ fun AdminNavGraph(
                         ProfileDestination.Reservations -> navController.navigate(AdminScreen.Reservations.route)
                         ProfileDestination.Language -> navController.navigate(AdminScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(AdminScreen.Theme.route)
-                        ProfileDestination.Notifications -> {}
                     }
                 }
             )

@@ -24,6 +24,8 @@ data class ReservationEntity(
     val date: String,
     val status: String,
     val code: String,
+    @ColumnInfo("order_code")
+    val orderCode: String? = null,
     @ColumnInfo("special_request")
     val specialRequest: String? = null,
     val phone: String,
@@ -48,6 +50,7 @@ fun ReservationEntity.toReservationDto(): ReservationDto{
         tableNumber = this.tableNumber,
         startTime = this.startTime,
         specialRequest = this.specialRequest,
-        phone = this.phone
+        phone = this.phone,
+        orderCode = this.orderCode
     )
 }

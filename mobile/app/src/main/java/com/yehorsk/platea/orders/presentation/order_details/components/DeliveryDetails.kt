@@ -21,7 +21,8 @@ import com.yehorsk.platea.ui.theme.MobileTheme
 fun DeliveryDetails(
     modifier: Modifier = Modifier,
     address: String,
-    instructions: String
+    instructions: String,
+    phone: String
 ){
     Card(
     ) {
@@ -56,6 +57,15 @@ fun DeliveryDetails(
                         start = 20.dp,
                         bottom = 10.dp
                     ),
+                text = phone,
+                fontSize = 16.sp,
+            )
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = 20.dp,
+                        bottom = 10.dp
+                    ),
                 text = instructions,
                 fontSize = 16.sp
             )
@@ -69,7 +79,8 @@ fun DeliveryDetailsPreview(){
     MobileTheme {
         DeliveryDetails(
             address = "Banicova 3, Nitra 949 11",
-            instructions = "Call me"
+            instructions = "Call me",
+            phone = "+380910000000"
         )
     }
 }

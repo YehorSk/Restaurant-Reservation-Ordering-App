@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
+import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.presentation.components.ConfirmDialog
 import com.yehorsk.platea.core.presentation.components.PhoneInput
 import com.yehorsk.platea.core.utils.SideEffect
@@ -86,7 +87,8 @@ fun ProfileScreen(
                 phone = phone ?: "",
                 code = code ?: "",
                 onUpdateProfile = { name,address,phone,code -> viewModel.updateProfile(name,address,phone,code) },
-                onOpenDialog = { viewModel.showDeleteDialog() }
+                onOpenDialog = { viewModel.showDeleteDialog() },
+                checkPhone = { viewModel.validatePhoneNumber(it) }
             )
         }
     }
@@ -112,6 +114,7 @@ fun ProfileScreenForm(
     code: String,
     onUpdateProfile: (String,String,String,String) -> Unit,
     onOpenDialog: () -> Unit,
+    checkPhone: (String) -> Boolean,
     modifier: Modifier = Modifier
 ) {
 
@@ -133,13 +136,6 @@ fun ProfileScreenForm(
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
-//        OutlinedTextField(
-//            value = phoneInput,
-//            onValueChange = { phoneInput = it },
-//            label = { Text(text = stringResource(R.string.user_phone)) },
-//            modifier = Modifier.fillMaxWidth(),
-//            singleLine = true,
-//        )
         PhoneInput(
             modifier = Modifier.fillMaxWidth(),
             phone = phoneInput,
@@ -157,7 +153,7 @@ fun ProfileScreenForm(
         )
         Button(
             onClick = { onUpdateProfile(nameInput,addressInput,phoneInput,codeInput) },
-            enabled = nameInput.length != 0 && addressInput.length != 0 && phoneInput.length != 0,
+            enabled = nameInput.isNotEmpty() && addressInput.isNotEmpty() && checkPhone(phoneInput),
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
@@ -173,12 +169,13 @@ fun ProfileScreenForm(
                 .background(Color.Transparent)
                 .fillMaxWidth()
         ) {
-            Text(
+            AutoResizedText(
                 text = stringResource(R.string.delete_profile),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                textDecoration = TextDecoration.Underline
+                textDecoration = TextDecoration.Underline,
+                maxLines = 1
             )
         }
     }
@@ -194,7 +191,8 @@ fun ProfileScreenFormPreview(){
             phone = "Test",
             code = "421",
             onUpdateProfile = { one, two, three, four -> },
-            onOpenDialog = {}
+            onOpenDialog = {},
+            checkPhone = {it -> true}
         )
     }
 }

@@ -119,7 +119,8 @@ fun OrderDetailsScreen(
             if(data.order.orderType==1){
                 DeliveryDetails(
                     address = data.order.address.toString(),
-                    instructions = data.order.instructions.toString()
+                    instructions = data.order.instructions.toString(),
+                    phone = data.order.phone.toString()
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))

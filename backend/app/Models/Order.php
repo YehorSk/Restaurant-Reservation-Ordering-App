@@ -20,6 +20,7 @@ class Order extends Model
         'special_request',
         'instructions',
         'address',
+        'phone',
         'order_type',
         'start_time',
         'end_time'

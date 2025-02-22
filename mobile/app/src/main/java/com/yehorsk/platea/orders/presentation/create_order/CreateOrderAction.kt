@@ -10,9 +10,11 @@ sealed interface CreateOrderAction {
 
     data class UpdateInstructions(val instructions: String): CreateOrderAction
 
-    data class UpdatePlace(val place: String): CreateOrderAction
-
     data class UpdateTime(val start: String, val end: String): CreateOrderAction
+
+    data class UpdatePhone(val phone: String): CreateOrderAction
+
+    data class ValidatePhone(val isValid: Boolean): CreateOrderAction
 
     data object MakeOrder: CreateOrderAction
 

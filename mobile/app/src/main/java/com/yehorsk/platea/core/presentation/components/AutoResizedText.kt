@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.isUnspecified
 
 @Composable
@@ -20,7 +21,9 @@ fun AutoResizedText(
     style: TextStyle,
     modifier: Modifier = Modifier,
     color: Color = style.color,
-    fontWeight: FontWeight = style.fontWeight ?: FontWeight.Light
+    fontWeight: FontWeight = style.fontWeight ?: FontWeight.Light,
+    textDecoration: TextDecoration = TextDecoration.None,
+    maxLines: Int = 1
 ){
     var resizedTextStyle by remember {
         mutableStateOf(style)
@@ -36,6 +39,8 @@ fun AutoResizedText(
         text = text,
         color = color,
         fontWeight = fontWeight,
+        textDecoration = textDecoration,
+        maxLines = maxLines,
         modifier = modifier
             .drawWithContent {
                 if(shouldDraw){

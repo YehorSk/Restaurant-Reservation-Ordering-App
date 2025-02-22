@@ -36,11 +36,12 @@ class CreateOrderViewModel @Inject constructor(
                 text = action.text
             )
             is CreateOrderAction.UpdateRequest -> updateRequest(action.request)
-            is CreateOrderAction.UpdatePlace -> updatePlace(action.place)
             is CreateOrderAction.MakeWaiterOrder -> makeWaiterOrder()
             CreateOrderAction.CloseBottomSheet -> closeBottomSheet()
             CreateOrderAction.OpenBottomSheet -> showBottomSheet()
             is CreateOrderAction.UpdateTime -> updateTime(start = action.start, end = action.end)
+            is CreateOrderAction.UpdatePhone -> updatePhone(phone = action.phone)
+            is CreateOrderAction.ValidatePhone -> TODO()
         }
     }
 
@@ -53,6 +54,21 @@ class CreateOrderViewModel @Inject constructor(
     fun closeBottomSheet(){
         _uiState.update {
             it.copy(showBottomSheet = false)
+        }
+    }
+
+    fun validatePhoneNumber(): Boolean{
+        val phoneRegex = "^[+]?[0-9]{10,15}$"
+        return _uiState.value.orderForm.fullPhone.matches(phoneRegex.toRegex())
+    }
+
+    fun updatePhone(phone: String){
+        _uiState.update {
+            it.copy(
+                orderForm = it.orderForm.copy(
+                    fullPhone = phone
+                )
+            )
         }
     }
 
@@ -116,10 +132,6 @@ class CreateOrderViewModel @Inject constructor(
                 )
             )
         }
-    }
-
-    fun updatePlace(address: String){
-//        getPlaces(address)
     }
 
     fun validateForm(): Boolean{
