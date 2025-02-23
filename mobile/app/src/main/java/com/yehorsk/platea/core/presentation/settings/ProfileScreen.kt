@@ -40,17 +40,12 @@ import com.yehorsk.platea.ui.theme.MobileTheme
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel = hiltViewModel(),
+    viewModel: SettingsViewModel,
     onGoBack: () -> Unit,
     onDeleteAccount: () -> Unit
  ) {
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    val name by viewModel.userName.collectAsStateWithLifecycle()
-    val address by viewModel.userAddress.collectAsStateWithLifecycle()
-    val phone by viewModel.userPhone.collectAsStateWithLifecycle()
-    val code by viewModel.userCountryCode.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
@@ -80,17 +75,20 @@ fun ProfileScreen(
             fontSize = 18.sp,
             fontWeight = FontWeight.ExtraBold,
         )
-        if(name != null){
-            ProfileScreenForm(
-                name = name ?: "",
-                address = address ?: "",
-                phone = phone ?: "",
-                code = code ?: "",
-                onUpdateProfile = { name,address,phone,code -> viewModel.updateProfile(name,address,phone,code) },
-                onOpenDialog = { viewModel.showDeleteDialog() },
-                checkPhone = { viewModel.validatePhoneNumber(it) }
-            )
-        }
+        ProfileScreenForm(
+            name = uiState.name,
+            address = uiState.address,
+            phone = uiState.phone,
+            code = uiState.code,
+            onUpdateProfile = { viewModel.updateProfile() },
+            onOpenDialog = { viewModel.showDeleteDialog() },
+            checkPhone = { viewModel.validatePhoneNumber(it) },
+            isPhoneValid = uiState.isPhoneValid,
+            onUpdatePhone = { viewModel.updatePhone(it) },
+            onUpdateCode = { viewModel.updateCode(it) },
+            onUpdateName = { viewModel.updateName(it) },
+            onUpdateAddress = { viewModel.updateAddress(it) },
+        )
     }
     if(uiState.showDeleteAccountDialog){
         ConfirmDialog(
@@ -112,16 +110,16 @@ fun ProfileScreenForm(
     address: String,
     phone: String,
     code: String,
-    onUpdateProfile: (String,String,String,String) -> Unit,
+    isPhoneValid: Boolean,
+    onUpdateProfile: () -> Unit,
     onOpenDialog: () -> Unit,
-    checkPhone: (String) -> Boolean,
+    checkPhone: (String) -> Unit,
+    onUpdatePhone: (String) -> Unit,
+    onUpdateCode: (String) -> Unit,
+    onUpdateName: (String) -> Unit,
+    onUpdateAddress: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
-    var nameInput by remember { mutableStateOf(name) }
-    var addressInput by remember { mutableStateOf(address) }
-    var phoneInput by remember { mutableStateOf(phone) }
-    var codeInput by remember { mutableStateOf(code) }
 
     Column(
         modifier = modifier
@@ -130,30 +128,31 @@ fun ProfileScreenForm(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         OutlinedTextField(
-            value = nameInput,
-            onValueChange = { nameInput = it },
+            value = name,
+            onValueChange = { onUpdateName(it) },
             label = { Text(text = stringResource(R.string.user_name)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         PhoneInput(
             modifier = Modifier.fillMaxWidth(),
-            phone = phoneInput,
-            code = codeInput,
-            onPhoneChanged = { phoneInput = it },
-            onCodeChanged = { codeInput = it },
+            phone = phone,
+            code = code,
+            onPhoneValidated = { checkPhone(it) },
+            onPhoneChanged = { onUpdatePhone(it) },
+            onCodeChanged = { onUpdateCode(it) },
             showText = false
         )
         OutlinedTextField(
-            value = addressInput,
-            onValueChange = { addressInput = it },
+            value = address,
+            onValueChange = { onUpdateAddress(it) },
             label = { Text(text = stringResource(R.string.user_address)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         Button(
-            onClick = { onUpdateProfile(nameInput,addressInput,phoneInput,codeInput) },
-            enabled = nameInput.isNotEmpty() && addressInput.isNotEmpty() && checkPhone(phoneInput),
+            onClick = { onUpdateProfile() },
+            enabled = name.isNotEmpty() && address.isNotEmpty() && isPhoneValid,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
@@ -190,9 +189,14 @@ fun ProfileScreenFormPreview(){
             address = "Test",
             phone = "Test",
             code = "421",
-            onUpdateProfile = { one, two, three, four -> },
+            onUpdateProfile = { },
             onOpenDialog = {},
-            checkPhone = {it -> true}
+            checkPhone = { it -> true },
+            isPhoneValid = false,
+            onUpdatePhone = {},
+            onUpdateCode = {},
+            onUpdateName = {},
+            onUpdateAddress = {},
         )
     }
 }

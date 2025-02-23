@@ -19,6 +19,7 @@ data class OrderUiState(
     val showBottomSheet: Boolean = false,
     val countryCode: String = "",
     val phone: String = "",
+    val isPhoneValid: Boolean = false
 )
 
 @Serializable

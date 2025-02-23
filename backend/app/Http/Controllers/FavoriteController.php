@@ -16,7 +16,7 @@ class FavoriteController extends Controller
             $items = $user->favoriteItems()->get();
             return $this->success(data: $items, message: "");
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function addUserFavoriteItem(Request $request){
@@ -25,7 +25,7 @@ class FavoriteController extends Controller
             $user->favoriteItems()->attach($request->input('menu_item_id'));
             return $this->success(data: [""], message: __("messages.item_added_to_favorites"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function deleteUserFavoriteItem(Request $request){
@@ -34,7 +34,7 @@ class FavoriteController extends Controller
             $user->favoriteItems()->detach($request->input('menu_item_id'));
             return $this->success(data: [""], message: __("messages.item_removed_from_favorites"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
 

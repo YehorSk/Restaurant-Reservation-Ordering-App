@@ -35,7 +35,7 @@ class MenuController extends Controller
             }
             return $this->success(data: $menus, message: "");
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function store(Request $request){
@@ -54,7 +54,7 @@ class MenuController extends Controller
             }
             return $this->success(data: [$menu], message: __("messages.item_added_to_menu"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function update(Request $request, $id){
@@ -70,7 +70,7 @@ class MenuController extends Controller
             $menu->update($data);
             return $this->success(data: [$menu], message: __("messages.item_was_updated"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function destroy($id){
@@ -80,7 +80,7 @@ class MenuController extends Controller
             $menu->delete();
             return $this->success(data: [$menu], message: __("messages.item_was_deleted"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
 }

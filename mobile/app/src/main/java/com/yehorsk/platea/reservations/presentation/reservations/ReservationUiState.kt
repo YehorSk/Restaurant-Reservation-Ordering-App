@@ -13,6 +13,7 @@ data class ReservationUiState(
     val reservationForm: ReservationForm = ReservationForm(),
     val countryCode: String = "",
     val phone: String = "",
+    val isPhoneValid: Boolean = false
 )
 
 @Serializable

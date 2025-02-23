@@ -19,7 +19,7 @@ class TableController extends Controller
             $items = Table::get();
             return $this->success(data: $items, message: "");
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function index()
@@ -29,7 +29,7 @@ class TableController extends Controller
             $items = Table::all();
             return $this->success(data: $items, message: "");
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function store(Request $request)
@@ -44,7 +44,7 @@ class TableController extends Controller
             $item->save();
             return $this->success(data: $item, message: __("messages.item_was_added"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function update(Request $request, $id)
@@ -59,7 +59,7 @@ class TableController extends Controller
             $item->update($data);
             return $this->success(data: $item, message: __("messages.item_was_updated"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function destroy($id)
@@ -70,7 +70,7 @@ class TableController extends Controller
             $item->delete();
             return $this->success(data: [], message: __("messages.item_was_deleted"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
 

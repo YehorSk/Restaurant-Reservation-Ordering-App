@@ -26,7 +26,7 @@ class AuthController extends Controller
                 'data_all' => $data_all->count(),
             ]]);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function authenticate(Request $request)
@@ -158,7 +158,7 @@ class AuthController extends Controller
             $user->save();
             return $this->success(data: [$user], message: __("messages.profile_updated_successfully"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function updateLanguage($language) {
@@ -168,7 +168,7 @@ class AuthController extends Controller
             $user->save();
             return $this->success(data: [$user], message: __("messages.profile_updated_successfully"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function forgotPassword(Request $request)
@@ -192,7 +192,7 @@ class AuthController extends Controller
             $user->delete();
             return $this->success([""], __("messages.account_deleted_successfully"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
 }

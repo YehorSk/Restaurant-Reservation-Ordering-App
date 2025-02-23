@@ -73,7 +73,8 @@ fun ConfirmReservationScreen(
                     .padding(20.dp),
                 phone = uiState.phone,
                 code = uiState.countryCode,
-                onPhoneChanged = { viewModel.updatePhone(it) },
+                onFullPhoneChanged = { viewModel.updatePhone(it) },
+                onPhoneValidated = { viewModel.validatePhoneNumber(it) },
                 showText = true
             )
             Button(
@@ -85,7 +86,7 @@ fun ConfirmReservationScreen(
                         bottom = 10.dp
                     )
                     .fillMaxWidth(),
-                enabled = viewModel.validatePhoneNumber(),
+                enabled = uiState.isPhoneValid,
                 onClick = {
                     viewModel.createReservation()
                 }

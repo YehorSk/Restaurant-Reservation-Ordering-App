@@ -14,7 +14,7 @@ sealed interface CreateOrderAction {
 
     data class UpdatePhone(val phone: String): CreateOrderAction
 
-    data class ValidatePhone(val isValid: Boolean): CreateOrderAction
+    data class ValidatePhone(val phone: String): CreateOrderAction
 
     data object MakeOrder: CreateOrderAction
 

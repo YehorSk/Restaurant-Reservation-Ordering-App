@@ -46,7 +46,7 @@ class OrderController extends Controller
                 'data_stats' => $data_stats
             ]);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function getAllOrders(Request $request){

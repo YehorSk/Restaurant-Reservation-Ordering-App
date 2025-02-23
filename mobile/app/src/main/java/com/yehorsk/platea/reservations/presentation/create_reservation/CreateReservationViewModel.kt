@@ -68,6 +68,15 @@ class CreateReservationViewModel @Inject constructor(
         }
     }
 
+    fun validatePhoneNumber(phone: String){
+        val phoneRegex = "^[+]?[0-9]{10,15}$"
+        _uiState.update { currentState ->
+            currentState.copy(
+                isPhoneValid = phone.matches(phoneRegex.toRegex())
+            )
+        }
+    }
+
 
     fun updateTimeSlot(slot: Int, time: String){
         _uiState.update {

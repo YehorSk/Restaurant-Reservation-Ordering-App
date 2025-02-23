@@ -35,7 +35,7 @@ fun DeliveryDetails(
     onPhoneChanged: (String) -> Unit,
     onAddressChange: (String) -> Unit,
     onInstructionsChange: (String) -> Unit,
-    onPhoneValidated: (Boolean) -> Unit = {}
+    onPhoneValidate: (String) -> Unit
 ) {
 
     var phoneValue by rememberSaveable { mutableStateOf(phone) }
@@ -60,7 +60,8 @@ fun DeliveryDetails(
                 phone = phoneValue,
                 code = codeValue,
                 showText = false,
-                onPhoneChanged = { it -> onPhoneChanged(it) },
+                onFullPhoneChanged = { onPhoneChanged(it) },
+                onPhoneValidated = { onPhoneValidate(it) },
                 color = TextFieldDefaults.colors(
                     disabledIndicatorColor = Color.Transparent,
                     focusedContainerColor = MaterialTheme.colorScheme.background,
@@ -139,7 +140,7 @@ fun OrderAddressPreview(){
             code = "",
             phone = "",
             onPhoneChanged = {},
-            onPhoneValidated = {}
+            onPhoneValidate = {}
         )
     }
 }

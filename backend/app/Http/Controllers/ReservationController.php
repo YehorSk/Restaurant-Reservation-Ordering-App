@@ -45,7 +45,7 @@ class ReservationController extends Controller
                 'months' => $months,
             ]);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function getAllReservations(Request $request){
@@ -69,7 +69,7 @@ class ReservationController extends Controller
             });
             return $this->success($items);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function adminDeleteReservation($id){
@@ -79,7 +79,7 @@ class ReservationController extends Controller
             $reservation->delete();
             return $this->success(data: $user, message: __("messages.reservation_deleted_successfully"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function getAvailableTimeSlots(Request $request)
@@ -132,7 +132,7 @@ class ReservationController extends Controller
             return $this->success(data: $timeSlots, message: "");
         }
 
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function createReservation(Request $request){
@@ -214,7 +214,7 @@ class ReservationController extends Controller
             }
             return $this->success(data: [$item], message: __("messages.reservation_was_created_successfully"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function getReservations(Request $request){
@@ -247,7 +247,7 @@ class ReservationController extends Controller
             }
 
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function getReservationsDetails($id){
@@ -277,7 +277,7 @@ class ReservationController extends Controller
 
         }
 
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function makeUserReservationOrder(Request $request, $reservationId)

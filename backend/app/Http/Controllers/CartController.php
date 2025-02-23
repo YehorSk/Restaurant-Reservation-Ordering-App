@@ -19,7 +19,7 @@ class CartController extends Controller
             });
             return $this->success(data: $items, message: "");
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function addUserCartItem(Request $request){
@@ -53,7 +53,7 @@ class CartController extends Controller
             }
             return $this->success(data: [$newItem], message: __("messages.item_added_to_cart"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function deleteUserCartItem(Request $request){
@@ -75,7 +75,7 @@ class CartController extends Controller
             }
             return $this->error('', "Item was not deleted", 400);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function updateUserCartItem(Request $request){
@@ -100,6 +100,6 @@ class CartController extends Controller
             }
             return $this->error('', "Item in Cart was not updated", 400);
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 }

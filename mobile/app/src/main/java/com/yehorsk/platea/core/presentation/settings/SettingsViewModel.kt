@@ -18,10 +18,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -61,6 +63,47 @@ class SettingsViewModel @Inject constructor(
     protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
+
+    init {
+        viewModelScope.launch{
+            userPhone.collect{ value ->
+                val updatedPhone = value ?: ""
+                _uiState.update { state ->
+                    state.copy(
+                        phone = updatedPhone
+                    )
+                }
+            }
+        }
+        viewModelScope.launch{
+            userCountryCode.collect{ value ->
+                val updatedCountryCode = value ?: ""
+                _uiState.update { state ->
+                    state.copy(
+                        code = updatedCountryCode
+                    )
+                }
+            }
+        }
+        viewModelScope.launch{
+            userAddress.collect{ value ->
+                _uiState.update { state ->
+                    state.copy(
+                        address = value ?: ""
+                    )
+                }
+            }
+        }
+        viewModelScope.launch{
+            userName.collect{ value ->
+                _uiState.update { state ->
+                    state.copy(
+                        name = value ?: ""
+                    )
+                }
+            }
+        }
+    }
 
     fun showDeleteDialog(){
         _uiState.update { currentState ->
@@ -125,9 +168,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun validatePhoneNumber(phone: String): Boolean{
+    fun validatePhoneNumber(phone: String){
         val phoneRegex = "^[+]?[0-9]{10,15}$"
-        return phone.matches(phoneRegex.toRegex())
+        _uiState.update { currentState ->
+            currentState.copy(
+                isPhoneValid = phone.matches(phoneRegex.toRegex())
+            )
+        }
     }
 
     fun logout(){
@@ -189,6 +236,38 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun updateName(value: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(name = value)
+            }
+        }
+    }
+
+    fun updateAddress(value: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(address = value)
+            }
+        }
+    }
+
+    fun updatePhone(value: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(phone = value)
+            }
+        }
+    }
+
+    fun updateCode(value: String){
+        viewModelScope.launch{
+            _uiState.update {
+                it.copy(code = value)
+            }
+        }
+    }
+
     fun updateLanguage(value: String){
         viewModelScope.launch{
             _uiState.update {
@@ -216,17 +295,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun updateProfile(
-        name: String,
-        address: String,
-        phone: String,
-        countryCode: String
-    ){
+    fun updateProfile(){
         viewModelScope.launch{
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            profileRepositoryImpl.updateProfile(name, address, phone, countryCode)
+            profileRepositoryImpl.updateProfile(_uiState.value.name, _uiState.value.address, _uiState.value.phone, _uiState.value.code)
                 .onSuccess { data,message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

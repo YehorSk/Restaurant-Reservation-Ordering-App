@@ -86,6 +86,7 @@ fun ChefNavGraph(
         ) {
             ProfileScreen(
                 modifier = modifier,
+                viewModel = settingsViewModel,
                 onGoBack = {
                     navController.popBackStack()
                 },

@@ -27,6 +27,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.ui.theme.MobileTheme
 import com.joelkanyi.jcomposecountrycodepicker.component.KomposeCountryCodePicker
 import com.joelkanyi.jcomposecountrycodepicker.component.rememberKomposeCountryCodePickerState
+import com.yehorsk.platea.core.utils.Utility
 import timber.log.Timber
 
 @Composable
@@ -34,9 +35,10 @@ fun PhoneInput(
     modifier: Modifier = Modifier,
     phone: String,
     code: String,
-    onPhoneChanged: (String) -> Unit,
+    onPhoneChanged: (String) -> Unit = {},
+    onFullPhoneChanged: (String) -> Unit = {},
     onCodeChanged: (String) -> Unit = {},
-    onPhoneValidated: (Boolean) -> Unit = {},
+    onPhoneValidated: (String) -> Unit = {},
     color: TextFieldColors = TextFieldDefaults.colors(
         disabledIndicatorColor = Color.Transparent,
         focusedContainerColor = MaterialTheme.colorScheme.background,
@@ -46,20 +48,24 @@ fun PhoneInput(
     shape: Shape = TextFieldDefaults.shape
 ){
 
+    val formattedCode = Utility.getCountryCodeFromPhoneNumber(code)
+
     var phoneValue by rememberSaveable { mutableStateOf(phone) }
-    var codeValue by rememberSaveable { mutableStateOf(code) }
 
     Timber.d("Code $code")
 
     val state = rememberKomposeCountryCodePickerState(
         showCountryCode = true,
         showCountryFlag = true,
-        defaultCountryCode = codeValue
+        defaultCountryCode = formattedCode
     )
 
-
-    LaunchedEffect(true) {
-        onPhoneValidated(state.isPhoneNumberValid())
+    LaunchedEffect(state.getFullPhoneNumber()) {
+        onPhoneChanged(state.getPhoneNumberWithoutPrefix())
+        onPhoneValidated(state.getFullPhoneNumber())
+        onCodeChanged(state.getCountryPhoneCode())
+        onFullPhoneChanged(state.getFullPhoneNumber())
+        Timber.d("Phone : ${state.getFullPhoneNumber()}")
     }
 
     Column(
@@ -83,8 +89,6 @@ fun PhoneInput(
             text = phoneValue,
             onValueChange = {
                 phoneValue = it
-                onPhoneChanged(state.getFullPhoneNumber())
-                onPhoneValidated(state.isPhoneNumberValid())
             },
             colors = color,
             shape = shape

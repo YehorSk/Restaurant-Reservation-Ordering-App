@@ -179,8 +179,17 @@ fun CreateOrderScreen(
                                 )
                             )
                         },
-                        onPhoneValidated = {},
-                        onPhoneChanged = {},
+                        onPhoneValidate = {
+                            onAction(
+                                CreateOrderAction.ValidatePhone(it)
+                            )
+                        },
+                        onPhoneChanged = {  phone ->
+                            onAction(
+                                CreateOrderAction.UpdatePhone(
+                                    phone
+                                )
+                            ) },
                         code = uiState.countryCode,
                         phone = uiState.phone
                     )

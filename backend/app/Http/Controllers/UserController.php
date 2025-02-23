@@ -24,7 +24,7 @@ class UserController extends Controller
                 ->paginate(10);
             return $this->success($users, "");
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function update(Request $request, $id){
@@ -39,7 +39,7 @@ class UserController extends Controller
             $user->update($data);
             return $this->success(data: $user, message: __("messages.user_updated_successfully"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 
     public function destroy($id){
@@ -49,6 +49,6 @@ class UserController extends Controller
             $user->delete();
             return $this->success(message: __("messages.user_deleted_successfully"));
         }
-        return $this->error('', 'No user', 401);
+        return $this->error('', __('messages.no_user'), 401);
     }
 }

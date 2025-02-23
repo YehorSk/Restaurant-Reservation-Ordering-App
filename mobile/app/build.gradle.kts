@@ -84,7 +84,7 @@ dependencies {
 
     // Firebase
 
-    implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
 
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
@@ -93,7 +93,7 @@ dependencies {
 
     implementation("com.google.firebase:firebase-perf")
 
-    implementation("io.github.joelkanyi:komposecountrycodepicker:1.3.5")
+    implementation(libs.komposecountrycodepicker)
 
     implementation(libs.accompanist.permissions)
 

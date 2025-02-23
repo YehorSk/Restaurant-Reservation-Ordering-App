@@ -83,6 +83,7 @@ fun AdminNavGraph(
         ) {
             ProfileScreen(
                 modifier = modifier,
+                viewModel = settingsViewModel,
                 onGoBack = {
                     navController.popBackStack()
                 },
