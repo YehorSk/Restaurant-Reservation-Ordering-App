@@ -48,11 +48,12 @@ fun PhoneInput(
     shape: Shape = TextFieldDefaults.shape
 ){
 
-    val formattedCode = Utility.getCountryCodeFromPhoneNumber(code)
+    val formattedCode = Utility.getCountryCodeFromPhoneNumber(code+phone)
 
     var phoneValue by rememberSaveable { mutableStateOf(phone) }
 
     Timber.d("Code $code")
+    Timber.d("Code2 $formattedCode")
 
     val state = rememberKomposeCountryCodePickerState(
         showCountryCode = true,

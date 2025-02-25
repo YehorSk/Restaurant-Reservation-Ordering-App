@@ -23,7 +23,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ConfirmReservationDetails
 import com.yehorsk.platea.core.presentation.components.PhoneInput
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ReservationSpecialRequest

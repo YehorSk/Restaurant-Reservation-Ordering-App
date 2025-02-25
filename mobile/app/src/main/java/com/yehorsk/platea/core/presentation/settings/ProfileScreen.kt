@@ -15,9 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -26,7 +23,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
@@ -34,7 +30,7 @@ import com.yehorsk.platea.core.presentation.components.ConfirmDialog
 import com.yehorsk.platea.core.presentation.components.PhoneInput
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable

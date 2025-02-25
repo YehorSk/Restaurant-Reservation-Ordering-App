@@ -27,7 +27,7 @@ import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
 import com.yehorsk.platea.orders.presentation.OrderUiState
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.orders.presentation.components.OrderDetailsItemList
 import com.yehorsk.platea.orders.presentation.components.TotalPrice
 import com.yehorsk.platea.orders.presentation.order_details.components.DeliveryDetails

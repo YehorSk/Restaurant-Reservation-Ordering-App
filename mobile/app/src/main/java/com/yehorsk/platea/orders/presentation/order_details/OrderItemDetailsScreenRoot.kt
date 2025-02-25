@@ -26,7 +26,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 import kotlin.collections.List
 
 @Composable

@@ -14,11 +14,15 @@ import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
 import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -36,6 +40,10 @@ class ReservationScreenViewModel @Inject constructor(
     private val _filterOption = MutableStateFlow(ReservationFilter.ALL)
     val filterOption= _filterOption.asStateFlow()
 
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
     val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationDao.getUserReservations()
         .combine(_filterOption){ reservations, filter ->
             when(filter){
@@ -53,6 +61,10 @@ class ReservationScreenViewModel @Inject constructor(
 
     init {
         getReservations()
+    }
+
+    fun onSearchValueChange(value: String){
+        _searchText.update { value }
     }
 
     fun updateFilter(option: ReservationFilter) {

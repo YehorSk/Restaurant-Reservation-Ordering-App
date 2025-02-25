@@ -37,8 +37,7 @@ import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.OrderUiState
 import com.yehorsk.platea.orders.presentation.components.ChooseTimeModal
-import com.yehorsk.platea.orders.presentation.components.DeliveryMap
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.orders.presentation.components.OrderAddMore
 import com.yehorsk.platea.orders.presentation.components.DeliveryDetails
 import com.yehorsk.platea.orders.presentation.components.OrderItemList

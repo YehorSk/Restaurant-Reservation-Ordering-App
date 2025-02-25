@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.settings.components.ProfileListHeader
 import com.yehorsk.platea.core.presentation.settings.components.SettingsListItem
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 
 @Composable
 fun ChangeThemeScreen(

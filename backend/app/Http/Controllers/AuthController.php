@@ -69,17 +69,28 @@ class AuthController extends Controller
 
         $user = User::where('email',$request->email)->first();
 
-        $user->devices()->updateOrCreate(
-            ['device_id' => $request->device_id],
-            [
-                'device_token' => $request->fcm_token,
-                'device_type' => $request->device_type,
-            ]
-        );
+        if($user->role !== "admin"){
+            $user->devices()->delete();
+            $user->devices()->create(
+                ['device_id' => $request->device_id],
+                [
+                    'device_token' => $request->fcm_token,
+                    'device_type' => $request->device_type,
+                ]
+            );
+        }
+
+        $existingToken = $user->tokens()->first();
+
+        if ($existingToken) {
+            $token = $existingToken->plainTextToken;
+        } else {
+            $token = $user->createToken($user->name)->plainTextToken;
+        }
 
         return $this->success(data: [[
             'user' => $user,
-            'token' => $user->createToken("API Token of " . $user->name)->plainTextToken,
+            'token' => $token,
         ]]);
     }
 

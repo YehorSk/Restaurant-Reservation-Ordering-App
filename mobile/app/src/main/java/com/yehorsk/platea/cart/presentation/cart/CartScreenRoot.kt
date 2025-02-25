@@ -15,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,7 +34,7 @@ import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 
 @Composable
 fun CartScreenRoot(

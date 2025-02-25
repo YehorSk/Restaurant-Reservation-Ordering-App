@@ -14,7 +14,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.ReservationDropdownList
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
 import com.yehorsk.platea.reservations.presentation.reservations.components.ReservationsList
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,6 +30,7 @@ fun ReservationScreenRoot(
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val reservations by viewModel.reservationItemUiState.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
 
@@ -41,10 +43,11 @@ fun ReservationScreenRoot(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            NavBar(
+            NavBarWithSearch(
                 onGoBack = onGoBack,
-                title = title,
-                showGoBack = showGoBack
+                showGoBack = showGoBack,
+                text = searchText,
+                onTextChanged = { viewModel.onSearchValueChange(it) }
             )
             ReservationDropdownList(
                 filterOption = filterOption,

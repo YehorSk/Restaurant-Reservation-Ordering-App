@@ -52,7 +52,6 @@ open class BaseMenuViewModel @Inject constructor(
     protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffect: ReceiveChannel<SideEffect> = _sideEffectChannel
 
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val searchUiState: StateFlow<List<MenuItemEntity>> = _uiState
         .map { it.searchText }

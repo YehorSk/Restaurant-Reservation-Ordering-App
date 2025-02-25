@@ -1,6 +1,5 @@
 package com.yehorsk.platea.core.presentation.settings
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,8 +15,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.presentation.settings.components.SettingsListItem
-import com.yehorsk.platea.core.utils.toString
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 
 @Composable
 fun ChangeLanguageScreen(

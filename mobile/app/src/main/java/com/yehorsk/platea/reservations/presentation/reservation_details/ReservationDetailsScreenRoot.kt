@@ -1,6 +1,5 @@
 package com.yehorsk.platea.reservations.presentation.reservation_details
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,8 +22,7 @@ import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.ActionButton
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.core.utils.toString
-import com.yehorsk.platea.orders.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationDetails
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationStatus

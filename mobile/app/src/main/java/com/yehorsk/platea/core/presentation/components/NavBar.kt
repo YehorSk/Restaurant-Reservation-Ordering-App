@@ -1,4 +1,4 @@
-package com.yehorsk.platea.orders.presentation.components
+package com.yehorsk.platea.core.presentation.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -47,11 +47,11 @@ fun NavBar(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(Modifier.width(8.dp))
         if(showGoBack){
             Icon(
                 modifier = Modifier
                     .size(30.dp)
+                    .padding(start = 10.dp)
                     .clickable {
                         onGoBack()
                     },
