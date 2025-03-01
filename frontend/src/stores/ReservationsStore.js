@@ -25,12 +25,6 @@ export const UseReservationStore = defineStore("reservations", {
             await this.getToken();
             try {
                 const response = await axios.get('reservation/admin/getAllReservations?page=' + page,{
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin":"*",
-                        'Authorization': `Bearer ${this.token}`
-                    },
                     params:{
                         search: search
                     }
@@ -47,14 +41,6 @@ export const UseReservationStore = defineStore("reservations", {
             try{
                 const response = await axios.put("reservation/admin/updateReservation/" + reservation.id,{
                         status: reservation.status,
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
                     });
                 console.log(response.data);
                 this.success = response.data.message;
@@ -65,15 +51,7 @@ export const UseReservationStore = defineStore("reservations", {
         },
         async destroyReservation(id){
             try{
-                const response = await axios.delete("reservation/admin/deleteReservation/" + id,
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
+                const response = await axios.delete("reservation/admin/deleteReservation/" + id);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchReservations();

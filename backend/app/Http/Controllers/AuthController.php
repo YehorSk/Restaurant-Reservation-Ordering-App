@@ -79,18 +79,10 @@ class AuthController extends Controller
                 ]
             );
         }
-
-        $existingToken = $user->tokens()->first();
-
-        if ($existingToken) {
-            $token = $existingToken->plainTextToken;
-        } else {
-            $token = $user->createToken($user->name)->plainTextToken;
-        }
-
+        
         return $this->success(data: [[
             'user' => $user,
-            'token' => $token,
+            'token' => $user->createToken($user->name)->plainTextToken,
         ]]);
     }
 

@@ -30,14 +30,7 @@ export const UseAuthStore = defineStore("auth",{
         async authenticate() {
             try {
                 await this.getToken();
-                const response = await axios.post('user', null, {
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin":"*",
-                        'Authorization': `Bearer ${this.token}`
-                    }
-                });
+                const response = await axios.post('user', null);
                 this.user = response.data.data[0].user;
                 this.token = response.data.data[0].token;
                 console.log("Auth "+this.token);
@@ -80,14 +73,7 @@ export const UseAuthStore = defineStore("auth",{
         async logout() {
             try {
                 await this.getToken();
-                const response = await axios.post('logout', null, {
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin":"*",
-                        'Authorization': `Bearer ${this.token}`
-                    }
-                });
+                const response = await axios.post('logout', null);
                 this.successLoggedOut = response.data.data.message;
                 this.user = {};
                 this.token = null;

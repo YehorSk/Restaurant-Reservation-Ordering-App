@@ -25,12 +25,6 @@ export const UseUserStore = defineStore("users",{
             await this.getToken();
             try {
                 const response = await axios.get('users?page=' + page,{
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin":"*",
-                        'Authorization': `Bearer ${this.token}`
-                    },
                     params: {
                         search: search
                     }
@@ -49,14 +43,6 @@ export const UseUserStore = defineStore("users",{
                         name: user.name,
                         email: user.email,
                         role: user.role,
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
                     });
                 console.log(response.data);
                 this.success = response.data.message;
@@ -67,15 +53,7 @@ export const UseUserStore = defineStore("users",{
         },
         async destroyUser(id){
             try{
-                const response = await axios.delete("users/" + id,
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
+                const response = await axios.delete("users/" + id);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchUsers();

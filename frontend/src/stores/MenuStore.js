@@ -29,12 +29,6 @@ export const UseMenuStore = defineStore("menu",{
             await this.getToken();
             try {
                 const response = await axios.get('menu?page=' + page,{
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin":"*",
-                        'Authorization': `Bearer ${this.token}`
-                    },
                     params: {
                         search: search
                     }
@@ -55,12 +49,6 @@ export const UseMenuStore = defineStore("menu",{
             await this.getToken();
             try{
                 const response = await axios.get('menuItems/'+$id+'/items?page=' + page,{
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                    },
                     params: {
                         search: search
                     }
@@ -80,15 +68,7 @@ export const UseMenuStore = defineStore("menu",{
                 const response = await axios.post('menu',{
                     name: name,
                     description: description
-                },
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
+                });
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenus();
@@ -103,15 +83,7 @@ export const UseMenuStore = defineStore("menu",{
                 const response = await axios.put("menu/" + menu.id,{
                     name: menu.name,
                     description: menu.description
-                },
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
+                });
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenus();
@@ -123,15 +95,7 @@ export const UseMenuStore = defineStore("menu",{
         },
         async destroyMenu(id){
             try{
-                const response = await axios.delete("menu/" + id,
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
+                const response = await axios.delete("menu/" + id);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenus();
@@ -148,14 +112,6 @@ export const UseMenuStore = defineStore("menu",{
                         recipe: recipe,
                         picture: picture,
                         price: price,
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
                     });
                 console.log(response.data);
                 this.success = response.data.message;
@@ -173,14 +129,6 @@ export const UseMenuStore = defineStore("menu",{
                         recipe: menuItem.recipe,
                         picture: menuItem.picture,
                         price: menuItem.price,
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
                     });
                 console.log(response.data);
                 this.success = response.data.message;
@@ -191,15 +139,7 @@ export const UseMenuStore = defineStore("menu",{
         },
         async destroyMenuItem(id,menuItem){
             try{
-                const response = await axios.delete("menuItems/" + id +"/items/"+menuItem.id,
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
+                const response = await axios.delete("menuItems/" + id +"/items/"+menuItem.id);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenuItems(id);

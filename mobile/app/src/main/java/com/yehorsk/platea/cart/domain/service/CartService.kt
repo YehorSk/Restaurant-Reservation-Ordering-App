@@ -20,8 +20,6 @@ interface CartService {
     suspend fun addUserCartItem(@Body cartForm: CartForm): ResponseDto<CartItemDto>
 
     @POST("cart/user/update")
-    suspend fun updateUserCartItem(
-        @Body cartForm: CartForm
-    ): ResponseDto<CartItemDto>
+    suspend fun updateUserCartItem(@Body cartForm: CartForm): ResponseDto<CartItemDto>
 
 }

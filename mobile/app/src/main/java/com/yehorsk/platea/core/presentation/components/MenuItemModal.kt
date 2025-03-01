@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -46,6 +48,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -54,6 +57,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.ui.theme.MobileTheme
+import com.yehorsk.platea.ui.theme.MobileThemePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -111,227 +115,244 @@ fun MenuItemModalContent(
     showFavorite: Boolean = true,
     @StringRes buttonText: Int
 ){
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ){
-            AsyncImage(
+    BoxWithConstraints {
+        val widthModifier = if (this.maxWidth < 400.dp) {
+            Modifier.fillMaxWidth()
+        } else {
+            Modifier.width(640.dp)
+        }
+        Column(
+            modifier = modifier
+                .then(widthModifier)
+                .verticalScroll(rememberScrollState())
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp),
-                model = menuItem.picture,
-                contentDescription = "",
-                placeholder = painterResource(R.drawable.menu_item_placeholder),
-                contentScale = ContentScale.Crop,
-                error = painterResource(R.drawable.menu_item_placeholder)
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
-                horizontalArrangement = Arrangement.End
             ){
-                Card(
-                    modifier = Modifier,
-                    shape = RoundedCornerShape(40.dp),
-                    colors = CardColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White,
-                        disabledContentColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.primary
-                    )
-                ) {
-                    Row {
-                        if(showFavorite){
-                            IconButton(
-                                onClick = {
+                AsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
+                    model = menuItem.picture,
+                    contentDescription = "",
+                    placeholder = painterResource(R.drawable.menu_item_placeholder),
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(R.drawable.menu_item_placeholder)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    horizontalArrangement = Arrangement.End
+                ){
+                    Card(
+                        modifier = Modifier,
+                        shape = RoundedCornerShape(40.dp),
+                        colors = CardColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = Color.White,
+                            disabledContentColor = MaterialTheme.colorScheme.primary,
+                            disabledContainerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Row {
+                            if(showFavorite){
+                                IconButton(
+                                    onClick = {
+                                        if(cartForm.isFavorite){
+                                            deleteFavoriteItem()
+                                        } else {
+                                            addFavoriteItem()
+                                        }
+                                        onDismiss()
+                                    },
+                                ) {
                                     if(cartForm.isFavorite){
-                                        deleteFavoriteItem()
-                                    } else {
-                                        addFavoriteItem()
+                                        Icon(
+                                            imageVector = Icons.Filled.Favorite,
+                                            contentDescription = "",
+                                            modifier = Modifier
+                                                .size(30.dp),
+                                            tint = Color.White
+                                        )
+                                    }else{
+                                        Icon(
+                                            imageVector = Icons.Filled.FavoriteBorder,
+                                            contentDescription = "",
+                                            modifier = Modifier
+                                                .size(30.dp),
+                                            tint = Color.White
+                                        )
                                     }
-                                    onDismiss()
-                                },
-                            ) {
-                                if(cartForm.isFavorite){
-                                    Icon(
-                                        imageVector = Icons.Filled.Favorite,
-                                        contentDescription = "",
-                                        modifier = Modifier
-                                            .size(30.dp),
-                                        tint = Color.White
-                                    )
-                                }else{
-                                    Icon(
-                                        imageVector = Icons.Filled.FavoriteBorder,
-                                        contentDescription = "",
-                                        modifier = Modifier
-                                            .size(30.dp),
-                                        tint = Color.White
-                                    )
                                 }
                             }
-                        }
-                        IconButton(
-                            onClick = onDismiss
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Close,
-                                contentDescription = "",
-                                modifier = Modifier.size(30.dp),
-                                tint = Color.White
-                            )
+                            IconButton(
+                                onClick = onDismiss
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = "",
+                                    modifier = Modifier.size(30.dp),
+                                    tint = Color.White
+                                )
+                            }
                         }
                     }
                 }
             }
-        }
-        Column{
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(18.dp),
-                text = menuItem.name,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-            )
-            Text(
-                modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
-                fontSize = 16.sp,
-                text = "€"+formattedPrice(menuItem.price),
-            )
-            Text(
-                modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
-                fontSize = 16.sp,
-                text = menuItem.shortDescription,
-            )
-            Spacer(
-                modifier = Modifier
-                    .padding(top = 5.dp, bottom = 5.dp)
-                    .fillMaxWidth()
-                    .height(10.dp)
-            )
-            if(!showFavorite){
+            Column{
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(18.dp),
+                    text = menuItem.name,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                )
+                Text(
+                    modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
+                    fontSize = 16.sp,
+                    text = "€"+formattedPrice(menuItem.price),
+                )
+                Text(
+                    modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
+                    fontSize = 16.sp,
+                    text = menuItem.shortDescription,
+                )
+                Spacer(
+                    modifier = Modifier
+                        .padding(top = 5.dp, bottom = 5.dp)
+                        .fillMaxWidth()
+                        .height(10.dp)
+                )
+                if(!showFavorite){
+                    HorizontalDivider()
+                    Row(
+                        modifier = Modifier
+                            .padding(start = 20.dp, top = 10.dp, bottom = 10.dp, end = 20.dp)
+                            .fillMaxWidth()
+                            .clickable{ deleteCartItem() }
+                        ,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            tint = MaterialTheme.colorScheme.error,
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(30.dp)
+                        )
+                        Text(
+                            modifier = Modifier.padding(start = 10.dp),
+                            text = stringResource(R.string.DELETE),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
                 HorizontalDivider()
                 Row(
                     modifier = Modifier
-                        .padding(start = 20.dp, top = 10.dp, bottom = 10.dp, end = 20.dp)
-                        .fillMaxWidth()
-                        .clickable{ deleteCartItem() }
-                    ,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Icon(
-                        imageVector = Icons.Filled.Delete,
-                        tint = MaterialTheme.colorScheme.error,
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(30.dp)
-                    )
-                    Text(
-                        modifier = Modifier.padding(start = 10.dp),
-                        text = stringResource(R.string.DELETE),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            }
-            HorizontalDivider()
-            Row(
-                modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 10.dp, end = 20.dp)
-            ) {
-                Card(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .height(66.dp),
-                    shape = RoundedCornerShape(40.dp),
-                    colors = CardColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = Color.White,
-                        disabledContentColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.primary
-                    )
+                        .height(IntrinsicSize.Min)
+                        .padding(
+                            start = 20.dp,
+                            top = 10.dp,
+                            bottom = 10.dp,
+                            end = 20.dp
+                        )
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxHeight(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                    ){
-                        TextButton(
-                            shape = CircleShape,
-                            onClick = {
-                                if(cartForm.quantity>1){
-                                    val newQuantity = cartForm.quantity - 1
+                    Card(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .wrapContentWidth(),
+                        shape = RoundedCornerShape(40.dp),
+                        colors = CardColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = Color.White,
+                            disabledContentColor = MaterialTheme.colorScheme.primary,
+                            disabledContainerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxHeight(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                        ){
+                            TextButton(
+                                modifier = Modifier.fillMaxHeight(),
+                                shape = CircleShape,
+                                onClick = {
+                                    if(cartForm.quantity>1){
+                                        val newQuantity = cartForm.quantity - 1
+                                        onQuantityChange(newQuantity)
+                                        onPriceChange(menuItem.price * newQuantity)
+                                    }
+                                }
+                            ) {
+                                AutoResizedText(
+                                    text = "-",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    maxLines = 1
+                                )
+                            }
+                            AutoResizedText(
+                                text = cartForm.quantity.toString(),
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                maxLines = 1
+                            )
+                            TextButton(
+                                modifier = Modifier.fillMaxHeight(),
+                                shape = CircleShape,
+                                onClick = {
+                                    val newQuantity = cartForm.quantity + 1
                                     onQuantityChange(newQuantity)
                                     onPriceChange(menuItem.price * newQuantity)
                                 }
+                            ) {
+                                AutoResizedText(
+                                    text = "+",
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    maxLines = 1
+                                )
                             }
-                        ) {
-                            Text(
-                                fontSize = 30.sp,
-                                text = "-",
-                                color = Color.White,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                            )
-                        }
-                        Text(
-                            fontSize = 30.sp,
-                            text = cartForm.quantity.toString(),
-                            color = Color.White,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        TextButton(
-                            shape = CircleShape,
-                            onClick = {
-                                val newQuantity = cartForm.quantity + 1
-                                onQuantityChange(newQuantity)
-                                onPriceChange(menuItem.price * newQuantity)
-                            }
-                        ) {
-                            Text(
-                                fontSize = 30.sp,
-                                text = "+",
-                                color = Color.White,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                            )
                         }
                     }
-                }
-                Spacer(modifier = Modifier.width(20.dp))
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    onClick = {
-                        addUserCartItem()
-                    }
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(),
+                        onClick = {
+                            addUserCartItem()
+                        }
                     ) {
-                        Text(
-                            fontSize = 20.sp,
-                            text = stringResource(buttonText),
-                            color = Color.White,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Text(
-                            fontSize = 20.sp,
-                            text = "€"+ formattedPrice(cartForm.price),
-                            color = Color.White,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                        )
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            AutoResizedText(
+                                text = stringResource(buttonText),
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                maxLines = 1
+                            )
+                            AutoResizedText(
+                                text = "€"+ formattedPrice(cartForm.price),
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                maxLines = 1
+                            )
+                        }
                     }
                 }
             }
@@ -339,10 +360,10 @@ fun MenuItemModalContent(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 fun PreviewMenuItemModal() {
-    MobileTheme {
+    MobileThemePreview {
         val menuItem = MenuItemEntity(
             id = 1,
             createdAt = "2023-01-01",
@@ -353,7 +374,7 @@ fun PreviewMenuItemModal() {
             longDescription = "A delicious pizza topped with fresh ingredients, including tomatoes, cheese, and basil.",
             recipe = "Tomatoes, cheese, basil, dough",
             picture = "https://example.com/pizza.jpg",
-            price = 9.99,
+            price = 10.9,
             isFavorite = false
         )
 

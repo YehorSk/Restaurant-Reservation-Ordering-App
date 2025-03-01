@@ -38,14 +38,7 @@ export const UseHomeStore = defineStore("home", {
             this.order_stats.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('order/stats/' + year,{
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin":"*",
-                        'Authorization': `Bearer ${this.token}`
-                    }
-                });
+                const response = await axios.get('order/stats/' + year);
                 console.log(response.data.data)
                 this.order_stats.data = response.data.data;
             }catch (error) {
@@ -58,14 +51,7 @@ export const UseHomeStore = defineStore("home", {
             this.reservation_stats.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('reservation/stats/'  + year,{
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin":"*",
-                        'Authorization': `Bearer ${this.token}`
-                    }
-                });
+                const response = await axios.get('reservation/stats/'  + year);
                 console.log(response.data.data)
                 this.reservation_stats.data = response.data.data;
             }catch (error) {

@@ -62,12 +62,20 @@ class MenuItemController extends Controller
                 'name' => 'required|string|max:255',
                 'short_description' => 'nullable|string',
                 'long_description' => 'nullable|string',
-                'recipe' => 'nullable|string',
+                'recipe' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'picture' => 'nullable|string',
                 'price' => 'required|numeric|min:0',
             ]);
 
+            $imageName = time().'.'.$request->name . '.' . $request->picture->extension();
+
+            $path = $request->file('image')->storeAs('public/images/menu_items', $imageName);
+
+            $relativePath = str_replace('public/', '', $path);
+
             $menuItem = MenuItem::create(array_merge($validatedData, ['menu_id' => $menu_id]));
+            $menuItem->picture = $relativePath;
+            $menuItem->save();
 
             return $this->success(data: $menuItem, message: __("messages.menu_item_added_successfully"));
         }

@@ -25,12 +25,6 @@ export const UseOrdersStore = defineStore("orders", {
             await this.getToken();
             try {
                 const response = await axios.get('order/admin/getAllOrders?page=' + page,{
-                    headers: {
-                        'Accept': 'application/vnd.api+json',
-                        "Content-Type": "application/json",
-                        "Access-Control-Allow-Origin":"*",
-                        'Authorization': `Bearer ${this.token}`
-                    },
                     params:{
                         search: search
                     }
@@ -47,15 +41,7 @@ export const UseOrdersStore = defineStore("orders", {
             try{
                 const response = await axios.put("order/admin/updateOrder/" + order.id,{
                         status: order.status,
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
+                });
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchOrders();
@@ -65,15 +51,7 @@ export const UseOrdersStore = defineStore("orders", {
         },
         async destroyOrder(id){
             try{
-                const response = await axios.delete("order/admin/deleteOrder/" + id,
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
-                    });
+                const response = await axios.delete("order/admin/deleteOrder/" + id);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchOrders();

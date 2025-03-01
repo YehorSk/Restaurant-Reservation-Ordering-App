@@ -21,14 +21,6 @@ export const UseNotificationStore = defineStore("notifications", {
                 const response = await axios.post('notifications/admin/sendToEveryone',{
                         title: title,
                         body: body,
-                    },
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.api+json',
-                            "Content-Type": "application/json",
-                            "Access-Control-Allow-Origin":"*",
-                            'Authorization': `Bearer ${this.token}`
-                        }
                     });
                 console.log(response.data.data)
                 this.success = response.data.message;
