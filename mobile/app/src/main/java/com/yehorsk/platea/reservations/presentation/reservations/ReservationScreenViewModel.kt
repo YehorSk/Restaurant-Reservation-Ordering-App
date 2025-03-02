@@ -20,9 +20,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -61,6 +58,14 @@ class ReservationScreenViewModel @Inject constructor(
 
     init {
         getReservations()
+    }
+
+    fun onAction(action: ReservationScreenAction){
+        when(action){
+            ReservationScreenAction.GetReservations -> getReservations()
+            is ReservationScreenAction.OnSearchValueChange -> onSearchValueChange(action.value)
+            is ReservationScreenAction.UpdateFilter -> updateFilter(action.filter)
+        }
     }
 
     fun onSearchValueChange(value: String){

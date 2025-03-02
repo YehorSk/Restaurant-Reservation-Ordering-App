@@ -27,10 +27,12 @@ import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ConfirmReservationDetails
 import com.yehorsk.platea.core.presentation.components.PhoneInput
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ReservationSpecialRequest
+import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationAction
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationViewModel
+import com.yehorsk.platea.reservations.presentation.reservations.ReservationUiState
 
 @Composable
-fun ConfirmReservationScreen(
+fun ConfirmReservationScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: CreateReservationViewModel,
     goBack: ()->Unit,
@@ -46,6 +48,23 @@ fun ConfirmReservationScreen(
             is SideEffect.ShowSuccessToast -> {}
         }
     }
+
+    ConfirmReservationScreen(
+        modifier = modifier,
+        uiState = uiState,
+        goBack = { goBack() },
+        onAction = viewModel::onAction
+    )
+
+}
+
+@Composable
+fun ConfirmReservationScreen(
+    modifier: Modifier = Modifier,
+    uiState: ReservationUiState,
+    goBack: ()->Unit,
+    onAction: (CreateReservationAction) -> Unit
+){
 
     if(!uiState.isLoading){
         Column(
@@ -65,7 +84,7 @@ fun ConfirmReservationScreen(
             )
             ReservationSpecialRequest(
                 request = uiState.reservationForm.specialRequest,
-                onRequestChange = { viewModel.updateSpecialRequest(it) }
+                onRequestChange = { onAction(CreateReservationAction.UpdateSpecialRequest(it)) }
             )
             PhoneInput(
                 modifier = Modifier
@@ -73,8 +92,8 @@ fun ConfirmReservationScreen(
                     .padding(20.dp),
                 phone = uiState.phone,
                 code = uiState.countryCode,
-                onFullPhoneChanged = { viewModel.updatePhone(it) },
-                onPhoneValidated = { viewModel.validatePhoneNumber(it) },
+                onFullPhoneChanged = { onAction(CreateReservationAction.UpdatePhone(it)) },
+                onPhoneValidated = { onAction(CreateReservationAction.ValidatePhoneNumber(it)) },
                 showText = true
             )
             Button(
@@ -87,9 +106,7 @@ fun ConfirmReservationScreen(
                     )
                     .fillMaxWidth(),
                 enabled = uiState.isPhoneValid,
-                onClick = {
-                    viewModel.createReservation()
-                }
+                onClick = { onAction(CreateReservationAction.CreateReservation) }
             ) {
                 Text(
                     text = stringResource(R.string.book),
@@ -102,5 +119,4 @@ fun ConfirmReservationScreen(
     }else{
         LoadingPart()
     }
-
 }

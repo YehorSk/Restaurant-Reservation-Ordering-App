@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,8 +27,8 @@ import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.create_order.CreateOrderScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
-import com.yehorsk.platea.reservations.presentation.confirm_reservation.ConfirmReservationScreen
-import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationScreen
+import com.yehorsk.platea.reservations.presentation.confirm_reservation.ConfirmReservationScreenRoot
+import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationScreenRoot
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationViewModel
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationScreenRoot
@@ -130,7 +129,7 @@ fun ClientNavGraph(
             exitTransition = { ExitTransition.None }
         ) {
             val args = it.toRoute<ClientScreen.CreateReservation>()
-            CreateReservationScreen(
+            CreateReservationScreenRoot(
                 modifier = modifier,
                 viewModel = createReservationViewModel,
                 goBack = {
@@ -148,7 +147,7 @@ fun ClientNavGraph(
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
         ) {
-            ConfirmReservationScreen(
+            ConfirmReservationScreenRoot(
                 modifier = modifier,
                 viewModel = createReservationViewModel,
                 goBack = {

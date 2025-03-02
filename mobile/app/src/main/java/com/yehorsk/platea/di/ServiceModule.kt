@@ -1,11 +1,11 @@
 package com.yehorsk.platea.di
 
-import com.yehorsk.platea.auth.data.service.AuthService
-import com.yehorsk.platea.cart.domain.service.CartService
-import com.yehorsk.platea.core.domain.remote.ProfileService
-import com.yehorsk.platea.menu.domain.service.MenuService
-import com.yehorsk.platea.orders.domain.service.OrderService
-import com.yehorsk.platea.reservations.domain.service.ReservationService
+import com.yehorsk.platea.auth.data.remote.service.AuthService
+import com.yehorsk.platea.cart.data.remote.service.CartService
+import com.yehorsk.platea.core.data.remote.service.ProfileService
+import com.yehorsk.platea.menu.data.remote.service.MenuService
+import com.yehorsk.platea.orders.data.remote.service.OrderService
+import com.yehorsk.platea.reservations.data.remote.service.ReservationService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

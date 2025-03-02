@@ -26,22 +26,25 @@ class CreateReservationViewModel @Inject constructor(
     preferencesRepository: MainPreferencesRepository
 ): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository){
 
+    fun onAction(action: CreateReservationAction){
+        when(action){
+            CreateReservationAction.ClearForm -> clearForm()
+            CreateReservationAction.CreateReservation -> createReservation()
+            is CreateReservationAction.UpdatePartySize -> updatePartySize(action.size)
+            is CreateReservationAction.UpdatePhone -> updatePhone(action.phone)
+            is CreateReservationAction.UpdateReservationDate -> updateReservationDate(action.date)
+            is CreateReservationAction.UpdateTimeSlot -> updateTimeSlot(action.id, action.time)
+            is CreateReservationAction.ValidatePhoneNumber -> validatePhoneNumber(action.phone)
+            is CreateReservationAction.UpdateWithOrder -> updateWithOrder(action.withOrder, action.form)
+            is CreateReservationAction.UpdateSpecialRequest -> updateSpecialRequest(action.request)
+        }
+    }
+
     fun updatePartySize(size: Int){
         _uiState.update {
             it.copy(
                 reservationForm = it.reservationForm.copy(
                     partySize = size
-                )
-            )
-        }
-        getAvailableTimeSlots()
-    }
-
-    fun updateReservationDate(date: String){
-        _uiState.update {
-            it.copy(
-                reservationForm = it.reservationForm.copy(
-                    reservationDate = date
                 )
             )
         }
@@ -56,6 +59,17 @@ class CreateReservationViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun updateReservationDate(date: String){
+        _uiState.update {
+            it.copy(
+                reservationForm = it.reservationForm.copy(
+                    reservationDate = date
+                )
+            )
+        }
+        getAvailableTimeSlots()
     }
 
     fun updatePhone(phone: String){
@@ -119,10 +133,6 @@ class CreateReservationViewModel @Inject constructor(
         }
     }
 
-    fun validatePhoneNumber(): Boolean{
-        val phoneRegex = "^[+]?[0-9]{10,15}$"
-        return _uiState.value.reservationForm.fullPhone.matches(phoneRegex.toRegex())
-    }
 
     fun createReservation(){
         Timber.d("createReservation")

@@ -4,8 +4,8 @@ import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.cart.data.remote.dto.CartItemDto
 import com.yehorsk.platea.cart.data.remote.dto.toCartItemEntity
 import com.yehorsk.platea.cart.domain.repository.CartRepository
-import com.yehorsk.platea.cart.domain.service.CartService
-import com.yehorsk.platea.core.data.remote.safeCall
+import com.yehorsk.platea.cart.data.remote.service.CartService
+import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.core.presentation.components.CartForm

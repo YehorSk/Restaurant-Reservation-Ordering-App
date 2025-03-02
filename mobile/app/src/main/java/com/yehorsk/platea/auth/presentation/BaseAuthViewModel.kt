@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
-import com.yehorsk.platea.auth.data.repository.AuthRepository
+import com.yehorsk.platea.auth.domain.repository.AuthRepository
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.ConnectivityObserver

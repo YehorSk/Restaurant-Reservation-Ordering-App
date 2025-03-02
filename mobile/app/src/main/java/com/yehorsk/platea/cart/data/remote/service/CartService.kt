@@ -1,4 +1,4 @@
-package com.yehorsk.platea.cart.domain.service
+package com.yehorsk.platea.cart.data.remote.service
 
 import com.yehorsk.platea.cart.data.remote.dto.CartItemDto
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto

@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
+import com.yehorsk.platea.core.domain.remote.ReservationFilter
 import com.yehorsk.platea.core.presentation.components.ReservationDropdownList
-import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
+import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.presentation.reservations.components.ReservationsList
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReservationScreenRoot(
     modifier: Modifier = Modifier,
@@ -34,9 +34,36 @@ fun ReservationScreenRoot(
     val reservations by viewModel.reservationItemUiState.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
 
+    ReservationScreen(
+        modifier = modifier,
+        uiState = uiState,
+        onGoToReservationDetails = { onGoToReservationDetails(it) },
+        onGoBack = { onGoBack() },
+        searchText = searchText,
+        filterOption = filterOption,
+        showGoBack = showGoBack,
+        reservations = reservations,
+        onAction = viewModel::onAction
+    )
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ReservationScreen(
+    modifier: Modifier = Modifier,
+    uiState: ReservationUiState,
+    onGoToReservationDetails: (Int) -> Unit,
+    onGoBack: () -> Unit,
+    searchText: String,
+    filterOption: ReservationFilter,
+    showGoBack: Boolean,
+    reservations: List<ReservationEntity>,
+    onAction: (ReservationScreenAction) -> Unit
+){
     PullToRefreshBox(
         isRefreshing = uiState.isLoading,
-        onRefresh = { viewModel.getReservations() }
+        onRefresh = { onAction(ReservationScreenAction.GetReservations) }
     ) {
         Column(
             modifier = modifier.fillMaxSize(),
@@ -47,12 +74,12 @@ fun ReservationScreenRoot(
                 onGoBack = onGoBack,
                 showGoBack = showGoBack,
                 text = searchText,
-                onTextChanged = { viewModel.onSearchValueChange(it) }
+                onTextChanged = { onAction(ReservationScreenAction.OnSearchValueChange(it)) }
             )
             ReservationDropdownList(
                 filterOption = filterOption,
                 text = R.string.filter,
-                onSelect = { viewModel.updateFilter(it) }
+                onSelect = { onAction(ReservationScreenAction.UpdateFilter(it)) }
             )
             ReservationsList(
                 items = reservations,

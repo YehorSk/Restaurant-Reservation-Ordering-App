@@ -1,15 +1,14 @@
 package com.yehorsk.platea.auth.data.remote
 
-import androidx.compose.ui.text.intl.Locale
 import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
-import com.yehorsk.platea.auth.data.repository.AuthRepository
-import com.yehorsk.platea.auth.data.service.AuthService
+import com.yehorsk.platea.auth.domain.repository.AuthRepository
+import com.yehorsk.platea.auth.data.remote.service.AuthService
 import com.yehorsk.platea.auth.presentation.forgot.ForgotFormState
 import com.yehorsk.platea.auth.presentation.login.AuthState
 import com.yehorsk.platea.auth.presentation.login.LoginForm
 import com.yehorsk.platea.auth.presentation.register.RegisterForm
 import com.yehorsk.platea.core.data.db.MainRoomDatabase
-import com.yehorsk.platea.core.data.remote.safeCall
+import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result

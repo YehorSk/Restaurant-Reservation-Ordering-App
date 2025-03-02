@@ -20,9 +20,10 @@ import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.CalendarRoot
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.PartySize
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.TimeRoot
+import com.yehorsk.platea.reservations.presentation.reservations.ReservationUiState
 
 @Composable
-fun CreateReservationScreen(
+fun CreateReservationScreenRoot(
     modifier: Modifier = Modifier,
     viewModel: CreateReservationViewModel,
     goBack: ()-> Unit,
@@ -44,6 +45,28 @@ fun CreateReservationScreen(
             is SideEffect.ShowSuccessToast -> {}
         }
     }
+
+    CreateReservationScreen(
+        modifier = modifier,
+        goBack = goBack,
+        uiState = uiState,
+        goToFinishReservation = { goToFinishReservation() },
+        orderForm = orderForm,
+        withOrder = withOrder,
+        onAction = viewModel::onAction
+    )
+}
+
+@Composable
+fun CreateReservationScreen(
+    modifier: Modifier = Modifier,
+    goBack: ()-> Unit,
+    uiState: ReservationUiState,
+    goToFinishReservation: () -> Unit,
+    orderForm: OrderForm,
+    withOrder: Boolean,
+    onAction: (CreateReservationAction) -> Unit
+){
     if(!uiState.isLoading){
         Column(
             modifier = modifier
@@ -54,25 +77,25 @@ fun CreateReservationScreen(
             NavBar(
                 onGoBack = {
                     goBack()
-                    viewModel.clearForm()
+                    onAction(CreateReservationAction.ClearForm)
                 },
                 title = R.string.go_back
             )
             PartySize(
-                onPartySizeChanged = { size -> viewModel.updatePartySize(size) },
+                onPartySizeChanged = { onAction(CreateReservationAction.UpdatePartySize(it)) },
                 partySize = uiState.reservationForm.partySize
             )
             CalendarRoot(
-                onUpdateSelectedDate = { date -> viewModel.updateReservationDate(date) }
+                onUpdateSelectedDate = { onAction(CreateReservationAction.UpdateReservationDate(it)) }
             )
             if (uiState.timeSlots!=null){
                 TimeRoot(
                     date = uiState.reservationForm.reservationDate,
-                    slots = uiState.timeSlots!!,
+                    slots = uiState.timeSlots,
                     selectedSlot = uiState.reservationForm.selectedTimeSlot,
                     onTimeChanged = {id, time ->
-                        viewModel.updateTimeSlot(id, time)
-                        viewModel.updateWithOrder(withOrder = withOrder, form = orderForm)
+                        onAction(CreateReservationAction.UpdateTimeSlot(id, time))
+                        onAction(CreateReservationAction.UpdateWithOrder(withOrder, orderForm))
                         goToFinishReservation()
                     }
                 )

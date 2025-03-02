@@ -1,6 +1,6 @@
 package com.yehorsk.platea.reservations.data.remote
 
-import com.yehorsk.platea.core.data.remote.safeCall
+import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.orders.data.dao.OrderDao
@@ -9,7 +9,7 @@ import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.remote.dto.ReservationDto
 import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
-import com.yehorsk.platea.reservations.domain.service.ReservationService
+import com.yehorsk.platea.reservations.data.remote.service.ReservationService
 import com.yehorsk.platea.reservations.presentation.reservation_details.Status
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
 import timber.log.Timber

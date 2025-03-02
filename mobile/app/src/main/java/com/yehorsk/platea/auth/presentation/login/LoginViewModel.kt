@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
-import com.yehorsk.platea.auth.data.repository.AuthRepository
+import com.yehorsk.platea.auth.domain.repository.AuthRepository
 import com.yehorsk.platea.auth.presentation.BaseAuthViewModel
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError

@@ -1,4 +1,4 @@
-package com.yehorsk.platea.menu.domain.service
+package com.yehorsk.platea.menu.data.remote.service
 
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.menu.data.remote.dto.MenuDto

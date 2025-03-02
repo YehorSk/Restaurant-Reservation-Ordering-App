@@ -2,9 +2,9 @@ package com.yehorsk.platea.core.data.repository
 
 import com.yehorsk.platea.auth.data.remote.model.UserDto
 import com.yehorsk.platea.core.data.db.MainRoomDatabase
-import com.yehorsk.platea.core.data.remote.safeCall
+import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
-import com.yehorsk.platea.core.domain.remote.ProfileService
+import com.yehorsk.platea.core.data.remote.service.ProfileService
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.core.domain.repository.ProfileRepository
 import kotlinx.coroutines.Dispatchers

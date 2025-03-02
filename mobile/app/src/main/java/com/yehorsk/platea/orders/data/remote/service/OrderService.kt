@@ -1,4 +1,4 @@
-package com.yehorsk.platea.orders.domain.service
+package com.yehorsk.platea.orders.data.remote.service
 
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderDto

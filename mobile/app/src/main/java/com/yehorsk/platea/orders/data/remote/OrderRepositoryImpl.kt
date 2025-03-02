@@ -1,7 +1,7 @@
 package com.yehorsk.platea.orders.data.remote
 
 import com.yehorsk.platea.cart.data.dao.CartDao
-import com.yehorsk.platea.core.data.remote.safeCall
+import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.orders.data.dao.OrderDao
@@ -13,7 +13,7 @@ import com.yehorsk.platea.orders.data.remote.dto.toCartItemEntity
 import com.yehorsk.platea.orders.data.remote.dto.toOrderEntity
 import com.yehorsk.platea.orders.data.remote.dto.toOrderMenuItemEntity
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
-import com.yehorsk.platea.orders.domain.service.OrderService
+import com.yehorsk.platea.orders.data.remote.service.OrderService
 import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.order_details.Status
 import kotlinx.coroutines.Dispatchers

@@ -1,4 +1,4 @@
-package com.yehorsk.platea.core.domain.remote
+package com.yehorsk.platea.core.data.remote.service
 
 import com.yehorsk.platea.auth.data.remote.model.UserDto
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto

@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".core.data.remote.PushNotificationService"
+            android:name=".core.data.remote.service.PushNotificationService"
             android:exported="false"
             >
             <intent-filter>

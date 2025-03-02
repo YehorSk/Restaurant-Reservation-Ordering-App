@@ -1,4 +1,4 @@
-package com.yehorsk.platea.reservations.domain.service
+package com.yehorsk.platea.reservations.data.remote.service
 
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto

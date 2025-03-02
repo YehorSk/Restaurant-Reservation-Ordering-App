@@ -1,6 +1,6 @@
 package com.yehorsk.platea.menu.data.remote
 
-import com.yehorsk.platea.core.data.remote.safeCall
+import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.menu.data.dao.MenuDao
@@ -9,7 +9,7 @@ import com.yehorsk.platea.menu.data.remote.dto.MenuDto
 import com.yehorsk.platea.menu.data.remote.dto.toMenuEntity
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
 import com.yehorsk.platea.menu.domain.repository.MenuRepository
-import com.yehorsk.platea.menu.domain.service.MenuService
+import com.yehorsk.platea.menu.data.remote.service.MenuService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber

@@ -79,10 +79,6 @@ open class ReservationBaseViewModel @Inject constructor(
         }
     }
 
-    protected fun setLoadingState(isLoading: Boolean) {
-        _uiState.update { it.copy(isLoading = isLoading) }
-    }
-
     fun clearForm(){
         _uiState.update {
             it.copy(

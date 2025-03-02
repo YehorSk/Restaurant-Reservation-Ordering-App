@@ -1,4 +1,4 @@
-package com.yehorsk.platea.core.data.remote
+package com.yehorsk.platea.core.data.remote.service
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto

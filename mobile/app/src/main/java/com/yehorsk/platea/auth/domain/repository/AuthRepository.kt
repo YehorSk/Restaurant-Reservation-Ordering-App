@@ -1,4 +1,4 @@
-package com.yehorsk.platea.auth.data.repository
+package com.yehorsk.platea.auth.domain.repository
 
 import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
 import com.yehorsk.platea.auth.presentation.forgot.ForgotFormState
