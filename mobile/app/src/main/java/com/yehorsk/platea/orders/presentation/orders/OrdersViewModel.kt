@@ -13,12 +13,15 @@ import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -34,18 +37,21 @@ class OrdersViewModel @Inject constructor(
     private val _filterOption = MutableStateFlow(OrderFilter.ALL)
     val filterOption= _filterOption.asStateFlow()
 
-    val orderItemsUiState: StateFlow<List<OrderEntity>> = orderDao.getUserOrders()
-        .combine(_filterOption) { orders, filter ->
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val orderItemsUiState: StateFlow<List<OrderEntity>> = combine(_filterOption, _searchText) { filter, search ->
             when (filter) {
-                OrderFilter.COMPLETED -> orders.filter { it.status == "Completed" }
-                OrderFilter.PENDING -> orders.filter { it.status == "Pending" }
-                OrderFilter.CANCELLED -> orders.filter { it.status == "Cancelled" }
-                OrderFilter.CONFIRMED -> orders.filter { it.status == "Confirmed" }
-                OrderFilter.PREPARING -> orders.filter { it.status == "Preparing" }
-                OrderFilter.READY -> orders.filter { it.status == "Ready for Pickup" }
-                else -> orders
+                OrderFilter.COMPLETED -> orderDao.getUserOrders(search, "Completed")
+                OrderFilter.PENDING -> orderDao.getUserOrders(search, "Pending")
+                OrderFilter.CANCELLED -> orderDao.getUserOrders(search, "Cancelled")
+                OrderFilter.CONFIRMED -> orderDao.getUserOrders(search, "Confirmed")
+                OrderFilter.PREPARING -> orderDao.getUserOrders(search, "Preparing")
+                OrderFilter.READY -> orderDao.getUserOrders(search, "Ready for Pickup")
+                else -> orderDao.getUserOrders(search)
             }
-        }
+        }.flattenMerge()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -54,6 +60,10 @@ class OrdersViewModel @Inject constructor(
 
     init {
         getUserOrders()
+    }
+
+    fun onSearchValueChange(value: String){
+        _searchText.update { value }
     }
 
     fun updateFilter(option: OrderFilter) {

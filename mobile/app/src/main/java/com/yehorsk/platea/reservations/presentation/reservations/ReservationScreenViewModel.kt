@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -41,20 +43,19 @@ class ReservationScreenViewModel @Inject constructor(
     val searchText = _searchText.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationDao.getUserReservations()
-        .combine(_filterOption){ reservations, filter ->
-            when(filter){
-                ReservationFilter.PENDING -> reservations.filter { it.status == "Pending" }
-                ReservationFilter.CANCELLED -> reservations.filter { it.status == "Cancelled" }
-                ReservationFilter.CONFIRMED -> reservations.filter { it.status == "Confirmed" }
-                else -> reservations
-            }
+    val reservationItemUiState: StateFlow<List<ReservationEntity>> = combine(_filterOption, _searchText) { filter, search ->
+        when (filter) {
+            ReservationFilter.PENDING -> reservationDao.getUserReservations(search, "Pending")
+            ReservationFilter.CANCELLED -> reservationDao.getUserReservations(search, "Cancelled")
+            ReservationFilter.CONFIRMED -> reservationDao.getUserReservations(search, "Confirmed")
+            else -> reservationDao.getUserReservations(search)
         }
+    }.flattenMerge()
         .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = listOf()
-        )
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = listOf()
+    )
 
     init {
         getReservations()

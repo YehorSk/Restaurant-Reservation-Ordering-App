@@ -32,6 +32,7 @@ fun OrdersScreen(
     val orders by viewModel.orderItemsUiState.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
+    val searchText by viewModel.searchText.collectAsStateWithLifecycle()
 
 
     PullToRefreshBox(
@@ -46,8 +47,8 @@ fun OrdersScreen(
             NavBarWithSearch(
                 onGoBack = onGoBack,
                 showGoBack = showGoBack,
-                text = "",
-                onTextChanged = {}
+                text = searchText,
+                onTextChanged = { viewModel.onSearchValueChange(it) }
             )
             OrdersDropdownList(
                 filterOption = filterOption,
