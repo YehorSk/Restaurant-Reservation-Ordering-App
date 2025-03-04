@@ -18,6 +18,7 @@ import com.yehorsk.platea.core.presentation.settings.ChangeThemeScreen
 import com.yehorsk.platea.core.presentation.settings.MainSettingsScreen
 import com.yehorsk.platea.core.presentation.settings.ProfileDestination
 import com.yehorsk.platea.core.presentation.settings.ProfileScreen
+import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenRoot
@@ -85,6 +86,7 @@ fun ClientNavGraph(
                         ProfileDestination.Reservations -> navController.navigate(ClientScreen.Reservations.route)
                         ProfileDestination.Language -> navController.navigate(ClientScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(ClientScreen.Theme.route)
+                        ProfileDestination.Info -> navController.navigate(ClientScreen.Info.route)
                     }
                 }
             )
@@ -244,6 +246,17 @@ fun ClientNavGraph(
             )
         }
         composable(
+            route = ClientScreen.Info.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
+            RestaurantInfoScreenRoot(
+                modifier = modifier,
+                viewModel = settingsViewModel,
+                onGoBack = { navController.popBackStack() }
+            )
+        }
+        composable(
             route = ClientScreen.Favorites.route,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
@@ -318,4 +331,5 @@ sealed class ClientScreen(val route: String){
     data object Search: ClientScreen(route = "SEARCH")
     data object Theme: ClientScreen(route = "THEME")
     data object Language: ClientScreen(route = "LANGUAGE")
+    data object Info: ClientScreen(route = "INFO")
 }

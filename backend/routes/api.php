@@ -8,6 +8,7 @@ use App\Http\Controllers\MenuItemController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\RestaurantInfoController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\UserController;
@@ -31,6 +32,7 @@ Route::controller(AuthController::class)->group(function () {
 
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
+    Route::get('/get-restaurant-info', [RestaurantInfoController::class, 'getRestaurantInfo']);
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
     Route::post('/delete-account', [AuthController::class, 'deleteAccount']);
     Route::post('/user', [AuthController::class, 'authenticate']);

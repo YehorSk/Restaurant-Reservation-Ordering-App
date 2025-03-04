@@ -4,6 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
+import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuEntity
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
@@ -20,9 +22,10 @@ import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
         MenuEntity::class,
         OrderEntity::class,
         OrderItemEntity::class,
-        ReservationEntity::class
+        ReservationEntity::class,
+        RestaurantInfoEntity::class
     ],
-    version = 1
+    version = 2
 )
 abstract class MainRoomDatabase : RoomDatabase() {
 
@@ -30,5 +33,6 @@ abstract class MainRoomDatabase : RoomDatabase() {
     abstract val menuDao: MenuDao
     abstract val orderDao: OrderDao
     abstract val reservationDao: ReservationDao
+    abstract val restaurantInfoDao: RestaurantInfoDao
 
 }

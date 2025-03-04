@@ -77,6 +77,7 @@ fun WaiterNavGraph(
                         ProfileDestination.Reservations -> navController.navigate(WaiterScreen.Reservations.route)
                         ProfileDestination.Language -> navController.navigate(WaiterScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(WaiterScreen.Theme.route)
+                        ProfileDestination.Info -> {}
                     }
                 }
             )

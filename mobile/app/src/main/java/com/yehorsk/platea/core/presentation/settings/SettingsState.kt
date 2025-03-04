@@ -8,5 +8,5 @@ data class SettingsState (
     val code: String = "",
     val phone: String = "",
     val address: String = "",
-    val name: String = "",
+    val name: String = ""
 )

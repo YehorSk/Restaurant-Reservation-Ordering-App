@@ -3,6 +3,8 @@ package com.yehorsk.platea.core.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
+import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.data.repository.ProfileRepositoryImpl
 import com.yehorsk.platea.core.domain.remote.AppError
@@ -28,7 +30,8 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     val authRepository: AuthRepository,
     val profileRepositoryImpl: ProfileRepositoryImpl,
-    val preferencesRepository: MainPreferencesRepository
+    val preferencesRepository: MainPreferencesRepository,
+    val restaurantInfoDao: RestaurantInfoDao
 ): ViewModel() {
 
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
@@ -57,6 +60,13 @@ class SettingsViewModel @Inject constructor(
 
     val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
+
+    val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantInfoDao.getRestaurantInfo()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>
@@ -119,6 +129,21 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun getRestaurantInfo(){
+        viewModelScope.launch {
+            setLoadingState(true)
+            profileRepositoryImpl.getRestaurantInfo()
+                .onError { error ->
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
+                }
+            setLoadingState(false)
+        }
+    }
+
     fun deleteAccount(){
         viewModelScope.launch{
             _uiState.update { currentState ->
@@ -164,6 +189,10 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun setLoadingState(isLoading: Boolean) {
+        _uiState.update { it.copy(isLoading = isLoading) }
     }
 
     fun validatePhoneNumber(phone: String){

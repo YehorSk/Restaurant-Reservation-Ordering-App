@@ -61,12 +61,9 @@ class MainPreferencesRepository @Inject constructor(
     }
 
     suspend fun getToken(): String? {
-        val startTime = System.currentTimeMillis()
         val token = dataStore.data.map { prefs ->
             prefs[JWT_TOKEN] ?: ""
         }.first()
-        val endTime = System.currentTimeMillis()
-        Timber.d("getToken() took ${endTime - startTime} ms")
         return token
     }
 
@@ -140,13 +137,7 @@ class MainPreferencesRepository @Inject constructor(
 
     suspend fun clearAllTokens(){
         dataStore.edit { preferences ->
-            preferences.remove(USER_NAME)
-            preferences.remove(USER_EMAIL)
-            preferences.remove(USER_ROLE)
-            preferences.remove(USER_COUNTRY_CODE)
-            preferences.remove(USER_PHONE)
-            preferences.remove(USER_ADDRESS)
-            preferences.remove(JWT_TOKEN)
+            preferences.clear()
         }
     }
 }

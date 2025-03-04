@@ -7,6 +7,7 @@ import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
 import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.cart.data.remote.service.CartService
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.MainRoomDatabase
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.data.repository.ProfileRepositoryImpl
@@ -48,7 +49,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepositoryImpl(profileService: ProfileService, mainPreferencesRepository: MainPreferencesRepository, mainRoomDatabase: MainRoomDatabase) : ProfileRepository = ProfileRepositoryImpl(profileService, mainPreferencesRepository, mainRoomDatabase)
+    fun provideProfileRepositoryImpl(profileService: ProfileService, mainPreferencesRepository: MainPreferencesRepository, mainRoomDatabase: MainRoomDatabase, restaurantInfoDao: RestaurantInfoDao) : ProfileRepository = ProfileRepositoryImpl(profileService, mainPreferencesRepository, mainRoomDatabase, restaurantInfoDao)
 
     @Provides
     @Singleton

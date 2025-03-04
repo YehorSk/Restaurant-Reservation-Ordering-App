@@ -1,6 +1,7 @@
 package com.yehorsk.platea.di
 
 import com.yehorsk.platea.cart.data.dao.CartDao
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.MainRoomDatabase
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.orders.data.dao.OrderDao
@@ -30,6 +31,10 @@ object DaoModule {
     @Provides
     @Singleton
     fun provideReservationDao(database: MainRoomDatabase): ReservationDao = database.reservationDao
+
+    @Provides
+    @Singleton
+    fun provideRestaurantInfoDao(database: MainRoomDatabase): RestaurantInfoDao = database.restaurantInfoDao
 
 
 }

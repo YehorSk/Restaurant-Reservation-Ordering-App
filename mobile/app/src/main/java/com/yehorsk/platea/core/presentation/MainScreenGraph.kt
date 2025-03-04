@@ -180,11 +180,6 @@ fun RowScope.AddItem(
     } == true
     NavigationBarItem(
         label = {
-//            Text(
-//                text = stringResource(screen.title),
-//                style = MaterialTheme.typography.labelSmall,
-//                maxLines = 1,
-//            )
             AutoResizedText(
                 text = stringResource(screen.title),
                 style = MaterialTheme.typography.labelSmall

@@ -8,4 +8,5 @@ sealed class ProfileDestination {
     object Language : ProfileDestination()
     object Orders : ProfileDestination()
     object Logout : ProfileDestination()
+    object Info : ProfileDestination()
 }

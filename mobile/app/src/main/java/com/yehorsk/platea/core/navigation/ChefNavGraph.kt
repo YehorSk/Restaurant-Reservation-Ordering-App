@@ -55,6 +55,7 @@ fun ChefNavGraph(
                         ProfileDestination.Reservations -> {}
                         ProfileDestination.Language -> navController.navigate(ChefScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(ChefScreen.Theme.route)
+                        ProfileDestination.Info -> {}
                     }
                 }
             )

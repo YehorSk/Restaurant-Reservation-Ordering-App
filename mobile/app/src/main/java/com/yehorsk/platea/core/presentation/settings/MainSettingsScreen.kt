@@ -81,6 +81,14 @@ fun MainSettingsScreen(
                 }
                 item{
                     ProfileListItem(
+                        text = R.string.language,
+                        onClick = {
+                            onNavigate(ProfileDestination.Info)
+                        }
+                    )
+                }
+                item{
+                    ProfileListItem(
                         text = R.string.theme,
                         onClick = {
                             onNavigate(ProfileDestination.Theme)
