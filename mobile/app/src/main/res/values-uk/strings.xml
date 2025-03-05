@@ -83,6 +83,7 @@
     <string name="orders">Замовлення</string>
     <string name="order_history">Історія замовлень</string>
     <string name="reservation_history">Історія бронювань</string>
+    <string name="info">Інформація</string>
     <string name="logout">Вийти</string>
     <string name="hello_user">Привіт, %1$s</string>
 

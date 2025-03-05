@@ -73,6 +73,7 @@ class SettingsViewModel @Inject constructor(
         get() = _sideEffectChannel.receiveAsFlow()
 
     init {
+        getRestaurantInfo()
         viewModelScope.launch{
             userPhone.collect{ value ->
                 val updatedPhone = value ?: ""
@@ -133,13 +134,6 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             setLoadingState(true)
             profileRepositoryImpl.getRestaurantInfo()
-                .onError { error ->
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            error = error
-                        )
-                    )
-                }
             setLoadingState(false)
         }
     }

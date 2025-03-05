@@ -9,6 +9,8 @@ import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.core.presentation.components.CartForm
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -17,11 +19,21 @@ class CartRepositoryImpl @Inject constructor(
     private val cartDao: CartDao
 ) : CartRepository {
 
+    private suspend fun syncCartItemsWithServer(items: List<CartItemDto>) = withContext(Dispatchers.IO){
+        val localItems = cartDao.getAllItemsOnce()
+        val serverItems = items.map { it.id }.toSet()
+        val itemsToDelete = localItems.filter { it.id !in serverItems}
+        cartDao.deleteItems(itemsToDelete)
+    }
+
     override suspend fun getAllItems(): Result<List<CartItemDto>, AppError> {
         Timber.d("Cart getAllItems")
         return safeCall<CartItemDto>(
             execute = {
                 cartService.getUserCartItems()
+            },
+            onSuccess = { data ->
+                syncCartItemsWithServer(data)
             }
         )
     }

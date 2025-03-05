@@ -50,8 +50,6 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::get('/menuItems/stats', [MenuItemController::class, 'getStats']);
 
     Route::prefix("notifications")->controller(NotificationController::class)->group(function () {
-        Route::get('/index','index');
-        Route::put('/read/{id}','read');
         Route::post('/admin/sendToEveryone', 'sendToAll');
     });
 

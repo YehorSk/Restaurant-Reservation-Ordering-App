@@ -13,7 +13,6 @@ import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.NetworkConnectivityObserver
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.yehorsk.platea.core.data.db.migrations.MIGRATION_1_2
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,7 +72,7 @@ object AppModule {
             application,
             MainRoomDatabase::class.java,
             "MobileDatabase"
-        ).addMigrations(MIGRATION_1_2).build()
+        ).build()
     }
 
     @Provides

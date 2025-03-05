@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notification;
 use App\Models\Order;
 use App\Models\User;
 use App\Traits\FCMNotificationTrait;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Validator;
 
 class OrderController extends Controller
 {
@@ -249,12 +247,6 @@ class OrderController extends Controller
             if($order->client_id != null){
                 $owner = User::find($order->client_id);
                 $token = $owner->devices->pluck('device_token')->first();
-                $notification = new Notification([
-                    'user_id' => $owner->id,
-                    'title' => "PLATEA",
-                    'body' => $this->getOrderStatusMessage($request->input("status"), $order->code, $owner->language)
-                ]);
-                $notification->save();
                 $this->sendFCMNotification($token, "PLATEA", $this->getOrderStatusMessage($request->input("status"), $order->code, $owner->language));
             }
             $order->update($data);

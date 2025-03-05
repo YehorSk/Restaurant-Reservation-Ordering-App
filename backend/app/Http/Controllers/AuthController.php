@@ -66,9 +66,7 @@ class AuthController extends Controller
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return $this->error((object)[], __("messages.incorrect_credentials"), 422);
         }
-
         $user = User::where('email',$request->email)->first();
-
         if($user->role !== "admin"){
             $user->devices()->delete();
             $user->devices()->create(
@@ -79,7 +77,6 @@ class AuthController extends Controller
                 ]
             );
         }
-        
         return $this->success(data: [[
             'user' => $user,
             'token' => $user->createToken($user->name)->plainTextToken,

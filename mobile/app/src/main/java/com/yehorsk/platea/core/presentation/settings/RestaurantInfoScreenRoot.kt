@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.settings.components.InfoHeader
 
 @Composable
 fun RestaurantInfoScreenRoot(
@@ -28,15 +29,10 @@ fun RestaurantInfoScreenRoot(
     val info by viewModel.restaurantInfoUiState.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(true) {
-        viewModel::getRestaurantInfo
-    }
-
     RestaurantInfoScreen(
         modifier = modifier,
         info = info,
         onGoBack = onGoBack,
-        onRefresh = viewModel::getRestaurantInfo,
         isLoading = uiState.isLoading
     )
 }
@@ -46,37 +42,32 @@ fun RestaurantInfoScreenRoot(
 fun RestaurantInfoScreen(
     modifier: Modifier = Modifier,
     isLoading: Boolean,
-    onRefresh: () -> Unit,
     info: RestaurantInfoEntity?,
     onGoBack: () -> Unit,
 ){
-    PullToRefreshBox(
-        isRefreshing = isLoading,
-        onRefresh = { onRefresh() }
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            NavBar(
-                onGoBack = { onGoBack() }
-            )
+        NavBar(
+            onGoBack = { onGoBack() }
+        )
+        if(!isLoading && info != null){
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
             ){
-                if(!isLoading){
-                    Text(
-                        text = "${info?:""}"
-                    )
-                }else{
-                    LoadingPart()
-                }
+                InfoHeader(
+                    title = info.name,
+                    address = info.address
+                )
             }
+        }else{
+            LoadingPart()
         }
     }
 }

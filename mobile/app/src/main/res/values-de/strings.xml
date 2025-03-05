@@ -84,6 +84,7 @@
     <string name="orders">Bestellungen</string>
     <string name="order_history">Bestellverlauf</string>
     <string name="reservation_history">Reservierungsverlauf</string>
+    <string name="info">Informationen</string>
     <string name="logout">Abmelden</string>
     <string name="hello_user">Hallo, %1$s</string>
 

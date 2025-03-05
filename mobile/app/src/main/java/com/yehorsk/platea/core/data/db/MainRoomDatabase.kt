@@ -25,7 +25,7 @@ import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
         ReservationEntity::class,
         RestaurantInfoEntity::class
     ],
-    version = 2
+    version = 1
 )
 abstract class MainRoomDatabase : RoomDatabase() {
 

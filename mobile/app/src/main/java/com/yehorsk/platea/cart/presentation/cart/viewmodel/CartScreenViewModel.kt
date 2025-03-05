@@ -92,25 +92,25 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    fun closeBottomSheet(){
+    private fun closeBottomSheet(){
         _uiState.update {
             it.copy(showBottomSheet = false)
         }
     }
 
-    fun updatePrice(price: Double){
+    private fun updatePrice(price: Double){
         _uiState.update {
             it.copy(cartForm = it.cartForm.copy(price = price))
         }
     }
 
-    fun updateQuantity(quantity: Int){
+    private fun updateQuantity(quantity: Int){
         _uiState.update {
             it.copy(cartForm = it.cartForm.copy(quantity = quantity))
         }
     }
 
-    fun clearForm(){
+    private fun clearForm(){
         _uiState.update {
             it.copy(cartForm = it.cartForm.copy(
                 price = 0.00,
@@ -120,28 +120,10 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    fun getItems() {
+    private fun getItems() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-
-            val localItems = cartItemUiState.value
-
             cartRepositoryImpl.getAllItems()
-                .onSuccess { data, message ->
-                    val serverItemIds = data.map { it.id }.toSet()
-                    val itemsToDelete = localItems.filter { it.id !in serverItemIds }
-
-                    cartDao.runInTransaction {
-                        cartDao.insertItems(data.map { it.toCartItemEntity() })
-                        cartDao.deleteItems(itemsToDelete)
-                    }
-
-                    _uiState.update {
-                        it.copy(
-                            error = ""
-                        )
-                    }
-                }
                 .onError { error ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -153,7 +135,7 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    fun setItem(item: CartItemEntity){
+    private fun setItem(item: CartItemEntity){
         _uiState.update {
             it.copy(cartItem = item)
         }
@@ -167,10 +149,10 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    fun updateItem(){
+    private fun updateItem(){
         viewModelScope.launch {
             cartRepositoryImpl.updateUserCartItem(_uiState.value.cartForm)
-                .onSuccess { data, message ->
+                .onSuccess { _, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
                             message = message.toString()
@@ -188,10 +170,10 @@ class CartScreenViewModel @Inject constructor(
         clearForm()
     }
 
-    fun deleteItem(){
+    private fun deleteItem(){
         viewModelScope.launch {
             cartRepositoryImpl.deleteUserCartItem(_uiState.value.cartForm)
-                .onSuccess { data, message ->
+                .onSuccess { _, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
                             message = message.toString()
@@ -209,7 +191,7 @@ class CartScreenViewModel @Inject constructor(
         clearForm()
     }
 
-    fun setMenuItem(menu: MenuItemEntity){
+    private fun setMenuItem(menu: MenuItemEntity){
         _uiState.update {
             it.copy(currentItem = menu)
         }

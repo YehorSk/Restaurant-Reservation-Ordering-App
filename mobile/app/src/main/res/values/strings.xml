@@ -84,6 +84,7 @@
     <string name="orders">Orders</string>
     <string name="order_history">Order history</string>
     <string name="reservation_history">Reservation history</string>
+    <string name="info">Information</string>
     <string name="logout">Log out</string>
     <string name="hello_user">Hello, %1$s</string>
 

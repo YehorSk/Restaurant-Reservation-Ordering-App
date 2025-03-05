@@ -83,6 +83,7 @@
     <string name="orders">Objednávky</string>
     <string name="order_history">História objednávok</string>
     <string name="reservation_history">História rezervácií</string>
+    <string name="info">Informácie</string>
     <string name="logout">Odhlásiť sa</string>
     <string name="hello_user">Ahoj, %1$s</string>
 
