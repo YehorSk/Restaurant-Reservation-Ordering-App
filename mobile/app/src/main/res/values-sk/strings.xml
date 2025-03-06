@@ -86,6 +86,12 @@
     <string name="info">Informácie</string>
     <string name="logout">Odhlásiť sa</string>
     <string name="hello_user">Ahoj, %1$s</string>
+    <string name="about_us">O nás</string>
+    <string name="address">Adresa</string>
+    <string name="phone">Telefón</string>
+    <string name="email">E-mail</string>
+    <string name="website">Webová stránka</string>
+    <string name="our_schedule">Rozvrh</string>
 
     <!-- Errors -->
     <string name="error_no_internet">Nie je k dispozícii internetové pripojenie.</string>

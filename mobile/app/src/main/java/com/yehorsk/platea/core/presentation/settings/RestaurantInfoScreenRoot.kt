@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,7 +21,9 @@ import androidx.compose.ui.Alignment
 import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.settings.components.InfoAboutUs
 import com.yehorsk.platea.core.presentation.settings.components.InfoHeader
+import com.yehorsk.platea.core.presentation.settings.components.SchedulePart
 
 @Composable
 fun RestaurantInfoScreenRoot(
@@ -37,7 +42,6 @@ fun RestaurantInfoScreenRoot(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RestaurantInfoScreen(
     modifier: Modifier = Modifier,
@@ -56,15 +60,31 @@ fun RestaurantInfoScreen(
             onGoBack = { onGoBack() }
         )
         if(!isLoading && info != null){
-            Box(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background)
-            ){
-                InfoHeader(
-                    title = info.name,
-                    address = info.address
-                )
+            ) {
+                item {
+                    InfoHeader(
+                        title = info.name,
+                        address = info.address,
+                    )
+                }
+                item {
+                    SchedulePart(
+                        schedule = info.openingHours
+                    )
+                }
+                item {
+                    InfoAboutUs(
+                        description = info.description,
+                        phone = info.phone,
+                        email = info.email,
+                        website = info.website ?: "",
+                        address = info.address
+                    )
+                }
             }
         }else{
             LoadingPart()

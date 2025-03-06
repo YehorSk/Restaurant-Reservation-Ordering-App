@@ -54,7 +54,6 @@ fun MenuItem(
                     .fillMaxWidth()
                     .weight(1f)
                     .padding(top = 12.dp, start = 16.dp, end = 16.dp),
-
             )
             Text(
                 text = menuItem.shortDescription,

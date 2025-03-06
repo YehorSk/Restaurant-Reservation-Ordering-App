@@ -86,6 +86,12 @@
     <string name="info">Інформація</string>
     <string name="logout">Вийти</string>
     <string name="hello_user">Привіт, %1$s</string>
+    <string name="about_us">Про нас</string>
+    <string name="address">Адреса</string>
+    <string name="phone">Телефон</string>
+    <string name="email">Електронна пошта</string>
+    <string name="website">Вебсайт</string>
+    <string name="our_schedule">Розклад</string>
 
     <!-- Errors -->
     <string name="error_no_internet">Відсутнє з\'єднання з інтернетом.</string>
