@@ -15,11 +15,14 @@ trait FCMNotificationTrait
         $notification = [
             'message' => [
                 'token' => $token,
-                'notification' => [
+                'data' => [
                     'title' => $title,
                     'body' => $body,
                 ],
-                'data' => !empty($data) ? $data : null,
+                'notification' => [
+                    'title' => $title,
+                    'body' => $body,
+                ]
             ],
         ];
 
@@ -52,11 +55,14 @@ trait FCMNotificationTrait
         $notification = [
             'message' => [
                 'topic' => 'all',
-                'notification' => [
+                'data' => [
                     'title' => $title,
                     'body' => $body,
                 ],
-                'data' => !empty($data) ? $data : null,
+                'notification' => [
+                    'title' => $title,
+                    'body' => $body,
+                ]
             ],
         ];
 

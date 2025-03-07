@@ -77,11 +77,11 @@
           <VCardText>
             <VList>
               <div v-if="!homeStore.getMenuItemsStats.isLoading">
-                <p class="text-h6 me-2"><span class="font-weight-bold">Total orders created: </span>{{ homeStore.getOrderStats.data[0].data_all_count }}</p>
-                <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getOrderStats.data[0].data_today }}</p>
-                <StatProfits :data="homeStore.getOrderStats.data[0]"/>
+                <p class="text-h6 me-2"><span class="font-weight-bold">Total orders created: </span>{{ homeStore.getOrderStats.data.data_all_count }}</p>
+                <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getOrderStats.data.data_today }}</p>
+                <StatProfits :data="homeStore.getOrderStats.data"/>
                 <div class="d-flex justify-center mt-4">
-                  <VBtn v-for="year in homeStore.getReservationStats.data[0].years" :key="year" @click="onOrderYearChange(year)">
+                  <VBtn v-for="year in homeStore.getReservationStats.data.years" :key="year" @click="onOrderYearChange(year)">
                     {{ year }}
                   </VBtn>
                 </div>
@@ -103,11 +103,11 @@
           <VCardText>
             <VList>
               <div v-if="!homeStore.getReservationStats.isLoading">
-                <p class="text-h6 me-2"><span class="font-weight-bold">Total reservations created: </span>{{ homeStore.getReservationStats.data[0].data_all_count }}</p>
-                <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getReservationStats.data[0].data_today }}</p>
-                <StatProfits :data="homeStore.getReservationStats.data[0]"/>
+                <p class="text-h6 me-2"><span class="font-weight-bold">Total reservations created: </span>{{ homeStore.getReservationStats.data.data_all_count }}</p>
+                <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getReservationStats.data.data_today }}</p>
+                <StatProfits :data="homeStore.getReservationStats.data"/>
                 <div class="d-flex justify-center mt-4">
-                  <VBtn v-for="year in homeStore.getReservationStats.data[0].years" :key="year" @click="onReservationYearChange(year)">
+                  <VBtn v-for="year in homeStore.getReservationStats.data.years" :key="year" @click="onReservationYearChange(year)">
                     {{ year }}
                   </VBtn>
                 </div>
