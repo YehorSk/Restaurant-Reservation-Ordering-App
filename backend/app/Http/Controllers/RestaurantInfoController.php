@@ -30,10 +30,12 @@ class RestaurantInfoController extends Controller
                 "address" => "required",
                 "phone" => "required",
                 "email" => "required",
+                "website" => "required",
                 "opening_hours" => "required",
             ]);
-            $item = RestaurantInfo::all()->first();
-            return $this->success([], "Updated");
+            $item = RestaurantInfo::first();
+            $item->update($data);
+            return $this->success([$item], "Updated");
         }
     }
 }

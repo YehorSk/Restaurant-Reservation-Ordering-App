@@ -64,6 +64,15 @@
           </RouterLink>
         </li>
         <li>
+          <RouterLink to="/info" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16ZM9 9a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0V9Zm1-4a1.25 1.25 0 1 1 0 2.5A1.25 1.25 0 0 1 10 5Z" clip-rule="evenodd"/>
+            </svg>
+            <span class="flex-1 ms-3 whitespace-nowrap">Information</span>
+          </RouterLink>
+        </li>
+        <li>
           <RouterLink to="/orders" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
               <path d="M5 1h8a1 1 0 0 1 1 1v14a1 1 0 0 1-1.5.87L9 15.2l-3.5 1.67A1 1 0 0 1 4 16V2a1 1 0 0 1 1-1Zm1 3a.5.5 0 0 0 0 1h6a.5.5 0 1 0 0-1H6Zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 1 0 0-1H6Zm0 3a.5.5 0 0 0 0 1h4a.5.5 0 1 0 0-1H6Z"/>

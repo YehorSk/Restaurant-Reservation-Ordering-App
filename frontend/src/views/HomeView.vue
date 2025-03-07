@@ -144,6 +144,9 @@ export default {
       toast: useToast(),
     }
   },
+  mounted() {
+    initFlowbite();
+  },
   watch: {
     // Watch for changes in the success message
     "authStore.success": {

@@ -33,6 +33,7 @@ Route::controller(AuthController::class)->group(function () {
 //Protected routes
 Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::get('/get-restaurant-info', [RestaurantInfoController::class, 'getRestaurantInfo']);
+    Route::post('/update-restaurant-info', [RestaurantInfoController::class, 'updateRestaurantInfo']);
     Route::post('/update-profile', [AuthController::class, 'updateProfile']);
     Route::post('/delete-account', [AuthController::class, 'deleteAccount']);
     Route::post('/user', [AuthController::class, 'authenticate']);

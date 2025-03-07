@@ -13,6 +13,9 @@
         toast: useToast()
       }
     },
+    mounted() {
+      initFlowbite();
+    },
     methods:{
       submitLogInForm(){
         this.authStore.login(this.email,this.password);
