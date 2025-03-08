@@ -9,7 +9,9 @@ export const UseUserStore = defineStore("users",{
        users: [],
        errors: '',
        isLoading: true,
-       success: ''
+       success: '',
+       current_page: 1,
+       total_pages: 1,
    }) ,
     getters: {
        getUsers(){
@@ -20,16 +22,18 @@ export const UseUserStore = defineStore("users",{
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
         },
-        async fetchUsers(page = 1, search = ''){
+        async fetchUsers(search = ''){
             this.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('users?page=' + page,{
+                const response = await axios.get('users?page=' + this.current_page,{
                     params: {
                         search: search
                     }
                 });
                 console.log(response.data.data)
+                this.total_pages = response.data.data.last_page;
+                this.current_page = this.current_page <= this.total_pages ? this.current_page : this.total_pages;
                 this.users = response.data.data;
             }catch (error) {
                 console.log(error);

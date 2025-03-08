@@ -67,8 +67,8 @@
     </table>
     <div class="text-center">
       <v-pagination
-          v-model="page"
-          :length="ordersStore.getOrders.last_page"
+          v-model="ordersStore.current_page"
+          :length="ordersStore.total_pages"
           rounded="circle"
       ></v-pagination>
     </div>
@@ -120,9 +120,9 @@ export default {
   },
   mounted() {
     initFlowbite();
-    watch(() => this.page, (newValue, oldValue) => {
+    watch(() => this.ordersStore.current_page, (newValue, oldValue) => {
       if (newValue) {
-        this.ordersStore.fetchOrders(this.page, this.search)
+        this.ordersStore.fetchOrders( this.search)
       }
     });
   },
@@ -146,8 +146,8 @@ export default {
       this.edit_order = order;
     },
     onSearch(){
-      this.page = 1;
-      this.ordersStore.fetchOrders(this.page, this.search);
+      this.ordersStore.current_page = 1;
+      this.ordersStore.fetchOrders(this.search);
     }
   }
 }

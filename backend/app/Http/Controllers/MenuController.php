@@ -62,7 +62,7 @@ class MenuController extends Controller
         if ($user instanceof User) {
             $menu = Menu::find($id);
             $data = $request->validate([
-                'name' => 'required|unique:menus',
+                'name' => 'required',
                 'description' => 'required',
                 'availability' => 'nullable'
             ]);

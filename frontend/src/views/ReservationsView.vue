@@ -85,8 +85,8 @@
     </table>
     <div class="text-center">
       <v-pagination
-          v-model="page"
-          :length="reservationStore.getReservations.last_page"
+          v-model="reservationStore.current_page"
+          :length="reservationStore.total_pages"
           rounded="circle"
       ></v-pagination>
     </div>
@@ -130,7 +130,6 @@ export default {
           'Cancelled',
       ],
       search: "",
-      page: 1,
     }
   },
   watch: {
@@ -147,9 +146,9 @@ export default {
   },
   mounted() {
     initFlowbite();
-    watch(() => this.page, (newValue, oldValue) => {
+    watch(() => this.reservationStore.current_page, (newValue, oldValue) => {
       if (newValue) {
-        this.reservationStore.fetchReservations(this.page, this.search)
+        this.reservationStore.fetchReservations(this.search)
       }
     });
   },
@@ -164,8 +163,8 @@ export default {
       this.edit_reservation = reservation;
     },
     onSearch(){
-      this.page = 1;
-      this.reservationStore.fetchReservations(this.page, this.search);
+      this.reservationStore.current_page = 1;
+      this.reservationStore.fetchReservations(this.search);
     }
   }
 }

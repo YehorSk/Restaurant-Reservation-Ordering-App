@@ -9,7 +9,9 @@ export const UseOrdersStore = defineStore("orders", {
         orders: [],
         errors: '',
         isLoading: true,
-        success: ''
+        success: '',
+        current_page: 1,
+        total_pages: 1,
     }),
     getters: {
         getOrders(){
@@ -20,16 +22,18 @@ export const UseOrdersStore = defineStore("orders", {
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
         },
-        async fetchOrders(page = 1, search = ''){
+        async fetchOrders(search = ''){
             this.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('order/admin/getAllOrders?page=' + page,{
+                const response = await axios.get('order/admin/getAllOrders?page=' + this.current_page,{
                     params:{
                         search: search
                     }
                 });
                 console.log(response.data.data)
+                this.total_pages = response.data.data.last_page;
+                this.current_page = this.current_page <= this.total_pages ? this.current_page : this.total_pages;
                 this.orders = response.data.data;
             }catch (error) {
                 console.log(error);

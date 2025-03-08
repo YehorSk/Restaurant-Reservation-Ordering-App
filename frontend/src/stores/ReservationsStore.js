@@ -9,7 +9,9 @@ export const UseReservationStore = defineStore("reservations", {
         reservations: [],
         errors: '',
         isLoading: true,
-        success: ''
+        success: '',
+        current_page: 1,
+        total_pages: 1,
     }),
     getters: {
         getReservations(){
@@ -20,16 +22,18 @@ export const UseReservationStore = defineStore("reservations", {
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
         },
-        async fetchReservations(page = 1, search = ''){
+        async fetchReservations(search = ''){
             this.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('reservation/admin/getAllReservations?page=' + page,{
+                const response = await axios.get('reservation/admin/getAllReservations?page=' + this.current_page,{
                     params:{
                         search: search
                     }
                 });
                 console.log(response.data.data)
+                this.total_pages = response.data.data.last_page;
+                this.current_page = this.current_page <= this.total_pages ? this.current_page : this.total_pages;
                 this.reservations = response.data.data;
             }catch (error) {
                 console.log(error);

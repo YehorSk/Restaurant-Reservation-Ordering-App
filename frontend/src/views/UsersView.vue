@@ -67,8 +67,8 @@
     </table>
     <div class="text-center">
       <v-pagination
-          v-model="page"
-          :length="userStore.getUsers.last_page"
+          v-model="userStore.current_page"
+          :length="userStore.total_pages"
           rounded="circle"
       ></v-pagination>
     </div>
@@ -117,7 +117,6 @@ export default {
           "chef",
           "admin"
       ],
-      page: 1,
       search: '',
     }
   },
@@ -136,9 +135,9 @@ export default {
   },
   mounted() {
     initFlowbite();
-    watch(() => this.page, (newValue, oldValue) => {
+    watch(() => this.userStore.current_page, (newValue, oldValue) => {
       if (newValue) {
-        this.userStore.fetchUsers(this.page, this.search)
+        this.userStore.fetchUsers(this.search)
       }
     });
   },
@@ -159,8 +158,8 @@ export default {
       this.userStore.updateUser(user);
     },
     onSearch() {
-      this.page = 1;
-      this.userStore.fetchUsers(this.page, this.search);
+      this.userStore.current_page = 1;
+      this.userStore.fetchUsers(this.search);
     },
   }
 }

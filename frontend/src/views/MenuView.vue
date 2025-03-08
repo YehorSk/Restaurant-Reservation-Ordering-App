@@ -99,8 +99,8 @@
       </table>
     <div class="text-center">
       <v-pagination
-          v-model="page"
-          :length="menuStore.getMenus.last_page"
+          v-model="menuStore.current_page"
+          :length="menuStore.total_pages"
           rounded="circle"
       ></v-pagination>
     </div>
@@ -141,7 +141,6 @@ export default{
       description: "",
       dialog: false,
       edit_menu: [],
-      page: 1,
       search: '',
       showAddMenu: false
     }
@@ -161,9 +160,9 @@ export default{
   },
   mounted() {
     initFlowbite();
-    watch(() => this.page, (newValue, oldValue) => {
+    watch(() => this.menuStore.current_page, (newValue, oldValue) => {
       if (newValue) {
-        this.menuStore.fetchMenus(this.page, this.search)
+        this.menuStore.fetchMenus(this.search)
       }
     });
   },
@@ -189,8 +188,8 @@ export default{
       this.menuStore.destroyMenu(id);
     },
     onSearch() {
-      this.page = 1;
-      this.menuStore.fetchMenus(this.page, this.search);
+      this.menuStore.current_page = 1;
+      this.menuStore.fetchMenus(this.search);
     },
   }
 }

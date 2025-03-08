@@ -10,7 +10,11 @@ export const UseMenuStore = defineStore("menu",{
         menuItems: [],
         errors: '',
         isLoading: true,
-        success: ''
+        success: '',
+        current_page: 1,
+        current_page_items: 1,
+        total_pages: 1,
+        total_pages_items: 1,
     }),
     getters: {
         getMenus(){
@@ -24,16 +28,18 @@ export const UseMenuStore = defineStore("menu",{
         async getToken(){
             await axios.get('/sanctum/csrf-cookie');
         },
-        async fetchMenus(page = 1, search = '') {
+        async fetchMenus(search = '') {
             this.isLoading = true;
             await this.getToken();
             try {
-                const response = await axios.get('menu?page=' + page,{
+                const response = await axios.get('menu?page=' + this.current_page,{
                     params: {
                         search: search
                     }
                 });
                 console.log(response.data.data)
+                this.total_pages = response.data.data.last_page;
+                this.current_page = this.current_page <= this.total_pages ? this.current_page : this.total_pages;
                 this.menus = response.data.data;
             } catch (error) {
                 if (error.response.status === 422) {
@@ -43,17 +49,19 @@ export const UseMenuStore = defineStore("menu",{
                 this.isLoading = false;
             }
         },
-        async fetchMenuItems(page = 1, search = '', $id){
+        async fetchMenuItems(search = '', id){
             this.menuItems = [];
             this.isLoading = true;
             await this.getToken();
             try{
-                const response = await axios.get('menuItems/'+$id+'/items?page=' + page,{
+                const response = await axios.get('menuItems/'+id+'/items?page=' + this.current_page_items,{
                     params: {
                         search: search
                     }
                 });
                 console.log(response.data)
+                this.total_pages_items = response.data.data.last_page;
+                this.current_page_items = this.current_page_items <= this.total_pages_items ? this.current_page_items : this.total_pages_items;
                 this.menuItems = response.data.data;
             } catch (error) {
                 if (error.response.status === 422) {
@@ -115,7 +123,7 @@ export const UseMenuStore = defineStore("menu",{
                     });
                 console.log(response.data);
                 this.success = response.data.message;
-                await this.fetchMenuItems(id);
+                await this.fetchMenuItems('',id);
             }catch (error) {
                 console.log(error)
             }
@@ -132,7 +140,7 @@ export const UseMenuStore = defineStore("menu",{
                     });
                 console.log(response.data);
                 this.success = response.data.message;
-                await this.fetchMenuItems(id);
+                await this.fetchMenuItems('',id);
             }catch (error) {
                 console.log(error)
             }
@@ -142,7 +150,7 @@ export const UseMenuStore = defineStore("menu",{
                 const response = await axios.delete("menuItems/" + id +"/items/"+menuItem.id);
                 console.log(response.data);
                 this.success = response.data.message;
-                await this.fetchMenuItems(id);
+                await this.fetchMenuItems('',id);
             }catch (error) {
                 console.log(error)
             }

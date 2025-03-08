@@ -118,8 +118,8 @@
       </table>
       <div class="text-center">
         <v-pagination
-            v-model="page"
-            :length="menuStore.getMenuItems.last_page"
+            v-model="menuStore.current_page_items"
+            :length="menuStore.total_pages_items"
             rounded="circle"
         ></v-pagination>
       </div>
@@ -160,7 +160,7 @@
       ></v-text-field>
       <template v-slot:actions>
         <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="dialog = false, this.menuStore.updateMenuItem(this.route.params.id,editMenuItem)"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="updateMenuItem"></v-btn>
       </template>
     </v-card>
   </v-dialog>
@@ -189,7 +189,6 @@ export default {
       price: 0,
       dialog: false,
       editMenuItem: {},
-      page: 1,
       search: '',
       showAddMenu: false
     }
@@ -210,9 +209,9 @@ export default {
   },
   mounted() {
     initFlowbite();
-    watch(() => this.page, (newValue, oldValue) => {
+    watch(() => this.menuStore.current_page_items, (newValue, oldValue) => {
       if (newValue) {
-        this.menuStore.fetchMenuItems(this.page, this.search)
+        this.menuStore.fetchMenuItems(this.search, this.route.params.id)
       }
     });
   },
@@ -220,7 +219,7 @@ export default {
     this.menuStore.success = "";
   },
   beforeMount(){
-    this.menuStore.fetchMenuItems(this.page, this.search, this.route.params.id)
+    this.menuStore.fetchMenuItems(this.search, this.route.params.id)
   },
   methods:{
     submitForm(){
@@ -235,9 +234,13 @@ export default {
     setMenuItem(item){
       this.editMenuItem = item;
     },
+    updateMenuItem(){
+      this.dialog = false;
+      this.menuStore.updateMenuItem(this.route.params.id,this.editMenuItem)
+    },
     onSearch() {
-      this.page = 1;
-      this.menuStore.fetchMenuItems(this.page, this.search, this.route.params.id);
+      this.menuStore.current_page_items = 1;
+      this.menuStore.fetchMenuItems(this.search, this.route.params.id);
     },
   }
 }
