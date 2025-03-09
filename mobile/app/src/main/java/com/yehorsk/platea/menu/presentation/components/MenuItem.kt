@@ -75,8 +75,9 @@ fun MenuItem(
                     .padding(bottom = 12.dp, start = 16.dp, end = 16.dp, top = 6.dp),
             )
         }
+
         AsyncImage(
-            model = menuItem.picture,
+            model = "${menuItem.picture}",
             modifier = Modifier
                 .weight(1f)
                 .padding(26.dp)

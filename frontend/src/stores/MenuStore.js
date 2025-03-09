@@ -113,14 +113,18 @@ export const UseMenuStore = defineStore("menu",{
         },
         async insertMenuItem(id,name, short_description, long_description, recipe, picture, price){
             try{
-                const response = await axios.post('menuItems/'+id+'/items',{
-                        name: name,
-                        short_description: short_description,
-                        long_description: long_description,
-                        recipe: recipe,
-                        picture: picture,
-                        price: price,
-                    });
+                let formData = new FormData();
+                formData.append('picture', picture);
+                formData.append('name', name);
+                formData.append('short_description', short_description);
+                formData.append('long_description', long_description);
+                formData.append('recipe', recipe);
+                formData.append('price', price);
+                const response = await axios.post('menuItems/'+id+'/items',formData,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenuItems('',id);
@@ -128,16 +132,32 @@ export const UseMenuStore = defineStore("menu",{
                 console.log(error)
             }
         },
-        async updateMenuItem(id,menuItem){
+        async updateMenuItem(id,menuItem,file){
             try{
-                const response = await axios.put("menuItems/" + id +"/items/"+menuItem.id,{
-                        name: menuItem.name,
-                        short_description: menuItem.short_description,
-                        long_description: menuItem.long_description,
-                        recipe: menuItem.recipe,
-                        picture: menuItem.picture,
-                        price: menuItem.price,
+                let imagePath = null;
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('picture', file);
+                    formData.append('name', menuItem.name);
+                    const response = await axios.post("menuItems/upload-image", formData,{
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
                     });
+                    imagePath = response.data.image_path;
+                }
+                const updatedData = {
+                    name: menuItem.name,
+                    short_description: menuItem.short_description,
+                    long_description: menuItem.long_description,
+                    recipe: menuItem.recipe,
+                    price: menuItem.price,
+                }
+                if (imagePath !== null) {
+                    updatedData.picture = imagePath;
+                }
+                console.log("Updated : "+updatedData);
+                const response = await axios.put("menuItems/" + id +"/items/"+menuItem.id,updatedData);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenuItems('',id);

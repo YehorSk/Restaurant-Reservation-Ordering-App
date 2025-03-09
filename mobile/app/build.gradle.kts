@@ -43,17 +43,20 @@ android {
         debug{
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", localProps.getProperty("LOCAL_SERVER"))
+            buildConfigField("String", "BASE_URL_IMG", localProps.getProperty("LOCAL_SERVER_IMG"))
         }
         create("server"){
             isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", localProps.getProperty("ONLINE_SERVER"))
+            buildConfigField("String", "BASE_URL_IMG", localProps.getProperty("ONLINE_SERVER_IMG"))
             signingConfig = signingConfigs.getByName("debug")
             isDebuggable = true
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            buildConfigField("String", "BASE_URL", "\"https://api.platea.site/backend/public/api/\"")
+            buildConfigField("String", "BASE_URL", localProps.getProperty("ONLINE_SERVER"))
+            buildConfigField("String", "BASE_URL_IMG", localProps.getProperty("ONLINE_SERVER_IMG"))
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

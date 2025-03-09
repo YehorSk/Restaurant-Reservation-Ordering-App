@@ -49,6 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
     });
 
     Route::get('/menuItems/stats', [MenuItemController::class, 'getStats']);
+    Route::post('/menuItems/upload-image', [MenuItemController::class, 'uploadImage']);
 
     Route::prefix("notifications")->controller(NotificationController::class)->group(function () {
         Route::post('/admin/sendToEveryone', 'sendToAll');

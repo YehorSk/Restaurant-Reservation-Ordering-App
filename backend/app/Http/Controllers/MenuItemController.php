@@ -6,6 +6,7 @@ use App\Models\MenuItem;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class MenuItemController extends Controller
 {
@@ -53,6 +54,19 @@ class MenuItemController extends Controller
         return $this->error('', __('messages.no_user'), 401);
     }
 
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'name' => 'required|nullable|string|max:255',
+        ]);
+
+        $imageName = time().'.'. $request->name .'.'.$request->picture->extension();
+        $request->picture->storeAs('public/images/menu_items', $imageName);
+
+        return response()->json(['image_path' => 'images/menu_items/'.$imageName]);
+    }
+
     public function store(Request $request, $menu_id)
     {
         $user = auth('sanctum')->user();
@@ -62,14 +76,14 @@ class MenuItemController extends Controller
                 'name' => 'required|string|max:255',
                 'short_description' => 'nullable|string',
                 'long_description' => 'nullable|string',
-                'recipe' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'picture' => 'nullable|string',
+                'recipe' => 'nullable|string',
+                'picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'price' => 'required|numeric|min:0',
             ]);
 
             $imageName = time().'.'.$request->name . '.' . $request->picture->extension();
 
-            $path = $request->file('image')->storeAs('public/images/menu_items', $imageName);
+            $path = $request->file('picture')->storeAs('public/images/menu_items', $imageName);
 
             $relativePath = str_replace('public/', '', $path);
 
@@ -94,12 +108,16 @@ class MenuItemController extends Controller
                 return $this->error('', 'Menu item not found', 404);
             }
 
+            if ($request->has('picture')) {
+                $filePath = storage_path('app/public/' . $menuItem->picture);
+                File::delete($filePath);
+            }
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'short_description' => 'nullable|string',
                 'long_description' => 'nullable|string',
                 'recipe' => 'nullable|string',
-                'picture' => 'nullable|string',
+                'picture' => 'nullable',
                 'price' => 'required|numeric|min:0',
             ]);
 
@@ -122,6 +140,8 @@ class MenuItemController extends Controller
                 return $this->error('', 'Menu item not found', 404);
             }
 
+            $filePath = storage_path('app/public/' . $menuItem->picture);
+            File::delete($filePath);
             $menuItem->delete();
 
             return $this->success(message: __("messages.menu_item_deleted_successfully"));

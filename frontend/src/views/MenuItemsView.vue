@@ -26,16 +26,20 @@
                 color="orange"
             ></v-text-field>
             <v-text-field
-                v-model="picture"
-                label="Picture"
-                color="orange"
-            ></v-text-field>
-            <v-text-field
                 v-model="price"
                 label="Price"
                 color="orange"
                 type="number"
             ></v-text-field>
+            <v-file-input
+                v-model="addFile"
+                accept="image/png, image/jpeg, image/bmp"
+                :prepend-icon="null"
+                color="orange"
+                @change="onFileChange($event, 'add')"
+                label="Choose Image"
+            ></v-file-input>
+            <v-img v-if="addImageUrl" :src="addImageUrl"></v-img>
             <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>Save</v-btn>
           </v-form>
         </div>
@@ -67,6 +71,9 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3">
+            Image
+          </th>
+          <th scope="col" class="px-6 py-3">
             Name
           </th>
           <th scope="col" class="px-6 py-3">
@@ -88,6 +95,9 @@
         </thead>
         <tbody>
         <tr v-for="item in menuStore.menuItems.data" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="px-6 py-4">
+            <img :src="'https://api.platea.site/backend/storage/' + item.picture" class="w-16 md:w-32 max-w-full max-h-full" alt="Speaker's Profile Picture">
+          </td>
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ item.name }}
           </th>
@@ -148,16 +158,12 @@
           label="Recipe"
       ></v-textarea>
       <v-text-field
-          v-model="editMenuItem.picture"
-          hide-details="auto"
-          label="Picture"
-      ></v-text-field>
-      <v-text-field
           v-model="editMenuItem.price"
           hide-details="auto"
           label="Price"
           type="number"
       ></v-text-field>
+      <input type="file" accept="image/*" @change="onFileChange($event, 'update')" class="mb-4">
       <template v-slot:actions>
         <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
         <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="updateMenuItem"></v-btn>
@@ -185,7 +191,10 @@ export default {
       short_description: "",
       long_description: "",
       recipe: "",
-      picture: "",
+      addFile: null,
+      updateFile: null,
+      addImageUrl: "",
+      updateImageUrl: "",
       price: 0,
       dialog: false,
       editMenuItem: {},
@@ -223,12 +232,14 @@ export default {
   },
   methods:{
     submitForm(){
-      this.menuStore.insertMenuItem(this.route.params.id, this.name, this.short_description, this.long_description, this.recipe, this.picture, this.price);
+      this.menuStore.insertMenuItem(this.route.params.id, this.name, this.short_description, this.long_description, this.recipe, this.addFile, this.price);
       this.name = "";
       this.short_description = "";
       this.long_description = "";
       this.recipe = "";
-      this.picture = "";
+      this.addFile = null;
+      this.addImageUrl = '';
+      this.addFileInput = '';
       this.price = 0;
     },
     setMenuItem(item){
@@ -236,11 +247,35 @@ export default {
     },
     updateMenuItem(){
       this.dialog = false;
-      this.menuStore.updateMenuItem(this.route.params.id,this.editMenuItem)
+      this.menuStore.updateMenuItem(this.route.params.id,this.editMenuItem, this.updateFile);
     },
     onSearch() {
       this.menuStore.current_page_items = 1;
       this.menuStore.fetchMenuItems(this.search, this.route.params.id);
+    },
+    createImage(file, form) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        if (form === 'update') {
+        } else {
+          this.addImageUrl = e.target.result;
+        }
+      };
+      reader.readAsDataURL(file);
+    },
+    onFileChange(event, form) {
+      const files = event.target.files;
+      if (!files || files.length === 0) {
+        console.log("No files selected.");
+        return;
+      }
+      const file = files[0];
+      if (form === 'update') {
+        this.updateFile = file;
+      } else {
+        this.addFile = file;
+      }
+      this.createImage(file, form);
     },
   }
 }
