@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
@@ -33,6 +34,7 @@ fun MenuItem(
     modifier: Modifier = Modifier,
     onClick: (MenuItemEntity) -> Unit
 ){
+    val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
             .height(IntrinsicSize.Max)
@@ -77,7 +79,7 @@ fun MenuItem(
         }
 
         AsyncImage(
-            model = "${menuItem.picture}",
+            model = "$imgUrl${menuItem.picture}",
             modifier = Modifier
                 .weight(1f)
                 .padding(26.dp)
@@ -85,7 +87,7 @@ fun MenuItem(
             contentDescription = menuItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),
             contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.menu_item_placeholder)
+            error = painterResource(R.drawable.menu_item_placeholder),
         )
     }
 }

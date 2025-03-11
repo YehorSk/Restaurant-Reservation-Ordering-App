@@ -96,7 +96,7 @@
         <tbody>
         <tr v-for="item in menuStore.menuItems.data" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <td class="px-6 py-4">
-            <img :src="'https://api.platea.site/backend/storage/' + item.picture" class="w-16 md:w-32 max-w-full max-h-full" alt="Speaker's Profile Picture">
+            <img :src="'https://api.platea.site/backend/public/storage/' + item.picture" class="w-16 md:w-32 max-w-full max-h-full" alt="Menu Item Picture">
           </td>
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ item.name }}

@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
@@ -35,6 +36,7 @@ fun OrderListItem(
     modifier: Modifier = Modifier,
     onClick: (OrderMenuItemDto) -> Unit
 ){
+    val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -46,7 +48,7 @@ fun OrderListItem(
         horizontalArrangement = Arrangement.Center
     ){
         AsyncImage(
-            model = menuItem.picture,
+            model = "$imgUrl${menuItem.picture}",
             modifier = Modifier
                 .padding(12.dp)
                 .size(60.dp)

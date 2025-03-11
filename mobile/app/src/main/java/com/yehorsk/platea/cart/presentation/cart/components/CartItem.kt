@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.db.model.PivotCartItemEntity
@@ -35,7 +36,7 @@ fun CartItem(
     modifier: Modifier = Modifier,
     onClick: (CartItemEntity) -> Unit
 ){
-
+    val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
             .height(IntrinsicSize.Max)
@@ -80,7 +81,7 @@ fun CartItem(
             )
         }
         AsyncImage(
-            model = cartItem.picture,
+            model = "$imgUrl${cartItem.picture}",
             modifier = Modifier
                 .weight(1f)
                 .padding(32.dp)

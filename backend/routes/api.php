@@ -13,8 +13,10 @@ use App\Http\Controllers\TableController;
 use App\Http\Controllers\TimeSlotController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
+use Illuminate\Support\Facades\File;
 
 Route::get('/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 

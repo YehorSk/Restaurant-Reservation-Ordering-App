@@ -1,4 +1,4 @@
-package com.yehorsk.platea.orders.presentation.components
+package com.yehorsk.platea.orders.presentation.order_details.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.db.model.OrderItemEntity
@@ -35,7 +36,7 @@ fun OrderDetailsListItem(
     modifier: Modifier = Modifier,
     onClick: (OrderItemEntity) -> Unit,
 ){
-
+    val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -47,7 +48,7 @@ fun OrderDetailsListItem(
         horizontalArrangement = Arrangement.Center
     ){
         AsyncImage(
-            model = menuItem.picture,
+            model = "$imgUrl${menuItem.picture}",
             modifier = Modifier
                 .padding(12.dp)
                 .size(60.dp)
