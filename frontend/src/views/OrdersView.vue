@@ -140,10 +140,20 @@ export default {
       },
       immediate: true,
     },
+    "ordersStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.ordersStore.failure = "";
+        }
+      },
+      immediate: true,
+    },
   },
   methods:{
     setOrder(order){
-      this.edit_order = order;
+      this.edit_order = JSON.parse(JSON.stringify(order));
     },
     onSearch(){
       this.ordersStore.current_page = 1;

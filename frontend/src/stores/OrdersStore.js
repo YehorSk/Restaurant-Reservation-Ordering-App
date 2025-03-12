@@ -10,6 +10,7 @@ export const UseOrdersStore = defineStore("orders", {
         errors: '',
         isLoading: true,
         success: '',
+        failure: '',
         current_page: 1,
         total_pages: 1,
     }),
@@ -37,6 +38,10 @@ export const UseOrdersStore = defineStore("orders", {
                 this.orders = response.data.data;
             }catch (error) {
                 console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
             }finally {
                 this.isLoading = false;
             }
@@ -51,6 +56,10 @@ export const UseOrdersStore = defineStore("orders", {
                 await this.fetchOrders();
             }catch (error) {
                 console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
             }
         },
         async destroyOrder(id){
@@ -60,7 +69,11 @@ export const UseOrdersStore = defineStore("orders", {
                 this.success = response.data.message;
                 await this.fetchOrders();
             }catch (error) {
-                console.log(error)
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
             }
         },
     }

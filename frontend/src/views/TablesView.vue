@@ -130,6 +130,16 @@ export default {
       },
       immediate: true,
     },
+    "tableStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.tableStore.failure = "";
+        }
+      },
+      immediate: true,
+    },
   },
   beforeMount(){
     this.tableStore.fetchTables();
@@ -139,7 +149,7 @@ export default {
   },
   methods: {
     setTable(table) {
-      this.editTable = table;
+      this.editTable = JSON.parse(JSON.stringify(table));
     },
     submitForm() {
       this.tableStore.insertTable(this.number, this.capacity);

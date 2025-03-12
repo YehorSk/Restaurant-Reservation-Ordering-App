@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Validation\Rule;
 
 class MenuItemController extends Controller
 {
@@ -113,7 +114,7 @@ class MenuItemController extends Controller
                 File::delete($filePath);
             }
             $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
+                'name' => ['required', Rule::unique('menu_items')->ignore($menuItem->id)],
                 'short_description' => 'nullable|string',
                 'long_description' => 'nullable|string',
                 'recipe' => 'nullable|string',

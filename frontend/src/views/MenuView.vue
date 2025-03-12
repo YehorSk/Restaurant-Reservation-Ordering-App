@@ -15,7 +15,7 @@
                     label="Description"
                     color="orange"
                 ></v-text-field>
-                <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>Save</v-btn>
+                <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" :disabled="!isFormValid" block>Save</v-btn>
               </v-form>
             </div>
           </div>
@@ -145,14 +145,30 @@ export default{
       showAddMenu: false
     }
   },
+  computed: {
+    isFormValid() {
+      return this.name.length >= 3 && this.description.length >= 5;
+    }
+  },
   watch: {
     "menuStore.success": {
       handler(newValue) {
         if (newValue) {
           const toast = useToast();
+          this.clearForm();
           this.showAddMenu = false;
           toast.success(newValue);
           this.menuStore.success = "";
+        }
+      },
+      immediate: true,
+    },
+    "menuStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.menuStore.failure = "";
         }
       },
       immediate: true,
@@ -174,12 +190,10 @@ export default{
   },
   methods:{
     setMenu(menu){
-      this.edit_menu = menu;
+      this.edit_menu = JSON.parse(JSON.stringify(menu));
     },
     submitForm(){
       this.menuStore.insertMenu(this.name, this.description);
-      this.name = "";
-      this.description = "";
     },
     updateMenu(menu){
       this.menuStore.updateMenu(menu);
@@ -191,6 +205,10 @@ export default{
       this.menuStore.current_page = 1;
       this.menuStore.fetchMenus(this.search);
     },
+    clearForm(){
+      this.name = "";
+      this.description = "";
+    }
   }
 }
 </script>

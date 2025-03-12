@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -62,7 +63,7 @@ class MenuController extends Controller
         if ($user instanceof User) {
             $menu = Menu::find($id);
             $data = $request->validate([
-                'name' => 'required',
+                'name' => ['required', Rule::unique('menus')->ignore($menu->id)],
                 'description' => 'required',
                 'availability' => 'nullable'
             ]);

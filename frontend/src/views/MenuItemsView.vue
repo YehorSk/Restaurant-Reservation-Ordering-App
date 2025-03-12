@@ -215,6 +215,16 @@ export default {
       },
       immediate: true,
     },
+    "menuStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.menuStore.failure = "";
+        }
+      },
+      immediate: true,
+    },
   },
   mounted() {
     initFlowbite();
@@ -243,7 +253,7 @@ export default {
       this.price = 0;
     },
     setMenuItem(item){
-      this.editMenuItem = item;
+      this.editMenuItem = JSON.parse(JSON.stringify(item));
     },
     updateMenuItem(){
       this.dialog = false;

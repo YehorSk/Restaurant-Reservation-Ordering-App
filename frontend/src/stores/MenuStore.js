@@ -9,6 +9,7 @@ export const UseMenuStore = defineStore("menu",{
         menus: [],
         menuItems: [],
         errors: '',
+        failure: '',
         isLoading: true,
         success: '',
         current_page: 1,
@@ -42,8 +43,10 @@ export const UseMenuStore = defineStore("menu",{
                 this.current_page = this.current_page <= this.total_pages ? this.current_page : this.total_pages;
                 this.menus = response.data.data;
             } catch (error) {
-                if (error.response.status === 422) {
-                    this.errors.value = error.response.data.errors;
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
                 }
             }finally {
                 this.isLoading = false;
@@ -63,15 +66,18 @@ export const UseMenuStore = defineStore("menu",{
                 this.total_pages_items = response.data.data.last_page;
                 this.current_page_items = this.current_page_items <= this.total_pages_items ? this.current_page_items : this.total_pages_items;
                 this.menuItems = response.data.data;
-            } catch (error) {
-                if (error.response.status === 422) {
-                    this.errors.value = error.response.data.errors;
+            }catch (error) {
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
                 }
             }finally {
                 this.isLoading = false;
             }
         },
         async insertMenu(name, description){
+            this.isLoading = true;
             try{
                 const response = await axios.post('menu',{
                     name: name,
@@ -81,12 +87,17 @@ export const UseMenuStore = defineStore("menu",{
                 this.success = response.data.message;
                 await this.fetchMenus();
             }catch (error) {
+                console.log(error);
                 if(error.response.status === 422){
                     this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
                 }
+            } finally {
+                this.isLoading = false;
             }
         },
         async updateMenu(menu){
+            this.isLoading = true;
             try{
                 const response = await axios.put("menu/" + menu.id,{
                     name: menu.name,
@@ -96,22 +107,34 @@ export const UseMenuStore = defineStore("menu",{
                 this.success = response.data.message;
                 await this.fetchMenus();
             }catch (error) {
+                console.log(error);
                 if(error.response.status === 422){
                     this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
                 }
+            } finally {
+                this.isLoading = false;
             }
         },
         async destroyMenu(id){
+            this.isLoading = true;
             try{
                 const response = await axios.delete("menu/" + id);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenus();
             }catch (error) {
-                console.log(error)
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         },
         async insertMenuItem(id,name, short_description, long_description, recipe, picture, price){
+            this.isLoading = true;
             try{
                 let formData = new FormData();
                 formData.append('picture', picture);
@@ -129,10 +152,17 @@ export const UseMenuStore = defineStore("menu",{
                 this.success = response.data.message;
                 await this.fetchMenuItems('',id);
             }catch (error) {
-                console.log(error)
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         },
         async updateMenuItem(id,menuItem,file){
+            this.isLoading = true;
             try{
                 let imagePath = null;
                 if (file) {
@@ -162,17 +192,30 @@ export const UseMenuStore = defineStore("menu",{
                 this.success = response.data.message;
                 await this.fetchMenuItems('',id);
             }catch (error) {
-                console.log(error)
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         },
         async destroyMenuItem(id,menuItem){
+            this.isLoading = true;
             try{
                 const response = await axios.delete("menuItems/" + id +"/items/"+menuItem.id);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenuItems('',id);
             }catch (error) {
-                console.log(error)
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         }
     },

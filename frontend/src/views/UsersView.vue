@@ -121,13 +121,22 @@ export default {
     }
   },
   watch: {
-    // Watch for changes in the success message
     "userStore.success": {
       handler(newValue) {
         if (newValue) {
           const toast = useToast();
           toast.success(newValue);
           this.userStore.success = "";
+        }
+      },
+      immediate: true,
+    },
+    "userStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.userStore.failure = "";
         }
       },
       immediate: true,
@@ -152,7 +161,7 @@ export default {
 
     },
     setUser(user){
-      this.edit_user = user;
+      this.edit_user = JSON.parse(JSON.stringify(user));
     },
     updateUser(user){
       this.userStore.updateUser(user);

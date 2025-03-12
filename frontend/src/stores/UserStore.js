@@ -10,6 +10,7 @@ export const UseUserStore = defineStore("users",{
        errors: '',
        isLoading: true,
        success: '',
+       failure: '',
        current_page: 1,
        total_pages: 1,
    }) ,
@@ -37,11 +38,16 @@ export const UseUserStore = defineStore("users",{
                 this.users = response.data.data;
             }catch (error) {
                 console.log(error);
-            }finally {
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
                 this.isLoading = false;
             }
         },
         async updateUser(user){
+            this.isLoading = true;
             try{
                 const response = await axios.put("users/" + user.id,{
                         name: user.name,
@@ -53,16 +59,29 @@ export const UseUserStore = defineStore("users",{
                 await this.fetchUsers();
             }catch (error) {
                 console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         },
         async destroyUser(id){
+            this.isLoading = true;
             try{
                 const response = await axios.delete("users/" + id);
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchUsers();
             }catch (error) {
-                console.log(error)
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         },
     }

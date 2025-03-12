@@ -143,6 +143,16 @@ export default {
       },
       immediate: true,
     },
+    "reservationStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.reservationStore.failure = "";
+        }
+      },
+      immediate: true,
+    },
   },
   mounted() {
     initFlowbite();
@@ -160,7 +170,7 @@ export default {
   },
   methods:{
     setReservation(reservation){
-      this.edit_reservation = reservation;
+      this.edit_reservation = JSON.parse(JSON.stringify(reservation));
     },
     onSearch(){
       this.reservationStore.current_page = 1;

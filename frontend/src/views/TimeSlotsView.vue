@@ -125,6 +125,16 @@ export default {
       },
       immediate: true,
     },
+    "timeSlotStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.timeSlotStore.failure = "";
+        }
+      },
+      immediate: true,
+    },
   },
   beforeMount(){
     this.timeSlotStore.fetchTimeSlots();
@@ -134,7 +144,7 @@ export default {
   },
   methods: {
     setTimeSlot(timeSlot) {
-      this.editTimeSlot = timeSlot;
+      this.editTimeSlot = JSON.parse(JSON.stringify(timeSlot));
     },
     submitForm() {
       this.timeSlotStore.insertTimeSlot(this.start_time, this.end_time);

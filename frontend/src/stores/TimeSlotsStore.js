@@ -9,7 +9,8 @@ export const UseTimeSlotStore = defineStore("timeslot",{
         token: useStorage('token',{}),
         timeSlots: [],
         error: '',
-        success: ''
+        success: '',
+        failure: ''
     }),
     getters: {
         getTimeSlots(){
@@ -27,13 +28,18 @@ export const UseTimeSlotStore = defineStore("timeslot",{
                 const response = await axios.get('timeSlots');
                 console.log(response.data.data)
                 this.timeSlots = response.data.data;
-            } catch (error) {
+            }catch (error) {
                 console.log(error);
-            }finally {
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
                 this.isLoading = false;
             }
         },
         async insertTimeSlot(start_time, end_time) {
+            this.isLoading = true;
             try {
                 console.log(start_time + " " + end_time);
                 const response = await axios.post(
@@ -46,12 +52,19 @@ export const UseTimeSlotStore = defineStore("timeslot",{
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchTimeSlots();
-            } catch (error) {
-                console.error(error);
+            }catch (error) {
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         },
 
         async updateTimeSlot(timeSlotId, timeSlot) {
+            this.isLoading = true;
             try {
                 const response = await axios.put(
                     `timeSlots/${timeSlotId}`,
@@ -63,12 +76,19 @@ export const UseTimeSlotStore = defineStore("timeslot",{
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchTimeSlots();
-            } catch (error) {
-                console.error(error);
+            }catch (error) {
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         },
 
         async deleteTimeSlot(timeSlotId) {
+            this.isLoading = true;
             try {
                 const response = await axios.delete(
                     `timeSlots/${timeSlotId}`
@@ -76,8 +96,14 @@ export const UseTimeSlotStore = defineStore("timeslot",{
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchTimeSlots();
-            } catch (error) {
-                console.error(error);
+            }catch (error) {
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
+            } finally {
+                this.isLoading = false;
             }
         },
     }

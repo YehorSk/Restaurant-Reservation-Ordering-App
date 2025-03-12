@@ -9,7 +9,8 @@ export const UseTableStore = defineStore("table",{
         token: useStorage('token',{}),
         tables: [],
         error: '',
-        success: ''
+        success: '',
+        failure: ''
     }),
     getters: {
         getTables(){
@@ -27,8 +28,12 @@ export const UseTableStore = defineStore("table",{
                 const response = await axios.get('tables');
                 console.log(response.data.data)
                 this.tables = response.data.data;
-            } catch (error) {
+            }catch (error) {
                 console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
             } finally {
                 this.isLoading = false;
             }
@@ -44,10 +49,11 @@ export const UseTableStore = defineStore("table",{
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchTables();
-            } catch (error) {
-                console.error(error);
-                if (error.response?.status === 422) {
-                    this.error = error.response.data.errors;
+            }catch (error) {
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
                 }
             } finally {
                 this.isLoading = false;
@@ -64,10 +70,11 @@ export const UseTableStore = defineStore("table",{
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchTables();
-            } catch (error) {
-                console.error(error);
-                if (error.response?.status === 422) {
-                    this.error = error.response.data.errors;
+            }catch (error) {
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
                 }
             } finally {
                 this.isLoading = false;
@@ -81,8 +88,12 @@ export const UseTableStore = defineStore("table",{
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchTables();
-            } catch (error) {
-                console.error(error);
+            }catch (error) {
+                console.log(error);
+                if(error.response.status === 422){
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
+                }
             } finally {
                 this.isLoading = false;
             }
