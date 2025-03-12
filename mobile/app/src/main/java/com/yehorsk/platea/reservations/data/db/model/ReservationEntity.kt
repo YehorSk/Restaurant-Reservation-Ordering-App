@@ -32,7 +32,7 @@ data class ReservationEntity(
     @ColumnInfo("table_number")
     val tableNumber: String,
     @ColumnInfo("start_time")
-    val startTime: String
+    val startTime: String,
 )
 
 fun ReservationEntity.toReservationDto(): ReservationDto{

@@ -22,6 +22,7 @@ import com.yehorsk.platea.ui.theme.MobileTheme
 @Composable
 fun ReservationDetails(
     modifier: Modifier = Modifier,
+    orderCode: String? = null,
     time: String,
     table: String,
     date: String,
@@ -82,6 +83,17 @@ fun ReservationDetails(
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
         )
+        if(orderCode != null){
+            Text(
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 15.dp,
+                ),
+                text = stringResource(R.string.order_code, orderCode),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+            )
+        }
         Text(
             modifier = Modifier.padding(
                 start = 20.dp,
@@ -105,7 +117,8 @@ fun ReservationDetailsPreview(){
             date = "2024-12-27",
             request = "Lorem ipsum dolor sit amet",
             phone = "0680000000",
-            partySize = "5"
+            partySize = "5",
+            orderCode = ""
         )
     }
 }

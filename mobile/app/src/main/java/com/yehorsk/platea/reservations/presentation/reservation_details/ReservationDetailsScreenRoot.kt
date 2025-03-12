@@ -106,7 +106,8 @@ fun ReservationDetailsScreen(
                 date = data.date,
                 request = data.specialRequest,
                 phone = data.phone,
-                partySize = data.partySize.toString()
+                partySize = data.partySize.toString(),
+                orderCode = data.orderCode
             )
             if(isConnected){
                 if(userRole == "user"){

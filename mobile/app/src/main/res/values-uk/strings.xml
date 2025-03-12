@@ -75,6 +75,7 @@
     <string name="select_date">Вибрати дату</string>
     <string name="select_time">Вибрати час</string>
     <string name="schedule">Час</string>
+    <string name="order_code">Код замовлення: %1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>

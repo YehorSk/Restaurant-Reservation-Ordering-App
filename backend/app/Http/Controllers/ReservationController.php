@@ -58,7 +58,6 @@ class ReservationController extends Controller
                     });
                 })
                 ->paginate(10);
-
             $items->each(function ($item) {
                 $item->table_number = $item->table->number ?? null;
                 $item->start_time = $item->timeSlot->start_time ?? null;
@@ -220,14 +219,16 @@ class ReservationController extends Controller
         $user = auth('sanctum')->user();
         if($user instanceof User){
             if ($user->role === 'user') {
-                $items = $user->reservations()->with('table', 'timeSlot')->get();
+                $items = $user->reservations()->with('table', 'timeSlot','orders')->get();
 
                 $items->each(function ($item) {
                     $item->table_number = $item->table->number ?? null;
                     $item->start_time = $item->timeSlot->start_time ?? null;
+                    $item->order_code = $item->orders->isNotEmpty() ? $item->orders->first()->code : '';
 
                     unset($item->table);
                     unset($item->timeSlot);
+                    unset($item->orders);
                 });
                 return $this->success(data: $items, message: "");
             }elseif (in_array($user->role, ['waiter', 'chef', 'admin'])) {
@@ -236,9 +237,11 @@ class ReservationController extends Controller
                 $items->each(function ($item) {
                     $item->table_number = $item->table->number ?? null;
                     $item->start_time = $item->timeSlot->start_time ?? null;
+                    $item->order_code = $item->orders->isNotEmpty() ? $item->orders->first()->code : null;
 
                     unset($item->table);
                     unset($item->timeSlot);
+                    unset($item->orders);
                 });
                 return $this->success(data: $items, message: "");
             }else{
@@ -254,12 +257,15 @@ class ReservationController extends Controller
 
         if ($user instanceof User) {
             if ($user->role === 'user') {
-                $item = $user->reservations()->with('table')->with('timeSlot')->find($id);
+                $item = $user->reservations()->with('table','timeSlot','orders')->find($id);
 
                 $item->table_number = $item->table->number ?? null;
                 $item->start_time = $item->timeSlot->start_time ?? null;
+                $item->order_code = $item->orders->isNotEmpty() ? $item->orders->first()->code : null;
+
                 unset($item->table);
                 unset($item->timeSlot);
+                unset($item->orders);
                 return $this->success(data: [$item], message: "");
             }elseif (in_array($user->role, ['waiter', 'chef', 'admin'])) {
                 $item = Reservation::with('table')->with('timeSlot')->find($id);
