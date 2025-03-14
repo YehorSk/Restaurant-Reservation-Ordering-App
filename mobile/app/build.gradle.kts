@@ -110,11 +110,6 @@ dependencies {
 
     implementation(libs.kotlinx.metadata.jvm)
 
-    //Google Maps
-    implementation(libs.maps.compose)
-    implementation(libs.places)
-    implementation(libs.places.ktx)
-
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.ui.text.google.fonts)
@@ -150,9 +145,6 @@ dependencies {
 
     //SplashScren
     implementation(libs.androidx.core.splashscreen)
-
-    //Moshi
-    implementation(libs.moshi.kotlin)
 
     //Coil
     implementation(libs.coil)

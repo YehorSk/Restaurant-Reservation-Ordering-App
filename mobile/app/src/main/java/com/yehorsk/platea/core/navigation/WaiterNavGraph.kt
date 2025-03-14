@@ -17,6 +17,7 @@ import com.yehorsk.platea.core.presentation.settings.ChangeThemeScreen
 import com.yehorsk.platea.core.presentation.settings.MainSettingsScreen
 import com.yehorsk.platea.core.presentation.settings.ProfileDestination
 import com.yehorsk.platea.core.presentation.settings.ProfileScreen
+import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenRoot
@@ -77,9 +78,20 @@ fun WaiterNavGraph(
                         ProfileDestination.Reservations -> navController.navigate(WaiterScreen.Reservations.route)
                         ProfileDestination.Language -> navController.navigate(WaiterScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(WaiterScreen.Theme.route)
-                        ProfileDestination.Info -> {}
+                        ProfileDestination.Info -> navController.navigate(WaiterScreen.Info.route)
                     }
                 }
+            )
+        }
+        composable(
+            route = WaiterScreen.Info.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
+            RestaurantInfoScreenRoot(
+                modifier = modifier,
+                viewModel = settingsViewModel,
+                onGoBack = { navController.popBackStack() }
             )
         }
         composable(
@@ -270,4 +282,5 @@ sealed class WaiterScreen(val route: String){
     data class ReservationDetails(val id: Int): WaiterScreen(route = "RESERVATION_DETAILS")
     data object Theme: WaiterScreen(route = "THEME")
     data object Language: WaiterScreen(route = "LANGUAGE")
+    data object Info: WaiterScreen(route = "INFO")
 }

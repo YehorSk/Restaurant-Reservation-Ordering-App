@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
-import com.yehorsk.platea.core.utils.toString
+import com.yehorsk.platea.core.utils.Utility.toString
 
 @Composable
 fun ReservationDropdownList(

@@ -43,7 +43,7 @@ import com.yehorsk.platea.orders.presentation.components.OrderAddMore
 import com.yehorsk.platea.orders.presentation.components.OrderItemList
 import com.yehorsk.platea.orders.presentation.components.OrderOptions
 import com.yehorsk.platea.orders.presentation.components.OrderSpecialRequest
-import com.yehorsk.platea.orders.presentation.components.PickupMap
+import com.yehorsk.platea.orders.presentation.components.PickupDetails
 import com.yehorsk.platea.orders.presentation.components.SelectTable
 import com.yehorsk.platea.orders.presentation.components.TotalPrice
 import com.yehorsk.platea.ui.theme.MobileTheme
@@ -158,11 +158,7 @@ fun CreateOrderScreen(
             Spacer(modifier = Modifier.height(10.dp))
             if(userRole == "user") {
                 if (uiState.orderForm.orderType == 0 && isConnected) {
-                    PickupMap(
-                        onMapLoaded = {
-                            isMapLoaded = true
-                        }
-                    )
+                    PickupDetails()
                 }
                 if (uiState.orderForm.orderType == 1 && isConnected) {
                     DeliveryDetails(

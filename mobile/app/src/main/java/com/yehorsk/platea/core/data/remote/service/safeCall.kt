@@ -4,7 +4,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
-import com.yehorsk.platea.core.utils.getCredentialErrors
+import com.yehorsk.platea.core.utils.Utility.getCredentialErrors
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException

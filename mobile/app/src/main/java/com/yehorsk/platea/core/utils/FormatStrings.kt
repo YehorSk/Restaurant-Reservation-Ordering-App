@@ -14,21 +14,6 @@ import java.util.Locale
 
 fun cleanError(error: String?) = error?.replace("[", "")?.replace("]", "").orEmpty()
 
-//fun parseHttpResponse(responseBody: String): HttpResponse {
-//    return try {
-//        if (responseBody.isBlank()) {
-//            Timber.d("Response body is blank or empty")
-//            HttpResponse(status = 422, message = "Empty response", authDataDto = null, errorsDto = null)
-//        } else {
-//            val json = Json { ignoreUnknownKeys = true }
-//            json.decodeFromString<HttpResponse>(responseBody)
-//        }
-//    } catch (e: Exception) {
-//        Timber.d("Error parsing HttpResponse $e")
-//        HttpResponse(status = 422, message = "Invalid response format", authDataDto = null, errorsDto = null)
-//    }
-//}
-
 fun formattedPrice(price: Double): String{
     val formatter = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
         val fractionDigits = when {
@@ -68,20 +53,4 @@ fun formatMonth(input: String): String {
     val yearMonth = YearMonth.parse(input, parser)
     val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
     return yearMonth.format(formatter)
-}
-
-fun YearMonth.displayText(short: Boolean = false): String {
-    return "${this.month.displayText(short = short)} ${this.year}"
-}
-
-fun Month.displayText(short: Boolean = true): String {
-    val style = if (short) TextStyle.SHORT else TextStyle.FULL
-    return getDisplayName(style, Locale.ENGLISH)
-}
-
-fun DayOfWeek.displayText(uppercase: Boolean = false, narrow: Boolean = false): String {
-    val style = if (narrow) TextStyle.NARROW else TextStyle.SHORT
-    return getDisplayName(style, Locale.ENGLISH).let { value ->
-        if (uppercase) value.uppercase(Locale.ENGLISH) else value
-    }
 }

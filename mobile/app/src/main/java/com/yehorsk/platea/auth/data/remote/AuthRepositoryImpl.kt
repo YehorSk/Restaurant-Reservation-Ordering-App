@@ -29,8 +29,8 @@ class AuthRepositoryImpl @Inject constructor(
             execute = {
                 authService.register(registerForm)
             },
-            onSuccess = {
-
+            onSuccess = { result ->
+                prefs.saveUser(result.first())
             }
         )
     }

@@ -16,6 +16,7 @@ import com.yehorsk.platea.core.presentation.settings.ChangeThemeScreen
 import com.yehorsk.platea.core.presentation.settings.MainSettingsScreen
 import com.yehorsk.platea.core.presentation.settings.ProfileDestination
 import com.yehorsk.platea.core.presentation.settings.ProfileScreen
+import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
@@ -55,9 +56,20 @@ fun ChefNavGraph(
                         ProfileDestination.Reservations -> {}
                         ProfileDestination.Language -> navController.navigate(ChefScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(ChefScreen.Theme.route)
-                        ProfileDestination.Info -> {}
+                        ProfileDestination.Info -> navController.navigate(ChefScreen.Info.route)
                     }
                 }
+            )
+        }
+        composable(
+            route = ChefScreen.Info.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
+            RestaurantInfoScreenRoot(
+                modifier = modifier,
+                viewModel = settingsViewModel,
+                onGoBack = { navController.popBackStack() }
             )
         }
         composable(
@@ -170,6 +182,7 @@ sealed class ChefScreen(val route: String){
     data class OrderDetails(val id: Int): ChefScreen(route = "ORDER_DETAILS")
     @Serializable
     data class OrderItemDetails(val id: Int): ChefScreen(route = "ORDER_ITEM_DETAILS")
-    data object Theme: AdminScreen(route = "THEME")
-    data object Language: AdminScreen(route = "LANGUAGE")
+    data object Theme: ChefScreen(route = "THEME")
+    data object Language: ChefScreen(route = "LANGUAGE")
+    data object Info: ChefScreen(route = "INFO")
 }

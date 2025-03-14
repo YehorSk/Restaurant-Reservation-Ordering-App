@@ -14,7 +14,6 @@ fun getUserBarItems(userRole: UserRoles): List<BottomBarScreen>{
                 BottomBarScreen.Account
             )
         }
-
         UserRoles.ADMIN -> {
             listOf(
                 BottomBarScreen.Orders,
@@ -22,14 +21,12 @@ fun getUserBarItems(userRole: UserRoles): List<BottomBarScreen>{
                 BottomBarScreen.Account
             )
         }
-
         UserRoles.CHEF -> {
             listOf(
                 BottomBarScreen.Orders,
                 BottomBarScreen.Account,
             )
         }
-
         UserRoles.WAITER -> {
             listOf(
                 BottomBarScreen.Home,

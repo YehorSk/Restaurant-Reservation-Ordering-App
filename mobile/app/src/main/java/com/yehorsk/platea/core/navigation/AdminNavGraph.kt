@@ -16,6 +16,7 @@ import com.yehorsk.platea.core.presentation.settings.ChangeThemeScreen
 import com.yehorsk.platea.core.presentation.settings.MainSettingsScreen
 import com.yehorsk.platea.core.presentation.settings.ProfileDestination
 import com.yehorsk.platea.core.presentation.settings.ProfileScreen
+import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
@@ -52,9 +53,20 @@ fun AdminNavGraph(
                         ProfileDestination.Reservations -> navController.navigate(AdminScreen.Reservations.route)
                         ProfileDestination.Language -> navController.navigate(AdminScreen.Language.route)
                         ProfileDestination.Theme -> navController.navigate(AdminScreen.Theme.route)
-                        ProfileDestination.Info -> {}
+                        ProfileDestination.Info -> navController.navigate(AdminScreen.Info.route)
                     }
                 }
+            )
+        }
+        composable(
+            route = AdminScreen.Info.route,
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
+        ) {
+            RestaurantInfoScreenRoot(
+                modifier = modifier,
+                viewModel = settingsViewModel,
+                onGoBack = { navController.popBackStack() }
             )
         }
         composable(
@@ -176,4 +188,5 @@ sealed class AdminScreen(val route: String){
     object Account: AdminScreen(route = "ACCOUNT")
     data object Theme: AdminScreen(route = "THEME")
     data object Language: AdminScreen(route = "LANGUAGE")
+    data object Info: AdminScreen(route = "INFO")
 }
