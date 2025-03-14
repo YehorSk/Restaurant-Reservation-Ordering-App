@@ -24,6 +24,13 @@ class CartRepositoryImpl @Inject constructor(
         val serverItems = items.map { it.id }.toSet()
         val itemsToDelete = localItems.filter { it.id !in serverItems}
         cartDao.deleteItems(itemsToDelete)
+        insertItems(items)
+    }
+
+    private suspend fun insertItems(items: List<CartItemDto>){
+        for(item in items){
+            cartDao.insertItem(item.toCartItemEntity())
+        }
     }
 
     override suspend fun getAllItems(): Result<List<CartItemDto>, AppError> {

@@ -30,6 +30,7 @@ import com.yehorsk.platea.core.navigation.ChefNavGraph
 import com.yehorsk.platea.core.navigation.ClientNavGraph
 import com.yehorsk.platea.core.navigation.WaiterNavGraph
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
+import com.yehorsk.platea.core.utils.getUserBarItems
 import com.yehorsk.platea.core.utils.snackbar.ObserveAsEvents
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.toString
@@ -116,39 +117,7 @@ fun BottomBar(
     navController: NavHostController,
     userRoles: UserRoles
 ){
-    var screens = listOf<BottomBarScreen>()
-
-    when(userRoles){
-        UserRoles.USER -> {
-            screens = listOf(
-                BottomBarScreen.Home,
-                BottomBarScreen.Cart,
-                BottomBarScreen.Favorites,
-                BottomBarScreen.Account
-            )
-        }
-        UserRoles.ADMIN -> {
-            screens = listOf(
-                BottomBarScreen.Orders,
-                BottomBarScreen.Reservations,
-                BottomBarScreen.Account
-            )
-        }
-        UserRoles.CHEF -> {
-            screens = listOf(
-                BottomBarScreen.Orders,
-                BottomBarScreen.Account,
-            )
-        }
-        UserRoles.WAITER -> {
-            screens = listOf(
-                BottomBarScreen.Home,
-                BottomBarScreen.Cart,
-                BottomBarScreen.Favorites,
-                BottomBarScreen.Account
-            )
-        }
-    }
+    var screens = getUserBarItems(userRoles)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
