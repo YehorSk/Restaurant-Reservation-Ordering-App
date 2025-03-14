@@ -1,7 +1,6 @@
 package com.yehorsk.platea.auth.data.remote
 
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response

@@ -7,8 +7,8 @@ import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.SideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel

@@ -20,14 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.ActionButton
 import com.yehorsk.platea.core.presentation.components.LoadingPart
+import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
 import com.yehorsk.platea.orders.presentation.OrderUiState
-import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.orders.presentation.components.OrderDetailsItemList
 import com.yehorsk.platea.orders.presentation.components.TotalPrice
 import com.yehorsk.platea.orders.presentation.order_details.components.DeliveryDetails

@@ -55,6 +55,7 @@
         'reservation_confirmed' => 'Vaša rezervácia #:reservationId bola potvrdená.',
         'reservation_cancelled' => 'Vaša rezervácia #:reservationId bola zrušená.',
         'account_deleted_successfully' => 'Váš účet bol úspešne vymazaný.',
+        'incorrect_credentials' => 'Nesprávny e-mail alebo heslo. Skúste to znova.',
     ];
 
 ?>

@@ -24,6 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ahmadhamwi.tabsync_compose.lazyListTabSync
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
@@ -33,8 +35,6 @@ import com.yehorsk.platea.menu.presentation.components.MenuDetailsDialog
 import com.yehorsk.platea.menu.presentation.components.MenuList
 import com.yehorsk.platea.menu.presentation.components.MenuTabBar
 import com.yehorsk.platea.menu.presentation.components.SearchBar
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 @OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
     ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class

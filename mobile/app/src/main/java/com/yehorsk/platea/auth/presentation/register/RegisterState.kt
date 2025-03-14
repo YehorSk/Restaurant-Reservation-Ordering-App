@@ -1,8 +1,5 @@
 package com.yehorsk.platea.auth.presentation.register
 
-import com.google.firebase.Firebase
-import com.google.firebase.messaging.messaging
-import kotlinx.coroutines.tasks.await
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

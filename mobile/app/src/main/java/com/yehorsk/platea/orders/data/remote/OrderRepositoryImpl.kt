@@ -12,8 +12,8 @@ import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.data.remote.dto.toCartItemEntity
 import com.yehorsk.platea.orders.data.remote.dto.toOrderEntity
 import com.yehorsk.platea.orders.data.remote.dto.toOrderMenuItemEntity
-import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.data.remote.service.OrderService
+import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.order_details.Status
 import kotlinx.coroutines.Dispatchers

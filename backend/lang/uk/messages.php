@@ -55,6 +55,7 @@
         'reservation_confirmed' => 'Ваше бронювання #:reservationId підтверджено.',
         'reservation_cancelled' => 'Ваше бронювання #:reservationId було скасовано.',
         'account_deleted_successfully' => 'Ваш обліковий запис було успішно видалено.',
+        'incorrect_credentials' => 'Неправильний email або пароль. Спробуйте ще раз.',
     ];
 
 ?>

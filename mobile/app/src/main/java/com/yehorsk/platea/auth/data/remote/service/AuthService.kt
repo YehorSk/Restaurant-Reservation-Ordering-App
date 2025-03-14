@@ -8,7 +8,6 @@ import com.yehorsk.platea.auth.presentation.register.RegisterForm
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Path
 

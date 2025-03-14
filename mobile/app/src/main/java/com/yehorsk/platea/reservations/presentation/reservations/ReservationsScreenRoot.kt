@@ -14,8 +14,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
-import com.yehorsk.platea.core.presentation.components.ReservationDropdownList
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
+import com.yehorsk.platea.core.presentation.components.ReservationDropdownList
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.presentation.reservations.components.ReservationsList
 

@@ -12,11 +12,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.LoadingPart
-import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.core.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.SingleEventEffect
+import com.yehorsk.platea.core.utils.SideEffect
+import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.CalendarRoot
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.PartySize
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.TimeRoot

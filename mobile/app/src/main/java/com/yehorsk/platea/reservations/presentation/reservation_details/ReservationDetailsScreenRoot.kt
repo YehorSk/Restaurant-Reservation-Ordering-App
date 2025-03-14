@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.ActionButton
 import com.yehorsk.platea.core.presentation.components.LoadingPart
-import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.SingleEventEffect
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationDetails
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationStatus

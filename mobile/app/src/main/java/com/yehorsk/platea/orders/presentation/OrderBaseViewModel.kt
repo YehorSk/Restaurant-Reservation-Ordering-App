@@ -3,8 +3,8 @@ package com.yehorsk.platea.orders.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl

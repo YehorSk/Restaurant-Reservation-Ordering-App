@@ -1,6 +1,5 @@
 package com.yehorsk.platea.core.presentation.settings
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,16 +8,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.presentation.settings.components.ProfileListHeader
 import com.yehorsk.platea.core.presentation.settings.components.ProfileListItem
-import com.yehorsk.platea.core.utils.toString
+import com.yehorsk.platea.core.utils.SideEffect
 
 @Composable
 fun MainSettingsScreen(

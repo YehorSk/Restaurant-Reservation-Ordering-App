@@ -1,8 +1,8 @@
 package com.yehorsk.platea.auth.data.remote
 
 import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
-import com.yehorsk.platea.auth.domain.repository.AuthRepository
 import com.yehorsk.platea.auth.data.remote.service.AuthService
+import com.yehorsk.platea.auth.domain.repository.AuthRepository
 import com.yehorsk.platea.auth.presentation.forgot.ForgotFormState
 import com.yehorsk.platea.auth.presentation.login.AuthState
 import com.yehorsk.platea.auth.presentation.login.LoginForm

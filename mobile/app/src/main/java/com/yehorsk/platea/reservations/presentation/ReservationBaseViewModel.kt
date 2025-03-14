@@ -3,8 +3,8 @@ package com.yehorsk.platea.reservations.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm

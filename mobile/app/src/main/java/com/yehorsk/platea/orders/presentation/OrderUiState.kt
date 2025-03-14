@@ -1,7 +1,6 @@
 package com.yehorsk.platea.orders.presentation
 
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
-import com.yehorsk.platea.orders.data.remote.dto.GooglePredictionDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import kotlinx.serialization.SerialName

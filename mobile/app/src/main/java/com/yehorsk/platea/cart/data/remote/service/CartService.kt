@@ -5,7 +5,6 @@ import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.core.presentation.components.CartForm
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface CartService {

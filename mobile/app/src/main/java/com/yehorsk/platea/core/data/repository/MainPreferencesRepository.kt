@@ -9,7 +9,6 @@ import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 import javax.inject.Inject
 
 class MainPreferencesRepository @Inject constructor(

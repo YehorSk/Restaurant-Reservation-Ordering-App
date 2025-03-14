@@ -25,8 +25,14 @@ async function checkAuth(roleCheck, next) {
 }
 
 const adminGuard = (to, from, next) => checkAuth(user => user.role === 'admin', next);
-const userGuard = (to, from, next) => checkAuth(user => !user.id, next);
-
+const userGuard = (to, from, next) => {
+  const authStore = UseAuthStore();
+  if (authStore.user?.id) {
+    next({ name: 'home' });
+  } else {
+    next();
+  }
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

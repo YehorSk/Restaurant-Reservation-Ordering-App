@@ -10,6 +10,7 @@ export const UseAuthStore = defineStore("auth",{
         errors:'',
         credentials:'',
         success: '',
+        failure: '',
         loggedOut: ''
     }),
     getters: {
@@ -56,17 +57,17 @@ export const UseAuthStore = defineStore("auth",{
                 this.success = response.data.data.message;
                 this.user = response.data.data[0].user;
                 this.token = response.data.data[0].token;
-                console.log(this.token)
                 await router.push('/');
+                console.log(this.token)
             } catch (error) {
                 console.log(error.response);
                 if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    console.log(this.errors);
-                }
-                else if(error.response.status === 401){
                     this.credentials = error.response.data.message;
                     console.log(this.credentials);
+                }
+                else if(error.response.status === 401){
+                    this.errors = error.response.data.errors;
+                    console.log(this.errors);
                 }
             }
         },

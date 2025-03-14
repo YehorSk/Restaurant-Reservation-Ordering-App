@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.db.model.toMenuItem
@@ -33,9 +32,9 @@ import com.yehorsk.platea.cart.presentation.cart.components.CartItem
 import com.yehorsk.platea.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
+import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
-import com.yehorsk.platea.core.presentation.components.NavBar
 
 @Composable
 fun CartScreenRoot(

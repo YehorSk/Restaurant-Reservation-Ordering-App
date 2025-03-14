@@ -2,6 +2,7 @@
   import {UseAuthStore} from "@/stores/AuthStore.js";
   import { watch,reactive } from "vue";
   import { useToast } from "vue-toastification";
+  import router from "@/router/index.js";
 
   export default {
     data(){
@@ -19,27 +20,44 @@
     methods:{
       submitLogInForm(){
         this.authStore.login(this.email,this.password);
-        this.email = '';
-        this.password = '';
       },
       clearErrors(){
         this.authStore.credentials= '';
         this.authStore.errors = [];
+      },
+      clearForm(){
+        this.email = '';
+        this.password = '';
       }
     },
     watch:{
-        'authStore.getCredentials'(newValue){
-          if(newValue){
-            this.toast.error(newValue);
-            this.authStore.credentials = "";
+      "authStore.success": {
+        handler(newValue) {
+          if (newValue) {
+            this.clearForm();
+            const toast = useToast();
+            toast.success(newValue);
+            this.authStore.success = "";
           }
         },
-      'authStore.successLoggedOut':{
+        immediate: true,
+      },
+        'authStore.credentials': {
+          handler(newValue) {
+            if (newValue) {
+              const toast = useToast();
+              toast.error(newValue);
+              this.authStore.credentials = "";
+            }
+          },
+          immediate: true,
+        },
+      'authStore.loggedOut':{
         handler(newValue){
           if (newValue) {
             const toast = useToast();
             toast.success(newValue);
-            this.authStore.success = "";
+            this.authStore.loggedOut = "";
           }
         },
         immediate: true,

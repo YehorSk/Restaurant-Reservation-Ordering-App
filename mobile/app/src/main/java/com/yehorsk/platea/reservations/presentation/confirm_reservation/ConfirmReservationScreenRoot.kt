@@ -20,12 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.presentation.components.LoadingPart
-import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.presentation.components.NavBar
-import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ConfirmReservationDetails
 import com.yehorsk.platea.core.presentation.components.PhoneInput
+import com.yehorsk.platea.core.presentation.components.SingleEventEffect
+import com.yehorsk.platea.core.utils.SideEffect
+import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ConfirmReservationDetails
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ReservationSpecialRequest
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationAction
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationViewModel

@@ -8,8 +8,8 @@ import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.menu.data.remote.dto.MenuDto
 import com.yehorsk.platea.menu.data.remote.dto.toMenuEntity
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
-import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import com.yehorsk.platea.menu.data.remote.service.MenuService
+import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber

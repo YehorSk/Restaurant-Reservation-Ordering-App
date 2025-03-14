@@ -55,6 +55,7 @@
         'reservation_confirmed' => 'Ihre Reservierung #:reservationId wurde bestätigt.',
         'reservation_cancelled' => 'Ihre Reservierung #:reservationId wurde storniert.',
         'account_deleted_successfully' => 'Ihr Konto wurde erfolgreich gelöscht.',
+        'incorrect_credentials' => 'Falsche E-Mail oder falsches Passwort. Bitte versuchen Sie es erneut.',
     ];
 
 

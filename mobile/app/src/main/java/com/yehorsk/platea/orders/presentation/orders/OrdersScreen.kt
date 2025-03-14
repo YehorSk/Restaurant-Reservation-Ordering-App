@@ -13,9 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.presentation.components.OrdersDropdownList
-import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
+import com.yehorsk.platea.core.presentation.components.OrdersDropdownList
 import com.yehorsk.platea.orders.presentation.orders.components.OrdersList
 
 @OptIn(ExperimentalMaterial3Api::class)

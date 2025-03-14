@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
+import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.menu.presentation.components.MenuItem
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
-import com.yehorsk.platea.core.presentation.components.NavBar
 
 @Composable
 fun FavoritesScreen(

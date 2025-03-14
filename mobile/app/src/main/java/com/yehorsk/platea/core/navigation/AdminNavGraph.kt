@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.settings.ChangeLanguageScreen
 import com.yehorsk.platea.core.presentation.settings.ChangeThemeScreen
 import com.yehorsk.platea.core.presentation.settings.MainSettingsScreen
@@ -21,7 +22,6 @@ import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
-import com.yehorsk.platea.R
 
 @Composable
 fun AdminNavGraph(

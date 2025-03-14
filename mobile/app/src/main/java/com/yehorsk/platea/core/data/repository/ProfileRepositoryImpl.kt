@@ -5,9 +5,9 @@ import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.MainRoomDatabase
 import com.yehorsk.platea.core.data.remote.dto.RestaurantInfoDto
 import com.yehorsk.platea.core.data.remote.dto.toRestaurantInfoEntity
+import com.yehorsk.platea.core.data.remote.service.ProfileService
 import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
-import com.yehorsk.platea.core.data.remote.service.ProfileService
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.core.domain.repository.ProfileRepository
 import kotlinx.coroutines.Dispatchers

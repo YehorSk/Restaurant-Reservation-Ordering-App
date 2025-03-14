@@ -8,8 +8,8 @@ import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.remote.dto.ReservationDto
 import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
-import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.data.remote.service.ReservationService
+import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.reservation_details.Status
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
 import timber.log.Timber

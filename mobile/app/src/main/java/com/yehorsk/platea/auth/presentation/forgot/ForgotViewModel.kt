@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
+import com.yehorsk.platea.core.utils.SideEffect
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
