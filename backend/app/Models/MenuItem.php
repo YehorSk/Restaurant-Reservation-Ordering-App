@@ -26,7 +26,9 @@ class MenuItem extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)
+            ->withPivot('quantity', 'price', 'menu_item_id')
+            ->withTimestamps();
     }
 
     public function orders()

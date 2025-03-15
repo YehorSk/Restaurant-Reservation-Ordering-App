@@ -56,6 +56,8 @@
         'reservation_cancelled' => 'Ihre Reservierung #:reservationId wurde storniert.',
         'account_deleted_successfully' => 'Ihr Konto wurde erfolgreich gelöscht.',
         'incorrect_credentials' => 'Falsche E-Mail oder falsches Passwort. Bitte versuchen Sie es erneut.',
+        'cart_item_price_updated' => 'Der Preis von ":itemName" in deinem Warenkorb wurde auf :newPrice aktualisiert.',
+        'cart_item_removed' => '":itemName" wurde aus deinem Warenkorb entfernt.',
     ];
 
 

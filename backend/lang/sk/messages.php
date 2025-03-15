@@ -56,6 +56,8 @@
         'reservation_cancelled' => 'Vaša rezervácia #:reservationId bola zrušená.',
         'account_deleted_successfully' => 'Váš účet bol úspešne vymazaný.',
         'incorrect_credentials' => 'Nesprávny e-mail alebo heslo. Skúste to znova.',
+        'cart_item_price_updated' => 'Cena položky ":itemName" vo vašom košíku bola aktualizovaná na :newPrice.',
+        'cart_item_removed' => '":itemName" bol odstránený z vášho košíka.',
     ];
 
 ?>

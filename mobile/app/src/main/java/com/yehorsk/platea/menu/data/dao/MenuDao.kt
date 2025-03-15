@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import androidx.room.Upsert
 import com.yehorsk.platea.menu.data.db.model.MenuEntity
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
@@ -48,6 +49,9 @@ interface MenuDao {
 
     @Update
     suspend fun updateMenuItem(menuItem: MenuItemEntity)
+
+    @Upsert
+    suspend fun upsertMenuItem(menuItem: MenuItemEntity)
 
     @Transaction
     @Query("SELECT * FROM menu_table")

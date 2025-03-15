@@ -56,6 +56,8 @@
         'reservation_cancelled' => 'Your reservation #:reservationId has been cancelled.',
         'account_deleted_successfully' => 'Your account has been successfully deleted.',
         'incorrect_credentials' => 'Incorrect email or password. Please try again.',
+        'cart_item_price_updated' => 'The price of ":itemName" in your cart has been updated to :newPrice.',
+        'cart_item_removed' => '":itemName" has been removed from your cart.',
     ];
 
 ?>

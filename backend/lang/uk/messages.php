@@ -56,6 +56,8 @@
         'reservation_cancelled' => 'Ваше бронювання #:reservationId було скасовано.',
         'account_deleted_successfully' => 'Ваш обліковий запис було успішно видалено.',
         'incorrect_credentials' => 'Неправильний email або пароль. Спробуйте ще раз.',
+        'cart_item_price_updated' => 'Ціна ":itemName" у вашому кошику була оновлена до :newPrice.',
+        'cart_item_removed' => '":itemName" було видалено з вашого кошика.',
     ];
 
 ?>

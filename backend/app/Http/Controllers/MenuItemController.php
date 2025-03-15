@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\MenuItem;
 use App\Models\User;
+use App\Traits\FCMNotificationTrait;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 
 class MenuItemController extends Controller
 {
     use HttpResponses;
+    use FCMNotificationTrait;
+
 
     public function getStats(){
         $user = auth('sanctum')->user();
@@ -92,6 +96,22 @@ class MenuItemController extends Controller
             $menuItem->picture = $relativePath;
             $menuItem->save();
 
+            $users = User::all();
+            foreach ($users as $user) {
+                $token = $user->devices->pluck('device_token')->first();
+                $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
+                if ($token) {
+                    unset($menuItem->users);
+                    $this->sendFCMNotification(
+                        $token,
+                        "",
+                        "",
+                        ['item' => $menuItem],
+                        'store'
+                    );
+                }
+            }
+
             return $this->success(data: $menuItem, message: __("messages.menu_item_added_successfully"));
         }
 
@@ -122,7 +142,47 @@ class MenuItemController extends Controller
                 'price' => 'required|numeric|min:0',
             ]);
 
+            $oldPrice = $menuItem->price;
+
             $menuItem->update($validatedData);
+
+            if ($oldPrice != $menuItem->price) {
+                foreach ($menuItem->users as $user) {
+                    $quantity = $user->pivot->quantity;
+                    $newPrice = $quantity * $menuItem->price;
+                    $user->menuItems()->updateExistingPivot($menuItem->id, [
+                        'price' => $newPrice,
+                        'quantity' => $quantity
+                    ]);
+                    $token = $user->devices->pluck('device_token')->first();
+                    if ($token) {
+                        unset($menuItem->users);
+                        $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
+                        $this->sendFCMNotification(
+                            $token,
+                            "PLATEA",
+                            __("messages.cart_item_price_updated", ['itemName' => $menuItem->name, 'newPrice' => $newPrice], $user->language),
+                            ['item' => $menuItem],
+                            'update'
+                        );
+                    }
+                }
+            }
+            $users = User::all();
+            foreach ($users as $user) {
+                $token = $user->devices->pluck('device_token')->first();
+                $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
+                if ($token) {
+                    unset($menuItem->users);
+                    $this->sendFCMNotification(
+                        $token,
+                        "",
+                        "",
+                        ['item' => $menuItem],
+                        'update'
+                    );
+                }
+            }
 
             return $this->success(data: $menuItem, message: __("messages.menu_item_updated_successfully"));
         }
@@ -143,6 +203,37 @@ class MenuItemController extends Controller
 
             $filePath = storage_path('app/public/' . $menuItem->picture);
             File::delete($filePath);
+
+            foreach ($menuItem->users as $user) {
+                $token = $user->devices->pluck('device_token')->first();
+                if ($token) {
+                    unset($menuItem->users);
+                    $this->sendFCMNotification(
+                        $token,
+                        "PLATEA",
+                        __("messages.cart_item_removed", ['itemName' => $menuItem->name], $user->language),
+                        ['item' => $menuItem],
+                        'delete'
+                    );
+                }
+            }
+
+            $users = User::all();
+            foreach ($users as $user) {
+                $token = $user->devices->pluck('device_token')->first();
+                $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
+                if ($token) {
+                    unset($menuItem->users);
+                    $this->sendFCMNotification(
+                        $token,
+                        "",
+                        "",
+                        ['item' => $menuItem],
+                        'delete'
+                    );
+                }
+            }
+
             $menuItem->delete();
 
             return $this->success(message: __("messages.menu_item_deleted_successfully"));
@@ -150,7 +241,5 @@ class MenuItemController extends Controller
 
         return $this->error('', __('messages.no_user'), 401);
     }
-
-
 
 }

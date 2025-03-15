@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 trait FCMNotificationTrait
 {
-    public function sendFCMNotification($token, $title, $body, $data = []){
+    public function sendFCMNotification($token, $title, $body, $data = [], $action = ''){
         $fcmurl = "https://fcm.googleapis.com/v1/projects/platea-75c01/messages:send";
 
         $notification = [
@@ -18,10 +18,8 @@ trait FCMNotificationTrait
                 'data' => [
                     'title' => $title,
                     'body' => $body,
-                ],
-                'notification' => [
-                    'title' => $title,
-                    'body' => $body,
+                    'data' => json_encode($data),
+                    'action' => $action,
                 ]
             ],
         ];
@@ -56,10 +54,6 @@ trait FCMNotificationTrait
             'message' => [
                 'topic' => 'all',
                 'data' => [
-                    'title' => $title,
-                    'body' => $body,
-                ],
-                'notification' => [
                     'title' => $title,
                     'body' => $body,
                 ]

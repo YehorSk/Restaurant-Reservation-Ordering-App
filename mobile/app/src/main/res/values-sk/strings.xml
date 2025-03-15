@@ -159,5 +159,6 @@
     <string name="status_cancelled">Zrušené</string>
     <string name="status_rejected">Zamietnuté</string>
     <string name="status_ready_dinein">Pripravené na servírovanie</string>
+    <string name="default_channel">com.yehorsk.platea</string>
 
 </resources>

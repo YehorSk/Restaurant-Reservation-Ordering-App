@@ -48,19 +48,6 @@ fun MenuScreenRoot(
     isUser: Boolean
 ){
 
-    val locationPermissionsState = rememberMultiplePermissionsState(
-        listOf(
-            android.Manifest.permission.ACCESS_COARSE_LOCATION,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-        )
-    )
-
-    LaunchedEffect(locationPermissionsState) {
-        if(!locationPermissionsState.allPermissionsGranted){
-            locationPermissionsState.launchMultiplePermissionRequest()
-        }
-    }
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle()
