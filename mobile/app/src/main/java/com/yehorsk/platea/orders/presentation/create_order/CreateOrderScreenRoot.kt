@@ -59,7 +59,6 @@ fun CreateOrderScreenRoot(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
-    val context = LocalContext.current
     val userRole by viewModel.userRole.collectAsStateWithLifecycle()
     val userAddress by viewModel.userAddress.collectAsStateWithLifecycle()
 

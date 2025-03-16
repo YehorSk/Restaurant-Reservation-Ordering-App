@@ -14,6 +14,7 @@ import com.yehorsk.platea.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import com.yehorsk.platea.R
+import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.remote.dto.MenuItemDto
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
@@ -29,6 +30,9 @@ class PushNotificationService: FirebaseMessagingService() {
 
     @Inject
     lateinit var menuDao: MenuDao
+
+    @Inject
+    lateinit var cartRepositoryImpl: CartRepositoryImpl
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -50,12 +54,15 @@ class PushNotificationService: FirebaseMessagingService() {
             val itemJson = jsonObject.getJSONObject("item").toString()
             val item = Json.decodeFromString<MenuItemDto>(itemJson)
             CoroutineScope(Dispatchers.IO).launch{
+                Timber.d("Action $action")
                 if(action.equals("update")){
                     menuDao.upsertMenuItem(item.toMenuItemEntity())
                 }else if(action.equals("delete")){
                     menuDao.deleteMenuItem(item.toMenuItemEntity())
                 }else if(action.equals("store")){
                     menuDao.insertMenuItem(item.toMenuItemEntity())
+                }else if(action.equals("cart")){
+                    cartRepositoryImpl.getAllItems()
                 }else{
 
                 }

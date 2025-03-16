@@ -86,7 +86,8 @@ fun CreateReservationScreen(
                 partySize = uiState.reservationForm.partySize
             )
             CalendarRoot(
-                onUpdateSelectedDate = { onAction(CreateReservationAction.UpdateReservationDate(it)) }
+                onUpdateSelectedDate = { onAction(CreateReservationAction.UpdateReservationDate(it)) },
+                selectedDate = uiState.reservationForm.reservationDate
             )
             if (uiState.timeSlots!=null){
                 TimeRoot(

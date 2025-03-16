@@ -163,17 +163,22 @@ class MenuItemController extends Controller
                             "PLATEA",
                             __("messages.cart_item_price_updated", ['itemName' => $menuItem->name, 'newPrice' => $newPrice], $user->language),
                             ['item' => $menuItem],
-                            'update'
+                            'cart'
                         );
                     }
                 }
             }
-            $users = User::all();
-            foreach ($users as $user) {
+
+            $usersWithoutMenuItem = User::whereDoesntHave('menuItems', function ($query) use ($menuItem) {
+                $query->where('menu_item_id', $menuItem->id);
+            })->get();
+
+            foreach ($usersWithoutMenuItem as $user) {
                 $token = $user->devices->pluck('device_token')->first();
-                $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
                 if ($token) {
                     unset($menuItem->users);
+                    $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
+
                     $this->sendFCMNotification(
                         $token,
                         "",
@@ -213,7 +218,7 @@ class MenuItemController extends Controller
                         "PLATEA",
                         __("messages.cart_item_removed", ['itemName' => $menuItem->name], $user->language),
                         ['item' => $menuItem],
-                        'delete'
+                        'cart'
                     );
                 }
             }

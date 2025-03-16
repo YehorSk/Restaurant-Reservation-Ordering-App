@@ -48,12 +48,14 @@ import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
 fun CalendarRoot(
-    onUpdateSelectedDate: (String) -> Unit
+    onUpdateSelectedDate: (String) -> Unit,
+    selectedDate: String
 ){
 
     val coroutineScope = rememberCoroutineScope()
@@ -61,7 +63,9 @@ fun CalendarRoot(
     val startMonth = remember { currentMonth }
     val endMonth = remember { currentMonth.plusMonths(12) }
     val firstDayOfWeek = remember { firstDayOfWeekFromLocale() }
-    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    var localDate = LocalDate.parse(selectedDate, formatter)
 
     val state = rememberCalendarState(
         startMonth = startMonth,
@@ -140,10 +144,10 @@ fun CalendarRoot(
             state = state,
             dayContent = { day ->
                 Day(day,
-                    isSelected = selectedDate == day.date,
+                    isSelected = localDate == day.date,
                     onClick = { day ->
-                        selectedDate = if (selectedDate == day.date) selectedDate else day.date
-                        onUpdateSelectedDate(selectedDate.toString())
+                        localDate = if (localDate == day.date) localDate else day.date
+                        onUpdateSelectedDate(localDate.toString())
                     }
                 )
             },
@@ -230,7 +234,8 @@ fun Day(
 fun CalendarPreview(){
     MobileTheme {
         CalendarRoot(
-            onUpdateSelectedDate = {}
+            onUpdateSelectedDate = {},
+            selectedDate = ""
         )
     }
 }
