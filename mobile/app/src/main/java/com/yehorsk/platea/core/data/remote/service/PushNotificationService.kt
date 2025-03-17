@@ -62,6 +62,7 @@ class PushNotificationService: FirebaseMessagingService() {
                 }else if(action.equals("store")){
                     menuDao.insertMenuItem(item.toMenuItemEntity())
                 }else if(action.equals("cart")){
+                    menuDao.upsertMenuItem(item.toMenuItemEntity())
                     cartRepositoryImpl.getAllItems()
                 }else{
 

@@ -102,6 +102,7 @@ class LoginViewModel @Inject constructor(
                 deviceType = deviceType
             )
             val startTime = System.currentTimeMillis()
+            Timber.d("Auth state $authState")
             val result = authRepository.authenticate(authState)
             val duration = System.currentTimeMillis() - startTime
             Timber.d("authenticate() took $duration ms")
@@ -135,6 +136,7 @@ class LoginViewModel @Inject constructor(
                 )
                 state.copy(loginForm = updatedLoginForm)
             }
+            Timber.d("Auth state ${uiState.value.loginForm.toString()}")
             val result = authRepository.login(loginForm = uiState.value.loginForm)
 
             result.onSuccess { data, message ->

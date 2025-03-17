@@ -34,17 +34,7 @@ class AuthController extends Controller
         $user = $request->user();
         $token = $request->bearerToken();
 
-        if($user->role != "admin"){
-            $user->devices()->updateOrCreate(
-                ['device_id' => $request->device_id],
-                [
-                    'device_token' => $request->fcm_token,
-                    'device_type' => $request->device_type,
-                ]
-            );
-        }
-
-        return $this->success(data: [[
+        $responseData = [
             'user' => [
                 'name' => $user->name,
                 'email' => $user->email,
@@ -58,8 +48,21 @@ class AuthController extends Controller
                 'country_code' => $user->country_code,
             ],
             'token' => $token
-        ]], message: __("messages.authenticated_successfully"));
+        ];
+
+        $response = $this->success(data: [$responseData], message: __("messages.authenticated_successfully"));
+
+        if ($user->role !== "admin") {
+            $user->devices()->updateOrCreate([
+                'device_id' => $request->device_id,
+                'device_token' => $request->fcm_token,
+                'device_type' => $request->device_type,
+            ]);
+        }
+
+        return $response;
     }
+
 
     public function login(LoginUserRequest $request){
         $request->validated($request->all());
@@ -69,13 +72,11 @@ class AuthController extends Controller
         $user = User::where('email',$request->email)->first();
         if($user->role !== "admin"){
             $user->devices()->delete();
-            $user->devices()->create(
-                ['device_id' => $request->device_id],
-                [
-                    'device_token' => $request->fcm_token,
-                    'device_type' => $request->device_type,
-                ]
-            );
+            $user->devices()->create([
+                'device_id' => $request->device_id,
+                'device_token' => $request->fcm_token,
+                'device_type' => $request->device_type,
+            ]);
         }
         return $this->success(data: [[
             'user' => $user,

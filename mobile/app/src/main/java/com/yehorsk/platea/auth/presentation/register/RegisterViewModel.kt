@@ -65,6 +65,7 @@ class RegisterViewModel @Inject constructor(
                 )
                 state.copy(registerForm = updatedRegisterForm)
             }
+            Timber.d("Auth state ${uiState.value.registerForm.toString()}")
             authRepository.register(registerForm = uiState.value.registerForm)
                 .onSuccess { data, _ ->
                 Timber.tag("Authorized").v(data.toString())
