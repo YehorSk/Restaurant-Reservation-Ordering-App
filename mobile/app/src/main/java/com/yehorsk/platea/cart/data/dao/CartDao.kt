@@ -35,6 +35,9 @@ interface CartDao {
     @Update
     suspend fun updateItem(item: CartItemEntity)
 
+    @Query("UPDATE cart_table SET price = :itemPrice, pivot_price = :totalPrice WHERE menu_item_id = :id")
+    suspend fun updateCartItemPrice(id: String, itemPrice: String, totalPrice: String)
+
     @Transaction
     suspend fun runInTransaction(block: suspend () -> Unit) {
         block()

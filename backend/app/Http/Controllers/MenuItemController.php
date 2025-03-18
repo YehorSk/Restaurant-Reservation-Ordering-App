@@ -96,22 +96,6 @@ class MenuItemController extends Controller
             $menuItem->picture = $relativePath;
             $menuItem->save();
 
-            $users = User::all();
-            foreach ($users as $user) {
-                $token = $user->devices->pluck('device_token')->first();
-                $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
-                if ($token) {
-                    unset($menuItem->users);
-                    $this->sendFCMNotification(
-                        $token,
-                        "",
-                        "",
-                        ['item' => $menuItem],
-                        'store'
-                    );
-                }
-            }
-
             return $this->success(data: $menuItem, message: __("messages.menu_item_added_successfully"));
         }
 
@@ -155,37 +139,38 @@ class MenuItemController extends Controller
                         'quantity' => $quantity
                     ]);
                     $token = $user->devices->pluck('device_token')->first();
-                    if ($token) {
-                        unset($menuItem->users);
-                        $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
-                        $this->sendFCMNotification(
-                            $token,
-                            "PLATEA",
-                            __("messages.cart_item_price_updated", ['itemName' => $menuItem->name, 'newPrice' => $newPrice], $user->language),
-                            ['item' => $menuItem],
-                            'cart'
-                        );
-                    }
-                }
-            }
-
-            $usersWithoutMenuItem = User::whereDoesntHave('menuItems', function ($query) use ($menuItem) {
-                $query->where('menu_item_id', $menuItem->id);
-            })->get();
-
-            foreach ($usersWithoutMenuItem as $user) {
-                $token = $user->devices->pluck('device_token')->first();
-                if ($token) {
                     unset($menuItem->users);
                     $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
-
                     $this->sendFCMNotification(
                         $token,
-                        "",
-                        "",
-                        ['item' => $menuItem],
-                        'update'
+                        "PLATEA",
+                        __("messages.cart_item_price_updated", ['itemName' => $menuItem->name, 'newPrice' => $newPrice], $user->language),
+                        [
+                            'id' => $menuItem->id,
+                            'new_price' => $menuItem->price,
+                            'new_total_price' => $newPrice,
+                        ],
+                        'cart_update'
                     );
+                }
+                $users = User::all();
+                foreach ($users as $user) {
+                    $token = $user->devices->pluck('device_token')->first();
+                    $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
+                    if ($token) {
+                        unset($menuItem->users);
+                        $this->sendFCMNotification(
+                            $token,
+                            "",
+                            "",
+                            [
+                                'id' => $menuItem->id,
+                                'new_price' => $menuItem->price,
+                                'new_total_price' => "0",
+                            ],
+                            'menu_update'
+                        );
+                    }
                 }
             }
 
@@ -208,36 +193,6 @@ class MenuItemController extends Controller
 
             $filePath = storage_path('app/public/' . $menuItem->picture);
             File::delete($filePath);
-
-            foreach ($menuItem->users as $user) {
-                $token = $user->devices->pluck('device_token')->first();
-                if ($token) {
-                    unset($menuItem->users);
-                    $this->sendFCMNotification(
-                        $token,
-                        "PLATEA",
-                        __("messages.cart_item_removed", ['itemName' => $menuItem->name], $user->language),
-                        ['item' => $menuItem],
-                        'cart'
-                    );
-                }
-            }
-
-            $users = User::all();
-            foreach ($users as $user) {
-                $token = $user->devices->pluck('device_token')->first();
-                $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
-                if ($token) {
-                    unset($menuItem->users);
-                    $this->sendFCMNotification(
-                        $token,
-                        "",
-                        "",
-                        ['item' => $menuItem],
-                        'delete'
-                    );
-                }
-            }
 
             $menuItem->delete();
 

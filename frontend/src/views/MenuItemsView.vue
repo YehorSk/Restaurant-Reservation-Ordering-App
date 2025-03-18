@@ -67,65 +67,67 @@
       <div v-if="menuStore.isLoading" class="text-center text-gray-500 py-6">
         <PulseLoader/>
       </div>
-      <table v-else class="my-6 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
-          <th scope="col" class="px-6 py-3">
-            Image
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Name
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Short Description
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Recipe
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Price
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Edit
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Delete
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="item in menuStore.menuItems.data" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td class="px-6 py-4">
-            <img :src="'https://api.platea.site/backend/public/storage/' + item.picture" class="w-16 md:w-32 max-w-full max-h-full" alt="Menu Item Picture">
-          </td>
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{ item.name }}
-          </th>
-          <td class="px-6 py-4">
-            {{ item.short_description }}
-          </td>
-          <td class="px-6 py-4">
-            {{ item.recipe }}
-          </td>
-          <td class="px-6 py-4">
-            {{ item.price }}
-          </td>
-          <td>
-            <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setMenuItem(item)">
-              Update/Show
-            </v-btn>
-          </td>
-          <td>
-            <form @submit.prevent class="inline-block">
-              <v-btn @click="menuStore.destroyMenuItem(this.route.params.id, item)"
-                     color="red-lighten-2"
-                     text="Delete"
-              ></v-btn>
-            </form>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div v-else class="overflow-x-auto">
+        <table class="my-6 w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">
+              Image
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Name
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Short Description
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Recipe
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Price
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Edit
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Delete
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="item in menuStore.menuItems.data" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <td class="px-6 py-4">
+              <img :src="'https://api.platea.site/backend/public/storage/' + item.picture" class="w-16 md:w-32 max-w-full max-h-full" alt="Menu Item Picture">
+            </td>
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              {{ item.name }}
+            </th>
+            <td class="px-6 py-4">
+              {{ item.short_description }}
+            </td>
+            <td class="px-6 py-4">
+              {{ item.recipe }}
+            </td>
+            <td class="px-6 py-4">
+              {{ item.price }}
+            </td>
+            <td>
+              <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setMenuItem(item)">
+                Update/Show
+              </v-btn>
+            </td>
+            <td>
+              <form @submit.prevent class="inline-block">
+                <v-btn @click="menuStore.destroyMenuItem(this.route.params.id, item)"
+                       color="red-lighten-2"
+                       text="Delete"
+                ></v-btn>
+              </form>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="text-center">
         <v-pagination
             v-model="menuStore.current_page_items"

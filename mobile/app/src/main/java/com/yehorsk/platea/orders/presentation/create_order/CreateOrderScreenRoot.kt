@@ -16,11 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
+import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
@@ -58,9 +55,9 @@ fun CreateOrderScreenRoot(
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val cartItemsUiState by viewModel.cartItemsUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val userRole by viewModel.userRole.collectAsStateWithLifecycle()
-    val userAddress by viewModel.userAddress.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getUserOrderItems()
@@ -78,6 +75,7 @@ fun CreateOrderScreenRoot(
     CreateOrderScreen(
         modifier = modifier,
         uiState = uiState,
+        items = cartItemsUiState,
         isConnected = isConnected,
         onGoToCart = onGoToCart,
         onGoToMenu = onGoToMenu,
@@ -85,7 +83,6 @@ fun CreateOrderScreenRoot(
         validateForm = viewModel.validateForm(),
         onAction = viewModel::onAction,
         userRole = userRole.toString(),
-        userAddress = userAddress.toString(),
         onTableNumberUpdate = { viewModel.updateTableNumber(it) }
     )
 }
@@ -95,6 +92,7 @@ fun CreateOrderScreen(
     modifier: Modifier = Modifier,
     uiState: OrderUiState,
     isConnected: Boolean,
+    items: List<CartItemEntity>,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
     onGoToMakeReservation: () -> Unit,
@@ -102,10 +100,7 @@ fun CreateOrderScreen(
     validateForm: Boolean,
     onAction: (CreateOrderAction) -> Unit,
     userRole: String,
-    userAddress: String,
 ){
-
-    var isMapLoaded by remember { mutableStateOf(false) }
 
     if(uiState.orderItems != null){
         Column(
@@ -120,7 +115,7 @@ fun CreateOrderScreen(
                 title = R.string.go_back
             )
             if (isConnected){
-                OrderItemList(items = uiState.orderItems)
+                OrderItemList(items = items)
                 HorizontalDivider()
             }
             OrderAddMore(
@@ -191,7 +186,7 @@ fun CreateOrderScreen(
                 }
             }
             if (isConnected){
-                val checkout = uiState.orderItems.sumOf {
+                val checkout = items.sumOf {
                     it.pivot.price
                 }
                 TotalPrice(

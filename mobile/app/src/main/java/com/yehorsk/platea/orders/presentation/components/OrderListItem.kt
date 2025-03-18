@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
+import com.yehorsk.platea.cart.data.db.model.CartItemEntity
+import com.yehorsk.platea.cart.data.db.model.PivotCartItemEntity
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
 import com.yehorsk.platea.orders.data.remote.dto.Pivot
@@ -32,9 +34,9 @@ import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun OrderListItem(
-    menuItem: OrderMenuItemDto,
+    menuItem: CartItemEntity,
     modifier: Modifier = Modifier,
-    onClick: (OrderMenuItemDto) -> Unit
+    onClick: (CartItemEntity) -> Unit
 ){
     val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
@@ -87,7 +89,7 @@ fun OrderListItem(
 fun OrderListItemPreview(){
     MobileTheme {
         OrderListItem(
-            menuItem = OrderMenuItemDto(
+            menuItem = CartItemEntity(
                 id = 0,
                 createdAt = "",
                 updatedAt = "",
@@ -98,15 +100,16 @@ fun OrderListItemPreview(){
                 recipe = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 picture = "",
                 price = 5.99,
-                pivot = Pivot(
+                pivot = PivotCartItemEntity(
                     id = 1,
-                    orderId = 10,
                     menuItemId = 1,
+                    userId = 1,
                     quantity = 2,
                     price = 17.98,
                     createdAt = "2024-01-01T10:00:00Z",
                     updatedAt = "2024-01-01T10:05:00Z"
-                )
+                ),
+                isFavorite = false
             ),
             onClick = {}
         )

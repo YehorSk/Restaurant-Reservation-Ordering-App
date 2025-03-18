@@ -1,6 +1,8 @@
 package com.yehorsk.platea.orders.presentation.create_order
 
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.platea.cart.data.dao.CartDao
+import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
@@ -13,6 +15,9 @@ import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -23,8 +28,16 @@ class CreateOrderViewModel @Inject constructor(
      networkConnectivityObserver: ConnectivityObserver,
      orderRepositoryImpl: OrderRepositoryImpl,
      orderDao: OrderDao,
+     cartDao: CartDao,
      preferencesRepository: MainPreferencesRepository,
 ): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository){
+
+    val cartItemsUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = listOf()
+        )
 
     fun onAction(action: CreateOrderAction){
         when(action){

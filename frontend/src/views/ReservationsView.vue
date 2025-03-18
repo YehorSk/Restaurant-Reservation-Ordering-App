@@ -18,71 +18,73 @@
     <div v-if="reservationStore.isLoading" class="text-center text-gray-500 py-6">
       <PulseLoader/>
     </div>
-    <table v-else class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 my-6">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-      <tr>
-        <th scope="col" class="px-6 py-3">
-          Reservation Code
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Table Number
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Party Size
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Date
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Start Time
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Status
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Edit
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Delete
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="reservation in reservationStore.getReservations.data" :key="reservation.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-        <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-          {{ reservation.code }}
-        </td>
-        <td class="px-6 py-4">
-          {{ reservation.table_number }}
-        </td>
-        <td class="px-6 py-4">
-          {{ reservation.party_size }}
-        </td>
-        <td class="px-6 py-4">
-          {{ reservation.date }}
-        </td>
-        <td class="px-6 py-4">
-          {{ reservation.start_time }}
-        </td>
-        <td class="px-6 py-4">
-          {{ reservation.status }}
-        </td>
-        <td>
-          <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setReservation(reservation)">
-            Update
-          </v-btn>
-        </td>
-        <td>
-          <form @submit.prevent class="inline-block">
-            <v-btn @click="reservationStore.destroyReservation(reservation.id)"
-                   color="red-lighten-2"
-                   text="Delete"
-            ></v-btn>
-          </form>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div v-else class="overflow-x-auto">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 my-6">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-6 py-3">
+            Reservation Code
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Table Number
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Party Size
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Date
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Start Time
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Status
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Edit
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Delete
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="reservation in reservationStore.getReservations.data" :key="reservation.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            {{ reservation.code }}
+          </td>
+          <td class="px-6 py-4">
+            {{ reservation.table_number }}
+          </td>
+          <td class="px-6 py-4">
+            {{ reservation.party_size }}
+          </td>
+          <td class="px-6 py-4">
+            {{ reservation.date }}
+          </td>
+          <td class="px-6 py-4">
+            {{ reservation.start_time }}
+          </td>
+          <td class="px-6 py-4">
+            {{ reservation.status }}
+          </td>
+          <td>
+            <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setReservation(reservation)">
+              Update
+            </v-btn>
+          </td>
+          <td>
+            <form @submit.prevent class="inline-block">
+              <v-btn @click="reservationStore.destroyReservation(reservation.id)"
+                     color="red-lighten-2"
+                     text="Delete"
+              ></v-btn>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="text-center">
       <v-pagination
           v-model="reservationStore.current_page"

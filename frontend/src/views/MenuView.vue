@@ -42,14 +42,12 @@
       <div v-if="menuStore.isLoading" class="text-center text-gray-500 py-6">
         <PulseLoader/>
       </div>
-      <table v-else class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 my-6">
+    <div v-else class="overflow-x-auto">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 my-6">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3">
             Name
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Availability
           </th>
           <th scope="col" class="px-6 py-3">
             Description
@@ -70,9 +68,6 @@
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ menu.name }}
           </th>
-          <td class="px-6 py-4">
-            {{ menu.availability }}
-          </td>
           <td class="px-6 py-4">
             {{ menu.description }}
           </td>
@@ -97,6 +92,7 @@
         </tr>
         </tbody>
       </table>
+    </div>
     <div class="text-center">
       <v-pagination
           v-model="menuStore.current_page"
@@ -106,7 +102,7 @@
     </div>
   </div>
   <v-dialog v-model="dialog" width="auto" persistent>
-    <v-card min-width="600" prepend-icon="mdi-update" title="Update Menu">
+    <v-card width="400" prepend-icon="mdi-update" title="Update Menu">
       <v-text-field
           v-model="edit_menu.name"
           hide-details="auto"

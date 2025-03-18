@@ -32,6 +32,9 @@ interface MenuDao {
     @Query("SELECT * FROM menu_item_table WHERE name LIKE :text OR short_description LIKE :text OR long_description LIKE :text")
     fun searchItems(text: String): Flow<List<MenuItemEntity>>
 
+    @Query("UPDATE menu_item_table SET price = :price WHERE id = :id")
+    suspend fun updateMenuItemPrice(id: String, price: String)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMenu(menu: MenuEntity)
 
