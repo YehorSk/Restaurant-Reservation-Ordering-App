@@ -46,6 +46,7 @@ class AuthController extends Controller
                 'address' => $user->address,
                 'phone' => $user->phone,
                 'country_code' => $user->country_code,
+                'language' => $user->language,
             ],
             'token' => $token
         ];
@@ -110,6 +111,7 @@ class AuthController extends Controller
                 'address' => $user->address,
                 'phone' => $user->phone,
                 'country_code' => $user->country_code,
+                'language' => $user->language,
             ],
             'token' => $user->createToken("API Token of " . $user->name)->plainTextToken
         ]], message: __("messages.registered_successfully"));
