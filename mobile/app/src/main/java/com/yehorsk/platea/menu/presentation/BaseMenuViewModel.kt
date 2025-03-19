@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.utils.ConnectivityObserver
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.menu.data.dao.MenuDao
@@ -15,8 +14,6 @@ import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

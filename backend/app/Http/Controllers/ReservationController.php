@@ -420,6 +420,6 @@ class ReservationController extends Controller
             }
         } while (Reservation::where('code', $code)->exists());
 
-        return $code;
+        return "#" . $code;
     }
 }

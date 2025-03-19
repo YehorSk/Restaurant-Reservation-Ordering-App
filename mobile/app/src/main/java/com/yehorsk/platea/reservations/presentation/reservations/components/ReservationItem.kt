@@ -36,7 +36,7 @@ fun ReservationItem(
         Column {
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                text = "#${reservationEntity.code}",
+                text = reservationEntity.code,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
             )

@@ -45,7 +45,7 @@
     <string name="table">Table: %1$s</string>
     <string name="date_reservation">Date: %1$s</string>
     <string name="time_reservation">Time: %1$s</string>
-    <string name="reservation_code">Reservation #%1$s</string>
+    <string name="reservation_code">Reservation %1$s</string>
     <string name="search_icon">Search Icon</string>
     <string name="order_button_place">Place Order</string>
     <string name="order_button_pickup">Order Pickup</string>
@@ -53,7 +53,7 @@
     <string name="order_button_reservation">Make Reservation</string>
     <string name="confirm_reservation">Confirm reservation</string>
     <string name="pending_reservation">Pending reservation</string>
-    <string name="order">Order #%1$s</string>
+    <string name="order">Order %1$s</string>
     <string name="cart">Cart</string>
     <string name="at">at %1$s</string>
     <string name="platea_restaurant">PLATEA Restaurant</string>

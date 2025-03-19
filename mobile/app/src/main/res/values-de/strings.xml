@@ -46,7 +46,7 @@
     <string name="table">Tisch: %1$s</string>
     <string name="date_reservation">Datum: %1$s</string>
     <string name="time_reservation">Uhrzeit: %1$s</string>
-    <string name="reservation_code">Reservierung #%1$s</string>
+    <string name="reservation_code">Reservierung %1$s</string>
     <string name="search_icon">Suchsymbol</string>
     <string name="order_button_place">Bestellung erstellen</string>
     <string name="order_button_pickup">Abholung bestellen</string>
@@ -54,7 +54,7 @@
     <string name="order_button_reservation">Reservierung vornehmen</string>
     <string name="confirm_reservation">Reservierung bestätigen</string>
     <string name="pending_reservation">Ausstehende Reservierung</string>
-    <string name="order">Bestellung #%1$s</string>
+    <string name="order">Bestellung %1$s</string>
     <string name="cart">Warenkorb</string>
     <string name="at">um %1$s</string>
     <string name="platea_restaurant">PLATEA Restaurant</string>

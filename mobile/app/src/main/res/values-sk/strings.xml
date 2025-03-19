@@ -46,7 +46,7 @@
     <string name="table">Stôl: %1$s</string>
     <string name="date_reservation">Dátum: %1$s</string>
     <string name="time_reservation">Čas: %1$s</string>
-    <string name="reservation_code">Rezervácia #%1$s</string>
+    <string name="reservation_code">Rezervácia %1$s</string>
     <string name="search_icon">Ikona vyhľadávania</string>
     <string name="order_button_place">Vytvoriť objednávku</string>
     <string name="order_button_pickup">Objednať osobný odber</string>
@@ -54,7 +54,7 @@
     <string name="order_button_reservation">Vytvoriť rezerváciu</string>
     <string name="confirm_reservation">Potvrdiť rezerváciu</string>
     <string name="pending_reservation">Čakajúca rezervácia</string>
-    <string name="order">Objednavka #%1$s</string>
+    <string name="order">Objednavka %1$s</string>
     <string name="cart">Košík</string>
     <string name="at">o %1$s</string>
     <string name="reservation_special_request">Špeciálne požiadavky</string>

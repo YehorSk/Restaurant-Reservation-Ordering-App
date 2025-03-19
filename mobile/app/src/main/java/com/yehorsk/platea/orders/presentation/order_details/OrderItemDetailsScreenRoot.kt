@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
@@ -61,6 +62,7 @@ fun OrderItemDetailsScreen(
     id: Int,
     onGoBack: () -> Unit
 ){
+    val imgUrl = BuildConfig.BASE_URL_IMG
     val orderItem = ordersUiState.flatMap { it.orderItems }.find { it.pivot.menuItemId == id }
     Column(
         modifier = modifier
@@ -78,7 +80,7 @@ fun OrderItemDetailsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp),
-                    model = orderItem.picture,
+                    model = "$imgUrl${orderItem.picture}",
                     contentDescription = "",
                     placeholder = painterResource(R.drawable.menu_item_placeholder),
                     contentScale = ContentScale.Crop,

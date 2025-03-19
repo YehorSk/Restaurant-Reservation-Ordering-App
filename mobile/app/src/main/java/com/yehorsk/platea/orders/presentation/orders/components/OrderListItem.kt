@@ -39,7 +39,7 @@ fun OrderListItem(
         Column {
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                text = "#${orderEntity.code}",
+                text = orderEntity.code,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
             )

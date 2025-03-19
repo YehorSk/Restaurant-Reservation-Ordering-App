@@ -301,7 +301,7 @@ class OrderController extends Controller
             }
         } while (Order::where('code', $code)->exists());
 
-        return $code;
+        return "#" . $code;
     }
 
     // Pending
