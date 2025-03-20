@@ -43,6 +43,7 @@
 import NavComponent from "@/components/SideBarComponent.vue";
 import { UseInfoStore } from "@/stores/InfoStore.js";
 import {useToast} from "vue-toastification";
+import { initFlowbite } from 'flowbite'
 
 export default {
   name: "InfoView",

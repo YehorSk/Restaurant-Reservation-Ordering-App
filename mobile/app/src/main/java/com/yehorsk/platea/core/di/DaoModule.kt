@@ -1,4 +1,4 @@
-package com.yehorsk.platea.di
+package com.yehorsk.platea.core.di
 
 import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.core.data.dao.RestaurantInfoDao

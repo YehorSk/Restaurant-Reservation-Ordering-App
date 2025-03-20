@@ -129,6 +129,7 @@ import { useToast } from 'vue-toastification';
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import BasicCard from "@/components/StatBasicCard.vue";
 import StatProfits from "@/components/StatProfits.vue";
+import { initFlowbite } from 'flowbite'
 
 export default {
   components: {
@@ -148,7 +149,6 @@ export default {
     initFlowbite();
   },
   watch: {
-    // Watch for changes in the success message
     "authStore.success": {
       handler(newValue) {
         if (newValue) {

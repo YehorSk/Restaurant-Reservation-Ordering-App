@@ -137,8 +137,8 @@
       </div>
     </div>
   </div>
-  <v-dialog v-model="dialog" width="auto" persistent>
-    <v-card min-width="600" prepend-icon="mdi-update" title="Update Menu Item">
+  <v-dialog v-model="dialog" max-width="900" persistent>
+    <v-card prepend-icon="mdi-update" title="Update Menu Item">
       <v-text-field
           v-model="editMenuItem.name"
           hide-details="auto"
@@ -175,12 +175,13 @@
 </template>
 
 <script>
-import {RouterLink, useRoute} from "vue-router";
+import {useRoute} from "vue-router";
 import {UseMenuStore} from "@/stores/MenuStore.js";
 import {useToast} from "vue-toastification";
 import NavComponent from "@/components/SideBarComponent.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import {watch} from "vue";
+import { initFlowbite } from 'flowbite'
 
 export default {
   name: "MenuItemsView",
@@ -205,7 +206,6 @@ export default {
     }
   },
   watch: {
-    // Watch for changes in the success message
     "menuStore.success": {
       handler(newValue) {
         if (newValue) {

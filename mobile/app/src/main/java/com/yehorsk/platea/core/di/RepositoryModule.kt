@@ -1,4 +1,4 @@
-package com.yehorsk.platea.di
+package com.yehorsk.platea.core.di
 
 import com.yehorsk.platea.auth.data.remote.AuthRepositoryImpl
 import com.yehorsk.platea.auth.data.remote.service.AuthService

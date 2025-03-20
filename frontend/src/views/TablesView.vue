@@ -80,8 +80,8 @@
       </table>
     </div>
   </div>
-  <v-dialog v-model="dialog" width="auto" persistent>
-    <v-card min-width="600" prepend-icon="mdi-update" title="Update Time Slot">
+  <v-dialog v-model="dialog" max-width="900" persistent>
+    <v-card prepend-icon="mdi-update" title="Update Time Slot">
       <v-text-field
           v-model="editTable.number"
           hide-details="auto"
@@ -142,6 +142,9 @@ export default {
       },
       immediate: true,
     },
+  },
+  mounted() {
+    initFlowbite();
   },
   beforeMount(){
     this.tableStore.fetchTables();

@@ -99,9 +99,8 @@
       ></v-pagination>
     </div>
   </div>
-  <v-dialog v-model="dialog" width="auto" persistent>
+  <v-dialog v-model="dialog" max-width="900" persistent>
     <v-card
-        min-width="600"
         prepend-icon="mdi-update"
         :title="'Update Reservation #' + edit_reservation.code"
     >
@@ -123,6 +122,7 @@ import {UseReservationStore} from "@/stores/ReservationsStore.js";
 import {useToast} from "vue-toastification";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import {watch} from "vue";
+import { initFlowbite } from 'flowbite'
 
 export default {
   name: "ReservationsView",

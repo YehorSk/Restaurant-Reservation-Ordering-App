@@ -28,7 +28,7 @@ import {UseNotificationStore} from "@/stores/NotificationStore.js";
 import {useToast} from "vue-toastification";
 import NavComponent from "@/components/SideBarComponent.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
-import {watch} from "vue";
+import { initFlowbite } from 'flowbite'
 
 export default {
   name: "NotificationsView",

@@ -101,8 +101,8 @@
       ></v-pagination>
     </div>
   </div>
-  <v-dialog v-model="dialog" width="auto" persistent>
-    <v-card width="400" prepend-icon="mdi-update" title="Update Menu">
+  <v-dialog v-model="dialog" max-width="900" persistent>
+    <v-card prepend-icon="mdi-update" title="Update Menu">
       <v-text-field
           v-model="edit_menu.name"
           hide-details="auto"
@@ -127,6 +127,7 @@ import {useToast} from "vue-toastification";
 import NavComponent from "@/components/SideBarComponent.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import {watch} from "vue";
+import { initFlowbite } from 'flowbite'
 
 export default{
   components: {NavComponent, PulseLoader},

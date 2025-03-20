@@ -1,8 +1,7 @@
 <script>
   import {UseAuthStore} from "@/stores/AuthStore.js";
-  import { watch,reactive } from "vue";
   import { useToast } from "vue-toastification";
-  import router from "@/router/index.js";
+  import { initFlowbite } from 'flowbite'
 
   export default {
     data(){

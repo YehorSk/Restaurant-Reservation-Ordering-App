@@ -1,4 +1,4 @@
-package com.yehorsk.platea.di
+package com.yehorsk.platea.core.di
 
 import android.app.Application
 import android.content.Context

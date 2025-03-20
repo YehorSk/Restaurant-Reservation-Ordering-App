@@ -16,3 +16,12 @@
 <script setup>
 import NavComponent from "@/components/SideBarComponent.vue";
 </script>
+
+<script>
+import { initFlowbite } from 'flowbite'
+export default {
+  mounted() {
+    initFlowbite();
+  }
+}
+</script>

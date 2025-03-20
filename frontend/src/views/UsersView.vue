@@ -87,8 +87,8 @@
       ></v-pagination>
     </div>
   </div>
-  <v-dialog v-model="dialog" width="auto" persistent>
-    <v-card min-width="600" prepend-icon="mdi-update" title="Update User">
+  <v-dialog v-model="dialog" max-width="900" persistent>
+    <v-card prepend-icon="mdi-update" title="Update User">
       <v-text-field
           v-model="edit_user.name"
           hide-details="auto"
