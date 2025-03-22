@@ -269,11 +269,13 @@ class ReservationController extends Controller
                 return $this->success(data: [$item], message: "");
             }elseif (in_array($user->role, ['waiter', 'chef', 'admin'])) {
                 $item = Reservation::with('table')->with('timeSlot')->find($id);
+                $item->order_code = $item->orders->isNotEmpty() ? $item->orders->first()->code : null;
 
                 $item->table_number = $item->table->number ?? null;
                 $item->start_time = $item->timeSlot->start_time ?? null;
                 unset($item->table);
                 unset($item->timeSlot);
+                unset($item->orders);
                 return $this->success(data: [$item], message: "");
             } else {
                 return $this->error('', 'Invalid role', 403);

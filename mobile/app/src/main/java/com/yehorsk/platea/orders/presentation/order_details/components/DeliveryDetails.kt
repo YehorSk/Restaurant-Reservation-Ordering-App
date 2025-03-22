@@ -39,14 +39,14 @@ fun DeliveryDetails(
                         bottom = 10.dp
                     ),
                 text = stringResource(R.string.delivery_details),
-                fontSize = 18.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
             )
             Text(
                 modifier = Modifier
                     .padding(
                         start = 20.dp,
-                        bottom = 10.dp
+                        top = 15.dp
                     ),
                 text = address,
                 fontSize = 16.sp,
@@ -55,7 +55,7 @@ fun DeliveryDetails(
                 modifier = Modifier
                     .padding(
                         start = 20.dp,
-                        bottom = 10.dp
+                        top = 15.dp
                     ),
                 text = phone,
                 fontSize = 16.sp,
@@ -64,7 +64,8 @@ fun DeliveryDetails(
                 modifier = Modifier
                     .padding(
                         start = 20.dp,
-                        bottom = 10.dp
+                        top = 15.dp,
+                        bottom = 15.dp
                     ),
                 text = instructions,
                 fontSize = 16.sp

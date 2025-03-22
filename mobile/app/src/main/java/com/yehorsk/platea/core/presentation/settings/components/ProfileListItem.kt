@@ -42,7 +42,7 @@ fun ProfileListItem(
                 .padding(16.dp)
                 .weight(2f),
             text = stringResource(text),
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
         )
         Box(
             modifier = Modifier

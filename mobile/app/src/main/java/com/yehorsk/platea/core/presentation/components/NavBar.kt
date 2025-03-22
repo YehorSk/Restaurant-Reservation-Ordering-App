@@ -61,7 +61,6 @@ fun NavBar(
             modifier = Modifier
                 .padding(start = 10.dp),
             text = stringResource(title),
-            fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             style = LocalTextStyle.current.merge(
                 TextStyle(
@@ -73,6 +72,7 @@ fun NavBar(
                         includeFontPadding = false
                     ),
                     lineHeight = 3.2.em,
+                    fontSize = MaterialTheme.typography.bodyLarge.fontSize
                 )
             )
         )

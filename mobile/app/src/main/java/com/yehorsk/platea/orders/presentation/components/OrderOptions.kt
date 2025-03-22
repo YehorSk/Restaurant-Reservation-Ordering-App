@@ -77,7 +77,7 @@ fun OrderOptions(
                         bottom = 10.dp
                     ),
                 text = stringResource(R.string.order_preferences),
-                fontSize = 18.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
             )
             for(option in options){

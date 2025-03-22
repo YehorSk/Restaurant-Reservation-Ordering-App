@@ -39,7 +39,7 @@ fun TotalPrice(
                         )
                         .weight(1f),
                     text = stringResource(R.string.total),
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                 )
                 Text(
@@ -53,7 +53,7 @@ fun TotalPrice(
                         .weight(1f),
                     text = "€ $price",
                     textAlign = TextAlign.End,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                 )
             }

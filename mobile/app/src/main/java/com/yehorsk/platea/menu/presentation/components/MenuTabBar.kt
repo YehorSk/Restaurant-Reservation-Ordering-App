@@ -29,6 +29,7 @@ fun MenuTabBar(
                 text = {
                     Text(
                         text = menu.name,
+                        color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                     )

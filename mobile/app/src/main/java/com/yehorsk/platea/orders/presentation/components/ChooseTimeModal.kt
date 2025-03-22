@@ -187,7 +187,7 @@ fun generateTimeSlots(intervalMinutes: Int = 15): List<TimeItem> {
 
     val roundedNow = now.withMinute((now.minute / intervalMinutes) * intervalMinutes).withSecond(0).withNano(0)
 
-    val endTime = LocalTime.of(20, 0)
+    val endTime = LocalTime.of(21, 0)
     val timeSlots = mutableListOf<TimeItem>()
 
     var currentStart = roundedNow

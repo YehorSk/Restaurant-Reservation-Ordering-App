@@ -76,6 +76,8 @@
     <string name="select_time">Select time</string>
     <string name="schedule">Schedule</string>
     <string name="order_code">Order Code: %1$s</string>
+    <string name="reservation_order_status">Status: %1$s</string>
+    <string name="reservation_order_date">Created: %1$s</string>
 
     <!-- Profile Items -->
 

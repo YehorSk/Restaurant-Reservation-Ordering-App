@@ -121,7 +121,7 @@ fun MenuScreen(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(16.dp),
-                    containerColor = MaterialTheme.colorScheme.primary,
+                    containerColor = MaterialTheme.colorScheme.tertiary,
                     onClick = { onCreateReservationClicked() },
                     icon = {
                         Icon(

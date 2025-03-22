@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -145,7 +146,7 @@ fun LogBody(
     ) {
         Text(
             fontWeight = FontWeight.Bold,
-            fontSize = 40.sp,
+            style = MaterialTheme.typography.displaySmall,
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.app_name),
             textAlign = TextAlign.Center
@@ -159,22 +160,33 @@ fun LogBody(
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             onClick = onLogClick,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
             enabled = itemUiState.isEntryValid && isConnected,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.log_in))
+            Text(
+                text = stringResource(R.string.log_in),
+                style = MaterialTheme.typography.bodyLarge
+                )
         }
         Button(
             onClick = onRegClick,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.sign_up))
+            Text(
+                text = stringResource(R.string.sign_up),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
         TextButton(
             onClick = onForgotPwdClick,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.forgot_password))
+            Text(
+                text = stringResource(R.string.forgot_password),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }

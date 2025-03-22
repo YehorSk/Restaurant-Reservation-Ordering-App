@@ -105,6 +105,7 @@ fun OrderDetailsScreen(
                 date = data.order.createdAt,
                 code = data.order.code
             )
+            HorizontalDivider()
             OrderDetailsItemList(
                 order = data,
                 onOpenItemDetails = { id ->
@@ -123,7 +124,6 @@ fun OrderDetailsScreen(
                     phone = data.order.phone.toString()
                 )
             }
-            Spacer(modifier = Modifier.height(10.dp))
             if(isConnected){
                 if(role == "user"){
                     Column(

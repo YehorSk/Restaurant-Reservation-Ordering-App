@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -68,7 +69,7 @@ fun ProfileScreen(
                 bottom = 15.dp
             ),
             text = stringResource(R.string.profile),
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.ExtraBold,
         )
         ProfileScreenForm(
@@ -148,13 +149,14 @@ fun ProfileScreenForm(
         )
         Button(
             onClick = { onUpdateProfile() },
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
             enabled = name.isNotEmpty() && address.isNotEmpty() && isPhoneValid,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
+            AutoResizedText(
                 text = stringResource(R.string.update_profile),
                 color = Color.White,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
             )
         }

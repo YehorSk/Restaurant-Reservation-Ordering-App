@@ -65,7 +65,7 @@ fun OrderListItem(
         ) {
             Text(
                 text = menuItem.name,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = modifier
                     .fillMaxWidth()
@@ -73,7 +73,7 @@ fun OrderListItem(
             )
             Text(
                 text =  menuItem.pivot.quantity.toString() +"x "+ " €"+ formattedPrice(menuItem.pivot.price.toDouble()),
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
                 maxLines = 2,
                 modifier = modifier

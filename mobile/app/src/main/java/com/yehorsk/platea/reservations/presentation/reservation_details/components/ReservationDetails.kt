@@ -42,7 +42,7 @@ fun ReservationDetails(
                 top = 15.dp
             ),
             text = stringResource(R.string.table, table),
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
         )
         Text(
@@ -51,7 +51,7 @@ fun ReservationDetails(
                 top = 15.dp
             ),
             text = stringResource(R.string.date_reservation, formatDateTime(date)),
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
         )
         Text(
@@ -60,7 +60,7 @@ fun ReservationDetails(
                 top = 15.dp,
             ),
             text = stringResource(R.string.time_reservation, formatTime(time)),
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
         )
         Text(
@@ -70,7 +70,7 @@ fun ReservationDetails(
                 bottom = 10.dp
             ),
             text = stringResource(R.string.party_size) + ": $partySize",
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
         )
         HorizontalDivider()
@@ -80,7 +80,7 @@ fun ReservationDetails(
                 top = 15.dp,
             ),
             text = stringResource(R.string.special_request, request?: ""),
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
         )
         if(orderCode != null){
@@ -90,7 +90,7 @@ fun ReservationDetails(
                     top = 15.dp,
                 ),
                 text = stringResource(R.string.order_code, orderCode),
-                fontSize = 18.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
             )
         }
@@ -101,7 +101,7 @@ fun ReservationDetails(
                 bottom = 20.dp
             ),
             text = stringResource(R.string.phone_number, phone),
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
             fontWeight = FontWeight.Bold,
         )
     }

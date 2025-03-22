@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -124,6 +125,7 @@ fun CartScreen(
                             .fillMaxWidth()
                             .padding(bottom = 8.dp, start = 16.dp, end = 16.dp)
                             .align(Alignment.BottomCenter),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                         onClick = {
                             onGoToCheckoutClick()
                         }

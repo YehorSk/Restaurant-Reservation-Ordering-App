@@ -27,12 +27,15 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -150,15 +153,16 @@ fun MenuItemModalContent(
                         modifier = Modifier,
                         shape = RoundedCornerShape(40.dp),
                         colors = CardColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
+                            containerColor = MaterialTheme.colorScheme.tertiary,
                             contentColor = Color.White,
-                            disabledContentColor = MaterialTheme.colorScheme.primary,
-                            disabledContainerColor = MaterialTheme.colorScheme.primary
+                            disabledContentColor = MaterialTheme.colorScheme.tertiary,
+                            disabledContainerColor = MaterialTheme.colorScheme.tertiary
                         )
                     ) {
                         Row {
                             if(showFavorite){
                                 IconButton(
+                                    colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                                     onClick = {
                                         if(cartForm.isFavorite){
                                             deleteFavoriteItem()
@@ -188,8 +192,9 @@ fun MenuItemModalContent(
                                 }
                             }
                             IconButton(
-                                onClick = onDismiss
-                            ) {
+                                onClick = onDismiss,
+                                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                                ) {
                                 Icon(
                                     imageVector = Icons.Filled.Close,
                                     contentDescription = "",
@@ -207,18 +212,18 @@ fun MenuItemModalContent(
                         .fillMaxWidth()
                         .padding(18.dp),
                     text = menuItem.name,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                 )
                 Text(
                     modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.titleMedium,
                     text = "€"+formattedPrice(menuItem.price),
                 )
                 Text(
                     modifier = Modifier.padding(top = 8.dp, start = 32.dp, end = 32.dp),
-                    fontSize = 16.sp,
+                    style = MaterialTheme.typography.titleMedium,
                     text = menuItem.shortDescription,
                 )
                 Spacer(
@@ -268,10 +273,10 @@ fun MenuItemModalContent(
                             .wrapContentWidth(),
                         shape = RoundedCornerShape(40.dp),
                         colors = CardColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
+                            containerColor = MaterialTheme.colorScheme.tertiary,
                             contentColor = Color.White,
-                            disabledContentColor = MaterialTheme.colorScheme.primary,
-                            disabledContainerColor = MaterialTheme.colorScheme.primary
+                            disabledContentColor = MaterialTheme.colorScheme.tertiary,
+                            disabledContainerColor = MaterialTheme.colorScheme.tertiary
                         )
                     ) {
                         Row(
@@ -282,6 +287,7 @@ fun MenuItemModalContent(
                             TextButton(
                                 modifier = Modifier.fillMaxHeight(),
                                 shape = CircleShape,
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                                 onClick = {
                                     if(cartForm.quantity>1){
                                         val newQuantity = cartForm.quantity - 1
@@ -308,6 +314,7 @@ fun MenuItemModalContent(
                             TextButton(
                                 modifier = Modifier.fillMaxHeight(),
                                 shape = CircleShape,
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                                 onClick = {
                                     val newQuantity = cartForm.quantity + 1
                                     onQuantityChange(newQuantity)
@@ -329,6 +336,7 @@ fun MenuItemModalContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                         onClick = {
                             addUserCartItem()
                         }

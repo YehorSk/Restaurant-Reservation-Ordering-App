@@ -77,6 +77,8 @@
     <string name="select_time">Uhrzeit auswählen</string>
     <string name="schedule">Planen</string>
     <string name="order_code">Bestellcode: %1$s</string>
+    <string name="reservation_order_status">Status: %1$s</string>
+    <string name="reservation_order_date">Erstellt: %1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Favoriten</string>

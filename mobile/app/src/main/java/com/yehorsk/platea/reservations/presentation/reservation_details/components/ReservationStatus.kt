@@ -20,6 +20,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formatOrderDateTime
 import com.yehorsk.platea.core.utils.Utility.statusToString
 import com.yehorsk.platea.ui.theme.MobileTheme
+import com.yehorsk.platea.ui.theme.MobileThemePreview
 
 @Composable
 fun ReservationStatus(
@@ -31,49 +32,39 @@ fun ReservationStatus(
     val context = LocalContext.current
     Card(
     ) {
-        Column {
-            Row(
-                modifier = modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .fillMaxWidth()
-            ){
-                Text(
-                    modifier = Modifier.padding(
-                        start = 20.dp,
-                        top = 15.dp
-                    ),
-                    text = stringResource(R.string.reservation_code, code),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
-            Row(
-                modifier = modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    modifier = Modifier.padding(
-                        start = 20.dp,
-                        top = 15.dp,
-                        bottom = 10.dp
-                    ),
-                    text = statusToString(status, context),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-
-                Text(
-                    modifier = Modifier.padding(
-                        start = 10.dp,
-                        top = 15.dp,
-                        bottom = 10.dp
-                    ),
-                    text = formatOrderDateTime(date),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
+        Column(
+            modifier = modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxWidth()
+        ) {
+            Text(
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 15.dp
+                ),
+                text = stringResource(R.string.reservation_code, code),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 15.dp
+                ),
+                text = stringResource(R.string.reservation_order_status, statusToString(status, context)),
+                style = MaterialTheme.typography.bodyLarge ,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 15.dp,
+                    bottom = 15.dp
+                ),
+                text = stringResource(R.string.reservation_order_date, formatOrderDateTime(date)),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+            )
         }
     }
 }
@@ -81,7 +72,7 @@ fun ReservationStatus(
 @Preview
 @Composable
 fun OrderStatusPreview(){
-    MobileTheme {
+    MobileThemePreview {
         ReservationStatus(
             status = "Pending",
             date = "05 May, 2024 10:40",

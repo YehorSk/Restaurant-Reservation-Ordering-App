@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -203,6 +204,7 @@ fun CreateOrderScreen(
                         )
                         .fillMaxWidth(),
                     enabled = validateForm,
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                     onClick = {
                         if(userRole == "user"){
                             if (uiState.orderForm.orderType==2){
@@ -228,7 +230,7 @@ fun CreateOrderScreen(
                                 else -> R.string.order_button_pickup
                             }
                         ),
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                     )
                 }

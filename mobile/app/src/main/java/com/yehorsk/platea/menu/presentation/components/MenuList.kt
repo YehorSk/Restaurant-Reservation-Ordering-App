@@ -30,6 +30,7 @@ fun MenuList(
                     menuDto = menu.menu,
                     onMenuClick = {  }
                 )
+                var i = 0;
                 Column {
                     menu.menuItems.forEach{ item ->
                         MenuItem(
@@ -38,7 +39,7 @@ fun MenuList(
                                 onClick(menuItem)
                             }
                         )
-                        HorizontalDivider()
+                        if(i++ != menu.menuItems.size -1) HorizontalDivider()
                     }
                 }
             }

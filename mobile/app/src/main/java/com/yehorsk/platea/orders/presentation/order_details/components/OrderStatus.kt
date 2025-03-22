@@ -31,49 +31,39 @@ fun OrderStatus(
     val context = LocalContext.current
     Card(
     ) {
-        Column {
-            Row(
-                modifier = modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .fillMaxWidth()
-            ){
-                Text(
-                    modifier = Modifier.padding(
-                        start = 20.dp,
-                        top = 15.dp
-                    ),
-                    text = stringResource(R.string.order, code),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
-            Row(
-                modifier = modifier
-                    .background(MaterialTheme.colorScheme.background)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    modifier = Modifier.padding(
-                        start = 20.dp,
-                        top = 15.dp,
-                        bottom = 10.dp
-                    ),
-                    text = statusToString(status, context),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-
-                Text(
-                    modifier = Modifier.padding(
-                        start = 10.dp,
-                        top = 15.dp,
-                        bottom = 10.dp
-                    ),
-                    text = formatOrderDateTime(date),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-            }
+        Column(
+            modifier = modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxWidth()
+        ) {
+            Text(
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 15.dp
+                ),
+                text = stringResource(R.string.order, code),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 15.dp
+                ),
+                text = stringResource(R.string.reservation_order_status, statusToString(status, context)),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                modifier = Modifier.padding(
+                    start = 20.dp,
+                    top = 15.dp,
+                    bottom = 15.dp
+                ),
+                text = stringResource(R.string.reservation_order_date, formatOrderDateTime(date)),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+            )
         }
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -27,6 +28,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.ui.theme.MobileTheme
+import com.yehorsk.platea.ui.theme.MobileThemePreview
 
 @Composable
 fun MenuItem(
@@ -68,13 +70,13 @@ fun MenuItem(
             )
             Text(
                 text = "€"+ formattedPrice(menuItem.price.toDouble()),
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
-                maxLines = 2,
+                maxLines = 1,
                 modifier = modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .padding(bottom = 12.dp, start = 16.dp, end = 16.dp, top = 6.dp),
+                    .padding(bottom = 12.dp, start = 16.dp, end = 16.dp, top = 12.dp),
             )
         }
 
@@ -95,7 +97,7 @@ fun MenuItem(
 @PreviewLightDark
 @Composable
 fun MenuItemPreview(){
-    MobileTheme {
+    MobileThemePreview {
         MenuItem(
             menuItem = MenuItemEntity(
                 id = 0,

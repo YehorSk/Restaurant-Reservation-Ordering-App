@@ -37,7 +37,7 @@ fun ReservationItem(
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 text = reservationEntity.code,
-                fontSize = 16.sp,
+                style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
             )
             Row(
@@ -45,13 +45,13 @@ fun ReservationItem(
             ) {
                 Text(
                     text = formatOrderDateTime(reservationEntity.createdAt),
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     color = Color.LightGray,
                 )
                 Text(
                     text = " ${statusToString(reservationEntity.status, context)}",
-                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                 )
             }

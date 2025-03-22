@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -95,7 +96,7 @@ fun ForgotBody(
     ) {
         Text(
             fontWeight = FontWeight.Bold,
-            fontSize = 40.sp,
+            style = MaterialTheme.typography.displaySmall,
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.app_name),
             textAlign = TextAlign.Center
@@ -106,11 +107,15 @@ fun ForgotBody(
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
             onClick = { onUpdateClick() },
             enabled = itemUiState.isEntryValid,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.reset_password))
+            Text(
+                text = stringResource(R.string.reset_password),
+                style = MaterialTheme.typography.bodyLarge
+                )
         }
     }
 }

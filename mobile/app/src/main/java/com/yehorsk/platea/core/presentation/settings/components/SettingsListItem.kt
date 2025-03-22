@@ -54,7 +54,7 @@ fun SettingsListItem(
             modifier = Modifier
                 .padding(16.dp),
             text = stringResource(text),
-            fontSize = 18.sp,
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
     HorizontalDivider()

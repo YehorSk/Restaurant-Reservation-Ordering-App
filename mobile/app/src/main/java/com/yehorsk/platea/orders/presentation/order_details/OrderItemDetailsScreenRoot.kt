@@ -91,7 +91,7 @@ fun OrderItemDetailsScreen(
                         .fillMaxWidth()
                         .padding(18.dp),
                     text = orderItem.name,
-                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                 )

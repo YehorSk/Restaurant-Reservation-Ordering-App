@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,6 +51,7 @@ import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.ui.theme.MobileTheme
+import com.yehorsk.platea.ui.theme.MobileThemePreview
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -142,15 +144,23 @@ fun RegBody(
         Button(
             onClick = onRegClick,
             enabled = itemUiState.isEntryValid,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.sign_up))
+            Text(
+                text = stringResource(R.string.sign_up),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
         Button(
             onClick = onLogClick,
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.log_in))
+            Text(
+                text = stringResource(R.string.log_in),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }
@@ -169,7 +179,7 @@ fun RegForm(
     ) {
         Text(
             fontWeight = FontWeight.Bold,
-            fontSize = 40.sp,
+            style = MaterialTheme.typography.displaySmall,
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.app_name),
             textAlign = TextAlign.Center
@@ -311,7 +321,7 @@ fun RegBodyPreview(){
         isLoading = false,
         isLoggedIn = false
     )
-    MobileTheme {
+    MobileThemePreview {
         RegBody(
             itemUiState = fakeRegisterState,
             itemErrorUiState = fakeRegisterState.registerFormErrors,

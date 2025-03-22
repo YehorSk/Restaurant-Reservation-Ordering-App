@@ -1,5 +1,6 @@
 package com.yehorsk.platea.menu.presentation.components
 
+import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -23,14 +25,13 @@ fun MenuHeader(
 ){
     Column(
         modifier = Modifier
-            .background(MaterialTheme.colorScheme.primaryContainer)
             .clickable{
                 onMenuClick()
             }
     ) {
         Text(
             text = menuDto.name,
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             modifier = modifier
                 .fillMaxWidth()
@@ -40,10 +41,10 @@ fun MenuHeader(
             text = menuDto.description,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyLarge,
             modifier = modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
+                .padding(start = 16.dp, top = 10.dp, end = 16.dp, bottom = 16.dp)
         )
     }
 

@@ -76,6 +76,8 @@
     <string name="select_time">Vybrať čas</string>
     <string name="schedule">Čas</string>
     <string name="order_code">Kód objednávky: %1$s</string>
+    <string name="reservation_order_status">Stav: %1$s</string>
+    <string name="reservation_order_date">Vytvorené: %1$s</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>
