@@ -12,6 +12,8 @@ sealed interface CreateOrderAction {
 
     data class UpdateTime(val start: String, val end: String): CreateOrderAction
 
+    data class UpdateDate(val date: String): CreateOrderAction
+
     data class UpdatePhone(val phone: String): CreateOrderAction
 
     data class ValidatePhone(val phone: String): CreateOrderAction

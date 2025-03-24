@@ -1,4 +1,4 @@
-package com.yehorsk.platea.orders.presentation.components
+package com.yehorsk.platea.orders.presentation.create_order.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,15 +21,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.db.model.PivotCartItemEntity
 import com.yehorsk.platea.core.utils.formattedPrice
-import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
-import com.yehorsk.platea.orders.data.remote.dto.Pivot
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable

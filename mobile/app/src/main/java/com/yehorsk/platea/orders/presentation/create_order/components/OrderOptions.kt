@@ -1,4 +1,4 @@
-package com.yehorsk.platea.orders.presentation.components
+package com.yehorsk.platea.orders.presentation.create_order.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeliveryDining
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Restaurant
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -50,7 +49,7 @@ data class OrderOption(
 @Composable
 fun OrderOptions(
     modifier: Modifier = Modifier,
-    selected: Int,
+    selected: Int?,
     selectedTime: String,
     onSelectedChange: (Int,String) -> Unit
 ){
@@ -60,9 +59,9 @@ fun OrderOptions(
         OrderOption(id = 0, icon = Icons.Filled.DirectionsWalk, text = R.string.pickup_option, subText = R.string.pickup_time),
         OrderOption(id = 1, icon = Icons.Filled.DeliveryDining, text = R.string.delivery_option, subText = R.string.delivery_time),
         OrderOption(id = 2, icon = Icons.Filled.Restaurant, text = R.string.reservation_option, subText = R.string.select_date),
-        OrderOption(id = 3, icon = Icons.Filled.Schedule, text = R.string.schedule, subText = R.string.select_time),
+//        OrderOption(id = 3, icon = Icons.Filled.Schedule, text = R.string.schedule, subText = R.string.select_time),
     )
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(options[selected] ) }
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(options.find { it.id == selected }) }
     Card(
     ) {
         Column(
@@ -77,18 +76,16 @@ fun OrderOptions(
                         bottom = 10.dp
                     ),
                 text = stringResource(R.string.order_preferences),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
             )
             for(option in options){
                 val text = stringResource(option.text)
                 OrderRadioOption(
                     option = option,
-                    selected = (option.text == selectedOption.text),
+                    selected = selectedOption?.id == option.id,
                     onSelect = { option ->
-                        if(option.id != 3){
-                            onOptionSelected(option)
-                        }
+                        onOptionSelected(option)
                         onSelectedChange(
                             option.id,
                             text

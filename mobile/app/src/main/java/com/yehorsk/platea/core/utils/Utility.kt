@@ -6,11 +6,16 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
+import com.yehorsk.platea.orders.presentation.create_order.components.TimeItem
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import kotlin.collections.contains
 
 @Serializable
@@ -68,6 +73,20 @@ object Utility {
         return context.getString(resId)
     }
 
+    fun getWeekDayTranslation(context: Context, day: String, time:String): String{
+        val resId = when(day) {
+            "Monday" -> R.string.monday
+            "Tuesday" -> R.string.tuesday
+            "Wednesday" -> R.string.wednesday
+            "Thursday" -> R.string.thursday
+            "Friday" -> R.string.friday
+            "Saturday" -> R.string.saturday
+            "Sunday" -> R.string.sunday
+            else -> R.string.monday
+        }
+        return context.getString(resId, time)
+    }
+
     fun ReservationFilter.toString(context: Context): String {
         val resId = when (this) {
             ReservationFilter.ALL -> R.string.filter_all_reservations
@@ -96,6 +115,86 @@ object Utility {
             Timber.d("Error decoding validation errors: $e")
             ValidationErrorsDto("Error decoding response", emptyMap())
         }
+    }
+
+    fun getStartTime(): String {
+        val currentTime = LocalDateTime.now().plusMinutes(30)
+        return if (currentTime.hour >= 20) {
+            "08:00"
+        } else {
+            val minute = currentTime.minute
+            val roundedMinute = when {
+                minute < 15 -> 0
+                minute < 30 -> 15
+                minute < 45 -> 30
+                else -> 45
+            }
+            val roundedTime = currentTime.withMinute(roundedMinute).withSecond(0).withNano(0)
+            formatTime(roundedTime)
+        }
+    }
+
+    fun getEndTime(): String {
+        val startTime = if (LocalDateTime.now().hour >= 20) {
+            LocalDateTime.now().withHour(8).withMinute(30).withSecond(0).withNano(0)
+        } else {
+            val minute = LocalDateTime.now().minute
+            val roundedMinute = getRoundedMinute(minute)
+            LocalDateTime.now()
+                .withMinute(roundedMinute)
+                .withSecond(0)
+                .withNano(0)
+                .plusMinutes(60)
+        }
+        return formatTime(startTime)
+    }
+
+    fun getRoundedMinute(minute: Int): Int = when {
+        minute < 15 -> 0
+        minute < 30 -> 15
+        minute < 45 -> 30
+        else -> 45
+    }
+
+    fun formatTime(time: LocalDateTime): String {
+        return time.format(DateTimeFormatter.ofPattern("HH:mm"))
+    }
+
+    fun formatStringTime(time: String): String {
+        val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val localTime = LocalTime.parse(time, formatter)
+        val localDateTime = LocalDateTime.of(LocalDate.now(), localTime)
+        return localDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+    }
+
+    fun getDayName(dateString: String): String {
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val date = LocalDate.parse(dateString, formatter)
+        return date.dayOfWeek.toString()
+    }
+
+    fun generateTimeSlots(intervalMinutes: Int = 15, date: String, startTimeSchedule: Int, endTimeSchedule: Int): List<TimeItem> {
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
+        var time = if(LocalDate.now().toString() == date){
+            LocalTime.now().plusHours(2)
+        }else{
+            LocalTime.of(startTimeSchedule + 2, 0)
+        }
+
+        val roundedNow = time.withMinute((time.minute / intervalMinutes) * intervalMinutes).withSecond(0).withNano(0)
+
+        val endTime = LocalTime.of(endTimeSchedule, 0)
+        val timeSlots = mutableListOf<TimeItem>()
+
+        var currentStart = roundedNow
+        while (currentStart.plusMinutes(30).isBefore(endTime) || currentStart.plusMinutes(30) == endTime) {
+            val currentEnd = currentStart.plusMinutes(30)
+            timeSlots.add(TimeItem(currentStart.format(timeFormatter), currentEnd.format(timeFormatter)))
+            currentStart = currentStart.plusMinutes(intervalMinutes.toLong())
+        }
+
+        return timeSlots
     }
 
 }

@@ -2,7 +2,6 @@ package com.yehorsk.platea.reservations.presentation.reservation_details.compone
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -15,11 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formatOrderDateTime
 import com.yehorsk.platea.core.utils.Utility.statusToString
-import com.yehorsk.platea.ui.theme.MobileTheme
 import com.yehorsk.platea.ui.theme.MobileThemePreview
 
 @Composable

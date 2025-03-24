@@ -88,25 +88,27 @@ fun InfoAboutUs(
 
 @Composable
 fun InfoPart(
+    modifier: Modifier = Modifier,
     @StringRes title: Int,
     text: String,
     showButton: Boolean = false,
     onAction: () -> Unit = {}
 ){
     Column(
-        modifier = Modifier
+        modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
             .padding(
-            start = 10.dp,
+            start = 20.dp,
             top = 10.dp,
             bottom = 5.dp
         )
     ) {
         Text(
             text = stringResource(id = title),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Bold
         )
         if(showButton){
             TextButton(
@@ -114,15 +116,19 @@ fun InfoPart(
                     onAction()
                 },
                 content = {
-                    Text(text = text)
+                    Text(
+                        text = text,
+                        style = MaterialTheme.typography.bodyLarge,
+                        )
                 }
             )
         }else{
             Text(
+                modifier = Modifier
+                    .padding(top = 5.dp),
                 text = text,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold,
             )
         }
     }

@@ -22,11 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
+import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
@@ -35,15 +35,15 @@ import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.OrderUiState
-import com.yehorsk.platea.orders.presentation.components.ChooseTimeModal
-import com.yehorsk.platea.orders.presentation.components.DeliveryDetails
-import com.yehorsk.platea.orders.presentation.components.OrderAddMore
-import com.yehorsk.platea.orders.presentation.components.OrderItemList
-import com.yehorsk.platea.orders.presentation.components.OrderOptions
-import com.yehorsk.platea.orders.presentation.components.OrderSpecialRequest
-import com.yehorsk.platea.orders.presentation.components.PickupDetails
-import com.yehorsk.platea.orders.presentation.components.SelectTable
-import com.yehorsk.platea.orders.presentation.components.TotalPrice
+import com.yehorsk.platea.orders.presentation.create_order.components.ChooseTimeModal
+import com.yehorsk.platea.orders.presentation.create_order.components.DeliveryDetails
+import com.yehorsk.platea.orders.presentation.create_order.components.OrderAddMore
+import com.yehorsk.platea.orders.presentation.create_order.components.OrderItemList
+import com.yehorsk.platea.orders.presentation.create_order.components.OrderOptions
+import com.yehorsk.platea.orders.presentation.create_order.components.OrderSpecialRequest
+import com.yehorsk.platea.orders.presentation.create_order.components.PickupDetails
+import com.yehorsk.platea.orders.presentation.create_order.components.SelectTable
+import com.yehorsk.platea.orders.presentation.create_order.components.TotalPrice
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
@@ -59,6 +59,7 @@ fun CreateOrderScreenRoot(
     val cartItemsUiState by viewModel.cartItemsUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
     val userRole by viewModel.userRole.collectAsStateWithLifecycle()
+    val info by viewModel.restaurantInfoUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getUserOrderItems()
@@ -84,7 +85,8 @@ fun CreateOrderScreenRoot(
         validateForm = viewModel.validateForm(),
         onAction = viewModel::onAction,
         userRole = userRole.toString(),
-        onTableNumberUpdate = { viewModel.updateTableNumber(it) }
+        onTableNumberUpdate = { viewModel.updateTableNumber(it) },
+        schedule = info
     )
 }
 
@@ -101,6 +103,7 @@ fun CreateOrderScreen(
     validateForm: Boolean,
     onAction: (CreateOrderAction) -> Unit,
     userRole: String,
+    schedule: RestaurantInfoEntity?
 ){
 
     if(uiState.orderItems != null){
@@ -129,19 +132,19 @@ fun CreateOrderScreen(
                 onRequestChange = {request -> onAction(CreateOrderAction.UpdateRequest(request)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
-            if(userRole == "user"){
+            if(userRole == "user" && schedule != null){
                 OrderOptions(
                     selected = uiState.orderForm.orderType,
                     onSelectedChange = { type,text ->
-                        if(type != 3){
-                            onAction(CreateOrderAction.UpdateOrderType(type,text))
-                        }else{
+                        onAction(CreateOrderAction.UpdateOrderType(type,text))
+                        if(type != 2){
                             onAction(CreateOrderAction.OpenBottomSheet)
                         }
                     },
                     selectedTime = "${uiState.orderForm.startTime} - ${uiState.orderForm.endTime}"
                 )
             }else{
+                onAction(CreateOrderAction.UpdateOrderType(3, "Waiter"))
                 if(uiState.tables !=null){
                     SelectTable(
                         tables = uiState.tables!!,
@@ -236,17 +239,17 @@ fun CreateOrderScreen(
                 }
             }
         }
-        if(uiState.showBottomSheet){
+        if(uiState.showBottomSheet && schedule != null){
             ChooseTimeModal(
                 onDismiss = { onAction(CreateOrderAction.CloseBottomSheet) },
-                onOrderTypeSelect = { type,text -> onAction(CreateOrderAction.UpdateOrderType(type,text)) },
                 onTimeSelect = { start, end ->
                                     onAction(CreateOrderAction.UpdateTime(start, end))
                                     onAction(CreateOrderAction.CloseBottomSheet)
-                                    onAction(CreateOrderAction.UpdateOrderType(uiState.orderForm.orderType,uiState.orderForm.orderText))
                                },
                 selectedTime = "${uiState.orderForm.startTime} - ${uiState.orderForm.endTime}",
-                selected = uiState.orderForm.orderType
+                selectedDate = uiState.orderForm.selectedDate,
+                onDateSelect = { date -> onAction(CreateOrderAction.UpdateDate(date))},
+                schedule = schedule.openingHours
             )
         }
     }else{

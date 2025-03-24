@@ -1,4 +1,4 @@
-package com.yehorsk.platea.orders.presentation.components
+package com.yehorsk.platea.orders.presentation.create_order.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background

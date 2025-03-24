@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer("order_type")->default(false);
             $table->time("start_time");
             $table->time("end_time");
+            $table->date("date");
             $table->foreign("client_id")->references("id")->on("users")->onDelete("cascade");
             $table->foreign("table_id")->references("id")->on("tables")->onDelete("cascade");
             $table->foreign("waiter_id")->references("id")->on("users")->onDelete("cascade");

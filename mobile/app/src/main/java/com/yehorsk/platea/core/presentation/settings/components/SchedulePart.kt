@@ -8,10 +8,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.Utility
+import com.yehorsk.platea.core.utils.Utility.getWeekDayTranslation
 
 @Composable
 fun SchedulePart(
@@ -19,6 +22,8 @@ fun SchedulePart(
     schedule: String
 ){
     val normalSchedule = Utility.getSchedule(schedule)
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
@@ -30,14 +35,18 @@ fun SchedulePart(
             )
     ){
         Text(
+            modifier = Modifier.padding(
+                bottom = 10.dp
+            ),
             text = stringResource(id = R.string.our_schedule),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Bold
         )
         normalSchedule.forEach{ (day, time) ->
             Text(
                 modifier = Modifier.padding(bottom = 5.dp),
-                text = "$day : $time",
+                text = "${getWeekDayTranslation(context, day, time)}",
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )

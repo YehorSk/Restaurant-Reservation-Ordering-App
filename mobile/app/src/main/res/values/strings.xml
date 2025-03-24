@@ -78,6 +78,14 @@
     <string name="order_code">Order Code: %1$s</string>
     <string name="reservation_order_status">Status: %1$s</string>
     <string name="reservation_order_date">Created: %1$s</string>
+    <string name="ready_between">Ready Between: %1$s</string>
+    <string name="monday">Monday: %1$s</string>
+    <string name="tuesday">Tuesday: %1$s</string>
+    <string name="wednesday">Wednesday: %1$s</string>
+    <string name="thursday">Thursday: %1$s</string>
+    <string name="friday">Friday: %1$s</string>
+    <string name="saturday">Saturday: %1$s</string>
+    <string name="sunday">Sunday: %1$s</string>
 
     <!-- Profile Items -->
 
@@ -96,6 +104,8 @@
     <string name="email">Email</string>
     <string name="website">Website</string>
     <string name="our_schedule">Schedule</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 
     <!--    Errors-->
     <string name="error_no_internet">No internet connection.</string>
@@ -162,6 +172,5 @@
     <string name="status_rejected">Rejected</string>
     <string name="status_ready_dinein">Ready for Dine-In</string>
     <string name="default_channel">com.yehorsk.platea</string>
-
 
 </resources>

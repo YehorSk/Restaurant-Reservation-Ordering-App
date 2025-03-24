@@ -1,6 +1,7 @@
 package com.yehorsk.platea.orders.presentation.orders
 
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.domain.remote.onError
@@ -32,7 +33,8 @@ class OrdersViewModel @Inject constructor(
         orderRepositoryImpl: OrderRepositoryImpl,
         orderDao: OrderDao,
         preferencesRepository: MainPreferencesRepository,
-    ): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository){
+        restaurantInfoDao: RestaurantInfoDao
+): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository, restaurantInfoDao){
 
     private val _filterOption = MutableStateFlow(OrderFilter.ALL)
     val filterOption= _filterOption.asStateFlow()

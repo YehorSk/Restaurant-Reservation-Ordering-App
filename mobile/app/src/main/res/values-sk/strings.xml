@@ -78,6 +78,16 @@
     <string name="order_code">Kód objednávky: %1$s</string>
     <string name="reservation_order_status">Stav: %1$s</string>
     <string name="reservation_order_date">Vytvorené: %1$s</string>
+    <string name="ready_between">Pripravené medzi: %1$s</string>
+    <string name="monday">Pondelok: %1$s</string>
+    <string name="tuesday">Utorok: %1$s</string>
+    <string name="wednesday">Streda: %1$s</string>
+    <string name="thursday">Štvrtok: %1$s</string>
+    <string name="friday">Piatok: %1$s</string>
+    <string name="saturday">Sobota: %1$s</string>
+    <string name="sunday">Nedeľa: %1$s</string>
+    <string name="today">Dnes</string>
+    <string name="tomorrow">Zajtra</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>

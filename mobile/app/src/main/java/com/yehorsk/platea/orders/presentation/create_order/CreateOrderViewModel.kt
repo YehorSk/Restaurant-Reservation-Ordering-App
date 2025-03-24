@@ -3,11 +3,15 @@ package com.yehorsk.platea.orders.presentation.create_order
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
+import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.SideEffect
+import com.yehorsk.platea.core.utils.Utility.getEndTime
+import com.yehorsk.platea.core.utils.Utility.getStartTime
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.data.dao.OrderDao
@@ -30,7 +34,15 @@ class CreateOrderViewModel @Inject constructor(
      orderDao: OrderDao,
      cartDao: CartDao,
      preferencesRepository: MainPreferencesRepository,
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository){
+     restaurantInfoDao: RestaurantInfoDao
+): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository, restaurantInfoDao){
+
+    val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantInfoDao.getRestaurantInfo()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     val cartItemsUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
         .stateIn(
@@ -53,6 +65,7 @@ class CreateOrderViewModel @Inject constructor(
             CreateOrderAction.CloseBottomSheet -> closeBottomSheet()
             CreateOrderAction.OpenBottomSheet -> showBottomSheet()
             is CreateOrderAction.UpdateTime -> updateTime(start = action.start, end = action.end)
+            is CreateOrderAction.UpdateDate -> updateDate(date = action.date)
             is CreateOrderAction.UpdatePhone -> updatePhone(phone = action.phone)
             is CreateOrderAction.ValidatePhone -> validatePhoneNumber(action.phone)
         }
@@ -111,6 +124,16 @@ class CreateOrderViewModel @Inject constructor(
         }
     }
 
+    fun updateDate(date: String){
+        _uiState.update {
+            it.copy(
+                orderForm = it.orderForm.copy(
+                    selectedDate = date
+                )
+            )
+        }
+    }
+
     fun updateRequest(request: String){
         _uiState.update {
             it.copy(
@@ -159,6 +182,8 @@ class CreateOrderViewModel @Inject constructor(
                 instructions.isNotBlank() && address.isNotBlank() && _uiState.value.isPhoneValid
             }else if(orderType == 2){
                 true
+            }else if(orderType == 3){
+                _uiState.value.orderForm.selectedTable != null
             }else{
                 false
             }
@@ -243,6 +268,14 @@ class CreateOrderViewModel @Inject constructor(
     fun makeWaiterOrder(){
         Timber.d("makeDeliveryOrder")
         viewModelScope.launch{
+            _uiState.update { state ->
+                state.copy(
+                    orderForm = _uiState.value.orderForm.copy(
+                        startTime = getStartTime(),
+                        endTime = getEndTime()
+                    )
+                )
+            }
             orderRepositoryImpl.makeWaiterOrder(uiState.value.orderForm)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(

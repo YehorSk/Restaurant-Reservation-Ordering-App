@@ -2,10 +2,8 @@ package com.yehorsk.platea.orders.presentation.order_details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -29,7 +27,7 @@ import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
 import com.yehorsk.platea.orders.presentation.OrderUiState
 import com.yehorsk.platea.orders.presentation.components.OrderDetailsItemList
-import com.yehorsk.platea.orders.presentation.components.TotalPrice
+import com.yehorsk.platea.orders.presentation.create_order.components.TotalPrice
 import com.yehorsk.platea.orders.presentation.order_details.components.DeliveryDetails
 import com.yehorsk.platea.orders.presentation.order_details.components.OrderStatus
 import com.yehorsk.platea.ui.theme.MobileTheme
@@ -103,7 +101,9 @@ fun OrderDetailsScreen(
             OrderStatus(
                 status = data.order.status,
                 date = data.order.createdAt,
-                code = data.order.code
+                code = data.order.code,
+                startTime = data.order.startTime,
+                endTime = data.order.endTime
             )
             HorizontalDivider()
             OrderDetailsItemList(

@@ -161,6 +161,7 @@ fun MenuItemModalContent(
                     ) {
                         Row {
                             if(showFavorite){
+                                var isFavorite = if (cartForm.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder
                                 IconButton(
                                     colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                                     onClick = {
@@ -172,23 +173,13 @@ fun MenuItemModalContent(
                                         onDismiss()
                                     },
                                 ) {
-                                    if(cartForm.isFavorite){
-                                        Icon(
-                                            imageVector = Icons.Filled.Favorite,
-                                            contentDescription = "",
-                                            modifier = Modifier
-                                                .size(30.dp),
-                                            tint = Color.White
-                                        )
-                                    }else{
-                                        Icon(
-                                            imageVector = Icons.Filled.FavoriteBorder,
-                                            contentDescription = "",
-                                            modifier = Modifier
-                                                .size(30.dp),
-                                            tint = Color.White
-                                        )
-                                    }
+                                    Icon(
+                                        imageVector = isFavorite,
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .size(30.dp),
+                                        tint = Color.White
+                                    )
                                 }
                             }
                             IconButton(
@@ -219,6 +210,7 @@ fun MenuItemModalContent(
                 Text(
                     modifier = Modifier.padding(top = 16.dp, start = 32.dp, end = 32.dp),
                     style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
                     text = "€"+formattedPrice(menuItem.price),
                 )
                 Text(
