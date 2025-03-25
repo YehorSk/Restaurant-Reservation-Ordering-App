@@ -13,11 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
+import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
 import com.yehorsk.platea.core.presentation.components.OrdersDropdownList
+import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.presentation.orders.components.OrdersList
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrdersScreen(
     modifier:Modifier = Modifier,
@@ -33,10 +34,39 @@ fun OrdersScreen(
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
 
+    OrdersScreenRoot(
+        modifier = modifier,
+        isLoading = uiState.isLoading,
+        onGoBack = onGoBack,
+        showGoBack = showGoBack,
+        title = title,
+        onGoToOrderDetails = onGoToOrderDetails,
+        searchText = searchText,
+        filterOption = filterOption,
+        orders = orders,
+        onAction = viewModel::onAction
+    )
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OrdersScreenRoot(
+    modifier: Modifier = Modifier,
+    isLoading: Boolean,
+    onGoBack: () -> Unit,
+    showGoBack: Boolean,
+    @StringRes title: Int = R.string.go_back,
+    onGoToOrderDetails: (Int) -> Unit,
+    searchText: String,
+    filterOption: OrderFilter,
+    orders: List<OrderEntity>,
+    onAction: (OrdersAction) -> Unit
+){
 
     PullToRefreshBox(
-        isRefreshing = uiState.isLoading,
-        onRefresh = { viewModel.getUserOrders() }
+        isRefreshing = isLoading,
+        onRefresh = { onAction(OrdersAction.GetUserOrders) }
     ) {
         Column(
             modifier = modifier.fillMaxSize(),
@@ -47,12 +77,12 @@ fun OrdersScreen(
                 onGoBack = onGoBack,
                 showGoBack = showGoBack,
                 text = searchText,
-                onTextChanged = { viewModel.onSearchValueChange(it) }
+                onTextChanged = { onAction(OrdersAction.UpdateSearch(it)) }
             )
             OrdersDropdownList(
                 filterOption = filterOption,
                 text = R.string.filter,
-                onSelect = { viewModel.updateFilter(it) }
+                onSelect = { onAction(OrdersAction.UpdateFilter(it)) }
             )
             OrdersList(
                 orders = orders,
@@ -60,5 +90,4 @@ fun OrdersScreen(
             )
         }
     }
-
 }

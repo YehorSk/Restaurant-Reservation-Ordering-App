@@ -192,10 +192,14 @@ object Utility {
         return date.dayOfWeek.toString().lowercase().replaceFirstChar { it.uppercaseChar() }
     }
 
-    fun generateTimeSlots(intervalMinutes: Int = 15, startTimeSchedule: Int, endTimeSchedule: Int): List<TimeItem> {
+    fun generateTimeSlots(intervalMinutes: Int = 15, date: String, startTimeSchedule: Int, endTimeSchedule: Int): List<TimeItem> {
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-
-        var time = LocalTime.of(startTimeSchedule + 2, 0)
+        Timber.d("Generate ${LocalDate.now()} - $date = ${(LocalDate.now().toString() == date)}")
+        var time = if(LocalDate.now().toString() == date){
+            LocalTime.now().plusHours(2)
+        }else{
+            LocalTime.of(startTimeSchedule + 2, 0)
+        }
 
         val roundedNow = time.withMinute((time.minute / intervalMinutes) * intervalMinutes).withSecond(0).withNano(0)
 

@@ -101,7 +101,8 @@ fun ChooseTimeModalContent(
         generateTimeSlots(
             intervalMinutes = 15,
             startTimeSchedule = startHour,
-            endTimeSchedule = endHour
+            endTimeSchedule = endHour,
+            date = selectedDate
         )
     }
     val daySlots = listOf<DayItem>(
@@ -116,7 +117,7 @@ fun ChooseTimeModalContent(
             isOpen = normalSchedule[getDayName(LocalDate.now().plusDays(1).toString()).lowercase().replaceFirstChar { it.uppercaseChar() }]!!.isOpen
         ),
         DayItem(
-            name = getDayTranslation(getDayName(selectedDate)),
+            name = getDayTranslation(getDayName(LocalDate.now().plusDays(2).toString())),
             date = LocalDate.now().plusDays(2).toString(),
             isOpen = normalSchedule[getDayName(LocalDate.now().plusDays(2).toString()).lowercase().replaceFirstChar { it.uppercaseChar() }]!!.isOpen
         )

@@ -64,6 +64,14 @@ class OrdersViewModel @Inject constructor(
         getUserOrders()
     }
 
+    fun onAction(action: OrdersAction){
+        when(action){
+            OrdersAction.GetUserOrders -> getUserOrders()
+            is OrdersAction.UpdateFilter -> updateFilter(action.filter)
+            is OrdersAction.UpdateSearch -> onSearchValueChange(action.search)
+        }
+    }
+
     fun onSearchValueChange(value: String){
         _searchText.update { value }
     }
