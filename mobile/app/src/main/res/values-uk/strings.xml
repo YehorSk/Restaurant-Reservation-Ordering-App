@@ -78,16 +78,25 @@
     <string name="order_code">Код замовлення: %1$s</string>
     <string name="reservation_order_status">Статус: %1$s</string>
     <string name="reservation_order_date">Створено: %1$s</string>
-    <string name="ready_between">Готово між: %1$s</string>
-    <string name="monday">Понеділок: %1$s</string>
-    <string name="tuesday">Вівторок: %1$s</string>
-    <string name="wednesday">Середа: %1$s</string>
-    <string name="thursday">Четвер: %1$s</string>
-    <string name="friday">П’ятниця: %1$s</string>
-    <string name="saturday">Субота: %1$s</string>
-    <string name="sunday">Неділя: %1$s</string>
+    <string name="preparation_time">Час приготування: %1$s</string>
+    <string name="preparation_date">Дата приготування: %1$s</string>
+    <string name="schedule_monday">Понеділок: %1$s</string>
+    <string name="schedule_tuesday">Вівторок: %1$s</string>
+    <string name="schedule_wednesday">Середа: %1$s</string>
+    <string name="schedule_thursday">Четвер: %1$s</string>
+    <string name="schedule_friday">П’ятниця: %1$s</string>
+    <string name="schedule_saturday">Субота: %1$s</string>
+    <string name="schedule_sunday">Неділя: %1$s</string>
+    <string name="monday">Понеділок</string>
+    <string name="tuesday">Вівторок</string>
+    <string name="wednesday">Середа</string>
+    <string name="thursday">Четвер</string>
+    <string name="friday">П’ятниця</string>
+    <string name="saturday">Субота</string>
+    <string name="sunday">Неділя</string>
     <string name="today">Сьогодні</string>
     <string name="tomorrow">Завтра</string>
+    <string name="closed">Закрито</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>

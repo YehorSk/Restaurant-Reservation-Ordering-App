@@ -125,6 +125,7 @@ class CreateOrderViewModel @Inject constructor(
     }
 
     fun updateDate(date: String){
+        Timber.d("updateDate: $date")
         _uiState.update {
             it.copy(
                 orderForm = it.orderForm.copy(

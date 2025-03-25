@@ -27,7 +27,8 @@ fun OrderStatus(
     date: String,
     code: String,
     startTime: String,
-    endTime: String
+    endTime: String,
+    preparationDate: String
 ){
     val context = LocalContext.current
 
@@ -68,10 +69,19 @@ fun OrderStatus(
             Text(
                 modifier = Modifier.padding(
                     start = 20.dp,
+                    top = 15.dp
+                ),
+                text = stringResource(R.string.preparation_date, preparationDate),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
+            )
+            Text(
+                modifier = Modifier.padding(
+                    start = 20.dp,
                     top = 15.dp,
                     bottom = 15.dp
                 ),
-                text = stringResource(R.string.ready_between, "${formatStringTime(startTime)} - ${formatStringTime(endTime)}"),
+                text = stringResource(R.string.preparation_time, "${formatStringTime(startTime)} - ${formatStringTime(endTime)}"),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
             )
@@ -88,7 +98,8 @@ fun OrderStatusPreview(){
             date = "05 May, 2024 10:40",
             code = "#KE1NB4",
             startTime = "18:00",
-            endTime = "18:30"
+            endTime = "18:30",
+            preparationDate = "25-03-2025"
         )
     }
 }

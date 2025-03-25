@@ -144,10 +144,10 @@ fun CreateOrderScreen(
                     selectedTime = "${uiState.orderForm.startTime} - ${uiState.orderForm.endTime}"
                 )
             }else{
-                onAction(CreateOrderAction.UpdateOrderType(3, "Waiter"))
+                onAction(CreateOrderAction.UpdateOrderType(3, "waiter"))
                 if(uiState.tables !=null){
                     SelectTable(
-                        tables = uiState.tables!!,
+                        tables = uiState.tables,
                         selectedTable = uiState.orderForm.selectedTable,
                         onTableChanged = { onTableNumberUpdate(it) }
                     )
@@ -213,7 +213,11 @@ fun CreateOrderScreen(
                             if (uiState.orderForm.orderType==2){
                                 onGoToMakeReservation()
                             }else{
-                                onAction(CreateOrderAction.MakeOrder)
+                                if(uiState.orderForm.startTime.isNotEmpty() && uiState.orderForm.endTime.isNotEmpty()){
+                                    onAction(CreateOrderAction.MakeOrder)
+                                }else{
+                                    onAction(CreateOrderAction.OpenBottomSheet)
+                                }
                             }
                         }else{
                             onAction(CreateOrderAction.MakeWaiterOrder)

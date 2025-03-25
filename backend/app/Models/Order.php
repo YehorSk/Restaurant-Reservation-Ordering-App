@@ -23,6 +23,7 @@ class Order extends Model
         'phone',
         'order_type',
         'start_time',
+        'date',
         'end_time'
     ];
 

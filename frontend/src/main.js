@@ -8,6 +8,7 @@ import * as directives from 'vuetify/directives';
 import 'primeicons/primeicons.css';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import '@mdi/font/css/materialdesignicons.css'
 
 
 import App from './App.vue'

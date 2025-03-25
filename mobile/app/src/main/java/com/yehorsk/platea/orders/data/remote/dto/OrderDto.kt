@@ -33,6 +33,7 @@ data class OrderDto(
     val startTime: String,
     @SerialName("end_time")
     val endTime: String,
+    val date: String? = null,
     @SerialName("completed_at")
     val completedAt: String? = null,
     @SerialName("order_items")
@@ -58,6 +59,7 @@ fun OrderDto.toOrderEntity(): OrderEntity{
         startTime = this.startTime,
         endTime = this.endTime,
         completedAt = this.completedAt,
-        phone = this.phone
+        phone = this.phone,
+        date = this.date
     )
 }

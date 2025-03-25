@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('menu_item_user', function (Blueprint $table) {
-            $table->text("note")->default("");
+        Schema::table('orders', function (Blueprint $table) {
+            $table->date("date")->nullable()->after('end_time');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('menu_item_user', function (Blueprint $table) {
-            //
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('date');
         });
     }
 };

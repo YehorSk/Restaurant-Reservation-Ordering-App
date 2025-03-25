@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.Utility
-import com.yehorsk.platea.core.utils.Utility.getWeekDayTranslation
+import com.yehorsk.platea.core.utils.Utility.getDayScheduleTranslation
 
 @Composable
 fun SchedulePart(
@@ -43,10 +43,11 @@ fun SchedulePart(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.Bold
         )
-        normalSchedule.forEach{ (day, time) ->
+        normalSchedule.forEach{ (day, schedule) ->
+            val text = if(schedule.isOpen) getDayScheduleTranslation(context, day, schedule.hours) else getDayScheduleTranslation(context, day, stringResource(R.string.closed))
             Text(
                 modifier = Modifier.padding(bottom = 5.dp),
-                text = "${getWeekDayTranslation(context, day, time)}",
+                text = text,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )

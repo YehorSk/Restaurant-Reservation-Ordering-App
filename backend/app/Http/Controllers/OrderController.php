@@ -140,6 +140,7 @@ class OrderController extends Controller
                 'status' => 'Pending',
                 'start_time' =>  $request->input('start_time'),
                 'end_time' =>  $request->input('end_time'),
+                'date' => $request->input('date'),
             ]);
             $order->save();
             $items = $user->menuItems()->get();
@@ -171,6 +172,7 @@ class OrderController extends Controller
                 'waiter_id' => $user->id,
                 'start_time' =>  $request->input('start_time'),
                 'end_time' =>  $request->input('end_time'),
+                'date' => $request->input('date'),
             ]);
             $order->save();
             $items = $user->menuItems()->get();
@@ -200,6 +202,7 @@ class OrderController extends Controller
                 'instructions' =>  $request->input('instructions'),
                 'start_time' =>  $request->input('start_time'),
                 'end_time' =>  $request->input('end_time'),
+                'date' => $request->input('date'),
                 'client_id' => $user->id,
                 'code' => $this->generate_code(),
                 'status' => 'Pending',

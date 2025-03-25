@@ -6,7 +6,6 @@ import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 data class OrderUiState(
     val orderItems: List<OrderMenuItemDto>? = null,
@@ -41,6 +40,6 @@ data class OrderForm(
     val startTime: String = "",
     @SerialName("end_time")
     val endTime: String = "",
-    @SerialName("selected_date")
+    @SerialName("date")
     val selectedDate: String = LocalDate.now().toString()
 )

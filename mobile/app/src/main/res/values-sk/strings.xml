@@ -78,16 +78,25 @@
     <string name="order_code">Kód objednávky: %1$s</string>
     <string name="reservation_order_status">Stav: %1$s</string>
     <string name="reservation_order_date">Vytvorené: %1$s</string>
-    <string name="ready_between">Pripravené medzi: %1$s</string>
-    <string name="monday">Pondelok: %1$s</string>
-    <string name="tuesday">Utorok: %1$s</string>
-    <string name="wednesday">Streda: %1$s</string>
-    <string name="thursday">Štvrtok: %1$s</string>
-    <string name="friday">Piatok: %1$s</string>
-    <string name="saturday">Sobota: %1$s</string>
-    <string name="sunday">Nedeľa: %1$s</string>
+    <string name="preparation_time">Čas pripravenia: %1$s</string>
+    <string name="preparation_date">Dátum pripravenia: %1$s</string>
+    <string name="schedule_monday">Pondelok: %1$s</string>
+    <string name="schedule_tuesday">Utorok: %1$s</string>
+    <string name="schedule_wednesday">Streda: %1$s</string>
+    <string name="schedule_thursday">Štvrtok: %1$s</string>
+    <string name="schedule_friday">Piatok: %1$s</string>
+    <string name="schedule_saturday">Sobota: %1$s</string>
+    <string name="schedule_sunday">Nedeľa: %1$s</string>
+    <string name="monday">Pondelok</string>
+    <string name="tuesday">Utorok</string>
+    <string name="wednesday">Streda</string>
+    <string name="thursday">Štvrtok</string>
+    <string name="friday">Piatok</string>
+    <string name="saturday">Sobota</string>
+    <string name="sunday">Nedeľa</string>
     <string name="today">Dnes</string>
     <string name="tomorrow">Zajtra</string>
+    <string name="closed">Zatvorené</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>

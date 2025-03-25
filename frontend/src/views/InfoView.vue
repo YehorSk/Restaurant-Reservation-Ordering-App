@@ -19,13 +19,62 @@
         <!-- Second Column (Opening Hours) -->
         <div class="w-full md:w-1/2 p-2 max-w-md">
           <v-form fast-fail @submit.prevent>
-            <v-text-field v-model="openingHours.Monday" label="Monday" color="orange"></v-text-field>
-            <v-text-field v-model="openingHours.Tuesday" label="Tuesday" color="orange"></v-text-field>
-            <v-text-field v-model="openingHours.Wednesday" label="Wednesday" color="orange"></v-text-field>
-            <v-text-field v-model="openingHours.Thursday" label="Thursday" color="orange"></v-text-field>
-            <v-text-field v-model="openingHours.Friday" label="Friday" color="orange"></v-text-field>
-            <v-text-field v-model="openingHours.Saturday" label="Saturday" color="orange"></v-text-field>
-            <v-text-field v-model="openingHours.Sunday" label="Sunday" color="orange"></v-text-field>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Monday.hours" label="Monday" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Monday.isOpen" label="Open"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Tuesday.hours" label="Tuesday" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Tuesday.isOpen" label="Open"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Wednesday.hours" label="Wednesday" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Wednesday.isOpen" label="Open"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Thursday.hours" label="Thursday" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Thursday.isOpen" label="Open"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Friday.hours" label="Friday" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Friday.isOpen" label="Open"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Saturday.hours" label="Saturday" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Saturday.isOpen" label="Open"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Sunday.hours" label="Sunday" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Sunday.isOpen" label="Open"></v-checkbox>
+              </v-col>
+            </v-row>
           </v-form>
         </div>
 
@@ -58,13 +107,13 @@ export default {
       email: "",
       website: "",
       openingHours: {
-        Monday: "",
-        Tuesday: "",
-        Wednesday: "",
-        Thursday: "",
-        Friday: "",
-        Saturday: "",
-        Sunday: "",
+        Monday: { hours: "", isOpen: false },
+        Tuesday: { hours: "", isOpen: false },
+        Wednesday: { hours: "", isOpen: false },
+        Thursday: { hours: "", isOpen: false },
+        Friday: { hours: "", isOpen: false },
+        Saturday: { hours: "", isOpen: false },
+        Sunday: { hours: "", isOpen: false },
       },
       toast: useToast(),
     }

@@ -197,8 +197,9 @@ class ReservationController extends Controller
                     'reservation_id' => $reservation->id,
                     'code' => $this->generate_code(),
                     'status' => 'Pending',
-                    'start_time' =>  $request->input('order_form.start_time'),
-                    'end_time' =>  $request->input('order_form.end_time'),
+                    'start_time' =>  $timeSlot->start_time,
+                    'end_time' =>  $timeSlot->end_time,
+                    'date' => $date
                 ]);
                 $order->save();
                 $items = $user->menuItems()->get();

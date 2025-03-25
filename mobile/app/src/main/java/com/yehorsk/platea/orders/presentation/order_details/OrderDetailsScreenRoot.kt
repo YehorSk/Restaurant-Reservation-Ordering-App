@@ -103,7 +103,8 @@ fun OrderDetailsScreen(
                 date = data.order.createdAt,
                 code = data.order.code,
                 startTime = data.order.startTime,
-                endTime = data.order.endTime
+                endTime = data.order.endTime,
+                preparationDate = data.order.date ?: ""
             )
             HorizontalDivider()
             OrderDetailsItemList(

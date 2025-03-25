@@ -41,7 +41,13 @@ object Utility {
         }
     }
 
-    fun getSchedule(schedule: String): Map<String, String>{
+    @Serializable
+    data class ScheduleTime(
+        val hours: String,
+        val isOpen: Boolean
+    )
+
+    fun getSchedule(schedule: String): Map<String, ScheduleTime>{
         return Json.decodeFromString(schedule)
     }
 
@@ -73,8 +79,22 @@ object Utility {
         return context.getString(resId)
     }
 
-    fun getWeekDayTranslation(context: Context, day: String, time:String): String{
+    fun getDayScheduleTranslation(context: Context, day: String, time:String): String{
         val resId = when(day) {
+            "Monday" -> R.string.schedule_monday
+            "Tuesday" -> R.string.schedule_tuesday
+            "Wednesday" -> R.string.schedule_wednesday
+            "Thursday" -> R.string.schedule_thursday
+            "Friday" -> R.string.schedule_friday
+            "Saturday" -> R.string.schedule_saturday
+            "Sunday" -> R.string.schedule_sunday
+            else -> R.string.schedule_monday
+        }
+        return context.getString(resId, time)
+    }
+
+    fun getDayTranslation(day: String): Int{
+        return when(day) {
             "Monday" -> R.string.monday
             "Tuesday" -> R.string.tuesday
             "Wednesday" -> R.string.wednesday
@@ -84,7 +104,6 @@ object Utility {
             "Sunday" -> R.string.sunday
             else -> R.string.monday
         }
-        return context.getString(resId, time)
     }
 
     fun ReservationFilter.toString(context: Context): String {
@@ -119,7 +138,7 @@ object Utility {
 
     fun getStartTime(): String {
         val currentTime = LocalDateTime.now().plusMinutes(30)
-        return if (currentTime.hour >= 20) {
+        return if (currentTime.hour >= 24) {
             "08:00"
         } else {
             val minute = currentTime.minute
@@ -168,23 +187,19 @@ object Utility {
     }
 
     fun getDayName(dateString: String): String {
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val date = LocalDate.parse(dateString, formatter)
-        return date.dayOfWeek.toString()
+        return date.dayOfWeek.toString().lowercase().replaceFirstChar { it.uppercaseChar() }
     }
 
-    fun generateTimeSlots(intervalMinutes: Int = 15, date: String, startTimeSchedule: Int, endTimeSchedule: Int): List<TimeItem> {
+    fun generateTimeSlots(intervalMinutes: Int = 15, startTimeSchedule: Int, endTimeSchedule: Int): List<TimeItem> {
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
-        var time = if(LocalDate.now().toString() == date){
-            LocalTime.now().plusHours(2)
-        }else{
-            LocalTime.of(startTimeSchedule + 2, 0)
-        }
+        var time = LocalTime.of(startTimeSchedule + 2, 0)
 
         val roundedNow = time.withMinute((time.minute / intervalMinutes) * intervalMinutes).withSecond(0).withNano(0)
 
-        val endTime = LocalTime.of(endTimeSchedule, 0)
+        val endTime = LocalTime.of(endTimeSchedule-2, 0)
         val timeSlots = mutableListOf<TimeItem>()
 
         var currentStart = roundedNow

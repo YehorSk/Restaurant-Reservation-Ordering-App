@@ -78,14 +78,25 @@
     <string name="order_code">Order Code: %1$s</string>
     <string name="reservation_order_status">Status: %1$s</string>
     <string name="reservation_order_date">Created: %1$s</string>
-    <string name="ready_between">Ready Between: %1$s</string>
-    <string name="monday">Monday: %1$s</string>
-    <string name="tuesday">Tuesday: %1$s</string>
-    <string name="wednesday">Wednesday: %1$s</string>
-    <string name="thursday">Thursday: %1$s</string>
-    <string name="friday">Friday: %1$s</string>
-    <string name="saturday">Saturday: %1$s</string>
-    <string name="sunday">Sunday: %1$s</string>
+    <string name="preparation_time">Preparation Time: %1$s</string>
+    <string name="preparation_date">Preparation Date: %1$s</string>
+    <string name="schedule_monday">Monday: %1$s</string>
+    <string name="schedule_tuesday">Tuesday: %1$s</string>
+    <string name="schedule_wednesday">Wednesday: %1$s</string>
+    <string name="schedule_thursday">Thursday: %1$s</string>
+    <string name="schedule_friday">Friday: %1$s</string>
+    <string name="schedule_saturday">Saturday: %1$s</string>
+    <string name="schedule_sunday">Sunday: %1$s</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="closed">Closed</string>
 
     <!-- Profile Items -->
 
@@ -104,8 +115,6 @@
     <string name="email">Email</string>
     <string name="website">Website</string>
     <string name="our_schedule">Schedule</string>
-    <string name="today">Today</string>
-    <string name="tomorrow">Tomorrow</string>
 
     <!--    Errors-->
     <string name="error_no_internet">No internet connection.</string>

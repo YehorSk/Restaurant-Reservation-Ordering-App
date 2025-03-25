@@ -79,16 +79,25 @@
     <string name="order_code">Bestellcode: %1$s</string>
     <string name="reservation_order_status">Status: %1$s</string>
     <string name="reservation_order_date">Erstellt: %1$s</string>
-    <string name="ready_between">Bereit zwischen: %1$s</string>
-    <string name="monday">Montag: %1$s</string>
-    <string name="tuesday">Dienstag: %1$s</string>
-    <string name="wednesday">Mittwoch: %1$s</string>
-    <string name="thursday">Donnerstag: %1$s</string>
-    <string name="friday">Freitag: %1$s</string>
-    <string name="saturday">Samstag: %1$s</string>
-    <string name="sunday">Sonntag: %1$s</string>
+    <string name="preparation_time">Zubereitungszeit: %1$s</string>
+    <string name="preparation_date">Zubereitungsdatum: %1$s</string>
+    <string name="schedule_monday">Montag: %1$s</string>
+    <string name="schedule_tuesday">Dienstag: %1$s</string>
+    <string name="schedule_wednesday">Mittwoch: %1$s</string>
+    <string name="schedule_thursday">Donnerstag: %1$s</string>
+    <string name="schedule_friday">Freitag: %1$s</string>
+    <string name="schedule_saturday">Samstag: %1$s</string>
+    <string name="schedule_sunday">Sonntag: %1$s</string>
+    <string name="monday">Montag</string>
+    <string name="tuesday">Dienstag</string>
+    <string name="wednesday">Mittwoch</string>
+    <string name="thursday">Donnerstag</string>
+    <string name="friday">Freitag</string>
+    <string name="saturday">Samstag</string>
+    <string name="sunday">Sonntag</string>
     <string name="today">Heute</string>
     <string name="tomorrow">Morgen</string>
+    <string name="closed">Geschlossen</string>
 
     <!-- Profile Items -->
     <string name="favorites">Favoriten</string>

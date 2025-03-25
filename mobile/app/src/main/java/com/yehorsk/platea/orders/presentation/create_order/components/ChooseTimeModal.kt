@@ -28,7 +28,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +41,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.Utility
 import com.yehorsk.platea.core.utils.Utility.generateTimeSlots
 import com.yehorsk.platea.core.utils.Utility.getDayName
+import com.yehorsk.platea.core.utils.Utility.getDayTranslation
 import com.yehorsk.platea.ui.theme.MobileThemePreview
 import timber.log.Timber
 import java.time.LocalDate
@@ -58,11 +58,6 @@ fun ChooseTimeModal(
     schedule: String
 ){
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val normalSchedule = Utility.getSchedule(schedule)
-
-    LaunchedEffect(Unit) {
-        Timber.d("Schedule : $normalSchedule")
-    }
 
     ModalBottomSheet(
         modifier = modifier,
@@ -76,6 +71,7 @@ fun ChooseTimeModal(
                 selectedTime = selectedTime,
                 selectedDate = selectedDate,
                 onDateSelect = onDateSelect,
+                schedule = schedule
             )
         }
     )
@@ -89,21 +85,40 @@ fun ChooseTimeModalContent(
     selectedTime: String,
     onDateSelect: (String) -> Unit,
     selectedDate: String,
+    schedule: String
 ){
-    val timeSlots = remember { generateTimeSlots(
-        intervalMinutes = 15,
-        date = "25.03.2025",
-        startTimeSchedule = 8,
-        endTimeSchedule = 21
-    ) }
+
+    val normalSchedule = Utility.getSchedule(schedule)
+    Timber.d("Schedule: $normalSchedule")
+
+    var dayName = getDayName(selectedDate)
+
+    val (startTime, endTime) = normalSchedule[dayName]!!.hours.split("-")
+    val startHour = startTime.split(":")[0].toInt()
+    val endHour = endTime.split(":")[0].toInt()
+
+    val timeSlots = remember(selectedDate) {
+        generateTimeSlots(
+            intervalMinutes = 15,
+            startTimeSchedule = startHour,
+            endTimeSchedule = endHour
+        )
+    }
     val daySlots = listOf<DayItem>(
         DayItem(
             name = R.string.today,
-            date = LocalDate.now().toString()
+            date = LocalDate.now().toString(),
+            isOpen = normalSchedule[getDayName(LocalDate.now().toString())]!!.isOpen
         ),
         DayItem(
             name = R.string.tomorrow,
-            date = LocalDate.now().plusDays(1).toString()
+            date = LocalDate.now().plusDays(1).toString(),
+            isOpen = normalSchedule[getDayName(LocalDate.now().plusDays(1).toString()).lowercase().replaceFirstChar { it.uppercaseChar() }]!!.isOpen
+        ),
+        DayItem(
+            name = getDayTranslation(getDayName(selectedDate)),
+            date = LocalDate.now().plusDays(2).toString(),
+            isOpen = normalSchedule[getDayName(LocalDate.now().plusDays(2).toString()).lowercase().replaceFirstChar { it.uppercaseChar() }]!!.isOpen
         )
     )
 
@@ -163,11 +178,13 @@ fun ChooseTimeModalContent(
                 .wrapContentHeight()
                 .weight(1f)) {
                 items(daySlots){ item ->
-                    DaySlotItem(
-                        dayItem = item,
-                        onDaySelect = {date -> onDateSelect(date)},
-                        selectedDay = selectedDate
-                    )
+                    if(item.isOpen){
+                        DaySlotItem(
+                            dayItem = item,
+                            onDaySelect = {date -> onDateSelect(date)},
+                            selectedDay = selectedDate
+                        )
+                    }
                 }
             }
             LazyColumn(modifier = Modifier
@@ -286,6 +303,7 @@ data class TimeItem(
 data class DayItem(
     @StringRes val name: Int,
     val date: String,
+    val isOpen: Boolean
 )
 
 @Preview
@@ -298,7 +316,8 @@ fun ChooseTimeModalContentPreview(){
             onTimeSelect = { one, two -> },
             selectedTime = "",
             selectedDate = "24-03-2025",
-            onDateSelect = { two -> }
+            onDateSelect = { two -> },
+            schedule = ""
         )
     }
 }
