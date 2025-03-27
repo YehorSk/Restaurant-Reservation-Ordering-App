@@ -196,7 +196,8 @@ object Utility {
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
         Timber.d("Generate ${LocalDate.now()} - $date = ${(LocalDate.now().toString() == date)}")
         var time = if(LocalDate.now().toString() == date){
-            LocalTime.now().plusHours(2)
+            val nowPlusTwoHours = LocalTime.now().plusHours(2)
+            maxOf(nowPlusTwoHours, LocalTime.of(startTimeSchedule, 0))
         }else{
             LocalTime.of(startTimeSchedule + 2, 0)
         }

@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yehorsk.platea.R
+import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.utils.Utility
 import com.yehorsk.platea.core.utils.Utility.generateTimeSlots
 import com.yehorsk.platea.core.utils.Utility.getDayName
@@ -91,37 +92,37 @@ fun ChooseTimeModalContent(
     val normalSchedule = Utility.getSchedule(schedule)
     Timber.d("Schedule: $normalSchedule")
 
-    var dayName = getDayName(selectedDate)
+    val daySlots = listOf(
+        LocalDate.now(),
+        LocalDate.now().plusDays(1),
+        LocalDate.now().plusDays(2),
+        LocalDate.now().plusDays(3)
+    ).map { date ->
+        val dateString = date.toString()
+        val dayName = getDayName(dateString)
+        val scheduleItem = normalSchedule[dayName]
 
-    val (startTime, endTime) = normalSchedule[dayName]!!.hours.split("-")
-    val startHour = startTime.split(":")[0].toInt()
-    val endHour = endTime.split(":")[0].toInt()
+        val timeSlots = if (scheduleItem?.isOpen == true) {
+            val (startTime, endTime) = normalSchedule[dayName]!!.hours.split("-")
+            val startHour = startTime.split(":")[0].toInt()
+            val endHour = endTime.split(":")[0].toInt()
+            generateTimeSlots(
+                intervalMinutes = 15,
+                startTimeSchedule = startHour,
+                endTimeSchedule = endHour,
+                date = selectedDate
+            )
+        } else {
+            emptyList()
+        }
 
-    val timeSlots = remember(selectedDate) {
-        generateTimeSlots(
-            intervalMinutes = 15,
-            startTimeSchedule = startHour,
-            endTimeSchedule = endHour,
-            date = selectedDate
+        DayItem(
+            name = if (date == LocalDate.now()) R.string.today else getDayTranslation(dayName),
+            date = dateString,
+            isOpen = scheduleItem?.isOpen == true,
+            timeSlots = timeSlots
         )
     }
-    val daySlots = listOf<DayItem>(
-        DayItem(
-            name = R.string.today,
-            date = LocalDate.now().toString(),
-            isOpen = normalSchedule[getDayName(LocalDate.now().toString())]!!.isOpen
-        ),
-        DayItem(
-            name = R.string.tomorrow,
-            date = LocalDate.now().plusDays(1).toString(),
-            isOpen = normalSchedule[getDayName(LocalDate.now().plusDays(1).toString()).lowercase().replaceFirstChar { it.uppercaseChar() }]!!.isOpen
-        ),
-        DayItem(
-            name = getDayTranslation(getDayName(LocalDate.now().plusDays(2).toString())),
-            date = LocalDate.now().plusDays(2).toString(),
-            isOpen = normalSchedule[getDayName(LocalDate.now().plusDays(2).toString()).lowercase().replaceFirstChar { it.uppercaseChar() }]!!.isOpen
-        )
-    )
 
     Column(
         modifier = modifier
@@ -191,12 +192,27 @@ fun ChooseTimeModalContent(
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
                 .weight(1f)) {
-                items(timeSlots){ item ->
-                    TimeSlotItem(
-                        timeItem = item,
-                        onTimeSelect = { start, end -> onTimeSelect(start, end) },
-                        selectedTime = selectedTime
-                    )
+                val selectedDayItem = daySlots.find { it.date == selectedDate }
+
+                if (selectedDayItem?.timeSlots.isNullOrEmpty()) {
+                    item {
+                        AutoResizedText(
+                            text = stringResource(id = R.string.closed),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    }
+                } else {
+                    items(selectedDayItem.timeSlots) { item ->
+                        TimeSlotItem(
+                            timeItem = item,
+                            onTimeSelect = { start, end -> onTimeSelect(start, end) },
+                            selectedTime = selectedTime
+                        )
+                    }
                 }
             }
         }
@@ -304,7 +320,8 @@ data class TimeItem(
 data class DayItem(
     @StringRes val name: Int,
     val date: String,
-    val isOpen: Boolean
+    val isOpen: Boolean,
+    val timeSlots: List<TimeItem>
 )
 
 @Preview

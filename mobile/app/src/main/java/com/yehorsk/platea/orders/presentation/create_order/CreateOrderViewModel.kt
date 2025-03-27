@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -267,7 +268,7 @@ class CreateOrderViewModel @Inject constructor(
     }
 
     fun makeWaiterOrder(){
-        Timber.d("makeDeliveryOrder")
+        Timber.d("makeWaiterOrder")
         viewModelScope.launch{
             _uiState.update { state ->
                 state.copy(
