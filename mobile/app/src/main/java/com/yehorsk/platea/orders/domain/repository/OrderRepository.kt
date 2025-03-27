@@ -18,8 +18,6 @@ interface OrderRepository {
 
     suspend fun cancelUserOrder(id: String) : Result<List<OrderDto>, AppError>
 
-    suspend fun repeatUserOrder(id: String) : Result<List<OrderDto>, AppError>
-
     suspend fun makeUserPickUpOrder(orderForm: OrderForm) : Result<List<OrderDto>, AppError>
 
     suspend fun makeUserDeliveryOrder(orderForm: OrderForm) : Result<List<OrderDto>, AppError>

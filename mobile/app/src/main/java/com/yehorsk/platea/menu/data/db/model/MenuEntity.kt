@@ -16,7 +16,7 @@ data class MenuEntity(
     val updatedAt: String,
     val name: String,
     val description: String,
-    val availability: String
+    val availability: Boolean
 )
 
 fun MenuEntity.toMenu(items: List<MenuItemDto>): MenuDto {

@@ -97,6 +97,8 @@
     <string name="today">Dnes</string>
     <string name="tomorrow">Zajtra</string>
     <string name="closed">Zatvorené</string>
+    <string name="not_available">Nedostupné</string>
+
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>

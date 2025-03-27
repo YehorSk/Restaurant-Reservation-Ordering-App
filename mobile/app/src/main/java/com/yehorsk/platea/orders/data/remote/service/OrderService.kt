@@ -26,9 +26,6 @@ interface OrderService {
     @GET("order/user/orders/cancel/{id}")
     suspend fun cancelUserOrder(@Path("id") id: String) : ResponseDto<OrderDto>
 
-    @GET("order/user/orders/repeat/{id}")
-    suspend fun repeatUserOrder(@Path("id") id: String) : ResponseDto<OrderDto>
-
     @POST("order/waiter/order")
     suspend fun makeWaiterOrder(@Body orderForm: OrderForm) : ResponseDto<OrderDto>
 

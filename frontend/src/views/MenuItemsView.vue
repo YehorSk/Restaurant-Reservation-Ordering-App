@@ -87,6 +87,9 @@
               Price
             </th>
             <th scope="col" class="px-6 py-3">
+              Availability
+            </th>
+            <th scope="col" class="px-6 py-3">
               Edit
             </th>
             <th scope="col" class="px-6 py-3">
@@ -110,6 +113,9 @@
             </td>
             <td class="px-6 py-4">
               {{ item.price }}
+            </td>
+            <td class="px-6 py-4">
+              {{ (item.availability === 1) ? 'Available' : 'Not Available' }}
             </td>
             <td>
               <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setMenuItem(item)">
@@ -165,6 +171,7 @@
           label="Price"
           type="number"
       ></v-text-field>
+      <v-checkbox v-model="editMenuItem.availability" :true-value="1" :false-value="0" label="Is available"></v-checkbox>
       <input type="file" accept="image/*" @change="onFileChange($event, 'update')" class="mb-4">
       <template v-slot:actions>
         <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>

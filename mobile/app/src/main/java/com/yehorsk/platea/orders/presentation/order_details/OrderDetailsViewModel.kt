@@ -28,7 +28,6 @@ class OrderDetailsViewModel @Inject constructor(
     fun onAction(action: OrderDetailsAction){
         when(action){
             is OrderDetailsAction.UserCancelOrder -> cancelOrder(action.id)
-            is OrderDetailsAction.RepeatOrder -> repeatOrder(action.id)
             is OrderDetailsAction.SetCompletedStatus -> updateOrderStatus(action.id, action.status)
             is OrderDetailsAction.SetConfirmedStatus -> updateOrderStatus(action.id, action.status)
             is OrderDetailsAction.SetPreparingStatus -> updateOrderStatus(action.id, action.status)
@@ -43,32 +42,6 @@ class OrderDetailsViewModel @Inject constructor(
                 it.copy(isLoading = true)
             }
             orderRepositoryImpl.getUserOrderDetails(id)
-                .onError { error ->
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            error = error
-                        )
-                    )
-                }
-            _uiState.update {
-                it.copy(isLoading = false)
-            }
-        }
-    }
-
-    fun repeatOrder(id: String){
-        viewModelScope.launch{
-            _uiState.update {
-                it.copy(isLoading = true)
-            }
-            orderRepositoryImpl.repeatUserOrder(id)
-                .onSuccess { data,message ->
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            message = message.toString()
-                        )
-                    )
-                }
                 .onError { error ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

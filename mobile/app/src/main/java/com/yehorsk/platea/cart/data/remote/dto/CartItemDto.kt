@@ -3,6 +3,7 @@ package com.yehorsk.platea.cart.data.remote.dto
 
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.db.model.PivotCartItemEntity
+import com.yehorsk.platea.core.data.remote.BooleanIntSerializer
 import com.yehorsk.platea.menu.data.remote.dto.MenuItemDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -24,6 +25,8 @@ data class CartItemDto(
     val recipe: String,
     val picture: String,
     val price: Double,
+    @Serializable(with = BooleanIntSerializer::class)
+    val availability: Boolean,
     val pivot: Pivot,
     val isFavorite: Boolean
 )
@@ -54,7 +57,8 @@ fun CartItemDto.toMenuItem() = MenuItemDto(
     recipe = this.recipe,
     picture = this.picture,
     price = this.price,
-    isFavorite = this.isFavorite
+    isFavorite = this.isFavorite,
+    availability = this.availability
 )
 
 fun CartItemDto.toCartItemEntity() = CartItemEntity(
@@ -69,7 +73,8 @@ fun CartItemDto.toCartItemEntity() = CartItemEntity(
     updatedAt = updatedAt,
     price = price.toDouble(),
     pivot = pivot.toPivotEntity(),
-    isFavorite = isFavorite
+    isFavorite = isFavorite,
+    availability = availability
 )
 
 fun Pivot.toPivotEntity() = PivotCartItemEntity(

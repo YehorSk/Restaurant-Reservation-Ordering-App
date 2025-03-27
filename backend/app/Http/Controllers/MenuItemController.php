@@ -124,9 +124,11 @@ class MenuItemController extends Controller
                 'recipe' => 'nullable|string',
                 'picture' => 'nullable',
                 'price' => 'required|numeric|min:0',
+                'availability' => 'required|in:0,1',
             ]);
 
             $oldPrice = $menuItem->price;
+            $oldAvailable = $menuItem->availability;
 
             $menuItem->update($validatedData);
 
@@ -156,7 +158,6 @@ class MenuItemController extends Controller
                 $users = User::all();
                 foreach ($users as $user) {
                     $token = $user->devices->pluck('device_token')->first();
-                    $menuItem->isFavorite = (bool)$user->favoriteItems()->where('menu_item_id', $menuItem->id)->exists();
                     if ($token) {
                         unset($menuItem->users);
                         $this->sendFCMNotification(
@@ -169,6 +170,40 @@ class MenuItemController extends Controller
                                 'new_total_price' => "0",
                             ],
                             'menu_update'
+                        );
+                    }
+                }
+            }
+            if($oldAvailable != $menuItem->availability){
+                if($menuItem->availability == 0){
+                    foreach ($menuItem->users as $user) {
+                        $token = $user->devices->pluck('device_token')->first();
+                        $this->sendFCMNotification(
+                            $token,
+                            "PLATEA",
+                            __("messages.cart_item_not_available", ['itemName' => $menuItem->name], $user->language),
+                            [
+                                'id' => $menuItem->id,
+                            ],
+                            'cart_not_available'
+                        );
+                    }
+                    $menuItem->users()->detach();
+                }
+                $users = User::all();
+                foreach ($users as $user) {
+                    $token = $user->devices->pluck('device_token')->first();
+                    if ($token) {
+                        unset($menuItem->users);
+                        $this->sendFCMNotification(
+                            $token,
+                            "",
+                            "",
+                            [
+                                'id' => $menuItem->id,
+                                'availability' => $menuItem->availability,
+                            ],
+                            'menu_item_availability'
                         );
                     }
                 }

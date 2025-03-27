@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -259,96 +260,113 @@ fun MenuItemModalContent(
                             end = 20.dp
                         )
                 ) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .wrapContentWidth(),
-                        shape = RoundedCornerShape(40.dp),
-                        colors = CardColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary,
-                            contentColor = Color.White,
-                            disabledContentColor = MaterialTheme.colorScheme.tertiary,
-                            disabledContainerColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxHeight(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                        ){
-                            TextButton(
+                    if(menuItem.availability){
+                        Card(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .wrapContentWidth(),
+                            shape = RoundedCornerShape(40.dp),
+                            colors = CardColors(
+                                containerColor = MaterialTheme.colorScheme.tertiary,
+                                contentColor = Color.White,
+                                disabledContentColor = MaterialTheme.colorScheme.tertiary,
+                                disabledContainerColor = MaterialTheme.colorScheme.tertiary
+                            )
+                        ) {
+                            Row(
                                 modifier = Modifier.fillMaxHeight(),
-                                shape = CircleShape,
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
-                                onClick = {
-                                    if(cartForm.quantity>1){
-                                        val newQuantity = cartForm.quantity - 1
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly,
+                            ){
+                                TextButton(
+                                    modifier = Modifier.fillMaxHeight(),
+                                    shape = CircleShape,
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                                    onClick = {
+                                        if(cartForm.quantity>1){
+                                            val newQuantity = cartForm.quantity - 1
+                                            onQuantityChange(newQuantity)
+                                            onPriceChange(menuItem.price * newQuantity)
+                                        }
+                                    }
+                                ) {
+                                    AutoResizedText(
+                                        text = "-",
+                                        style = MaterialTheme.typography.titleLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        maxLines = 1
+                                    )
+                                }
+                                AutoResizedText(
+                                    text = cartForm.quantity.toString(),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    maxLines = 1
+                                )
+                                TextButton(
+                                    modifier = Modifier.fillMaxHeight(),
+                                    shape = CircleShape,
+                                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                                    onClick = {
+                                        val newQuantity = cartForm.quantity + 1
                                         onQuantityChange(newQuantity)
                                         onPriceChange(menuItem.price * newQuantity)
                                     }
+                                ) {
+                                    AutoResizedText(
+                                        text = "+",
+                                        style = MaterialTheme.typography.titleLarge,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        maxLines = 1
+                                    )
                                 }
-                            ) {
-                                AutoResizedText(
-                                    text = "-",
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White,
-                                    maxLines = 1
-                                )
-                            }
-                            AutoResizedText(
-                                text = cartForm.quantity.toString(),
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                maxLines = 1
-                            )
-                            TextButton(
-                                modifier = Modifier.fillMaxHeight(),
-                                shape = CircleShape,
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
-                                onClick = {
-                                    val newQuantity = cartForm.quantity + 1
-                                    onQuantityChange(newQuantity)
-                                    onPriceChange(menuItem.price * newQuantity)
-                                }
-                            ) {
-                                AutoResizedText(
-                                    text = "+",
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.White,
-                                    maxLines = 1
-                                )
                             }
                         }
-                    }
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
-                        onClick = {
-                            addUserCartItem()
-                        }
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
+                            onClick = {
+                                addUserCartItem()
+                            }
                         ) {
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                AutoResizedText(
+                                    text = stringResource(buttonText),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    maxLines = 1
+                                )
+                                AutoResizedText(
+                                    text = "€"+ formattedPrice(cartForm.price),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White,
+                                    maxLines = 1
+                                )
+                            }
+                        }
+                    }else{
+                        Box(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth()
+                                .wrapContentSize(Alignment.Center),
+                        ){
                             AutoResizedText(
-                                text = stringResource(buttonText),
-                                style = MaterialTheme.typography.titleLarge,
+                                text = stringResource(R.string.not_available),
+                                style = MaterialTheme.typography.headlineLarge,
+                                textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                maxLines = 1
-                            )
-                            AutoResizedText(
-                                text = "€"+ formattedPrice(cartForm.price),
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
                                 maxLines = 1
                             )
                         }
@@ -374,7 +392,8 @@ fun PreviewMenuItemModal() {
             recipe = "Tomatoes, cheese, basil, dough",
             picture = "https://example.com/pizza.jpg",
             price = 10.9,
-            isFavorite = false
+            isFavorite = false,
+            availability = true
         )
 
         MenuItemModalContent(

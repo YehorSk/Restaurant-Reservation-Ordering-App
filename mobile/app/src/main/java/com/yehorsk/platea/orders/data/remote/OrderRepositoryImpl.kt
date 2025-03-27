@@ -9,7 +9,6 @@ import com.yehorsk.platea.orders.data.db.model.OrderItemEntity
 import com.yehorsk.platea.orders.data.remote.dto.OrderDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
-import com.yehorsk.platea.orders.data.remote.dto.toCartItemEntity
 import com.yehorsk.platea.orders.data.remote.dto.toOrderEntity
 import com.yehorsk.platea.orders.data.remote.dto.toOrderMenuItemEntity
 import com.yehorsk.platea.orders.data.remote.service.OrderService
@@ -27,7 +26,6 @@ class OrderRepositoryImpl @Inject constructor(
     private val orderDao: OrderDao,
     private val cartDao: CartDao,
     ) : OrderRepository{
-
 
     suspend fun syncOrdersWithDb(items: List<OrderDto>) = withContext(Dispatchers.IO){
         val localOrders = orderDao.getOrderWithOrderItemsOnce()
@@ -110,20 +108,6 @@ class OrderRepositoryImpl @Inject constructor(
                 orderDao.insertOrder(data.first().toOrderEntity())
                 orderDao.insertOrderItems(data.first().orderItems.map {
                     it.toOrderMenuItemEntity()
-                })
-            }
-        )
-    }
-
-    override suspend fun repeatUserOrder(id: String): Result<List<OrderDto>, AppError> {
-        Timber.d("Order repeatUserOrder $id")
-        return safeCall<OrderDto>(
-            execute = {
-                orderService.repeatUserOrder(id)
-            },
-            onSuccess = { data ->
-                cartDao.insertItems(data.first().orderItems.map {
-                    it.toCartItemEntity()
                 })
             }
         )

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Menu;
 use App\Models\User;
+use App\Traits\FCMNotificationTrait;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -11,6 +12,7 @@ use Illuminate\Validation\Rule;
 class MenuController extends Controller
 {
     use HttpResponses;
+    use FCMNotificationTrait;
 
     public function index(Request $request){
         $user = auth('sanctum')->user();
@@ -65,10 +67,34 @@ class MenuController extends Controller
             $data = $request->validate([
                 'name' => ['required', Rule::unique('menus')->ignore($menu->id)],
                 'description' => 'required',
-                'availability' => 'nullable'
+                'availability' => 'required|in:0,1'
             ]);
-            $data['availability'] = $data['availability'] ?? 1;
+            $oldAvailable = $menu->availability;
             $menu->update($data);
+            foreach ($menu->items as $item){
+                $item->update(['availability' => $menu->availability]);
+                if($menu->availability == 0){
+                    $item->users()->detach();
+                }
+            }
+            if($oldAvailable != $menu->availability){
+                $users = User::all();
+                foreach ($users as $user) {
+                    $token = $user->devices->pluck('device_token')->first();
+                    if ($token) {
+                        $this->sendFCMNotification(
+                            $token,
+                            "",
+                            "",
+                            [
+                                'id' => $menu->id,
+                                'availability' => $menu->availability,
+                            ],
+                            'menu_availability'
+                        );
+                    }
+                }
+            }
             return $this->success(data: [$menu], message: __("messages.item_was_updated"));
         }
         return $this->error('', __('messages.no_user'), 401);

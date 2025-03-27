@@ -1,5 +1,6 @@
 package com.yehorsk.platea.menu.data.remote.dto
 
+import com.yehorsk.platea.core.data.remote.BooleanIntSerializer
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -21,6 +22,8 @@ data class MenuItemDto(
     val recipe: String,
     val picture: String,
     val price: Double,
+    @Serializable(with = BooleanIntSerializer::class)
+    val availability: Boolean,
     val isFavorite: Boolean
 )
 
@@ -36,6 +39,7 @@ fun MenuItemDto.toMenuItemEntity(): MenuItemEntity {
         recipe = this.recipe,
         picture = this.picture,
         price = this.price,
-        isFavorite = this.isFavorite
+        isFavorite = this.isFavorite,
+        availability = this.availability
     )
 }

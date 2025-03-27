@@ -26,20 +26,22 @@ fun MenuList(
             modifier = modifier
         ) {
             itemsIndexed(items){ _, menu ->
-                MenuHeader(
-                    menuDto = menu.menu,
-                    onMenuClick = {  }
-                )
-                var i = 0;
-                Column {
-                    menu.menuItems.forEach{ item ->
-                        MenuItem(
-                            menuItem = item,
-                            onClick = { menuItem ->
-                                onClick(menuItem)
-                            }
-                        )
-                        if(i++ != menu.menuItems.size -1) HorizontalDivider()
+                if(menu.menu.availability){
+                    MenuHeader(
+                        menuDto = menu.menu,
+                        onMenuClick = {  }
+                    )
+                    var i = 0;
+                    Column {
+                        menu.menuItems.forEach{ item ->
+                            MenuItem(
+                                menuItem = item,
+                                onClick = { menuItem ->
+                                    onClick(menuItem)
+                                }
+                            )
+                            if(i++ != menu.menuItems.size -1) HorizontalDivider()
+                        }
                     }
                 }
             }

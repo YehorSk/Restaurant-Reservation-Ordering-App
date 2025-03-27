@@ -106,7 +106,8 @@ fun OrderListItemPreview(){
                     createdAt = "2024-01-01T10:00:00Z",
                     updatedAt = "2024-01-01T10:05:00Z"
                 ),
-                isFavorite = false
+                isFavorite = false,
+                availability = true
             ),
             onClick = {}
         )

@@ -53,6 +53,9 @@
             Description
           </th>
           <th scope="col" class="px-6 py-3">
+            Availability
+          </th>
+          <th scope="col" class="px-6 py-3">
             Edit
           </th>
           <th scope="col" class="px-6 py-3">
@@ -70,6 +73,9 @@
           </th>
           <td class="px-6 py-4">
             {{ menu.description }}
+          </td>
+          <td class="px-6 py-4">
+            {{ (menu.availability === 1) ? 'Available' : 'Not Available' }}
           </td>
           <td>
             <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setMenu(menu)">
@@ -113,6 +119,7 @@
           hide-details="auto"
           label="Description"
       ></v-text-field>
+      <v-checkbox v-model="edit_menu.availability" :true-value="1" :false-value="0" label="Is available"></v-checkbox>
       <template v-slot:actions>
         <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
         <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="dialog = false, updateMenu(edit_menu)"></v-btn>

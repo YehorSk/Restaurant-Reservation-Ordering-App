@@ -16,6 +16,7 @@ class MenuItem extends Model
       'recipe',
       'picture',
       'price',
+      'availability',
       'menu_id'
     ];
 

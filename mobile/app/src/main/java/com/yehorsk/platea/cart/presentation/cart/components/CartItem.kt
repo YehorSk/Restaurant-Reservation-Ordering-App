@@ -119,7 +119,8 @@ fun MenuItemPreview(){
                     updatedAt = "",
                     id=0,
                 ),
-                isFavorite = false
+                isFavorite = false,
+                availability = true
             ),
             onClick = {}
         )

@@ -101,7 +101,8 @@ export const UseMenuStore = defineStore("menu",{
             try{
                 const response = await axios.put("menu/" + menu.id,{
                     name: menu.name,
-                    description: menu.description
+                    description: menu.description,
+                    availability: menu.availability,
                 });
                 console.log(response.data);
                 this.success = response.data.message;
@@ -182,6 +183,7 @@ export const UseMenuStore = defineStore("menu",{
                     long_description: menuItem.long_description,
                     recipe: menuItem.recipe,
                     price: menuItem.price,
+                    availability: menuItem.availability,
                 }
                 if (imagePath !== null) {
                     updatedData.picture = imagePath;

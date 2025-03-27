@@ -35,6 +35,9 @@ interface MenuDao {
     @Query("UPDATE menu_item_table SET price = :price WHERE id = :id")
     suspend fun updateMenuItemPrice(id: String, price: String)
 
+    @Query("UPDATE menu_item_table SET availability = :available WHERE id = :id")
+    suspend fun changeMenuItemAvailability(id: String, available: Int)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMenu(menu: MenuEntity)
 

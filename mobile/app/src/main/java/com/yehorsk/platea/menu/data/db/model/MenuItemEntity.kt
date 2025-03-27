@@ -23,6 +23,7 @@ data class MenuItemEntity(
     val recipe: String,
     val picture: String,
     val price: Double,
+    val availability: Boolean,
     val isFavorite: Boolean = false
 )
 
@@ -38,6 +39,7 @@ fun MenuItemEntity.toMenuItem(): MenuItemDto {
         recipe = this.recipe,
         picture = this.picture,
         price = this.price,
-        isFavorite = this.isFavorite
+        isFavorite = this.isFavorite,
+        availability = this.availability
     )
 }

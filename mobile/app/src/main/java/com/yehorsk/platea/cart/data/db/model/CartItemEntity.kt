@@ -20,6 +20,7 @@ data class CartItemEntity(
     val recipe: String,
     val picture: String,
     val price: Double,
+    val availability: Boolean,
     val isFavorite: Boolean,
     @Embedded val pivot: PivotCartItemEntity
 )
@@ -45,5 +46,6 @@ fun CartItemEntity.toMenuItem() = MenuItemDto(
     recipe = this.recipe,
     picture = this.picture,
     price = this.price,
-    isFavorite = this.isFavorite
+    isFavorite = this.isFavorite,
+    availability = this.availability
 )

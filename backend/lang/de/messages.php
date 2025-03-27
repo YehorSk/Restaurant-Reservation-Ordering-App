@@ -58,6 +58,7 @@
         'incorrect_credentials' => 'Falsche E-Mail oder falsches Passwort. Bitte versuchen Sie es erneut.',
         'cart_item_price_updated' => 'Der Preis von ":itemName" in deinem Warenkorb wurde auf :newPrice aktualisiert.',
         'cart_item_removed' => '":itemName" wurde aus deinem Warenkorb entfernt.',
+        'cart_item_not_available' => '":itemName" ist vorübergehend nicht verfügbar und wurde aus deinem Warenkorb entfernt.'
     ];
 
 

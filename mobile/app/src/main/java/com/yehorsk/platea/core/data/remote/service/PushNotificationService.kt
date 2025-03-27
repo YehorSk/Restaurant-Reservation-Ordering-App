@@ -13,7 +13,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.dao.CartDao
+import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
+import com.yehorsk.platea.cart.data.remote.service.CartService
+import com.yehorsk.platea.core.di.RepositoryModule_ProvideCartRepositoryImplFactory
 import com.yehorsk.platea.menu.data.dao.MenuDao
+import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
+import com.yehorsk.platea.menu.data.remote.service.MenuService
 import org.json.JSONObject
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +33,12 @@ class PushNotificationService: FirebaseMessagingService() {
 
     @Inject
     lateinit var cartDao: CartDao
+
+    @Inject
+    lateinit var menuRepositoryImpl: MenuRepositoryImpl
+
+    @Inject
+    lateinit var cartRepositoryImpl: CartRepositoryImpl
 
 
     override fun onNewToken(token: String) {
@@ -47,14 +58,29 @@ class PushNotificationService: FirebaseMessagingService() {
 
         if(dataJson != null && dataJson != "[]"){
             val jsonObject = JSONObject(dataJson)
-            val newPrice = jsonObject.getString("new_price")
-            val totalPrice = jsonObject.getString("new_total_price")
             val itemId = jsonObject.getString("id")
             CoroutineScope(Dispatchers.IO).launch {
                 Timber.d("Action $action")
                 when(action){
-                    "cart_update" -> cartDao.updateCartItemPrice(itemId, newPrice, totalPrice)
-                    "menu_update" -> menuDao.updateMenuItemPrice(itemId, newPrice)
+                    "cart_update" -> {
+                        val newPrice = jsonObject.getString("new_price")
+                        val totalPrice = jsonObject.getString("new_total_price")
+                        cartDao.updateCartItemPrice(itemId, newPrice, totalPrice)
+                    }
+                    "menu_update" -> {
+                        val newPrice = jsonObject.getString("new_price")
+                        menuDao.updateMenuItemPrice(itemId, newPrice)
+                    }
+                    "cart_update" -> cartDao.deleteCartItem(itemId)
+                    "cart_not_available" -> cartDao.deleteCartItem(itemId)
+                    "menu_item_availability" -> {
+                        val availability = jsonObject.getInt("availability")
+                        menuDao.changeMenuItemAvailability(itemId, availability)
+                    }
+                    "menu_availability" -> {
+                        menuRepositoryImpl.getAllMenus()
+                        cartRepositoryImpl.getAllItems()
+                    }
                     else -> {}
                 }
             }

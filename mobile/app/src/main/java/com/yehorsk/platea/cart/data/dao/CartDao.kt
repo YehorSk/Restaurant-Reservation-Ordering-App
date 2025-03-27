@@ -38,6 +38,9 @@ interface CartDao {
     @Query("UPDATE cart_table SET price = :itemPrice, pivot_price = :totalPrice WHERE menu_item_id = :id")
     suspend fun updateCartItemPrice(id: String, itemPrice: String, totalPrice: String)
 
+    @Query("DELETE FROM cart_table WHERE id = :id")
+    suspend fun deleteCartItem(id: String)
+
     @Transaction
     suspend fun runInTransaction(block: suspend () -> Unit) {
         block()

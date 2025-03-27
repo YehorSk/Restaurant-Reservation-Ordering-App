@@ -23,18 +23,20 @@ fun MenuTabBar(
         edgePadding = 0.dp
     ) {
         menus.forEachIndexed { index, menu ->
-            Tab(
-                selected = index == selectedMenu,
-                onClick = { onMenuClicked(index, menu) },
-                text = {
-                    Text(
-                        text = menu.name,
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-            )
+            if(menu.availability){
+                Tab(
+                    selected = index == selectedMenu,
+                    onClick = { onMenuClicked(index, menu) },
+                    text = {
+                        Text(
+                            text = menu.name,
+                            color = MaterialTheme.colorScheme.primary,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                )
+            }
         }
     }
 }

@@ -80,7 +80,6 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
         Route::get('/user/orders','getUserOrders');
         Route::get('/user/orders/{id}','getUserOrderDetails');
         Route::get('/user/orders/cancel/{id}','userCancelOrder');
-        Route::get('/user/orders/repeat/{id}','repeatOrder');
 
         Route::get('/stats/{year}','getStats');
     });

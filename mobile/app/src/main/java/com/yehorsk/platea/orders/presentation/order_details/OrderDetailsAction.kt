@@ -7,8 +7,6 @@ data class Status(val status: String)
 
 sealed interface OrderDetailsAction {
 
-    data class RepeatOrder(val id: String): OrderDetailsAction
-
     data class UserCancelOrder(val id: String): OrderDetailsAction
 
     data class SetCancelledStatus(val id: String, val status: Status = Status("Cancelled")): OrderDetailsAction

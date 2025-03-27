@@ -109,7 +109,8 @@ fun MenuItemPreview(){
                 shortDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 recipe = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 picture = "",
-                price = 5.99
+                price = 5.99,
+                availability = true
             ),
             onClick = {},
         )

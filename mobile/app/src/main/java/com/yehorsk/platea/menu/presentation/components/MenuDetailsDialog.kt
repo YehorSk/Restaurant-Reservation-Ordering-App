@@ -64,7 +64,7 @@ fun MenuDetailsDialogPreview(){
                 updatedAt = "2024-09-25T12:30:00Z",
                 name = "Seasonal Special Menu",
                 description = "Enjoy a variety of our chef's signature dishes, featuring locally sourced ingredients and seasonal flavors. Perfect for any occasion, our special menu includes a mix of appetizers, mains, and desserts crafted to delight your taste buds.",
-                availability = "true"
+                availability = true
             ),
             onDismissRequest = {}
         )

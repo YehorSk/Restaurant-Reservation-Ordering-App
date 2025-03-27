@@ -97,6 +97,7 @@
     <string name="today">Сьогодні</string>
     <string name="tomorrow">Завтра</string>
     <string name="closed">Закрито</string>
+    <string name="not_available">Недоступно</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>
