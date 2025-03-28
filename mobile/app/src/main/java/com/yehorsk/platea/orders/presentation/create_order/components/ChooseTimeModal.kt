@@ -96,7 +96,8 @@ fun ChooseTimeModalContent(
         LocalDate.now(),
         LocalDate.now().plusDays(1),
         LocalDate.now().plusDays(2),
-        LocalDate.now().plusDays(3)
+        LocalDate.now().plusDays(3),
+        LocalDate.now().plusDays(4),
     ).map { date ->
         val dateString = date.toString()
         val dayName = getDayName(dateString)

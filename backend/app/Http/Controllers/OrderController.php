@@ -22,7 +22,7 @@ class OrderController extends Controller
             $data_stats = Order::selectRaw('SUM(price) as total_price, MONTHNAME(created_at) AS month_name, MONTH(created_at) AS month_number')
                 ->whereYear('created_at', $year)
                 ->groupByRaw('MONTHNAME(created_at), MONTH(created_at)')
-                ->orderByRaw('month_number DESC')
+                ->orderBy('month_number', 'ASC')
                 ->pluck('total_price');
 
             $years = Order::selectRaw('YEAR(created_at) as year')
@@ -33,7 +33,7 @@ class OrderController extends Controller
             $months = Order::selectRaw('MONTHNAME(created_at) as month, MONTH(created_at) as month_number')
                 ->whereYear('created_at', $year)
                 ->groupByRaw('MONTHNAME(created_at), MONTH(created_at)')
-                ->orderByRaw('month_number DESC')
+                ->orderBy('month_number', 'ASC')
                 ->pluck('month');
 
             return $this->success([

@@ -183,5 +183,6 @@
     <string name="status_rejected">Відхилено</string>
     <string name="status_ready_dinein">Готово для обслуговування</string>
     <string name="default_channel">com.yehorsk.platea</string>
+    <string name="empty">Будь ласка, виберіть час</string>
 
 </resources>

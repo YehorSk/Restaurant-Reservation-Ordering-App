@@ -183,5 +183,6 @@
     <string name="status_rejected">Rejected</string>
     <string name="status_ready_dinein">Ready for Dine-In</string>
     <string name="default_channel">com.yehorsk.platea</string>
+    <string name="empty">Please, select time</string>
 
 </resources>

@@ -21,7 +21,9 @@ sealed class BottomBarScreen(
     val route: String,
     @StringRes val title: Int,
     val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
+    val unselectedIcon: ImageVector,
+    val showBadge: Boolean = false,
+    val badgeCount: Int = 0
 ) {
     object Home : BottomBarScreen(
         route = "HOME",
@@ -34,7 +36,8 @@ sealed class BottomBarScreen(
         route = "CART",
         title = R.string.cart_item,
         selectedIcon = Icons.Filled.ShoppingCart,
-        unselectedIcon = Icons.Outlined.ShoppingCart
+        unselectedIcon = Icons.Outlined.ShoppingCart,
+        showBadge = true
     )
 
     object Orders : BottomBarScreen(

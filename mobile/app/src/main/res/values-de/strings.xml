@@ -182,4 +182,6 @@
     <string name="status_rejected">Abgelehnt</string>
     <string name="status_ready_dinein">Bereit für Vor-Ort-Verzehr</string>
     <string name="default_channel">com.yehorsk.platea</string>
+    <string name="empty">Bitte wählen Sie eine Zeit aus</string>
+
 </resources>

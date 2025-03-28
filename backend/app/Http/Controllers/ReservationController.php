@@ -25,7 +25,7 @@ class ReservationController extends Controller
             $data_stats = Reservation::selectRaw('COUNT(*) AS amount, MONTHNAME(created_at) AS month_name, MONTH(created_at) AS month_number')
                 ->whereYear('created_at', $year)
                 ->groupByRaw('MONTHNAME(created_at), MONTH(created_at)')
-                ->orderByRaw('month_number DESC')
+                ->orderBy('month_number', 'ASC')
                 ->pluck('amount');
             $years = Order::selectRaw('YEAR(created_at) as year')
                 ->groupBy('year')
@@ -34,7 +34,7 @@ class ReservationController extends Controller
             $months = Order::selectRaw('MONTHNAME(created_at) as month, MONTH(created_at) as month_number')
                 ->whereYear('created_at', $year)
                 ->groupByRaw('MONTHNAME(created_at), MONTH(created_at)')
-                ->orderByRaw('month_number DESC')
+                ->orderBy('month_number', 'ASC')
                 ->pluck('month');
             return $this->success([
                 'data_today' => $data_today->count(),

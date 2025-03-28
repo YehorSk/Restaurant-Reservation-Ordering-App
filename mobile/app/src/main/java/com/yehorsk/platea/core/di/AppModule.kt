@@ -72,7 +72,7 @@ object AppModule {
             application,
             MainRoomDatabase::class.java,
             "MobileDatabase"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     @Provides

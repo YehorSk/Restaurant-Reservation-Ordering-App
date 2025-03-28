@@ -20,6 +20,9 @@ interface CartDao {
     @Query("SELECT * FROM cart_table")
     suspend fun getAllItemsOnce(): List<CartItemEntity>
 
+    @Query("SELECT COUNT(*) FROM cart_table")
+    fun getAmountOfItems(): Flow<Int>
+
     @Delete
     suspend fun deleteItem(item: CartItemEntity)
 

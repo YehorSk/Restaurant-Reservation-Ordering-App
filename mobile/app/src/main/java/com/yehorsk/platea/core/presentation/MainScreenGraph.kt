@@ -2,6 +2,8 @@ package com.yehorsk.platea.core.presentation
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -11,13 +13,17 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -40,9 +46,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun MainScreenGraph(
     navController: NavHostController = rememberNavController(),
+    mainScreenViewModel: MainScreenViewModel = hiltViewModel(),
     userRoles: UserRoles,
     onLoggedOut:() -> Unit
 ){
+
+    val uiState by mainScreenViewModel.cartItemCount.collectAsStateWithLifecycle()
+
     val snackbarHostState = remember {
         SnackbarHostState()
     }
@@ -70,7 +80,8 @@ fun MainScreenGraph(
         bottomBar = {
             BottomBar(
                 navController = navController,
-                userRoles = userRoles
+                userRoles = userRoles,
+                cartItems = uiState
             )
         },
         snackbarHost = {
@@ -115,7 +126,8 @@ fun MainScreenGraph(
 @Composable
 fun BottomBar(
     navController: NavHostController,
-    userRoles: UserRoles
+    userRoles: UserRoles,
+    cartItems: Int
 ){
     var screens = getUserBarItems(userRoles)
 
@@ -130,7 +142,8 @@ fun BottomBar(
                 AddItem(
                     screen = screen,
                     currentDestination = currentDestination,
-                    navController = navController
+                    navController = navController,
+                    cartItems = cartItems
                 )
             }
         }
@@ -141,7 +154,8 @@ fun BottomBar(
 fun RowScope.AddItem(
     screen: BottomBarScreen,
     currentDestination: NavDestination?,
-    navController: NavHostController
+    navController: NavHostController,
+    cartItems: Int
 ){
     val isSelected = currentDestination?.hierarchy?.any {
         it.route == screen.route
@@ -154,10 +168,30 @@ fun RowScope.AddItem(
             )
         },
         icon = {
-            if(isSelected){
-                Icon(imageVector = screen.selectedIcon, contentDescription = stringResource(screen.title))
+            if(cartItems > 0 && screen === BottomBarScreen.Cart){
+                BadgedBox(
+                    badge = {
+                        Badge(
+                            containerColor = MaterialTheme.colorScheme.tertiary,
+                            contentColor = Color.White
+                        ){
+                            Text(
+                                text = cartItems.toString(),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = if (isSelected) screen.selectedIcon else screen.unselectedIcon,
+                        contentDescription = stringResource(screen.title)
+                    )
+                }
             }else{
-                Icon(imageVector = screen.unselectedIcon, contentDescription = stringResource(screen.title))
+                Icon(
+                    imageVector = if (isSelected) screen.selectedIcon else screen.unselectedIcon,
+                    contentDescription = stringResource(screen.title)
+                )
             }
         },
         selected = isSelected,

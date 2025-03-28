@@ -118,7 +118,9 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
+        $user = auth('sanctum')->user();
         Auth::user()->currentAccessToken()->delete();
+        $user->devices->each->delete();
         return $this->success(data: [], message: __("messages.logged_out_successfully"));
     }
     public function reset_password($token,$email) {
@@ -191,6 +193,7 @@ class AuthController extends Controller
 
     public function deleteAccount(Request $request){
         $user = auth('sanctum')->user();
+        $user->devices->each->delete();
         if($user instanceof User){
             $user->delete();
             return $this->success([""], __("messages.account_deleted_successfully"));
