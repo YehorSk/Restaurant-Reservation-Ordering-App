@@ -166,7 +166,7 @@ class ReservationController extends Controller
                 ->where('capacity', '>=', $size)->first();
 
             if (!$availableTable) {
-                return $this->error('', 'No available tables for the selected time slot', 400);
+                return $this->error('', __("messages.tables_not_available"), 409);
             }
 
             $reservation = Reservation::create([

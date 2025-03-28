@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MenuItem;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
@@ -25,6 +26,10 @@ class CartController extends Controller
     public function addUserCartItem(Request $request){
         $user = auth('sanctum')->user();
         if($user instanceof User){
+            $menuItem = MenuItem::where('id', $request->input('menu_item_id'))->first();
+            if(!$menuItem->availability){
+                return $this->error('', __("messages.item_not_available"), 409);
+            }
             $exists = $user->menuItems()
                 ->where('menu_item_id', $request->input('menu_item_id'))
                 ->first();

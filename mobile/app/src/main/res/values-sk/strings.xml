@@ -126,6 +126,7 @@
     <string name="error_unknown">Došlo k neznámej chybe. Skúste to prosím znova.</string>
     <string name="error_incorrect_data">Skontrolujte svoje údaje a skúste to znova.</string>
     <string name="error_server_error">Vyskytla sa chyba servera. Skúste to znova neskôr.</string>
+    <string name="conflict_error">Akciu nie je možné dokončiť kvôli konfliktu.</string>
 
     <!-- Filters-->
 

@@ -2,6 +2,7 @@ package com.yehorsk.platea.menu.presentation.menu
 
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
+import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
@@ -136,11 +137,22 @@ class MenuScreenViewModel @Inject constructor(
                     )
                 }
                 .onError { error ->
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            error = error
-                        )
-                    )
+                    when(error){
+                        is AppError.CONFLICT -> {
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    message = error.message
+                                )
+                            )
+                        }
+                        else -> {
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    error = error
+                                )
+                            )
+                        }
+                    }
                 }
             setLoadingState(false)
         }

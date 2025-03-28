@@ -5,6 +5,7 @@ import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.core.utils.Utility.getCredentialErrors
+import com.yehorsk.platea.core.utils.Utility.getMessageFromJson
 import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.SerializationException
 import retrofit2.HttpException
@@ -50,6 +51,11 @@ suspend inline fun <reified T> safeCall(
                     validationErrors = errorBodyString,
                     message = errorBodyString.message
                 )
+            }
+            409 -> {
+                Timber.d("ERROR ${e.response()?.errorBody()!!}")
+                val errorBodyString = getMessageFromJson(e.response()?.errorBody()?.string()!!)
+                AppError.CONFLICT(message = errorBodyString)
             }
             in 500..599 -> {
                 FirebaseCrashlytics.getInstance().recordException(e)

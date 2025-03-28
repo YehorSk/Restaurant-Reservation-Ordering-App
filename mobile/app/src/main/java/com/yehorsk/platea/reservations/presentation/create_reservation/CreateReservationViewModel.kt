@@ -2,6 +2,7 @@ package com.yehorsk.platea.reservations.presentation.create_reservation
 
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
+import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
@@ -148,11 +149,22 @@ class CreateReservationViewModel @Inject constructor(
                     clearForm()
                 }
                 .onError { error ->
-                    SnackbarController.sendEvent(
-                        event = SnackbarEvent(
-                            error = error
-                        )
-                    )
+                    when(error){
+                        is AppError.CONFLICT -> {
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    message = error.message
+                                )
+                            )
+                        }
+                        else -> {
+                            SnackbarController.sendEvent(
+                                event = SnackbarEvent(
+                                    error = error
+                                )
+                            )
+                        }
+                    }
                 }
         }
     }

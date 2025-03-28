@@ -7,10 +7,12 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
 import com.yehorsk.platea.orders.presentation.create_order.components.TimeItem
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -135,6 +137,23 @@ object Utility {
             ValidationErrorsDto("Error decoding response", emptyMap())
         }
     }
+
+    @Serializable
+    data class ApiResponse(
+        @SerialName("status") val status: Int,
+        @SerialName("message") val message: String,
+        @SerialName("data") val data: String
+    )
+
+    fun getMessageFromJson(jsonString: String): String {
+        return try {
+            val apiResponse = Json.decodeFromString<ApiResponse>(jsonString)
+            apiResponse.message
+        } catch (e: Exception) {
+            "Error decoding JSON: ${e.message}"
+        }
+    }
+
 
     fun getStartTime(): String {
         val currentTime = LocalDateTime.now().plusMinutes(30)

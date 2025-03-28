@@ -125,6 +125,7 @@
     <string name="error_unknown">Сталася невідома помилка. Будь ласка, спробуйте ще раз.</string>
     <string name="error_incorrect_data">Будь ласка, перевірте ваші дані та спробуйте ще раз.</string>
     <string name="error_server_error">Сталася помилка сервера. Будь ласка, спробуйте пізніше.</string>
+    <string name="conflict_error">Дію не можна виконати через конфлікт.</string>
 
     <!-- Filters-->
 

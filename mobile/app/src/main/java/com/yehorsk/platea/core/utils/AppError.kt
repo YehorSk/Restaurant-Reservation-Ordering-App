@@ -14,6 +14,7 @@ fun AppError.toString(context: Context): String {
         AppError.UNKNOWN_ERROR -> R.string.error_unknown
         is AppError.IncorrectData -> R.string.error_incorrect_data
         AppError.SERVER_ERROR -> R.string.error_server_error
+        is AppError.CONFLICT -> R.string.conflict_error
     }
     return context.getString(resId)
 }

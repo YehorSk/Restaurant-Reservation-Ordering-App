@@ -58,7 +58,9 @@
         'incorrect_credentials' => 'Неправильний email або пароль. Спробуйте ще раз.',
         'cart_item_price_updated' => 'Ціна ":itemName" у вашому кошику була оновлена до :newPrice.',
         'cart_item_removed' => '":itemName" було видалено з вашого кошика.',
-        'cart_item_not_available' => '":itemName" тимчасово недоступне і було видалене з вашого кошика.'
+        'cart_item_not_available' => '":itemName" тимчасово недоступне і було видалене з вашого кошика.',
+        'item_not_available' => 'Вибачте, ця страва тимчасово недоступна.',
+        'tables_not_available' => 'Вибачте, немає доступних столиків на вибраний час.'
     ];
 
 ?>

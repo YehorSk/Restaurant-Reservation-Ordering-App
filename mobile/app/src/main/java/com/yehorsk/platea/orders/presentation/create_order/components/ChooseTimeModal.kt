@@ -291,19 +291,21 @@ fun DaySlotItem(
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            Text(
+            AutoResizedText(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
                 text = stringResource(dayItem.name),
+                maxLines = 1,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-            Text(
+            AutoResizedText(
                 modifier = Modifier
                     .fillMaxWidth(),
                 text = dayItem.date,
+                maxLines = 1,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center

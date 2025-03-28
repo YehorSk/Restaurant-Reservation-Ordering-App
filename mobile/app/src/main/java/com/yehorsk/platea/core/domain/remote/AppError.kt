@@ -13,4 +13,6 @@ sealed class AppError(val details: ValidationErrorsDto? = null): Error {
 
     data class IncorrectData(val validationErrors: ValidationErrorsDto?, val message: String? = null) :
         AppError(validationErrors)
+
+    data class CONFLICT(val message: String): AppError()
 }
