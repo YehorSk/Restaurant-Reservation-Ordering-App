@@ -8,7 +8,7 @@ This mobile application is designed for table reservations and food ordering in 
 
 ## Download
 
-Coming Soon
+Go to the [releases page](https://github.com/YehorSk/Restaurant-Reservation-Ordering-App/releases) to download the latest available apk.
 
 ## Screenshots
 <p align="center">
