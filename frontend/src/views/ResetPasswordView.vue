@@ -63,6 +63,16 @@ export default {
       },
       immediate: true,
     },
+    "authStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.authStore.failure = "";
+        }
+      },
+      immediate: true,
+    },
   },
 }
 </script>

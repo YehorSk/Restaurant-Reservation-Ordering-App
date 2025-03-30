@@ -181,13 +181,11 @@ fun ChooseTimeModalContent(
                 .wrapContentHeight()
                 .weight(1f)) {
                 items(daySlots){ item ->
-                    if(item.isOpen){
-                        DaySlotItem(
-                            dayItem = item,
-                            onDaySelect = {date -> onDateSelect(date)},
-                            selectedDay = selectedDate
-                        )
-                    }
+                    DaySlotItem(
+                        dayItem = item,
+                        onDaySelect = {date -> onDateSelect(date)},
+                        selectedDay = selectedDate
+                    )
                 }
             }
             LazyColumn(modifier = Modifier

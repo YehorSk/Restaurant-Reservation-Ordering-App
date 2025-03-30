@@ -98,7 +98,7 @@ class AuthController extends Controller
             'device_id' => $request->device_id,
             'device_type' => $request->device_type,
         ]);
-        $user->sendEmailVerificationNotification();
+//        $user->sendEmailVerificationNotification();
         return $this->success(data: [[
             'user' => [
                 'name' => $user->name,

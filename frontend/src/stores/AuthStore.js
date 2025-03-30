@@ -8,6 +8,7 @@ export const UseAuthStore = defineStore("auth",{
         user: useStorage('user',{}),
         token: useStorage('token',{}),
         errors:'',
+        isLoading: true,
         credentials:'',
         success: '',
         failure: '',
@@ -93,9 +94,13 @@ export const UseAuthStore = defineStore("auth",{
                 });
                 this.success = "A link to reset your password has been sent to your email. Please check your inbox and follow the instructions to reset your password. If you do not see the email, please check your spam or junk folder.";
             } catch (error) {
+                console.log(error);
                 if(error.response.status === 422){
                     this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
                 }
+            } finally {
+                this.isLoading = false;
             }
         },
         async reset_password(new_pwd,confirm_new_pwd,email,token){
@@ -109,9 +114,13 @@ export const UseAuthStore = defineStore("auth",{
                 });
                 this.success = "Updated successfully";
             } catch (error) {
+                console.log(error);
                 if(error.response.status === 422){
-                    this.errors = error.response.data.errors.password[0];
+                    this.errors = error.response.data.errors;
+                    this.failure = error.response.data.message;
                 }
+            } finally {
+                this.isLoading = false;
             }
         },
     }
