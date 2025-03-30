@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ReservationDao {
 
-    @Query("SELECT * FROM reservation_table WHERE (:search = '' OR code LIKE '%' || :search || '%') AND (:filter = '' OR status LIKE :filter) ORDER BY created_at DESC")
+    @Query("SELECT * FROM reservation_table WHERE (:search = '' OR code LIKE '%' || :search || '%') AND (:filter = '' OR status LIKE :filter) ORDER BY date ASC, start_time ASC;")
     fun getUserReservations(search: String = "", filter: String = ""): Flow<List<ReservationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

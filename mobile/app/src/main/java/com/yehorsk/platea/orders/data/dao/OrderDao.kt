@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface OrderDao {
 
-    @Query("SELECT * FROM order_table WHERE (:search = '' OR code LIKE '%' || :search || '%') AND (:filter = '' OR status LIKE :filter) ORDER BY created_at DESC")
+    @Query("SELECT * FROM order_table WHERE (:search = '' OR code LIKE '%' || :search || '%') AND (:filter = '' OR status LIKE :filter) ORDER BY date ASC, start_time ASC, end_time ASC;")
     fun getUserOrders(search: String = "", filter: String = ""): Flow<List<OrderEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
