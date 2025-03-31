@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yehorsk.platea.core.utils.formatDateTime
+import com.yehorsk.platea.core.utils.formatDateTimeWithoutYear
 import com.yehorsk.platea.core.utils.formatTime
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
 import com.yehorsk.platea.ui.theme.MobileTheme
@@ -51,7 +52,7 @@ fun TimeRoot(
                 .padding(
                     bottom = 10.dp
                 ),
-            text = formatDateTime(date),
+            text = formatDateTimeWithoutYear(date),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )

@@ -18,6 +18,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formatDateTime
 import com.yehorsk.platea.core.utils.formatTime
 import com.yehorsk.platea.ui.theme.MobileTheme
+import com.yehorsk.platea.ui.theme.MobileThemePreview
 
 @Composable
 fun ReservationDetails(
@@ -110,7 +111,7 @@ fun ReservationDetails(
 @Preview
 @Composable
 fun ReservationDetailsPreview(){
-    MobileTheme {
+    MobileThemePreview {
         ReservationDetails(
             time = "17:00:00",
             table = "3",

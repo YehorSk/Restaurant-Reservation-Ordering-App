@@ -44,6 +44,13 @@ fun formatTime(input: String): String {
 fun formatDateTime(input: String): String {
     val parser = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val localDate = LocalDate.parse(input, parser)
+    val formatter = DateTimeFormatter.ofPattern("MMMM dd yyyy")
+    return localDate.format(formatter)
+}
+
+fun formatDateTimeWithoutYear(input: String): String {
+    val parser = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val localDate = LocalDate.parse(input, parser)
     val formatter = DateTimeFormatter.ofPattern("MMMM dd")
     return localDate.format(formatter)
 }

@@ -213,20 +213,25 @@ object Utility {
 
     fun generateTimeSlots(intervalMinutes: Int = 15, date: String, startTimeSchedule: Int, endTimeSchedule: Int): List<TimeItem> {
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-        Timber.d("Generate ${LocalDate.now()} - $date = ${(LocalDate.now().toString() == date)}")
-        var time = if(LocalDate.now().toString() == date){
-            val nowPlusTwoHours = LocalTime.now().plusHours(2)
-            maxOf(nowPlusTwoHours, LocalTime.of(startTimeSchedule, 0))
-        }else{
-            LocalTime.of(startTimeSchedule + 2, 0)
+        val now = LocalTime.now()
+        val today = LocalDate.now().toString() == date
+
+        val startTime = LocalTime.of(startTimeSchedule, 0)
+        val endTime = LocalTime.of(endTimeSchedule - 2, 0)
+
+        if (today && now.isAfter(endTime)) return emptyList()
+
+        val initialTime = when {
+            today && now.isBefore(startTime) -> startTime
+            today -> maxOf(now.plusHours(2), startTime)
+            else -> startTime.plusHours(2)
         }
 
-        val roundedNow = time.withMinute((time.minute / intervalMinutes) * intervalMinutes).withSecond(0).withNano(0)
+        val roundedStart = initialTime.withMinute((initialTime.minute / intervalMinutes) * intervalMinutes).withSecond(0).withNano(0)
 
-        val endTime = LocalTime.of(endTimeSchedule-2, 0)
         val timeSlots = mutableListOf<TimeItem>()
+        var currentStart = roundedStart
 
-        var currentStart = roundedNow
         while (currentStart.plusMinutes(30).isBefore(endTime) || currentStart.plusMinutes(30) == endTime) {
             val currentEnd = currentStart.plusMinutes(30)
             timeSlots.add(TimeItem(currentStart.format(timeFormatter), currentEnd.format(timeFormatter)))
@@ -235,5 +240,6 @@ object Utility {
 
         return timeSlots
     }
+
 
 }
