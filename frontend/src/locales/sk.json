@@ -1,0 +1,49 @@
+{
+  "SideBar": {
+    "Home": "Domov",
+    "Menu": "Menu",
+    "Tables": "Stoly",
+    "Time_Slots": "Časové úseky",
+    "Information": "Informácie",
+    "Orders": "Objednávky",
+    "Reservation": "Rezervácia",
+    "Notifications": "Upozornenia",
+    "Logout": "Odhlásiť sa",
+    "Users": "Používatelia"
+  },
+  "Forms": {
+    "Name": "Meno",
+    "Description": "Popis",
+    "Save": "Uložiť",
+    "Capacity": "Kapacita",
+    "Number": "Číslo",
+    "StartTime": "Čas začiatku",
+    "EndTime": "Čas ukončenia",
+    "Address": "Adresa",
+    "Phone": "Telefón",
+    "Email": "E-mail",
+    "Website": "Webová stránka",
+    "Open": "Otvoriť",
+    "Monday": "Pondelok",
+    "Tuesday": "Utorok",
+    "Wednesday": "Streda",
+    "Thursday": "Štvrtok",
+    "Friday": "Piatok",
+    "Saturday": "Sobota",
+    "Sunday": "Nedeľa",
+    "Title": "Nadpis",
+    "Body": "Telo",
+    "Send": "Odoslať"
+  },
+  "Home": {
+    "Statistics": "Štatistiky",
+    "Top_10_Favorite_Menu_Items": "Top 10 obľúbených položiek menu",
+    "Top_10_Ordered_Menu_Items": "Top 10 objednaných položiek menu",
+    "Sales_by_year": "Predaje podľa roka",
+    "Reservations_by_year": "Rezervácie podľa roka",
+    "Total_orders_created:": "Celkový počet vytvorených objednávok:",
+    "Total_reservations_created:": "Celkový počet vytvorených rezervácií:",
+    "Today:": "Dnes:",
+    "Revenue": "Príjmy"
+  }
+}

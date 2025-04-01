@@ -198,7 +198,7 @@ fun Day(
             .clip(RoundedCornerShape(10.dp))
             .background(color = when{
                 day.position != DayPosition.MonthDate -> Color.Transparent
-                isSelected -> MaterialTheme.colorScheme.primary
+                isSelected -> MaterialTheme.colorScheme.tertiary
                 isPastDate -> Color.LightGray
                 else -> Color.White
             })

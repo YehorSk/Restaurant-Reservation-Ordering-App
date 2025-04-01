@@ -7,15 +7,15 @@
           <v-form fast-fail @submit.prevent>
             <v-text-field
                 v-model="title"
-                label="Title"
+                :label="$t('Forms.Title')"
                 color="orange"
             ></v-text-field>
             <v-text-field
                 v-model="body"
-                label="Body"
+                :label="$t('Forms.Body')"
                 color="orange"
             ></v-text-field>
-            <v-btn class="mt-2 mx-2" type="submit" @click="sendNotification()" block>Send</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" @click="sendNotification()" block>{{ $t('Forms.Send') }}</v-btn>
           </v-form>
         </div>
       </div>

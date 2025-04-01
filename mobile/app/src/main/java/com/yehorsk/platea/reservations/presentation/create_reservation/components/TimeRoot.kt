@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.yehorsk.platea.core.utils.formatDateTime
+import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.utils.formatDateTimeWithoutYear
 import com.yehorsk.platea.core.utils.formatTime
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
@@ -70,7 +70,7 @@ fun TimeRoot(
                         .clip(RoundedCornerShape(5.dp))
                         .border(
                             width = 2.dp,
-                            color = if (item.id == selectedSlot) MaterialTheme.colorScheme.primary else Color.LightGray,
+                            color = if (item.id == selectedSlot) MaterialTheme.colorScheme.tertiary else Color.LightGray,
                             shape = CircleShape)
                         .width(80.dp)
                         .background(MaterialTheme.colorScheme.background)
@@ -79,9 +79,10 @@ fun TimeRoot(
                         },
                     contentAlignment = Alignment.Center
                 ){
-                    Text(
+                    AutoResizedText(
                         modifier = Modifier.padding(10.dp),
-                        fontSize = 14.sp,
+                        maxLines = 1,
+                        style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         text = formatTime(item.startTime.toString())
                     )

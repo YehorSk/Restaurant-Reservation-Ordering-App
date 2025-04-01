@@ -7,6 +7,7 @@ export const UseAuthStore = defineStore("auth",{
     state:() => ({
         user: useStorage('user',{}),
         token: useStorage('token',{}),
+        lang: useStorage('language','en'),
         errors:'',
         isLoading: true,
         credentials:'',
@@ -34,6 +35,7 @@ export const UseAuthStore = defineStore("auth",{
                 await this.getToken();
                 const response = await axios.post('user', null);
                 this.user = response.data.data[0].user;
+                this.lang = response.data.data[0].user.language;
                 this.token = response.data.data[0].token;
                 console.log("Auth "+this.token);
             } catch (error) {
@@ -57,6 +59,7 @@ export const UseAuthStore = defineStore("auth",{
                 console.log(response)
                 this.success = response.data.data.message;
                 this.user = response.data.data[0].user;
+                this.lang = response.data.data[0].user.language;
                 this.token = response.data.data[0].token;
                 await router.push('/');
                 console.log(this.token)

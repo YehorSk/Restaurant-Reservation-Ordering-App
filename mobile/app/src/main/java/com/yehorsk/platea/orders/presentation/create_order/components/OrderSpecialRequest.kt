@@ -9,7 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.yehorsk.platea.R
+import com.yehorsk.platea.ui.theme.MobileThemePreview
 
 @Composable
 fun OrderSpecialRequest(
@@ -30,11 +33,19 @@ fun OrderSpecialRequest(
             onRequestChange(it)
         },
         colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
             focusedContainerColor = MaterialTheme.colorScheme.background,
             unfocusedContainerColor = MaterialTheme.colorScheme.background
         )
     )
+}
+
+@PreviewLightDark
+@Composable
+fun OrderSpecialRequestPreview(){
+    MobileThemePreview {
+        OrderSpecialRequest(
+            request = "",
+            onRequestChange = {}
+        )
+    }
 }

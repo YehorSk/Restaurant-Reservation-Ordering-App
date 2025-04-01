@@ -7,17 +7,17 @@
           <v-form fast-fail @submit.prevent>
             <v-text-field
                 v-model="start_time"
-                label="Start Time"
+                :label="$t('Forms.StartTime')"
                 color="orange"
                 type="time"
             ></v-text-field>
             <v-text-field
                 v-model="end_time"
-                label="End Time"
+                :label="$t('Forms.EndTime')"
                 color="orange"
                 type="time"
             ></v-text-field>
-            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>Save</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
           </v-form>
         </div>
       </div>

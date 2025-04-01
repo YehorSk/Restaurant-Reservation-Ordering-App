@@ -1,7 +1,7 @@
 <template>
   <NavComponent/>
   <div class="p-4 sm:ml-64">
-    <h2 class="text-4xl font-extrabold dark:text-white">Statistics</h2>
+    <h2 class="text-4xl font-extrabold dark:text-white">{{ $t('Home.Statistics') }}</h2>
     <br>
     <VRow>
       <VCol
@@ -10,7 +10,7 @@
           sm="12"
       >
         <VCard
-            title="Top 10 Favorite Menu Items"
+            :title="$t('Home.Top_10_Favorite_Menu_Items')"
         >
           <VCardText>
             <VList>
@@ -41,7 +41,7 @@
           order="2"
       >
         <VCard
-            title="Top 10 Ordered Menu Items"
+            :title="$t('Home.Top_10_Ordered_Menu_Items')"
         >
           <VCardText>
             <VList>
@@ -72,13 +72,13 @@
           order="2"
       >
         <VCard
-            title="Sales by year"
+            :title="$t('Home.Sales_by_year')"
         >
           <VCardText>
             <VList>
               <div v-if="!homeStore.getMenuItemsStats.isLoading">
-                <p class="text-h6 me-2"><span class="font-weight-bold">Total orders created: </span>{{ homeStore.getOrderStats.data.data_all_count }}</p>
-                <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getOrderStats.data.data_today }}</p>
+                <p class="text-h6 me-2"><span class="font-weight-bold"> {{ $t('Home.Total_orders_created:') }} </span>{{ homeStore.getOrderStats.data.data_all_count }}</p>
+                <p class="text-h6 me-2"><span class="font-weight-bold">{{ $t('Home.Today:') }} </span>{{ homeStore.getOrderStats.data.data_today }}</p>
                 <StatProfits :data="homeStore.getOrderStats.data"/>
                 <div class="d-flex justify-center mt-4">
                   <VBtn v-for="year in homeStore.getReservationStats.data.years" :key="year" @click="onOrderYearChange(year)">
@@ -98,13 +98,13 @@
           order="2"
       >
         <VCard
-            title="Reservations by year"
+            :title="$t('Home.Reservations_by_year')"
         >
           <VCardText>
             <VList>
               <div v-if="!homeStore.getReservationStats.isLoading">
-                <p class="text-h6 me-2"><span class="font-weight-bold">Total reservations created: </span>{{ homeStore.getReservationStats.data.data_all_count }}</p>
-                <p class="text-h6 me-2"><span class="font-weight-bold">Today: </span>{{ homeStore.getReservationStats.data.data_today }}</p>
+                <p class="text-h6 me-2"><span class="font-weight-bold">{{$t('Home.Total_reservations_created:')}} </span>{{ homeStore.getReservationStats.data.data_all_count }}</p>
+                <p class="text-h6 me-2"><span class="font-weight-bold">{{$t('Home.Today:')}} </span>{{ homeStore.getReservationStats.data.data_today }}</p>
                 <StatProfits :data="homeStore.getReservationStats.data"/>
                 <div class="d-flex justify-center mt-4">
                   <VBtn v-for="year in homeStore.getReservationStats.data.years" :key="year" @click="onReservationYearChange(year)">

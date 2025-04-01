@@ -7,21 +7,21 @@
               <v-form fast-fail @submit.prevent>
                 <v-text-field
                     v-model="name"
-                    label="Name"
+                    :label="$t('Forms.Name')"
                     color="orange"
                 ></v-text-field>
                 <v-text-field
                     v-model="description"
-                    label="Description"
+                    :label="$t('Forms.Description')"
                     color="orange"
                 ></v-text-field>
-                <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" :disabled="!isFormValid" block>Save</v-btn>
+                <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" :disabled="!isFormValid" block>{{ $t('Forms.Save') }}</v-btn>
               </v-form>
             </div>
           </div>
         </v-sheet>
     <br>
-      <h2 class="text-4xl font-extrabold dark:text-white">All Menu's</h2>
+      <h2 class="text-4xl font-extrabold dark:text-white">{{ $t("All Menu's")  }}</h2>
     <br>
     <form class="flex items-center max-w-sm mx-auto" @submit.prevent="onSearch">
       <div class="relative w-full">

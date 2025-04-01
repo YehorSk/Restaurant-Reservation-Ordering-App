@@ -26,6 +26,12 @@
             Id
           </th>
           <th scope="col" class="px-6 py-3">
+            Client Id
+          </th>
+          <th scope="col" class="px-6 py-3">
+            Waiter Id
+          </th>
+          <th scope="col" class="px-6 py-3">
             Order Code
           </th>
           <th scope="col" class="px-6 py-3">
@@ -46,6 +52,12 @@
         <tr v-for="order in ordersStore.getOrders.data" :key="order.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ order.id }}
+          </td>
+          <td class="px-6 py-4">
+            {{ order.client_id }}
+          </td>
+          <td class="px-6 py-4">
+            {{ order.waiter_id }}
           </td>
           <td class="px-6 py-4">
             {{ order.code }}

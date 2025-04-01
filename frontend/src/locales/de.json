@@ -1,0 +1,49 @@
+{
+  "SideBar": {
+    "Home": "Startseite",
+    "Menu": "Speisekarte",
+    "Tables": "Tische",
+    "Time_Slots": "Zeitfenster",
+    "Information": "Information",
+    "Orders": "Bestellungen",
+    "Reservation": "Reservierung",
+    "Notifications": "Benachrichtigungen",
+    "Logout": "Abmelden",
+    "Users": "Benutzer"
+  },
+  "Forms": {
+    "Name": "Name",
+    "Description": "Beschreibung",
+    "Save": "Speichern",
+    "Capacity": "Kapazität",
+    "Number": "Nummer",
+    "Address": "Adresse",
+    "StartTime": "Startzeit",
+    "EndTime": "Endzeit",
+    "Phone": "Telefon",
+    "Email": "E-Mail",
+    "Website": "Webseite",
+    "Open": "Öffnen",
+    "Monday": "Montag",
+    "Tuesday": "Dienstag",
+    "Wednesday": "Mittwoch",
+    "Thursday": "Donnerstag",
+    "Friday": "Freitag",
+    "Saturday": "Samstag",
+    "Sunday": "Sonntag",
+    "Title": "Titel",
+    "Body": "Text",
+    "Send": "Senden"
+  },
+  "Home": {
+    "Statistics": "Statistiken",
+    "Top_10_Favorite_Menu_Items": "Top 10 Lieblingsmenüartikel",
+    "Top_10_Ordered_Menu_Items": "Top 10 bestellte Menüartikel",
+    "Sales_by_year": "Verkäufe nach Jahr",
+    "Reservations_by_year": "Reservierungen nach Jahr",
+    "Total_orders_created:": "Gesamtzahl erstellter Bestellungen:",
+    "Total_reservations_created:": "Gesamtzahl erstellter Reservierungen:",
+    "Today:": "Heute:",
+    "Revenue": "Einnahmen"
+  }
+}

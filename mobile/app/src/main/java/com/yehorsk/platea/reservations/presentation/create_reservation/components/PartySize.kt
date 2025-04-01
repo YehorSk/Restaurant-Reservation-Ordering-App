@@ -67,7 +67,7 @@ fun PartySize(
                         .clip(CircleShape)
                         .border(
                             width = 2.dp,
-                            color = if (item == partySize) MaterialTheme.colorScheme.primary else Color.LightGray,
+                            color = if (item == partySize) MaterialTheme.colorScheme.tertiary else Color.LightGray,
                             shape = CircleShape)
                         .size(50.dp)
                         .background(MaterialTheme.colorScheme.background)

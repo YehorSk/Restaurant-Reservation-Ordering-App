@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import {useStorage} from "@vueuse/core";
 import 'vuetify/styles';
+import i18n from './i18n';
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
@@ -40,6 +41,7 @@ const vuetify = createVuetify({
 });
 
 app.use(vuetify);
+app.use(i18n);
 app.use(Toast)
 
 

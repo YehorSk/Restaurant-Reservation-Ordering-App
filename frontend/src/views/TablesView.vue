@@ -7,16 +7,16 @@
           <v-form fast-fail @submit.prevent>
             <v-text-field
                 v-model="capacity"
-                label="Capacity"
+                :label="$t('Forms.Capacity')"
                 color="orange"
                 type="number"
             ></v-text-field>
             <v-text-field
                 v-model="number"
-                label="Number"
+                :label="$t('Forms.Number')"
                 color="orange"
             ></v-text-field>
-            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>Save</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
           </v-form>
         </div>
       </div>

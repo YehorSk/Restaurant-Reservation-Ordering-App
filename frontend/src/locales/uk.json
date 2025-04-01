@@ -1,0 +1,49 @@
+{
+  "SideBar": {
+    "Home": "Головна",
+    "Menu": "Меню",
+    "Tables": "Столи",
+    "Time_Slots": "Часові слоти",
+    "Information": "Інформація",
+    "Users": "Користувачі",
+    "Orders": "Замовлення",
+    "Reservation": "Бронювання",
+    "Notifications": "Сповіщення",
+    "Logout": "Вийти"
+  },
+  "Forms": {
+    "Name": "Ім'я",
+    "Description": "Опис",
+    "Save": "Зберегти",
+    "Capacity": "Місткість",
+    "Number": "Номер",
+    "Address": "Адреса",
+    "Phone": "Телефон",
+    "StartTime": "Час початку",
+    "EndTime": "Час завершення",
+    "Email": "Електронна пошта",
+    "Website": "Веб-сайт",
+    "Open": "Відкрити",
+    "Monday": "Понеділок",
+    "Tuesday": "Вівторок",
+    "Wednesday": "Середа",
+    "Thursday": "Четвер",
+    "Friday": "П’ятниця",
+    "Saturday": "Субота",
+    "Sunday": "Неділя",
+    "Title": "Заголовок",
+    "Body": "Текст",
+    "Send": "Надіслати"
+  },
+  "Home": {
+    "Statistics": "Статистика",
+    "Top_10_Favorite_Menu_Items": "Топ 10 улюблених страв меню",
+    "Top_10_Ordered_Menu_Items": "Топ 10 замовлених страв меню",
+    "Sales_by_year": "Продажі за рік",
+    "Reservations_by_year": "Бронювання за рік",
+    "Total_orders_created:": "Загальна кількість створених замовлень: ",
+    "Total_reservations_created:": "Загальна кількість створених бронювань: ",
+    "Today:": "Сьогодні: ",
+    "Revenue": "Дохід"
+  }
+}

@@ -7,12 +7,12 @@
         <!-- First Column (General Info) -->
         <div class="w-full md:w-1/2 p-2 max-w-md">
           <v-form fast-fail @submit.prevent>
-            <v-text-field v-model="name" label="Name" color="orange"></v-text-field>
-            <v-text-field v-model="description" label="Description" color="orange"></v-text-field>
-            <v-text-field v-model="address" label="Address" color="orange"></v-text-field>
-            <v-text-field v-model="phone" label="Phone" color="orange"></v-text-field>
-            <v-text-field v-model="email" label="Email" color="orange"></v-text-field>
-            <v-text-field v-model="website" label="Website" color="orange"></v-text-field>
+            <v-text-field v-model="name" :label="$t('Forms.Name')" color="orange"></v-text-field>
+            <v-text-field v-model="description" :label="$t('Forms.Description')" color="orange"></v-text-field>
+            <v-text-field v-model="address" :label="$t('Forms.Address')" color="orange"></v-text-field>
+            <v-text-field v-model="phone" :label="$t('Forms.Phone')" color="orange"></v-text-field>
+            <v-text-field v-model="email" :label="$t('Forms.Email')" color="orange"></v-text-field>
+            <v-text-field v-model="website" :label="$t('Forms.Website')" color="orange"></v-text-field>
           </v-form>
         </div>
 
@@ -21,58 +21,58 @@
           <v-form fast-fail @submit.prevent>
             <v-row>
               <v-col cols="6">
-                <v-text-field v-model="openingHours.Monday.hours" label="Monday" color="orange"></v-text-field>
+                <v-text-field v-model="openingHours.Monday.hours" :label="$t('Forms.Monday')" color="orange"></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-checkbox v-model="openingHours.Monday.isOpen" label="Open"></v-checkbox>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="6">
-                <v-text-field v-model="openingHours.Tuesday.hours" label="Tuesday" color="orange"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-checkbox v-model="openingHours.Tuesday.isOpen" label="Open"></v-checkbox>
+                <v-checkbox v-model="openingHours.Monday.isOpen" :label="$t('Forms.Open')"></v-checkbox>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="6">
-                <v-text-field v-model="openingHours.Wednesday.hours" label="Wednesday" color="orange"></v-text-field>
+                <v-text-field v-model="openingHours.Tuesday.hours" :label="$t('Forms.Thursday')" color="orange"></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-checkbox v-model="openingHours.Wednesday.isOpen" label="Open"></v-checkbox>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="6">
-                <v-text-field v-model="openingHours.Thursday.hours" label="Thursday" color="orange"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-checkbox v-model="openingHours.Thursday.isOpen" label="Open"></v-checkbox>
+                <v-checkbox v-model="openingHours.Tuesday.isOpen" :label="$t('Forms.Open')"></v-checkbox>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="6">
-                <v-text-field v-model="openingHours.Friday.hours" label="Friday" color="orange"></v-text-field>
+                <v-text-field v-model="openingHours.Wednesday.hours" :label="$t('Forms.Wednesday')" color="orange"></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-checkbox v-model="openingHours.Friday.isOpen" label="Open"></v-checkbox>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="6">
-                <v-text-field v-model="openingHours.Saturday.hours" label="Saturday" color="orange"></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <v-checkbox v-model="openingHours.Saturday.isOpen" label="Open"></v-checkbox>
+                <v-checkbox v-model="openingHours.Wednesday.isOpen" :label="$t('Forms.Open')"></v-checkbox>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="6">
-                <v-text-field v-model="openingHours.Sunday.hours" label="Sunday" color="orange"></v-text-field>
+                <v-text-field v-model="openingHours.Thursday.hours" :label="$t('Forms.Thursday')" color="orange"></v-text-field>
               </v-col>
               <v-col cols="6">
-                <v-checkbox v-model="openingHours.Sunday.isOpen" label="Open"></v-checkbox>
+                <v-checkbox v-model="openingHours.Thursday.isOpen" :label="$t('Forms.Open')"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Friday.hours" :label="$t('Forms.Friday')" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Friday.isOpen" :label="$t('Forms.Open')"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Saturday.hours" :label="$t('Forms.Saturday')" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Saturday.isOpen" :label="$t('Forms.Open')"></v-checkbox>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6">
+                <v-text-field v-model="openingHours.Sunday.hours" :label="$t('Forms.Sunday')" color="orange"></v-text-field>
+              </v-col>
+              <v-col cols="6">
+                <v-checkbox v-model="openingHours.Sunday.isOpen" :label="$t('Forms.Open')"></v-checkbox>
               </v-col>
             </v-row>
           </v-form>
@@ -80,7 +80,7 @@
 
         <!-- Submit Button spanning both columns -->
         <div class="w-1/2 p-2 flex justify-center">
-          <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>Save</v-btn>
+          <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{$t('Forms.Save')}}</v-btn>
         </div>
       </div>
     </v-sheet>

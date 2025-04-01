@@ -211,10 +211,10 @@ object Utility {
         return date.dayOfWeek.toString().lowercase().replaceFirstChar { it.uppercaseChar() }
     }
 
-    fun generateTimeSlots(intervalMinutes: Int = 15, date: String, startTimeSchedule: Int, endTimeSchedule: Int): List<TimeItem> {
+    fun generateTimeSlots(intervalMinutes: Int = 15, todayDate: String = LocalDate.now().toString(), date: String, startTimeSchedule: Int, endTimeSchedule: Int): List<TimeItem> {
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
         val now = LocalTime.now()
-        val today = LocalDate.now().toString() == date
+        val today = todayDate == date
 
         val startTime = LocalTime.of(startTimeSchedule, 0)
         val endTime = LocalTime.of(endTimeSchedule - 2, 0)
@@ -222,7 +222,7 @@ object Utility {
         if (today && now.isAfter(endTime)) return emptyList()
 
         val initialTime = when {
-            today && now.isBefore(startTime) -> startTime
+            today && now.isBefore(startTime) -> startTime.plusHours(2)
             today -> maxOf(now.plusHours(2), startTime)
             else -> startTime.plusHours(2)
         }

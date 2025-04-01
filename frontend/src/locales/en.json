@@ -1,0 +1,49 @@
+{
+  "SideBar": {
+    "Home": "Home",
+    "Menu": "Menu",
+    "Tables": "Tables",
+    "Time_Slots": "Time Slots",
+    "Information": "Information",
+    "Orders": "Orders",
+    "Reservation": "Reservation",
+    "Notifications": "Notifications",
+    "Logout": "Logout",
+    "Users": "Users"
+  },
+  "Forms": {
+    "Name": "Name",
+    "Description": "Description",
+    "Save": "Save",
+    "Capacity": "Capacity",
+    "Number": "Number",
+    "Address": "Address",
+    "Phone": "Phone",
+    "Email": "Email",
+    "StartTime": "Start Time",
+    "EndTime": "End Time",
+    "Website": "Website",
+    "Open": "Open",
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday",
+    "Title": "Title",
+    "Body": "Body",
+    "Send": "Send"
+  },
+  "Home": {
+    "Statistics": "Statistics",
+    "Top_10_Favorite_Menu_Items": "Top 10 Favorite Menu Items",
+    "Top_10_Ordered_Menu_Items": "Top 10 Ordered Menu Items",
+    "Sales_by_year": "Sales by year",
+    "Reservations_by_year": "Reservations by year",
+    "Total_orders_created:": "Total orders created:",
+    "Total_reservations_created:": "Total reservations created:",
+    "Today:": "Today:",
+    "Revenue": "Revenue"
+  }
+}
