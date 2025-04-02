@@ -7,27 +7,27 @@
           <v-form fast-fail @submit.prevent>
             <v-text-field
                 v-model="name"
-                label="Name"
+                :label="$t('MenuItems.Name')"
                 color="orange"
             ></v-text-field>
             <v-text-field
                 v-model="short_description"
-                label="Short Description"
+                :label="$t('MenuItems.Short_Description')"
                 color="orange"
             ></v-text-field>
             <v-text-field
                 v-model="long_description"
-                label="Long Description"
+                :label="$t('MenuItems.Long_Description')"
                 color="orange"
             ></v-text-field>
             <v-text-field
                 v-model="recipe"
-                label="Recipe"
+                :label="$t('MenuItems.Recipe')"
                 color="orange"
             ></v-text-field>
             <v-text-field
                 v-model="price"
-                label="Price"
+                :label="$t('MenuItems.Price')"
                 color="orange"
                 type="number"
             ></v-text-field>
@@ -37,32 +37,32 @@
                 :prepend-icon="null"
                 color="orange"
                 @change="onFileChange($event, 'add')"
-                label="Choose Image"
+                :label="$t('MenuItems.Choose_Image')"
             ></v-file-input>
             <v-img v-if="addImageUrl" :src="addImageUrl"></v-img>
-            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>Save</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{ $t('MenuItems.Save') }}</v-btn>
           </v-form>
         </div>
       </div>
     </v-sheet>
     <div class="relative overflow-x-auto">
-      <h2 class="text-4xl font-extrabold dark:text-white">All Menu Items</h2>
+      <h2 class="text-4xl font-extrabold dark:text-white">{{ $t('MenuItems.All_Menu_Items') }}</h2>
       <br>
       <form class="flex items-center max-w-sm mx-auto" @submit.prevent="onSearch">
         <div class="relative w-full">
-          <input type="text" v-model="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
+          <input type="text" v-model="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder="$t('MenuItems.Search')" />
         </div>
         <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
           <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
           </svg>
-          <span class="sr-only">Search</span>
+          <span class="sr-only">{{ $t('MenuItems.Search') }}</span>
         </button>
       </form>
       <br>
       <button type="submit" v-if="!showAddMenu" @click="showAddMenu = true" class="my-6 text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-        Add new Item Menu
+        {{ $t('MenuItems.Add_new_Item_Menu') }}
       </button>
       <div v-if="menuStore.isLoading" class="text-center text-gray-500 py-6">
         <PulseLoader/>
@@ -72,28 +72,28 @@
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3">
-              Image
+              {{ $t('MenuItems.Image') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              Name
+              {{ $t('MenuItems.Name') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              Short Description
+              {{ $t('MenuItems.Short_Description') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              Recipe
+              {{ $t('MenuItems.Recipe') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              Price
+              {{ $t('MenuItems.Price') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              Availability
+              {{ $t('MenuItems.Availability') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              Edit
+              {{ $t('MenuItems.Edit') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              Delete
+              {{ $t('MenuItems.Delet') }}
             </th>
           </tr>
           </thead>
@@ -115,18 +115,18 @@
               {{ item.price }}
             </td>
             <td class="px-6 py-4">
-              {{ (item.availability === 1) ? 'Available' : 'Not Available' }}
+              {{ (item.availability === 1) ? $t("MenuItems.Available") : $t("MenuItems.Not_Available") }}
             </td>
             <td>
               <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setMenuItem(item)">
-                Update/Show
+                {{ $t('MenuItems.Update_Show') }}
               </v-btn>
             </td>
             <td>
               <form @submit.prevent class="inline-block">
                 <v-btn @click="menuStore.destroyMenuItem(this.route.params.id, item)"
                        color="red-lighten-2"
-                       text="Delete"
+                       :text="$t('MenuItems.Delete')"
                 ></v-btn>
               </form>
             </td>
@@ -148,34 +148,34 @@
       <v-text-field
           v-model="editMenuItem.name"
           hide-details="auto"
-          label="Name"
+          :label="$t('MenuItems.Name')"
       ></v-text-field>
       <v-textarea
           v-model="editMenuItem.short_description"
           hide-details="auto"
-          label="Short Description"
+          :label="$t('MenuItems.Short_Description')"
       ></v-textarea>
       <v-textarea
           v-model="editMenuItem.long_description"
           hide-details="auto"
-          label="Long Description"
+          :label="$t('MenuItems.Long_Description')"
       ></v-textarea>
       <v-textarea
           v-model="editMenuItem.recipe"
           hide-details="auto"
-          label="Recipe"
+          :label="$t('MenuItems.Recipe')"
       ></v-textarea>
       <v-text-field
           v-model="editMenuItem.price"
           hide-details="auto"
-          label="Price"
+          :label="$t('MenuItems.Price')"
           type="number"
       ></v-text-field>
-      <v-checkbox v-model="editMenuItem.availability" :true-value="1" :false-value="0" label="Is available"></v-checkbox>
+      <v-checkbox v-model="editMenuItem.availability" :true-value="1" :false-value="0" :label="$t('MenuItems.Is_available')"></v-checkbox>
       <input type="file" accept="image/*" @change="onFileChange($event, 'update')" class="mb-4">
       <template v-slot:actions>
         <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="updateMenuItem"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('MenuItems.Update')" @click="updateMenuItem"></v-btn>
       </template>
     </v-card>
   </v-dialog>

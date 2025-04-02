@@ -25,9 +25,9 @@
     <br>
     <button type="submit" v-if="!showAddMenu" @click="showAddMenu = true" class="my-6 text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
       <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-      Add new Time Slot
+      {{$t('TimeSlots.Add_new_Time_Slot')}}
     </button>
-    <h2 class="text-4xl font-extrabold dark:text-white">All Time Slot's</h2>
+    <h2 class="text-4xl font-extrabold dark:text-white">{{$t('TimeSlots.All_Time_Slots')}}</h2>
     <div v-if="timeSlotStore.isLoading" class="text-center text-gray-500 py-6">
       <PulseLoader/>
     </div>
@@ -36,16 +36,16 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3">
-            Start Time
+            {{$t('TimeSlots.Start_Time')}}
           </th>
           <th scope="col" class="px-6 py-3">
-            End Time
+            {{$t('TimeSlots.End_Time')}}
           </th>
           <th scope="col" class="px-6 py-3">
-            Edit
+            {{$t('TimeSlots.Edit')}}
           </th>
           <th scope="col" class="px-6 py-3">
-            Delete
+            {{$t('TimeSlots.Delete')}}
           </th>
         </tr>
         </thead>
@@ -59,14 +59,14 @@
           </td>
           <td>
             <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setTimeSlot(slot)">
-              Update
+              {{ $t('TimeSlots.Update') }}
             </v-btn>
           </td>
           <td>
             <form @submit.prevent class="inline-block">
               <v-btn @click="timeSlotStore.deleteTimeSlot(slot.id)"
                      color="red-lighten-2"
-                     text="Delete"
+                     :text="$t('TimeSlots.Delete')"
               ></v-btn>
             </form>
           </td>
@@ -76,22 +76,22 @@
     </div>
   </div>
   <v-dialog v-model="dialog" max-width="900" persistent>
-    <v-card prepend-icon="mdi-update" title="Update Time Slot">
+    <v-card prepend-icon="mdi-update" :title="$t('TimeSlots.Update_Time_Slot')">
       <v-text-field
           v-model="editTimeSlot.start_time"
           hide-details="auto"
-          label="Start Time"
+          :label="$t('TimeSlots.Start_Time')"
           type="time"
       ></v-text-field>
       <v-text-field
           v-model="editTimeSlot.end_time"
           hide-details="auto"
-          label="End Time"
+          :label="$t('TimeSlots.End_Time')"
           type="time"
       ></v-text-field>
       <template v-slot:actions>
-        <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="dialog = false, timeSlotStore.updateTimeSlot(editTimeSlot.id, editTimeSlot)"></v-btn>
+        <v-btn class="ms-auto" :text="$t('TimeSlots.Close')" @click="dialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('TimeSlots.Update')" @click="dialog = false, timeSlotStore.updateTimeSlot(editTimeSlot.id, editTimeSlot)"></v-btn>
       </template>
     </v-card>
   </v-dialog>

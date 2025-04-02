@@ -35,6 +35,10 @@ axios.interceptors.request.use((config) => {
 app.use(createPinia());
 app.use(router);
 
+const lang = useStorage('language','en').value;
+
+i18n.global.locale = lang;
+
 const vuetify = createVuetify({
     components,
     directives,

@@ -21,23 +21,23 @@
           </div>
         </v-sheet>
     <br>
-      <h2 class="text-4xl font-extrabold dark:text-white">{{ $t("All Menu's")  }}</h2>
+      <h2 class="text-4xl font-extrabold dark:text-white">{{ $t('Menu.All_Menus')  }}</h2>
     <br>
     <form class="flex items-center max-w-sm mx-auto" @submit.prevent="onSearch">
       <div class="relative w-full">
-        <input type="text" v-model="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
+        <input type="text" v-model="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder=" $t('Menu.Search') " />
       </div>
       <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
         </svg>
-        <span class="sr-only">Search</span>
+        <span class="sr-only">{{ $t('Menu.Search')  }}</span>
       </button>
     </form>
     <br>
     <button type="submit" v-if="!showAddMenu" @click="showAddMenu = true" class="my-6 text-white inline-flex items-center justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
       <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
-      Add new Menu
+      {{ $t("Menu.Add_new_Menu") }}
     </button>
       <div v-if="menuStore.isLoading" class="text-center text-gray-500 py-6">
         <PulseLoader/>
@@ -46,24 +46,12 @@
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 my-6">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
-          <th scope="col" class="px-6 py-3">
-            Name
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Description
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Availability
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Edit
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Delete
-          </th>
-          <th scope="col" class="px-6 py-3">
-            Items
-          </th>
+          <th scope="col" class="px-6 py-3">{{ $t("Menu.Name") }}</th>
+          <th scope="col" class="px-6 py-3">{{ $t("Menu.Description") }}</th>
+          <th scope="col" class="px-6 py-3">{{ $t("Menu.Availability") }}</th>
+          <th scope="col" class="px-6 py-3">{{ $t("Menu.Edit") }}</th>
+          <th scope="col" class="px-6 py-3">{{ $t("Menu.Delete") }}</th>
+          <th scope="col" class="px-6 py-3">{{ $t("Menu.Items") }}</th>
         </tr>
         </thead>
         <tbody>
@@ -75,24 +63,24 @@
             {{ menu.description }}
           </td>
           <td class="px-6 py-4">
-            {{ (menu.availability === 1) ? 'Available' : 'Not Available' }}
+            {{ (menu.availability === 1) ? $t("Menu.Available") : $t("Menu.Not_Available") }}
           </td>
           <td>
             <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setMenu(menu)">
-              Update
+              {{ $t('Menu.Update') }}
             </v-btn>
           </td>
           <td>
             <form @submit.prevent class="inline-block">
               <v-btn @click="menuStore.destroyMenu(menu.id)"
                      color="red-lighten-2"
-                     text="Delete"
+                     :text="$t('Menu.Delete')"
               ></v-btn>
             </form>
           </td>
           <td>
             <RouterLink :to="'/menu/'+menu.id" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-              Items
+              {{ $t("Menu.Items") }}
             </RouterLink>
           </td>
         </tr>
@@ -108,21 +96,21 @@
     </div>
   </div>
   <v-dialog v-model="dialog" max-width="900" persistent>
-    <v-card prepend-icon="mdi-update" title="Update Menu">
+    <v-card prepend-icon="mdi-update" :title="$t('Menu.Update_Menu')">
       <v-text-field
           v-model="edit_menu.name"
           hide-details="auto"
-          label="Name"
+          :label="$t('Menu.Name')"
       ></v-text-field>
       <v-text-field
           v-model="edit_menu.description"
           hide-details="auto"
-          label="Description"
+          :label="$t('Menu.Description')"
       ></v-text-field>
-      <v-checkbox v-model="edit_menu.availability" :true-value="1" :false-value="0" label="Is available"></v-checkbox>
+      <v-checkbox v-model="edit_menu.availability" :true-value="1" :false-value="0" :label="$t('Menu.Is_available')"></v-checkbox>
       <template v-slot:actions>
-        <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="dialog = false, updateMenu(edit_menu)"></v-btn>
+        <v-btn class="ms-auto" :text="$t('Menu.Close')" @click="dialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('Menu.Update')" @click="dialog = false, updateMenu(edit_menu)"></v-btn>
       </template>
     </v-card>
   </v-dialog>

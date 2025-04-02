@@ -1,6 +1,20 @@
 <template>
   <NavComponent/>
   <div class="p-4 sm:ml-64">
+    <v-row class="language-selector">
+      <v-btn
+          v-for="lang in languages"
+          :key="lang"
+          :disabled="homeStore.lang === lang"
+          @click="homeStore.changeLanguage(lang)"
+          class="mx-2"
+          :color="homeStore.lang === lang ? 'grey' : 'primary'"
+          outlined
+      >
+        {{ lang.toUpperCase() }}
+      </v-btn>
+    </v-row>
+    <br>
     <h2 class="text-4xl font-extrabold dark:text-white">{{ $t('Home.Statistics') }}</h2>
     <br>
     <VRow>
@@ -130,6 +144,7 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import BasicCard from "@/components/StatBasicCard.vue";
 import StatProfits from "@/components/StatProfits.vue";
 import { initFlowbite } from 'flowbite'
+import {watch} from "vue";
 
 export default {
   components: {
@@ -142,6 +157,7 @@ export default {
     return{
       authStore: UseAuthStore(),
       homeStore: UseHomeStore(),
+      languages: ['sk', 'en', 'de', 'uk'],
       toast: useToast(),
     }
   },
@@ -159,6 +175,16 @@ export default {
       },
       immediate: true,
     },
+    "homeStore.success": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.success(newValue);
+          this.homeStore.success = "";
+        }
+      },
+      immediate: true,
+    }
   },
   beforeMount(){
     this.homeStore.fetchOrderStats(2025)
