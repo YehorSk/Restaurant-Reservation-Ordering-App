@@ -87,6 +87,7 @@
     <string name="schedule_friday">П’ятниця: %1$s</string>
     <string name="schedule_saturday">Субота: %1$s</string>
     <string name="schedule_sunday">Неділя: %1$s</string>
+    <string name="complete_by">Завершити до: %1$s</string>
     <string name="monday">Понеділок</string>
     <string name="tuesday">Вівторок</string>
     <string name="wednesday">Середа</string>
@@ -95,9 +96,13 @@
     <string name="saturday">Субота</string>
     <string name="sunday">Неділя</string>
     <string name="today">Сьогодні</string>
+    <string name="today_history">Сьогоднішня історія</string>
     <string name="tomorrow">Завтра</string>
+    <string name="history">Історія</string>
+    <string name="later">Пізніше</string>
     <string name="closed">Закрито</string>
     <string name="not_available">Недоступно</string>
+    <string name="no_times">Немає доступного часу.</string>
 
     <!-- Profile Items -->
     <string name="favorites">Улюблене</string>

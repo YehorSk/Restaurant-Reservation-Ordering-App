@@ -88,6 +88,7 @@
     <string name="schedule_friday">Freitag: %1$s</string>
     <string name="schedule_saturday">Samstag: %1$s</string>
     <string name="schedule_sunday">Sonntag: %1$s</string>
+    <string name="complete_by">Fertigstellung bis: %1$s</string>
     <string name="monday">Montag</string>
     <string name="tuesday">Dienstag</string>
     <string name="wednesday">Mittwoch</string>
@@ -96,9 +97,13 @@
     <string name="saturday">Samstag</string>
     <string name="sunday">Sonntag</string>
     <string name="today">Heute</string>
+    <string name="today_history">Heutiger Verlauf</string>
     <string name="tomorrow">Morgen</string>
+    <string name="history">Verlauf</string>
+    <string name="later">Später</string>
     <string name="closed">Geschlossen</string>
     <string name="not_available">Nicht verfügbar</string>
+    <string name="no_times">Keine Zeiten verfügbar.</string>
 
     <!-- Profile Items -->
     <string name="favorites">Favoriten</string>

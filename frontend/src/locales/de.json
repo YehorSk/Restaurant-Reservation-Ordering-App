@@ -44,7 +44,8 @@
     "Total_orders_created:": "Gesamtzahl erstellter Bestellungen:",
     "Total_reservations_created:": "Gesamtzahl erstellter Reservierungen:",
     "Today:": "Heute:",
-    "Revenue": "Einnahmen"
+    "Revenue": "Einnahmen",
+    "Total": "Gesamt"
   },
   "Menu": {
     "All_Menus": "Alle Menüs",
@@ -88,6 +89,18 @@
     "Close": "Schließen",
     "Update": "Aktualisieren"
   },
+  "Tables": {
+    "Id": "Id",
+    "Number": "Nummer",
+    "Capacity": "Kapazität",
+    "Edit": "Bearbeiten",
+    "Delete": "Löschen",
+    "Add_New_Table": "Neuen Tisch hinzufügen",
+    "All_Tables": "Alle Tische",
+    "Update_Table": "Tisch aktualisieren",
+    "Update": "Aktualisieren",
+    "Close": "Schließen"
+  },
   "TimeSlots": {
     "Add_new_Time_Slot": "Neuen Zeitrahmen hinzufügen",
     "All_Time_Slots": "Alle Zeitrahmen",
@@ -111,7 +124,11 @@
     "Delete": "Löschen",
     "Update": "Aktualisieren",
     "Close": "Schließen",
-    "Update_User": "Benutzer aktualisieren"
+    "Update_User": "Benutzer aktualisieren",
+    "user": "Benutzer",
+    "waiter": "Kellner",
+    "chef": "Koch",
+    "admin": "Administrator"
   },
   "Orders": {
     "All_Orders": "Alle Bestellungen",

@@ -60,7 +60,7 @@
             {{ user.language }}
           </td>
           <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            {{ user.role }}
+            {{ getRoleTranslation(user.role) }}
           </td>
           <td>
             <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setUser(user)">
@@ -102,7 +102,8 @@
       <v-select
         v-model="edit_user.role"
         :label="$t('Users.Role')"
-        :items="roles"></v-select>
+        :items="roles"
+      ></v-select>
       <template v-slot:actions>
         <v-btn class="ms-auto" :text="$t('Users.Close')" @click="dialog = false"></v-btn>
         <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('Users.Update')" @click="dialog = false, updateUser(edit_user)"></v-btn>
@@ -184,6 +185,9 @@ export default {
       this.userStore.current_page = 1;
       this.userStore.fetchUsers(this.search);
     },
+    getRoleTranslation(role) {
+      return this.$t(`Users.${role}`);
+    }
   }
 }
 </script>

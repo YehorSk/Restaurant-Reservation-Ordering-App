@@ -87,6 +87,7 @@
     <string name="schedule_friday">Piatok: %1$s</string>
     <string name="schedule_saturday">Sobota: %1$s</string>
     <string name="schedule_sunday">Nedeľa: %1$s</string>
+    <string name="complete_by">Dokončiť do: %1$s</string>
     <string name="monday">Pondelok</string>
     <string name="tuesday">Utorok</string>
     <string name="wednesday">Streda</string>
@@ -95,10 +96,13 @@
     <string name="saturday">Sobota</string>
     <string name="sunday">Nedeľa</string>
     <string name="today">Dnes</string>
+    <string name="today_history">Dnešná história</string>
     <string name="tomorrow">Zajtra</string>
+    <string name="history">História</string>
+    <string name="later">Neskôr</string>
     <string name="closed">Zatvorené</string>
     <string name="not_available">Nedostupné</string>
-
+    <string name="no_times">Nie sú dostupné žiadne časy.</string>
 
     <!-- Profile Items -->
     <string name="favorites">Obľúbené</string>

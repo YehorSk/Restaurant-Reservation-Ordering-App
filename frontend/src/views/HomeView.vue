@@ -93,7 +93,7 @@
               <div v-if="!homeStore.getMenuItemsStats.isLoading">
                 <p class="text-h6 me-2"><span class="font-weight-bold"> {{ $t('Home.Total_orders_created:') }} </span>{{ homeStore.getOrderStats.data.data_all_count }}</p>
                 <p class="text-h6 me-2"><span class="font-weight-bold">{{ $t('Home.Today:') }} </span>{{ homeStore.getOrderStats.data.data_today }}</p>
-                <StatProfits :data="homeStore.getOrderStats.data"/>
+                <StatProfits :data="homeStore.getOrderStats.data" :label="$t('Home.Revenue')" />
                 <div class="d-flex justify-center mt-4">
                   <VBtn v-for="year in homeStore.getReservationStats.data.years" :key="year" @click="onOrderYearChange(year)">
                     {{ year }}
@@ -119,7 +119,7 @@
               <div v-if="!homeStore.getReservationStats.isLoading">
                 <p class="text-h6 me-2"><span class="font-weight-bold">{{$t('Home.Total_reservations_created:')}} </span>{{ homeStore.getReservationStats.data.data_all_count }}</p>
                 <p class="text-h6 me-2"><span class="font-weight-bold">{{$t('Home.Today:')}} </span>{{ homeStore.getReservationStats.data.data_today }}</p>
-                <StatProfits :data="homeStore.getReservationStats.data"/>
+                <StatProfits :data="homeStore.getReservationStats.data" :label="$t('Home.Total')"/>
                 <div class="d-flex justify-center mt-4">
                   <VBtn v-for="year in homeStore.getReservationStats.data.years" :key="year" @click="onReservationYearChange(year)">
                     {{ year }}

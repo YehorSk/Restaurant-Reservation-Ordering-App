@@ -7,7 +7,7 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 export default {
   name: "StatProfits" ,
   components: {Bar},
-  props:['data'],
+  props:['data', 'label'],
   data(){
     return {
       chartOptions: {
@@ -22,7 +22,7 @@ export default {
       return {
         labels: months,
         datasets: [{
-          label: 'Revenue',
+          label: this.label,
           data: dataStats,
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'rgba(75, 192, 192, 0.2)',

@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.OrderFilter
+import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
 import com.yehorsk.platea.core.presentation.components.OrdersDropdownList
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
@@ -33,6 +34,7 @@ fun OrdersScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
+    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
 
     OrdersScreenRoot(
         modifier = modifier,
@@ -44,7 +46,8 @@ fun OrdersScreen(
         searchText = searchText,
         filterOption = filterOption,
         orders = orders,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        showStatus = (userRole in arrayOf("admin", "chef", "waiter"))
     )
 
 }
@@ -61,7 +64,8 @@ fun OrdersScreenRoot(
     searchText: String,
     filterOption: OrderFilter,
     orders: List<OrderEntity>,
-    onAction: (OrdersAction) -> Unit
+    onAction: (OrdersAction) -> Unit,
+    showStatus: Boolean = false
 ){
 
     PullToRefreshBox(
@@ -79,15 +83,20 @@ fun OrdersScreenRoot(
                 text = searchText,
                 onTextChanged = { onAction(OrdersAction.UpdateSearch(it)) }
             )
-            OrdersDropdownList(
-                filterOption = filterOption,
-                text = R.string.filter,
-                onSelect = { onAction(OrdersAction.UpdateFilter(it)) }
-            )
-            OrdersList(
-                orders = orders,
-                onGoToOrderDetails = { onGoToOrderDetails(it) }
-            )
+            if(isLoading){
+                LoadingPart()
+            }else{
+                OrdersDropdownList(
+                    filterOption = filterOption,
+                    text = R.string.filter,
+                    onSelect = { onAction(OrdersAction.UpdateFilter(it)) }
+                )
+                OrdersList(
+                    orders = orders,
+                    onGoToOrderDetails = { onGoToOrderDetails(it) },
+                    showStatus = showStatus
+                )
+            }
         }
     }
 }

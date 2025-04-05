@@ -14,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
+import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
 import com.yehorsk.platea.core.presentation.components.ReservationDropdownList
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
@@ -33,6 +34,7 @@ fun ReservationScreenRoot(
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val reservations by viewModel.reservationItemUiState.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
+    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
 
     ReservationScreen(
         modifier = modifier,
@@ -43,7 +45,9 @@ fun ReservationScreenRoot(
         filterOption = filterOption,
         showGoBack = showGoBack,
         reservations = reservations,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        showStatus = (userRole in arrayOf("admin", "chef", "waiter")),
+        isLoading = uiState.isLoading
     )
 
 }
@@ -52,6 +56,7 @@ fun ReservationScreenRoot(
 @Composable
 fun ReservationScreen(
     modifier: Modifier = Modifier,
+    isLoading: Boolean,
     uiState: ReservationUiState,
     onGoToReservationDetails: (Int) -> Unit,
     onGoBack: () -> Unit,
@@ -59,7 +64,8 @@ fun ReservationScreen(
     filterOption: ReservationFilter,
     showGoBack: Boolean,
     reservations: List<ReservationEntity>,
-    onAction: (ReservationScreenAction) -> Unit
+    onAction: (ReservationScreenAction) -> Unit,
+    showStatus: Boolean = false
 ){
     PullToRefreshBox(
         isRefreshing = uiState.isLoading,
@@ -76,15 +82,20 @@ fun ReservationScreen(
                 text = searchText,
                 onTextChanged = { onAction(ReservationScreenAction.OnSearchValueChange(it)) }
             )
-            ReservationDropdownList(
-                filterOption = filterOption,
-                text = R.string.filter,
-                onSelect = { onAction(ReservationScreenAction.UpdateFilter(it)) }
-            )
-            ReservationsList(
-                items = reservations,
-                onGoToReservationDetails = { onGoToReservationDetails(it) }
-            )
+            if(isLoading){
+                LoadingPart()
+            }else{
+                ReservationDropdownList(
+                    filterOption = filterOption,
+                    text = R.string.filter,
+                    onSelect = { onAction(ReservationScreenAction.UpdateFilter(it)) }
+                )
+                ReservationsList(
+                    items = reservations,
+                    onGoToReservationDetails = { onGoToReservationDetails(it) },
+                    showStatus = showStatus
+                )
+            }
         }
     }
 }

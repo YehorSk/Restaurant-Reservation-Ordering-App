@@ -26,7 +26,7 @@
       <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
       Add new Table
     </button>
-    <h2 class="text-4xl font-extrabold dark:text-white">All Table's</h2>
+    <h2 class="text-4xl font-extrabold dark:text-white">{{ $t('Tables.All_Tables') }}</h2>
     <div v-if="tableStore.isLoading" class="text-center text-gray-500 py-6">
       <PulseLoader/>
     </div>
@@ -35,19 +35,19 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
           <th scope="col" class="px-6 py-3">
-            Id
+            {{ $t('Tables.Id') }}
           </th>
           <th scope="col" class="px-6 py-3">
-            Number
+            {{ $t('Tables.Number') }}
           </th>
           <th scope="col" class="px-6 py-3">
-            Capacity
+            {{ $t('Tables.Capacity') }}
           </th>
           <th scope="col" class="px-6 py-3">
-            Edit
+            {{ $t('Tables.Edit') }}
           </th>
           <th scope="col" class="px-6 py-3">
-            Delete
+            {{ $t('Tables.Delete') }}
           </th>
         </tr>
         </thead>
@@ -64,14 +64,14 @@
           </td>
           <td>
             <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setTable(table)">
-              Update
+              {{ $t('Tables.Update') }}
             </v-btn>
           </td>
           <td>
             <form @submit.prevent class="inline-block">
               <v-btn @click="tableStore.deleteTable(table.id)"
                      color="red-lighten-2"
-                     text="Delete"
+                     :text="$t('Tables.Delete')"
               ></v-btn>
             </form>
           </td>
@@ -81,21 +81,21 @@
     </div>
   </div>
   <v-dialog v-model="dialog" max-width="900" persistent>
-    <v-card prepend-icon="mdi-update" title="Update Time Slot">
+    <v-card prepend-icon="mdi-update" :title="$t('Tables.Update_Table')">
       <v-text-field
           v-model="editTable.number"
           hide-details="auto"
-          label="Number"
+          :label="$t('Tables.Number')"
       ></v-text-field>
       <v-text-field
           v-model="editTable.capacity"
           hide-details="auto"
-          label="Capacity"
+          :label="$t('Tables.Capacity')"
           type="number"
       ></v-text-field>
       <template v-slot:actions>
-        <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" text="Update" @click="dialog = false, tableStore.updateTable(editTable)"></v-btn>
+        <v-btn class="ms-auto" :text="$t('Tables.Close')" @click="dialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('Tables.Update')" @click="dialog = false, tableStore.updateTable(editTable)"></v-btn>
       </template>
     </v-card>
   </v-dialog>

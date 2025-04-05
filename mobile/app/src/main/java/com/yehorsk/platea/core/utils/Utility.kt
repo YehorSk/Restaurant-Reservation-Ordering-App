@@ -2,22 +2,26 @@ package com.yehorsk.platea.core.utils
 
 import android.content.Context
 import android.provider.Settings
+import androidx.annotation.StringRes
+import androidx.compose.ui.graphics.Color
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
+import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.presentation.create_order.components.TimeItem
+import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonObject
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import kotlin.collections.contains
 
 @Serializable
@@ -239,6 +243,108 @@ object Utility {
         }
 
         return timeSlots
+    }
+
+    fun getOrderColorIndicator(status: String, date: String, endTime: String): Color{
+        val orderDate = LocalDate.parse(date)
+        Timber.d("OrderDate: $orderDate ")
+        return if(status in arrayOf("Confirmed", "Preparing")){
+            if(orderDate == LocalDate.now()){
+                val now = LocalTime.now()
+                val formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+                val parsedEndTime = LocalTime.parse(endTime, formatter)
+
+                val minutesLeft = ChronoUnit.MINUTES.between(now, parsedEndTime)
+
+                when {
+                    minutesLeft <= 0 -> Color.Transparent
+                    minutesLeft <= 60 -> Color.Red
+                    minutesLeft <= 180 -> Color.Transparent // Color(0xFFFFA500)
+                    minutesLeft <= 720 -> Color.Transparent // Color.Yellow
+                    else -> Color.Transparent
+                }
+            }else if (orderDate.isAfter(LocalDate.now())) {
+                Color.Transparent
+            } else {
+                Color.Transparent
+            }
+        }else{
+            Color.Transparent
+        }
+    }
+
+
+    enum class FilterTypeOrder(@StringRes val label: Int) {
+        TODAY(R.string.today),
+        TODAY_HISTORY(R.string.today_history),
+        TOMORROW(R.string.tomorrow),
+        LATER(R.string.later),
+        HISTORY(R.string.history)
+    }
+
+    enum class FilterTypeReservation(@StringRes val label: Int) {
+        TODAY(R.string.today),
+        TOMORROW(R.string.tomorrow),
+        LATER(R.string.later),
+        HISTORY(R.string.history)
+    }
+
+    data class SectionedOrders(
+        @StringRes val title: Int,
+        val orders: List<OrderEntity>
+    )
+
+    data class SectionedReservation(
+        @StringRes val title: Int,
+        val reservations: List<ReservationEntity>
+    )
+
+    fun groupOrdersByDate(orders: List<OrderEntity>): List<SectionedOrders>{
+        val today = LocalDate.now()
+        val time = LocalTime.now()
+
+        val grouped = FilterTypeOrder.entries.map { type ->
+            val filteredOrders = orders.filter { order ->
+                val orderDate = order.date?.let { LocalDate.parse(it) } ?: return@filter false
+                val orderEndTime = order.endTime.let { LocalTime.parse(it) } ?: return@filter false
+                when (type) {
+                    FilterTypeOrder.TODAY -> (orderDate == today && orderEndTime.isAfter(time))
+                    FilterTypeOrder.TODAY_HISTORY -> (orderDate == today && orderEndTime.isBefore(time))
+                    FilterTypeOrder.TOMORROW -> orderDate == today.plusDays(1)
+                    FilterTypeOrder.LATER -> orderDate.isAfter(today.plusDays(1))
+                    FilterTypeOrder.HISTORY -> orderDate.isBefore(today)
+                }
+            }
+
+            SectionedOrders(title = type.label, orders = filteredOrders)
+        }
+        return grouped.filter { it.orders.isNotEmpty() }
+    }
+
+    fun groupReservationsByDate(reservations: List<ReservationEntity>): List<SectionedReservation>{
+        val today = LocalDate.now()
+        val time = LocalTime.now()
+
+        val grouped = FilterTypeReservation.entries.map { type ->
+            val filteredOrders = reservations.filter { reservation ->
+                val reservationDate = reservation.date.let { LocalDate.parse(it) } ?: return@filter false
+                when (type) {
+                    FilterTypeReservation.TODAY -> reservationDate == today
+                    FilterTypeReservation.TOMORROW -> reservationDate == today.plusDays(1)
+                    FilterTypeReservation.LATER -> reservationDate.isAfter(today.plusDays(1))
+                    FilterTypeReservation.HISTORY -> reservationDate.isBefore(today)
+                }
+            }
+
+            SectionedReservation(title = type.label, reservations = filteredOrders)
+        }
+        return grouped.filter { it.reservations.isNotEmpty() }
+    }
+
+    fun calculateRemainingTime(endTime: String): Long {
+        val endLocalTime = LocalTime.parse(endTime)
+        val currentTime = LocalTime.now()
+        return ChronoUnit.MINUTES.between(currentTime, endLocalTime)
     }
 
 

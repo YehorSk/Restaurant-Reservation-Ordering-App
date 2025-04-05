@@ -44,7 +44,8 @@
     "Total_orders_created:": "Total orders created:",
     "Total_reservations_created:": "Total reservations created:",
     "Today:": "Today:",
-    "Revenue": "Revenue"
+    "Revenue": "Revenue",
+    "Total": "Total"
   },
   "Menu": {
     "All_Menus": "All Menu's",
@@ -88,6 +89,18 @@
     "Close": "Close",
     "Update": "Update"
   },
+  "Tables": {
+    "Id": "Id",
+    "Number": "Number",
+    "Capacity": "Capacity",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Update": "Update",
+    "Add_New_Table": "Add new Table",
+    "All_Tables": "All Table's",
+    "Update_Table": "Update Table",
+    "Close": "Close"
+  },
   "TimeSlots": {
     "Add_new_Time_Slot": "Add new Time Slot",
     "All_Time_Slots": "All Time Slot's",
@@ -111,7 +124,11 @@
     "Delete": "Delete",
     "Update": "Update",
     "Close": "Close",
-    "Update_User": "Update User"
+    "Update_User": "Update User",
+    "user": "user",
+    "waiter": "waiter",
+    "chef": "chef",
+    "admin":  "admin"
   },
   "Orders": {
     "All_Orders": "All Order's",

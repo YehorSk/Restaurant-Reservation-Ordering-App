@@ -20,14 +20,16 @@ const app = createApp(App);
 
 axios.defaults.baseURL = "https://api.platea.site/backend/public/api";
 
+const lang = useStorage('language','en');
+
 axios.interceptors.request.use((config) => {
-    console.log(1);
     const token = useStorage('token',{}).value;
     config.headers.Authorization = `Bearer ${token}`;
     if (!config.headers["Content-Type"]) {
         config.headers["Content-Type"] = "application/json";
     }
     config.headers["Access-Control-Allow-Origin"] = "*";
+    config.headers["lang"] = lang.value;
     config.headers.Accept = "application/vnd.api+json";
     return config;
 });
@@ -35,9 +37,7 @@ axios.interceptors.request.use((config) => {
 app.use(createPinia());
 app.use(router);
 
-const lang = useStorage('language','en').value;
-
-i18n.global.locale = lang;
+i18n.global.locale = lang.value;
 
 const vuetify = createVuetify({
     components,

@@ -44,7 +44,8 @@
     "Total_orders_created:": "Celkový počet vytvorených objednávok:",
     "Total_reservations_created:": "Celkový počet vytvorených rezervácií:",
     "Today:": "Dnes:",
-    "Revenue": "Príjmy"
+    "Revenue": "Príjmy",
+    "Total": "Celkom"
   },
   "Menu": {
     "All_Menus": "Všetky menu",
@@ -88,6 +89,18 @@
     "Close": "Zavrieť",
     "Update": "Aktualizovať"
   },
+  "Tables": {
+    "Id": "Id",
+    "Number": "Číslo",
+    "Capacity": "Kapacita",
+    "Edit": "Upraviť",
+    "Delete": "Odstrániť",
+    "Add_New_Table": "Pridať nový stôl",
+    "All_Tables": "Všetky stoly",
+    "Update_Table": "Aktualizovať stôl",
+    "Update": "Aktualizovať",
+    "Close": "Zavrieť"
+  },
   "TimeSlots": {
     "Add_new_Time_Slot": "Pridať nový časový slot",
     "All_Time_Slots": "Všetky časové sloty",
@@ -111,7 +124,11 @@
     "Delete": "Odstrániť",
     "Update": "Aktualizovať",
     "Close": "Zavrieť",
-    "Update_User": "Aktualizovať používateľa"
+    "Update_User": "Aktualizovať používateľa",
+    "user": "užívateľ",
+    "waiter": "číšnik",
+    "chef": "kuchár",
+    "admin": "administrátor"
   },
   "Orders": {
     "All_Orders": "Všetky objednávky",

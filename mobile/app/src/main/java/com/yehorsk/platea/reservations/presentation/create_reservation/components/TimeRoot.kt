@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,7 +31,9 @@ import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.utils.formatDateTimeWithoutYear
 import com.yehorsk.platea.core.utils.formatTime
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
-import com.yehorsk.platea.ui.theme.MobileTheme
+import com.yehorsk.platea.R
+import com.yehorsk.platea.ui.theme.MobileThemePreview
+import timber.log.Timber
 
 @Composable
 fun TimeRoot(
@@ -40,7 +43,6 @@ fun TimeRoot(
     slots: List<TimeSlotDto>,
     onTimeChanged: (Int, String) -> Unit
 ){
-
     Column(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
@@ -64,27 +66,39 @@ fun TimeRoot(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(slots.filter { it.availableTables > 0 }){ item ->
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(5.dp))
-                        .border(
-                            width = 2.dp,
-                            color = if (item.id == selectedSlot) MaterialTheme.colorScheme.tertiary else Color.LightGray,
-                            shape = CircleShape)
-                        .width(80.dp)
-                        .background(MaterialTheme.colorScheme.background)
-                        .clickable{
-                            onTimeChanged(item.id, item.startTime)
-                        },
-                    contentAlignment = Alignment.Center
-                ){
+            if(slots.filter { it.availableTables > 0 }.isNotEmpty()){
+                items(slots.filter { it.availableTables > 0 }){ item ->
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(5.dp))
+                            .border(
+                                width = 2.dp,
+                                color = if (item.id == selectedSlot) MaterialTheme.colorScheme.tertiary else Color.LightGray,
+                                shape = CircleShape)
+                            .width(80.dp)
+                            .background(MaterialTheme.colorScheme.background)
+                            .clickable{
+                                onTimeChanged(item.id, item.startTime)
+                            },
+                        contentAlignment = Alignment.Center
+                    ){
+                        AutoResizedText(
+                            modifier = Modifier.padding(10.dp),
+                            maxLines = 1,
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.Bold,
+                            text = formatTime(item.startTime.toString())
+                        )
+                    }
+                }
+            }else{
+                item{
                     AutoResizedText(
                         modifier = Modifier.padding(10.dp),
                         maxLines = 1,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
-                        text = formatTime(item.startTime.toString())
+                        text = stringResource(R.string.no_times)
                     )
                 }
             }
@@ -107,7 +121,7 @@ fun TimeRootPreview(){
         TimeSlotDto(id = 9, startTime = "16:00:00", endTime = "17:00:00", availableTables = 8),
         TimeSlotDto(id = 10, startTime = "17:00:00", endTime = "18:00:00", availableTables = 8)
     )
-    MobileTheme {
+    MobileThemePreview {
         TimeRoot(
             date = "2024-12-20",
             slots = timeSlots,
