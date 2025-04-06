@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -40,7 +41,7 @@ fun OrderDetailsListItem(
     Row(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
-            .height(100.dp)
+            .height(IntrinsicSize.Max)
             .clickable {
                 onClick(menuItem)
             },

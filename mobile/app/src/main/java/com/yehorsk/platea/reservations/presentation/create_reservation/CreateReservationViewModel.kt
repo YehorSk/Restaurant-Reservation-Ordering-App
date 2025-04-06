@@ -1,6 +1,8 @@
 package com.yehorsk.platea.reservations.presentation.create_reservation
 
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
+import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
@@ -24,8 +26,9 @@ class CreateReservationViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     reservationRepositoryImpl: ReservationRepositoryImpl,
     reservationDao: ReservationDao,
-    preferencesRepository: MainPreferencesRepository
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository){
+    preferencesRepository: MainPreferencesRepository,
+    restaurantInfoDao: RestaurantInfoDao
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository, restaurantInfoDao){
 
     fun onAction(action: CreateReservationAction){
         when(action){
@@ -122,6 +125,25 @@ class CreateReservationViewModel @Inject constructor(
                 .onSuccess { data, message ->
                     _uiState.update {
                         it.copy(timeSlots = data)
+                    }
+                }
+                .onError { error ->
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
+                }
+        }
+    }
+
+    fun getMaxCapacity(){
+        Timber.d("getMaxCapacity")
+        viewModelScope.launch{
+            reservationRepositoryImpl.getMaxCapacity()
+                .onSuccess { data, _ ->
+                    _uiState.update {
+                        it.copy(maxCapacity = data.first())
                     }
                 }
                 .onError { error ->

@@ -92,6 +92,7 @@ Route::group(['middleware' => ['auth:sanctum']],function (){
 
     Route::prefix("table")->controller(TableController::class)->group(function (){
         Route::get('/waiter/tables','getTables');
+        Route::get('/getMaxCapacity', 'getMaxCapacity');
     });
 
     Route::prefix("reservation")->controller(ReservationController::class)->group(function (){

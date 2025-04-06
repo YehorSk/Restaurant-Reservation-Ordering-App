@@ -57,6 +57,15 @@ class ReservationRepositoryImpl @Inject constructor(
         )
     }
 
+    override suspend fun getMaxCapacity(): Result<List<Int>, AppError> {
+        Timber.d("getMaxCapacity")
+        return safeCall<Int>(
+            execute = {
+                reservationService.getMaxCapacity()
+            }
+        )
+    }
+
     override suspend fun getUserReservationDetails(id: String): Result<List<ReservationDto>, AppError> {
         Timber.d("getUserReservations")
         return safeCall<ReservationDto>(

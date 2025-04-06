@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +43,7 @@ import com.kizitonwose.calendar.core.firstDayOfWeekFromLocale
 import com.kizitonwose.calendar.core.nextMonth
 import com.kizitonwose.calendar.core.previousMonth
 import com.yehorsk.platea.R
+import com.yehorsk.platea.core.utils.Utility.getSchedule
 import com.yehorsk.platea.core.utils.formatMonth
 import com.yehorsk.platea.ui.theme.MobileTheme
 import kotlinx.coroutines.launch
@@ -55,7 +57,8 @@ import java.util.Locale
 @Composable
 fun CalendarRoot(
     onUpdateSelectedDate: (String) -> Unit,
-    selectedDate: String
+    selectedDate: String,
+    closedDays: Array<String>
 ){
 
     val coroutineScope = rememberCoroutineScope()
@@ -148,7 +151,8 @@ fun CalendarRoot(
                     onClick = { day ->
                         localDate = if (localDate == day.date) localDate else day.date
                         onUpdateSelectedDate(localDate.toString())
-                    }
+                    },
+                    isClosed = day.date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH) in closedDays
                 )
             },
             monthHeader = {
@@ -189,6 +193,7 @@ fun Day(
     day: CalendarDay,
     isSelected: Boolean,
     onClick: (CalendarDay) -> Unit,
+    isClosed: Boolean
 ) {
     val isPastDate = day.date.isBefore(LocalDate.now())
     Box(
@@ -200,6 +205,7 @@ fun Day(
                 day.position != DayPosition.MonthDate -> Color.Transparent
                 isSelected -> MaterialTheme.colorScheme.tertiary
                 isPastDate -> Color.LightGray
+                isClosed -> Color.LightGray
                 else -> Color.White
             })
             .border(
@@ -208,11 +214,12 @@ fun Day(
                     day.position != DayPosition.MonthDate -> Color.Transparent
                     isSelected -> Color.Transparent
                     isPastDate -> Color.Transparent
+                    isClosed -> Color.Transparent
                     else -> Color.LightGray
                 },
                 shape = RoundedCornerShape(10.dp))
             .clickable(
-                enabled = day.position == DayPosition.MonthDate && !isPastDate,
+                enabled = day.position == DayPosition.MonthDate && !isPastDate && !isClosed,
                 onClick = { onClick(day) }
             ),
         contentAlignment = Alignment.Center
@@ -222,6 +229,7 @@ fun Day(
             color = when {
                 day.position != DayPosition.MonthDate -> Color.Transparent
                 isPastDate -> Color.Gray
+                isClosed -> Color.Gray
                 isSelected -> Color.White
                 else -> Color.Black
             }
@@ -235,7 +243,8 @@ fun CalendarPreview(){
     MobileTheme {
         CalendarRoot(
             onUpdateSelectedDate = {},
-            selectedDate = ""
+            selectedDate = "",
+            closedDays = arrayOf()
         )
     }
 }

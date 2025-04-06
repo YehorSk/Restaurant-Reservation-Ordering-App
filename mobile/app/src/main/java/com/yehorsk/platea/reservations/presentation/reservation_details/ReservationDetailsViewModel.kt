@@ -1,6 +1,7 @@
 package com.yehorsk.platea.reservations.presentation.reservation_details
 
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
@@ -24,8 +25,9 @@ class ReservationDetailsViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     reservationRepositoryImpl: ReservationRepositoryImpl,
     reservationDao: ReservationDao,
-    preferencesRepository: MainPreferencesRepository
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository){
+    preferencesRepository: MainPreferencesRepository,
+    restaurantInfoDao: RestaurantInfoDao
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository, restaurantInfoDao){
 
     val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationDao.getUserReservations()
         .stateIn(

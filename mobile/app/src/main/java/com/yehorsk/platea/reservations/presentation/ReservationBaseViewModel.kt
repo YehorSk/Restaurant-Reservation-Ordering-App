@@ -2,6 +2,8 @@ package com.yehorsk.platea.reservations.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
+import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.SideEffect
@@ -29,7 +31,15 @@ open class ReservationBaseViewModel @Inject constructor(
     val reservationRepositoryImpl: ReservationRepositoryImpl,
     val reservationDao: ReservationDao,
     val preferencesRepository: MainPreferencesRepository,
+    val restaurantInfoDao: RestaurantInfoDao
 ): ViewModel(){
+
+    val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantInfoDao.getRestaurantInfo()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)

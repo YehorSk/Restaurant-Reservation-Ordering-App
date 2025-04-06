@@ -41,7 +41,8 @@ fun TimeRoot(
     selectedSlot: Int,
     date: String,
     slots: List<TimeSlotDto>,
-    onTimeChanged: (Int, String) -> Unit
+    onTimeChanged: (Int, String) -> Unit,
+    isClosed: Boolean
 ){
     Column(
         modifier = Modifier
@@ -66,7 +67,7 @@ fun TimeRoot(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            if(slots.filter { it.availableTables > 0 }.isNotEmpty()){
+            if(slots.filter { it.availableTables > 0 }.isNotEmpty() && !isClosed){
                 items(slots.filter { it.availableTables > 0 }){ item ->
                     Box(
                         modifier = Modifier
@@ -91,7 +92,17 @@ fun TimeRoot(
                         )
                     }
                 }
-            }else{
+            }else if(isClosed){
+                item{
+                    AutoResizedText(
+                        modifier = Modifier.padding(10.dp),
+                        maxLines = 1,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        text = stringResource(R.string.closed)
+                    )
+                }
+            } else{
                 item{
                     AutoResizedText(
                         modifier = Modifier.padding(10.dp),
@@ -126,7 +137,8 @@ fun TimeRootPreview(){
             date = "2024-12-20",
             slots = timeSlots,
             onTimeChanged = {id, time ->},
-            selectedSlot = 0
+            selectedSlot = 0,
+            isClosed = true
         )
     }
 }

@@ -16,6 +16,9 @@ interface ReservationService {
     @POST("reservation/user/getTimeSlots")
     suspend fun getAvailableTimeSlots(@Body reservationForm: ReservationForm) : ResponseDto<TimeSlotDto>
 
+    @GET("table/getMaxCapacity")
+    suspend fun getMaxCapacity() : ResponseDto<Int>
+
     @POST("reservation/user/createReservation")
     suspend fun createReservation(@Body reservationForm: ReservationForm) : ResponseDto<ReservationDto>
 

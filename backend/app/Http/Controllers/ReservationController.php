@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Reservation;
+use App\Models\RestaurantInfo;
 use App\Models\Table;
 use App\Models\TimeSlot;
 use App\Models\User;
 use App\Traits\FCMNotificationTrait;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ReservationController extends Controller
 {
@@ -94,11 +96,20 @@ class ReservationController extends Controller
 
             $currentTime = now()->setTimezone('Europe/Bratislava')->format('H:i:s');
 
+            $openingHoursJson = RestaurantInfo::first()->opening_hours;
+            $openingHours = json_decode($openingHoursJson, true);
+            $weekday = Carbon::parse($date)->format('l');
+            $todaySchedule = $openingHours[$weekday];
+
+            [$startRaw, $endRaw] = explode('-', $todaySchedule['hours']);
+
+            $startTime = Carbon::createFromFormat('H:i', $startRaw)->format('H:i:s');
+            $endTime = Carbon::createFromFormat('H:i', $endRaw)->format('H:i:s');
+
             // Fetch time slots
             $timeSlots = TimeSlot::query()
-                ->when($date === now()->format('Y-m-d'), function ($query) use ($currentTime) {
-                    $query->where('start_time', '>=', $currentTime);
-                })
+                ->where('start_time', '>=', $date === now()->format('Y-m-d') ? $currentTime : $startTime)
+                ->where('end_time', '<=', $endTime)
                 ->orderBy('start_time')
                 ->get();
 

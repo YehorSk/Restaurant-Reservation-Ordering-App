@@ -15,6 +15,8 @@ interface ReservationRepository {
 
     suspend fun getUserReservations() : Result<List<ReservationDto>, AppError>
 
+    suspend fun getMaxCapacity() : Result<List<Int>, AppError>
+
     suspend fun getUserReservationDetails(id: String) : Result<List<ReservationDto>, AppError>
 
     suspend fun updateReservation(id: String, status: Status) : Result<List<ReservationDto>, AppError>

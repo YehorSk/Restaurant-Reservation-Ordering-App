@@ -33,10 +33,11 @@ import com.yehorsk.platea.ui.theme.MobileTheme
 fun PartySize(
     modifier: Modifier = Modifier,
     partySize: Int,
-    onPartySizeChanged:(Int) -> Unit
+    onPartySizeChanged:(Int) -> Unit,
+    maxTableSize: Int = 0
 ){
 
-    val items = (1..10).toList()
+    val items = (1..maxTableSize).toList()
 
     Column(
         modifier = Modifier

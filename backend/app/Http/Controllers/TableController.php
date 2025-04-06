@@ -22,6 +22,15 @@ class TableController extends Controller
         return $this->error('', __('messages.no_user'), 401);
     }
 
+    public function getMaxCapacity(){
+        $user = auth('sanctum')->user();
+        if($user){
+            $capacity = Table::max("capacity");
+            return $this->success(data: [$capacity], message: "");
+        }
+        return $this->error('', __('messages.no_user'), 401);
+    }
+
     public function index()
     {
         $user = auth('sanctum')->user();

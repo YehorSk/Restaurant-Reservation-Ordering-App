@@ -1,6 +1,7 @@
 package com.yehorsk.platea.reservations.presentation.reservations
 
 import androidx.lifecycle.viewModelScope
+import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
 import com.yehorsk.platea.core.domain.remote.onError
@@ -32,8 +33,9 @@ class ReservationScreenViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     reservationRepositoryImpl: ReservationRepositoryImpl,
     reservationDao: ReservationDao,
-    preferencesRepository: MainPreferencesRepository
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository){
+    preferencesRepository: MainPreferencesRepository,
+    restaurantInfoDao: RestaurantInfoDao
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository, restaurantInfoDao){
 
     private val _filterOption = MutableStateFlow(ReservationFilter.ALL)
     val filterOption= _filterOption.asStateFlow()
