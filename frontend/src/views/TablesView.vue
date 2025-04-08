@@ -14,6 +14,7 @@
             <v-text-field
                 v-model="number"
                 :label="$t('Forms.Number')"
+                type="number"
                 color="orange"
             ></v-text-field>
             <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
@@ -86,11 +87,14 @@
           v-model="editTable.number"
           hide-details="auto"
           :label="$t('Tables.Number')"
+          :min="1"
+          type="number"
       ></v-text-field>
       <v-text-field
           v-model="editTable.capacity"
           hide-details="auto"
           :label="$t('Tables.Capacity')"
+          :min="1"
           type="number"
       ></v-text-field>
       <template v-slot:actions>

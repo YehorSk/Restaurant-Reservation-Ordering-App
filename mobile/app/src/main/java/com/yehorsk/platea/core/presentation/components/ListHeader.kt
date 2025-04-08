@@ -1,6 +1,7 @@
 package com.yehorsk.platea.core.presentation.components
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,7 +19,11 @@ fun ListHeader(
     @StringRes title: Int,
     modifier: Modifier = Modifier
 ){
-    Column{
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
+    ){
         Text(
             text = stringResource(title),
             style = MaterialTheme.typography.titleLarge,

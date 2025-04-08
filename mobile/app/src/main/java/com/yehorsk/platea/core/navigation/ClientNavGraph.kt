@@ -28,6 +28,7 @@ import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.create_order.CreateOrderScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
+import com.yehorsk.platea.orders.presentation.orders.OrdersViewModel
 import com.yehorsk.platea.reservations.presentation.confirm_reservation.ConfirmReservationScreenRoot
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationScreenRoot
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationViewModel

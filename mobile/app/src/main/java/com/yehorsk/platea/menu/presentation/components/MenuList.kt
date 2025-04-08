@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MenuList(

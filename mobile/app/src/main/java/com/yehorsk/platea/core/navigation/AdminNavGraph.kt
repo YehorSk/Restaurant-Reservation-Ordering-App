@@ -20,6 +20,7 @@ import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
+import com.yehorsk.platea.orders.presentation.orders.OrdersViewModel
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
@@ -31,6 +32,7 @@ fun AdminNavGraph(
     onLoggedOut: () -> Unit
 ){
     val settingsViewModel: SettingsViewModel = hiltViewModel()
+
     NavHost(
         navController = navController,
         route = Graph.ADMIN,
@@ -119,7 +121,7 @@ fun AdminNavGraph(
                     navController.popBackStack()
                 },
                 showGoBack = false,
-                title = R.string.orders
+                title = R.string.orders,
             )
         }
         composable<AdminScreen.OrderDetails>(

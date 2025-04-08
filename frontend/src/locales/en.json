@@ -33,7 +33,8 @@
     "Sunday": "Sunday",
     "Title": "Title",
     "Body": "Body",
-    "Send": "Send"
+    "Send": "Send",
+    "invalid_time": ": Invalid hours format. Please use HH:MM-HH:MM"
   },
   "Home": {
     "Statistics": "Statistics",

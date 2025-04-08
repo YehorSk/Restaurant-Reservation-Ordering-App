@@ -289,14 +289,14 @@ object Utility {
         HISTORY(R.string.history)
     }
 
-    data class SectionedOrders(
-        @StringRes val title: Int,
-        val orders: List<OrderEntity>
-    )
-
     data class SectionedReservation(
         @StringRes val title: Int,
         val reservations: List<ReservationEntity>
+    )
+
+    data class SectionedOrders(
+        @StringRes val title: Int,
+        val orders: List<OrderEntity>
     )
 
     fun groupOrdersByDate(orders: List<OrderEntity>): List<SectionedOrders>{
@@ -305,14 +305,14 @@ object Utility {
 
         val grouped = FilterTypeOrder.entries.map { type ->
             val filteredOrders = orders.filter { order ->
-                val orderDate = order.date?.let { LocalDate.parse(it) } ?: return@filter false
-                val orderEndTime = order.endTime.let { LocalTime.parse(it) } ?: return@filter false
+                val orderDate = order.date?.let { LocalDate.parse(it) }
+                val orderEndTime = order.endTime.let { LocalTime.parse(it) }
                 when (type) {
-                    FilterTypeOrder.TODAY -> (orderDate == today && orderEndTime.isAfter(time))
-                    FilterTypeOrder.TODAY_HISTORY -> (orderDate == today && orderEndTime.isBefore(time))
+                    FilterTypeOrder.TODAY -> (orderDate == today && orderEndTime.isAfter(time) && order.status !in arrayOf("Cancelled", "Completed", "Rejected"))
+                    FilterTypeOrder.TODAY_HISTORY -> (orderDate == today && (orderEndTime.isBefore(time) || order.status in arrayOf("Cancelled", "Completed", "Rejected")))
                     FilterTypeOrder.TOMORROW -> orderDate == today.plusDays(1)
-                    FilterTypeOrder.LATER -> orderDate.isAfter(today.plusDays(1))
-                    FilterTypeOrder.HISTORY -> orderDate.isBefore(today)
+                    FilterTypeOrder.LATER -> orderDate!!.isAfter(today.plusDays(1))
+                    FilterTypeOrder.HISTORY -> orderDate!!.isBefore(today)
                 }
             }
 

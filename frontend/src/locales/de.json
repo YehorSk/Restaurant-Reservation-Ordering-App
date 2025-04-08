@@ -33,7 +33,8 @@
     "Sunday": "Sonntag",
     "Title": "Titel",
     "Body": "Text",
-    "Send": "Senden"
+    "Send": "Senden",
+    "invalid_time": ": Ungültiges Zeitformat. Bitte verwenden Sie das Format HH:MM-HH:MM"
   },
   "Home": {
     "Statistics": "Statistiken",

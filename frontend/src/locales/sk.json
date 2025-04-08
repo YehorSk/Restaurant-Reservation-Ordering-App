@@ -33,7 +33,8 @@
     "Sunday": "Nedeľa",
     "Title": "Nadpis",
     "Body": "Telo",
-    "Send": "Odoslať"
+    "Send": "Odoslať",
+    "invalid_time": ": Neplatný formát času. Použite prosím formát HH:MM-HH:MM"
   },
   "Home": {
     "Statistics": "Štatistiky",

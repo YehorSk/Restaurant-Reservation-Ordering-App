@@ -26,6 +26,7 @@ import com.yehorsk.platea.menu.presentation.search.SearchScreen
 import com.yehorsk.platea.orders.presentation.create_order.CreateOrderScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
+import com.yehorsk.platea.orders.presentation.orders.OrdersViewModel
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationScreenRoot
 import kotlinx.serialization.Serializable
