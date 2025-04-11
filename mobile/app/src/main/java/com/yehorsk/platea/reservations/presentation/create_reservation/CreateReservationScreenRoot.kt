@@ -50,6 +50,7 @@ fun CreateReservationScreenRoot(
             is SideEffect.NavigateToNextScreen -> { goBack() }
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
+            is SideEffect.LanguageChanged -> {}
         }
     }
 

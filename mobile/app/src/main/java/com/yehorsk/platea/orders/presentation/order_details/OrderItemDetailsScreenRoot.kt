@@ -45,6 +45,7 @@ fun OrderItemDetailsScreenRoot(
             is SideEffect.NavigateToNextScreen -> onGoBack()
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
+            is SideEffect.LanguageChanged -> {}
         }
     }
     OrderItemDetailsScreen(

@@ -13,8 +13,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.NavBar
+import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.presentation.settings.components.ProfileListHeader
 import com.yehorsk.platea.core.presentation.settings.components.SettingsListItem
+import com.yehorsk.platea.core.utils.SideEffect
 
 @Composable
 fun ChangeThemeScreen(
@@ -24,6 +26,16 @@ fun ChangeThemeScreen(
 ){
 
     val userTheme by viewModel.userTheme.collectAsStateWithLifecycle()
+
+    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
+        when(sideEffect){
+            is SideEffect.ShowErrorToast -> {}
+            is SideEffect.ShowSuccessToast -> {}
+            is SideEffect.NavigateToNextScreen -> onGoBack()
+            is SideEffect.LanguageChanged -> {}
+        }
+    }
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background),
@@ -32,32 +44,44 @@ fun ChangeThemeScreen(
             onGoBack = onGoBack,
             title = R.string.go_back
         )
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            item{
-                ProfileListHeader(
-                    text = stringResource(R.string.theme)
-                )
-            }
-            item{
-                SettingsListItem(
-                    text = R.string.theme_light,
-                    onClick = {
-                        viewModel.updateTheme(false)
-                    },
-                    isActive = userTheme == false
-                )
-            }
-            item{
-                SettingsListItem(
-                    text = R.string.theme_dark,
-                    onClick = {
-                        viewModel.updateTheme(true)
-                    },
-                    isActive = userTheme == true
-                )
-            }
+        ChangeThemeScreenRoot(
+            onAction = viewModel::onAction,
+            userTheme = userTheme == true
+        )
+    }
+}
+
+@Composable
+fun ChangeThemeScreenRoot(
+    modifier: Modifier = Modifier,
+    onAction: (SettingsAction) -> Unit,
+    userTheme: Boolean
+){
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
+        item{
+            ProfileListHeader(
+                text = stringResource(R.string.theme)
+            )
+        }
+        item{
+            SettingsListItem(
+                text = R.string.theme_light,
+                onClick = {
+                    onAction(SettingsAction.UpdateTheme(false))
+                },
+                isActive = userTheme == false
+            )
+        }
+        item{
+            SettingsListItem(
+                text = R.string.theme_dark,
+                onClick = {
+                    onAction(SettingsAction.UpdateTheme(true))
+                },
+                isActive = userTheme == true
+            )
         }
     }
 }

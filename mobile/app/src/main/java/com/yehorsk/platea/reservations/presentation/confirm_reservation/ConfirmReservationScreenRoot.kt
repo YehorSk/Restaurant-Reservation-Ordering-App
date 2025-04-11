@@ -47,6 +47,7 @@ fun ConfirmReservationScreenRoot(
             is SideEffect.NavigateToNextScreen -> { goBackToMenu() }
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
+            is SideEffect.LanguageChanged -> {}
         }
     }
 

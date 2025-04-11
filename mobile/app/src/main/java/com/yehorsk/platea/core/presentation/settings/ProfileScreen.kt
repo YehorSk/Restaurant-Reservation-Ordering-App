@@ -16,14 +16,17 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
@@ -49,6 +52,7 @@ fun ProfileScreen(
             is SideEffect.NavigateToNextScreen -> onDeleteAccount()
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
+            is SideEffect.LanguageChanged -> {}
         }
     }
 
@@ -77,14 +81,8 @@ fun ProfileScreen(
             address = uiState.address,
             phone = uiState.phone,
             code = uiState.code,
-            onUpdateProfile = { viewModel.updateProfile() },
-            onOpenDialog = { viewModel.showDeleteDialog() },
-            checkPhone = { viewModel.validatePhoneNumber(it) },
             isPhoneValid = uiState.isPhoneValid,
-            onUpdatePhone = { viewModel.updatePhone(it) },
-            onUpdateCode = { viewModel.updateCode(it) },
-            onUpdateName = { viewModel.updateName(it) },
-            onUpdateAddress = { viewModel.updateAddress(it) },
+            onAction = viewModel::onAction
         )
     }
     if(uiState.showDeleteAccountDialog){
@@ -92,10 +90,10 @@ fun ProfileScreen(
             dialogTitle = stringResource(id = R.string.delete_account_dialog_title),
             dialogText = stringResource(id = R.string.delete_account_dialog_text),
             onDismissRequest = {
-                viewModel.hideDeleteDialog()
+                viewModel.onAction(SettingsAction.HideDeleteDialog)
             },
             onConfirmation = {
-                viewModel.deleteAccount()
+                viewModel.onAction(SettingsAction.DeleteAccount)
             },
         )
     }
@@ -103,20 +101,19 @@ fun ProfileScreen(
 
 @Composable
 fun ProfileScreenForm(
+    modifier: Modifier = Modifier,
     name: String,
     address: String,
     phone: String,
     code: String,
     isPhoneValid: Boolean,
-    onUpdateProfile: () -> Unit,
-    onOpenDialog: () -> Unit,
-    checkPhone: (String) -> Unit,
-    onUpdatePhone: (String) -> Unit,
-    onUpdateCode: (String) -> Unit,
-    onUpdateName: (String) -> Unit,
-    onUpdateAddress: (String) -> Unit,
-    modifier: Modifier = Modifier
+    onAction: (SettingsAction) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var tempName by remember { mutableStateOf(name) }
+    var tempAddress by remember { mutableStateOf(address) }
+    var tempPhone by remember { mutableStateOf(phone) }
+    var tempCode by remember { mutableStateOf(code) }
 
     Column(
         modifier = modifier
@@ -125,30 +122,33 @@ fun ProfileScreenForm(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         OutlinedTextField(
-            value = name,
-            onValueChange = { onUpdateName(it) },
+            value = tempName,
+            onValueChange = { tempName = it },
             label = { Text(text = stringResource(R.string.user_name)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         PhoneInput(
             modifier = Modifier.fillMaxWidth(),
-            phone = phone,
-            code = code,
-            onPhoneValidated = { checkPhone(it) },
-            onPhoneChanged = { onUpdatePhone(it) },
-            onCodeChanged = { onUpdateCode(it) },
+            phone = tempPhone,
+            code = tempCode,
+            onPhoneValidated = { onAction(SettingsAction.ValidatePhoneNumber(it)) },
+            onPhoneChanged = { tempPhone = it },
+            onCodeChanged = { tempCode = it },
             showText = false
         )
         OutlinedTextField(
-            value = address,
-            onValueChange = { onUpdateAddress(it) },
+            value = tempAddress,
+            onValueChange = { tempAddress = it },
             label = { Text(text = stringResource(R.string.user_address)) },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         Button(
-            onClick = { onUpdateProfile() },
+            onClick = {
+                keyboardController?.hide()
+                onAction(SettingsAction.UpdateProfile(tempName, tempAddress, tempPhone, tempCode))
+                      },
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
             enabled = name.isNotEmpty() && address.isNotEmpty() && isPhoneValid,
             modifier = Modifier.fillMaxWidth()
@@ -161,7 +161,7 @@ fun ProfileScreenForm(
             )
         }
         TextButton(
-            onClick = { onOpenDialog() },
+            onClick = { onAction(SettingsAction.ShowDeleteDialog) },
             modifier = Modifier
                 .background(Color.Transparent)
                 .fillMaxWidth()
@@ -187,14 +187,8 @@ fun ProfileScreenFormPreview(){
             address = "Test",
             phone = "Test",
             code = "421",
-            onUpdateProfile = { },
-            onOpenDialog = {},
-            checkPhone = { it -> true },
-            isPhoneValid = false,
-            onUpdatePhone = {},
-            onUpdateCode = {},
-            onUpdateName = {},
-            onUpdateAddress = {},
+            isPhoneValid = true,
+            onAction = {it ->}
         )
     }
 }

@@ -47,6 +47,7 @@ fun ReservationDetailsScreenRoot(
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
             is SideEffect.NavigateToNextScreen -> { onGoBack() }
+            is SideEffect.LanguageChanged -> {}
         }
     }
 

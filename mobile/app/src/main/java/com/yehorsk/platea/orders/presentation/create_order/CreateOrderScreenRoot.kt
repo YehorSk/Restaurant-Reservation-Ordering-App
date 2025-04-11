@@ -71,6 +71,7 @@ fun CreateOrderScreenRoot(
             is SideEffect.NavigateToNextScreen -> onGoToCart()
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
+            is SideEffect.LanguageChanged -> {}
         }
     }
 

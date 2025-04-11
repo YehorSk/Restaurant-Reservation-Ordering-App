@@ -48,6 +48,7 @@ fun ForgotPasswordScreen(
             is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
             is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
             is SideEffect.NavigateToNextScreen -> {}
+            is SideEffect.LanguageChanged -> {}
         }
     }
     Box(

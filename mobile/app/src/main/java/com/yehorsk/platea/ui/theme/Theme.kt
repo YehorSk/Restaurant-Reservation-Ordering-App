@@ -268,28 +268,21 @@ val unspecified_scheme = ColorFamily(
 
 @Composable
 fun MobileTheme(
-    viewModel: ThemeViewModel = hiltViewModel(),
+    isDarkMode: Boolean = false,
     dynamicColor: Boolean = false,
     content: @Composable() () -> Unit
 ) {
 
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val view = LocalView.current
-
-    val locale = Locale(uiState.language)
-    Locale.setDefault(locale)
-    val config = context.resources.configuration
-    config.setLocale(locale)
-    context.resources.updateConfiguration(config, context.resources.displayMetrics)
 
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (uiState.isDarkMode) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (isDarkMode) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        uiState.isDarkMode -> darkScheme
+        isDarkMode -> darkScheme
         else -> lightScheme
     }
 
@@ -298,8 +291,8 @@ fun MobileTheme(
             val window = (view.context as Activity).window
 
             WindowCompat.getInsetsController(window,view).apply {
-                isAppearanceLightStatusBars = !uiState.isDarkMode
-                isAppearanceLightNavigationBars = !uiState.isDarkMode
+                isAppearanceLightStatusBars = !isDarkMode
+                isAppearanceLightNavigationBars = !isDarkMode
             }
         }
     }

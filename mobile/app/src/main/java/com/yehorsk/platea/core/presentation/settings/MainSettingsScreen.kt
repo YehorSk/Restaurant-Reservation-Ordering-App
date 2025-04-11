@@ -31,6 +31,7 @@ fun MainSettingsScreen(
         when(sideEffect){
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
+            is SideEffect.LanguageChanged -> {}
             is SideEffect.NavigateToNextScreen -> { onNavigate(ProfileDestination.Logout) }
         }
     }
@@ -104,7 +105,7 @@ fun MainSettingsScreen(
                     ProfileListItem(
                         text = R.string.logout,
                         onClick = {
-                            viewModel.logout()
+                            viewModel.onAction(SettingsAction.Logout)
                         }
                     )
                 }

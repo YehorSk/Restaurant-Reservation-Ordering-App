@@ -1,5 +1,6 @@
 package com.yehorsk.platea.core.presentation.settings
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.presentation.settings.components.SettingsListItem
 import com.yehorsk.platea.core.utils.SideEffect
+import timber.log.Timber
 
 @Composable
 fun ChangeLanguageScreen(
@@ -24,7 +26,6 @@ fun ChangeLanguageScreen(
     onGoBack: () -> Unit
 ){
 
-    val context = LocalContext.current
     val userLang by viewModel.userLang.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
@@ -32,10 +33,25 @@ fun ChangeLanguageScreen(
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
             is SideEffect.NavigateToNextScreen -> onGoBack()
+            is SideEffect.LanguageChanged -> {}
         }
     }
 
+    ChangeLanguageScreenRoot(
+        modifier = modifier,
+        onAction = viewModel::onAction,
+        onGoBack = onGoBack,
+        userLang = userLang.toString()
+    )
+}
 
+@Composable
+fun ChangeLanguageScreenRoot(
+    modifier: Modifier = Modifier,
+    onAction: (SettingsAction) -> Unit,
+    userLang: String,
+    onGoBack: () -> Unit
+){
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background),
@@ -51,7 +67,7 @@ fun ChangeLanguageScreen(
                 SettingsListItem(
                     text = R.string.english,
                     onClick = {
-                        viewModel.updateLanguage("en")
+                        onAction(SettingsAction.UpdateLanguage("en"))
                     },
                     isActive = userLang == "en"
                 )
@@ -60,7 +76,7 @@ fun ChangeLanguageScreen(
                 SettingsListItem(
                     text = R.string.slovak,
                     onClick = {
-                        viewModel.updateLanguage("sk")
+                        onAction(SettingsAction.UpdateLanguage("sk"))
                     },
                     isActive = userLang == "sk"
                 )
@@ -69,7 +85,7 @@ fun ChangeLanguageScreen(
                 SettingsListItem(
                     text = R.string.ukrainian,
                     onClick = {
-                        viewModel.updateLanguage("uk")
+                        onAction(SettingsAction.UpdateLanguage("uk"))
                     },
                     isActive = userLang == "uk"
                 )
@@ -78,7 +94,7 @@ fun ChangeLanguageScreen(
                 SettingsListItem(
                     text = R.string.german,
                     onClick = {
-                        viewModel.updateLanguage("de")
+                        onAction(SettingsAction.UpdateLanguage("de"))
                     },
                     isActive = userLang == "de"
                 )

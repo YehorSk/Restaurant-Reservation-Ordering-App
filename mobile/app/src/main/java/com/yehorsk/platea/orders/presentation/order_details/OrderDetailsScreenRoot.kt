@@ -50,6 +50,7 @@ fun OrderDetailsScreenRoot(
             is SideEffect.NavigateToNextScreen -> onGoBack()
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
+            is SideEffect.LanguageChanged -> {}
         }
     }
 

@@ -1,5 +1,6 @@
 package com.yehorsk.platea.core.presentation.settings
 
+import androidx.compose.runtime.SideEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -38,9 +40,6 @@ class SettingsViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     val userName: StateFlow<String?> = preferencesRepository.userNameFlow
-        .stateIn(viewModelScope, SharingStarted.Lazily, null)
-
-    val userEmail: StateFlow<String?> = preferencesRepository.userEmailFlow
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     val userAddress: StateFlow<String?> = preferencesRepository.userAddressFlow
@@ -74,43 +73,46 @@ class SettingsViewModel @Inject constructor(
 
     init {
         getRestaurantInfo()
-        viewModelScope.launch{
-            userPhone.collect{ value ->
-                val updatedPhone = value ?: ""
-                _uiState.update { state ->
-                    state.copy(
-                        phone = updatedPhone
-                    )
-                }
+        viewModelScope.launch {
+            combine(
+                userPhone,
+                userCountryCode,
+                userAddress,
+                userName
+            ) { phone, code, address, name ->
+                SettingsState(
+                    phone = phone ?: "",
+                    code = code ?: "",
+                    address = address ?: "",
+                    name = name ?: ""
+                )
+            }.collect { newState ->
+                _uiState.value = _uiState.value.copy(
+                    phone = newState.phone,
+                    code = newState.code,
+                    address = newState.address,
+                    name = newState.name
+                )
             }
         }
-        viewModelScope.launch{
-            userCountryCode.collect{ value ->
-                val updatedCountryCode = value ?: ""
-                _uiState.update { state ->
-                    state.copy(
-                        code = updatedCountryCode
-                    )
-                }
-            }
-        }
-        viewModelScope.launch{
-            userAddress.collect{ value ->
-                _uiState.update { state ->
-                    state.copy(
-                        address = value ?: ""
-                    )
-                }
-            }
-        }
-        viewModelScope.launch{
-            userName.collect{ value ->
-                _uiState.update { state ->
-                    state.copy(
-                        name = value ?: ""
-                    )
-                }
-            }
+    }
+
+    fun onAction(action: SettingsAction) {
+        when (action) {
+            is SettingsAction.ShowDeleteDialog -> showDeleteDialog()
+            is SettingsAction.HideDeleteDialog -> hideDeleteDialog()
+            is SettingsAction.GetRestaurantInfo -> getRestaurantInfo()
+            is SettingsAction.DeleteAccount -> deleteAccount()
+            is SettingsAction.Logout -> logout()
+            is SettingsAction.ValidatePhoneNumber -> validatePhoneNumber(action.phone)
+            is SettingsAction.UpdateTheme -> updateTheme(action.value)
+            is SettingsAction.UpdateLanguage -> updateLanguage(action.value)
+            is SettingsAction.UpdateProfile -> updateProfile(
+                action.name,
+                action.address,
+                action.phone,
+                action.code
+            )
         }
     }
 
@@ -254,38 +256,7 @@ class SettingsViewModel @Inject constructor(
     fun updateTheme(value: Boolean){
         viewModelScope.launch{
             preferencesRepository.setAppTheme(value)
-        }
-    }
-
-    fun updateName(value: String){
-        viewModelScope.launch{
-            _uiState.update {
-                it.copy(name = value)
-            }
-        }
-    }
-
-    fun updateAddress(value: String){
-        viewModelScope.launch{
-            _uiState.update {
-                it.copy(address = value)
-            }
-        }
-    }
-
-    fun updatePhone(value: String){
-        viewModelScope.launch{
-            _uiState.update {
-                it.copy(phone = value)
-            }
-        }
-    }
-
-    fun updateCode(value: String){
-        viewModelScope.launch{
-            _uiState.update {
-                it.copy(code = value)
-            }
+            _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
         }
     }
 
@@ -297,6 +268,7 @@ class SettingsViewModel @Inject constructor(
             preferencesRepository.setAppLanguage(value)
             authRepository.setLocale(value)
                 .onSuccess { data,message ->
+                    _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
                             message = message.toString()
@@ -316,13 +288,22 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun updateProfile(){
+    fun updateProfile(name: String, address: String, phone: String, code: String){
         viewModelScope.launch{
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            profileRepositoryImpl.updateProfile(_uiState.value.name, _uiState.value.address, _uiState.value.phone, _uiState.value.code)
+            profileRepositoryImpl.updateProfile(name, address, phone, code)
                 .onSuccess { data,message ->
+                    _uiState.update {
+                        it.copy(
+                            name = name,
+                            address = address,
+                            phone = phone,
+                            code = code,
+                            isLoading = false
+                        )
+                    }
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
                             message = message.toString()
@@ -335,10 +316,11 @@ class SettingsViewModel @Inject constructor(
                             error = error
                         )
                     )
+                    _uiState.update {
+                        it.copy(isLoading = false)
+                    }
                 }
-            _uiState.update {
-                it.copy(isLoading = false)
-            }
+
         }
     }
 }

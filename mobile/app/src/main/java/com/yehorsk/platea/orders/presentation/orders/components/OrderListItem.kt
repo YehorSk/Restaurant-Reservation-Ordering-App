@@ -42,6 +42,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.setValue
 import com.yehorsk.platea.core.utils.Utility.calculateRemainingTime
+import com.yehorsk.platea.ui.theme.MobileTheme
 import kotlinx.coroutines.delay
 
 
@@ -140,7 +141,7 @@ fun OrderItemPreview(){
         phone = "",
         date = ""
     )
-    MobileThemePreview {
+    MobileTheme {
         OrderListItem(
             orderEntity = fakeOrder,
             onGoToOrderDetails = {}
