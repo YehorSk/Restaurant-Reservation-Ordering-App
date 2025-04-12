@@ -28,7 +28,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,7 +42,7 @@ import com.yehorsk.platea.core.utils.Utility
 import com.yehorsk.platea.core.utils.Utility.generateTimeSlots
 import com.yehorsk.platea.core.utils.Utility.getDayName
 import com.yehorsk.platea.core.utils.Utility.getDayTranslation
-import com.yehorsk.platea.ui.theme.MobileThemePreview
+import com.yehorsk.platea.ui.theme.MobileTheme
 import timber.log.Timber
 import java.time.LocalDate
 
@@ -328,7 +327,7 @@ data class DayItem(
 @Preview
 @Composable
 fun ChooseTimeModalContentPreview(){
-    MobileThemePreview {
+    MobileTheme {
         ChooseTimeModalContent(
             modifier = Modifier,
             onDismiss = {},

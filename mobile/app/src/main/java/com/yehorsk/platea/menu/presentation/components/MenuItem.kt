@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -28,7 +27,6 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.ui.theme.MobileTheme
-import com.yehorsk.platea.ui.theme.MobileThemePreview
 
 @Composable
 fun MenuItem(
@@ -97,7 +95,7 @@ fun MenuItem(
 @PreviewLightDark
 @Composable
 fun MenuItemPreview(){
-    MobileThemePreview {
+    MobileTheme {
         MenuItem(
             menuItem = MenuItemEntity(
                 id = 0,

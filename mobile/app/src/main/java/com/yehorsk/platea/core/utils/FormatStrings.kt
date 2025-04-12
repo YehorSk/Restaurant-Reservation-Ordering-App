@@ -1,15 +1,12 @@
 package com.yehorsk.platea.core.utils
 
 import java.text.NumberFormat
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalTime
-import java.time.Month
 import java.time.YearMonth
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
 import java.util.Locale
 
 fun cleanError(error: String?) = error?.replace("[", "")?.replace("]", "").orEmpty()

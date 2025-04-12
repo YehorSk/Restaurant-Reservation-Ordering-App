@@ -16,9 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,22 +26,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.Utility.getOrderColorIndicator
 import com.yehorsk.platea.core.utils.Utility.statusToString
 import com.yehorsk.platea.core.utils.formatOrderDateTime
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
-import com.yehorsk.platea.ui.theme.MobileThemePreview
-import java.time.LocalDate
-import com.yehorsk.platea.R
-import java.time.LocalTime
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.setValue
-import com.yehorsk.platea.core.utils.Utility.calculateRemainingTime
 import com.yehorsk.platea.ui.theme.MobileTheme
-import kotlinx.coroutines.delay
-
+import java.time.LocalDate
+import java.time.LocalTime
 
 @Composable
 fun OrderListItem(
@@ -139,7 +129,7 @@ fun OrderItemPreview(){
         endTime = "",
         completedAt = "2024-12-01T12:34:56",
         phone = "",
-        date = ""
+        date = "2024-12-01"
     )
     MobileTheme {
         OrderListItem(

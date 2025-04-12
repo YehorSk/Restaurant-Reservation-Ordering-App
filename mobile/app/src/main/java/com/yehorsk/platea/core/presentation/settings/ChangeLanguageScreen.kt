@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,7 +18,6 @@ import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.presentation.settings.components.SettingsListItem
 import com.yehorsk.platea.core.utils.SideEffect
-import timber.log.Timber
 
 @Composable
 fun ChangeLanguageScreen(
@@ -25,7 +25,6 @@ fun ChangeLanguageScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
     onGoBack: () -> Unit
 ){
-
     val userLang by viewModel.userLang.collectAsStateWithLifecycle()
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
@@ -33,16 +32,19 @@ fun ChangeLanguageScreen(
             is SideEffect.ShowErrorToast -> {}
             is SideEffect.ShowSuccessToast -> {}
             is SideEffect.NavigateToNextScreen -> onGoBack()
-            is SideEffect.LanguageChanged -> {}
+            is SideEffect.LanguageChanged -> {
+
+            }
         }
     }
-
-    ChangeLanguageScreenRoot(
-        modifier = modifier,
-        onAction = viewModel::onAction,
-        onGoBack = onGoBack,
-        userLang = userLang.toString()
-    )
+    key(userLang) {
+        ChangeLanguageScreenRoot(
+            modifier = modifier,
+            onAction = viewModel::onAction,
+            onGoBack = onGoBack,
+            userLang = userLang.toString()
+        )
+    }
 }
 
 @Composable

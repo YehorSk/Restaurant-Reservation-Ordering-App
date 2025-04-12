@@ -27,13 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.utils.formatDateTimeWithoutYear
 import com.yehorsk.platea.core.utils.formatTime
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
-import com.yehorsk.platea.R
-import com.yehorsk.platea.ui.theme.MobileThemePreview
-import timber.log.Timber
+import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun TimeRoot(
@@ -132,7 +131,7 @@ fun TimeRootPreview(){
         TimeSlotDto(id = 9, startTime = "16:00:00", endTime = "17:00:00", availableTables = 8),
         TimeSlotDto(id = 10, startTime = "17:00:00", endTime = "18:00:00", availableTables = 8)
     )
-    MobileThemePreview {
+    MobileTheme {
         TimeRoot(
             date = "2024-12-20",
             slots = timeSlots,

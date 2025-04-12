@@ -23,7 +23,6 @@ import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderItemDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
-import com.yehorsk.platea.orders.presentation.orders.OrdersViewModel
 import kotlinx.serialization.Serializable
 
 @Composable

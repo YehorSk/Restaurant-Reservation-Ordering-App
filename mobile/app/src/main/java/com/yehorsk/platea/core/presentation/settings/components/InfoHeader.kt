@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yehorsk.platea.ui.theme.MobileThemePreview
+import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun InfoHeader(
@@ -49,7 +49,7 @@ fun InfoHeader(
 @Preview
 @Composable
 fun InfoHeaderPreview(){
-    MobileThemePreview {
+    MobileTheme {
         InfoHeader(
             title = "Platea",
             address = "Farska 1315/41"

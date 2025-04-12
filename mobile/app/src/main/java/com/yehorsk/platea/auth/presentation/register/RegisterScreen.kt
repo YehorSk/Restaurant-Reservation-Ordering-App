@@ -43,7 +43,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
@@ -51,7 +50,6 @@ import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.toString
 import com.yehorsk.platea.ui.theme.MobileTheme
-import com.yehorsk.platea.ui.theme.MobileThemePreview
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -322,7 +320,7 @@ fun RegBodyPreview(){
         isLoading = false,
         isLoggedIn = false
     )
-    MobileThemePreview {
+    MobileTheme {
         RegBody(
             itemUiState = fakeRegisterState,
             itemErrorUiState = fakeRegisterState.registerFormErrors,

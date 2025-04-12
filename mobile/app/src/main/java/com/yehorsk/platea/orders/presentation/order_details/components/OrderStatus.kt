@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.Utility.formatStringTime
-import com.yehorsk.platea.core.utils.formatOrderDateTime
 import com.yehorsk.platea.core.utils.Utility.statusToString
+import com.yehorsk.platea.core.utils.formatOrderDateTime
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable

@@ -13,12 +13,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formatDateTime
 import com.yehorsk.platea.core.utils.formatTime
 import com.yehorsk.platea.ui.theme.MobileTheme
-import com.yehorsk.platea.ui.theme.MobileThemePreview
 
 @Composable
 fun ReservationDetails(
@@ -111,7 +109,7 @@ fun ReservationDetails(
 @Preview
 @Composable
 fun ReservationDetailsPreview(){
-    MobileThemePreview {
+    MobileTheme{
         ReservationDetails(
             time = "17:00:00",
             table = "3",

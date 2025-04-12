@@ -83,6 +83,8 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.appcompat)
+
     implementation("com.googlecode.libphonenumber:libphonenumber:8.13.26")
 
     // Firebase

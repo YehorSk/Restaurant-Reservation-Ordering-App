@@ -35,7 +35,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -53,13 +52,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
-import com.yehorsk.platea.ui.theme.MobileThemePreview
+import com.yehorsk.platea.ui.theme.MobileTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -380,7 +378,7 @@ fun MenuItemModalContent(
 @Preview
 @Composable
 fun PreviewMenuItemModal() {
-    MobileThemePreview {
+    MobileTheme {
         val menuItem = MenuItemEntity(
             id = 1,
             createdAt = "2023-01-01",

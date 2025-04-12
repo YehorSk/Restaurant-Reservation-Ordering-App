@@ -1,6 +1,5 @@
 package com.yehorsk.platea.core.presentation.settings
 
-import androidx.compose.runtime.SideEffect
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
@@ -256,7 +255,6 @@ class SettingsViewModel @Inject constructor(
     fun updateTheme(value: Boolean){
         viewModelScope.launch{
             preferencesRepository.setAppTheme(value)
-            _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
         }
     }
 
@@ -268,7 +266,7 @@ class SettingsViewModel @Inject constructor(
             preferencesRepository.setAppLanguage(value)
             authRepository.setLocale(value)
                 .onSuccess { data,message ->
-                    _sideEffectChannel.send(SideEffect.NavigateToNextScreen)
+                    _sideEffectChannel.send(SideEffect.LanguageChanged)
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
                             message = message.toString()

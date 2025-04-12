@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.yehorsk.platea.R
-import com.yehorsk.platea.ui.theme.MobileThemePreview
+import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun InfoAboutUs(
@@ -137,7 +137,7 @@ fun InfoPart(
 @Preview
 @Composable
 fun InfoPartPreview(){
-    MobileThemePreview {
+    MobileTheme {
         InfoPart(
             title = R.string.website,
             text = "https://platea.site"

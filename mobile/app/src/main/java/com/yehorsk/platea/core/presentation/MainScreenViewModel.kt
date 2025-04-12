@@ -6,8 +6,8 @@ import com.yehorsk.platea.cart.data.dao.CartDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 import kotlinx.coroutines.flow.stateIn
+import javax.inject.Inject
 
 
 @HiltViewModel

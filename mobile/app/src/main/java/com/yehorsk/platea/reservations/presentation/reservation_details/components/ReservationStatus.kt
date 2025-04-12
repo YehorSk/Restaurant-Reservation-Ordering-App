@@ -15,9 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.utils.formatOrderDateTime
 import com.yehorsk.platea.core.utils.Utility.statusToString
-import com.yehorsk.platea.ui.theme.MobileThemePreview
+import com.yehorsk.platea.core.utils.formatOrderDateTime
+import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun ReservationStatus(
@@ -69,7 +69,7 @@ fun ReservationStatus(
 @Preview
 @Composable
 fun OrderStatusPreview(){
-    MobileThemePreview {
+    MobileTheme {
         ReservationStatus(
             status = "Pending",
             date = "05 May, 2024 10:40",

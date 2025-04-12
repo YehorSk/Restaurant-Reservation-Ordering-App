@@ -9,21 +9,18 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.yehorsk.platea.MainActivity
-import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
-import com.yehorsk.platea.cart.data.remote.service.CartService
-import com.yehorsk.platea.core.di.RepositoryModule_ProvideCartRepositoryImplFactory
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
-import com.yehorsk.platea.menu.data.remote.service.MenuService
-import org.json.JSONObject
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PushNotificationService: FirebaseMessagingService() {

@@ -2,7 +2,6 @@ package com.yehorsk.platea.reservations.presentation.create_reservation
 
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
-import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError

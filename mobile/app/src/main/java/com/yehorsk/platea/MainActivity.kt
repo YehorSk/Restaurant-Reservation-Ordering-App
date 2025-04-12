@@ -1,22 +1,28 @@
 package com.yehorsk.platea
 
 import android.Manifest
+import android.app.LocaleManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
+import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.yehorsk.platea.auth.presentation.login.LoginViewModel
@@ -26,13 +32,17 @@ import com.yehorsk.platea.core.presentation.ThemeViewModel
 import com.yehorsk.platea.ui.theme.MobileTheme
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import java.util.Locale
+import androidx.core.content.ContextCompat.getContextForLanguage
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
     private val themeViewModel: ThemeViewModel by viewModels()
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(getContextForLanguage(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +59,9 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val themeState by themeViewModel.uiState.collectAsStateWithLifecycle()
-            setLocale(themeState.language)
+
+            setLocale(themeState.language, this)
+
             MobileTheme(
                 isDarkMode = themeState.isDarkMode
             ) {
@@ -84,12 +96,13 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    private fun setLocale(language: String) {
-        val locale = Locale(language)
-        Locale.setDefault(locale)
-        val config = resources.configuration
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.displayMetrics)
+    private fun setLocale(language: String, context: Context) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            context.getSystemService(LocaleManager::class.java)
+                .applicationLocales = LocaleList.forLanguageTags(language)
+        }else{
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(language))
+        }
     }
 
     private fun requestNotificationPermission() {
