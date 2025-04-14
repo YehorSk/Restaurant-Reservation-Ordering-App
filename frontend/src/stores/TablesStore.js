@@ -1,6 +1,7 @@
 import axios from "axios";
 import {defineStore} from "pinia";
 import {useStorage} from "@vueuse/core";
+import {handleError} from "@/utils/errorHandler.js";
 
 export const UseTableStore = defineStore("table",{
     state:() => ({
@@ -30,10 +31,7 @@ export const UseTableStore = defineStore("table",{
                 this.tables = response.data.data;
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -51,10 +49,7 @@ export const UseTableStore = defineStore("table",{
                 await this.fetchTables();
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -72,10 +67,7 @@ export const UseTableStore = defineStore("table",{
                 await this.fetchTables();
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -90,10 +82,7 @@ export const UseTableStore = defineStore("table",{
                 await this.fetchTables();
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }

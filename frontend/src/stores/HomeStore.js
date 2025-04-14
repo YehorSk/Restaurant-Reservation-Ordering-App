@@ -2,6 +2,7 @@ import axios from "axios";
 import {useStorage} from "@vueuse/core";
 import {defineStore} from "pinia";
 import i18n from "@/i18n.js";
+import {handleError} from "@/utils/errorHandler.js";
 
 export const UseHomeStore = defineStore("home", {
    state:() => ({
@@ -45,6 +46,7 @@ export const UseHomeStore = defineStore("home", {
                 this.order_stats.data = response.data.data;
             }catch (error) {
                 console.log(error);
+                handleError(error, this);
             }finally {
                 this.order_stats.isLoading = false;
             }
@@ -58,6 +60,7 @@ export const UseHomeStore = defineStore("home", {
                 this.reservation_stats.data = response.data.data;
             }catch (error) {
                 console.log(error);
+                handleError(error, this);
             }finally {
                 this.reservation_stats.isLoading = false;
             }
@@ -71,6 +74,7 @@ export const UseHomeStore = defineStore("home", {
                 this.menuItems_stats.data = response.data.data;
             }catch (error) {
                 console.log(error);
+                handleError(error, this);
             }finally {
                 this.menuItems_stats.isLoading = false;
             }
@@ -86,14 +90,7 @@ export const UseHomeStore = defineStore("home", {
                 i18n.global.locale = this.lang;
             }catch (error) {
                 console.log(error.response);
-                if(error.response.status === 422){
-                    this.credentials = error.response.data.message;
-                    console.log(this.credentials);
-                }
-                else if(error.response.status === 401){
-                    this.errors = error.response.data.errors;
-                    console.log(this.errors);
-                }
+                handleError(error, this);
             }finally {
                 this.menuItems_stats.isLoading = false;
             }

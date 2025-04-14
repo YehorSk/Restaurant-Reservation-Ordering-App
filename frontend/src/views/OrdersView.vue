@@ -101,7 +101,10 @@
       <v-select
           v-model="edit_order.status"
           :label="$t('Orders.Status')"
-          :items="statuses"></v-select>
+          :items="statuses"
+          item-title="label"
+          item-value="value"
+      ></v-select>
       <template v-slot:actions>
         <v-btn class="ms-auto" :text="$t('Orders.Close')" @click="dialog = false"></v-btn>
         <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('Orders.Update')" @click="dialog = false, ordersStore.updateOrder(edit_order)"></v-btn>
@@ -170,6 +173,18 @@ export default {
       },
       immediate: true,
     },
+  },
+  computed: {
+    statuses() {
+      return [
+        { label: this.getTranslation("Pending"), value: "Pending" },
+        { label: this.getTranslation("Confirmed"), value: "Confirmed" },
+        { label: this.getTranslation("Cancelled"), value: "Cancelled" },
+        { label: this.getTranslation("Preparing"), value: "Preparing" },
+        { label: this.getTranslation("Completed"), value: "Completed" },
+        { label: this.getTranslation("Ready_for_Pickup"), value: "Ready for Pickup" }
+      ]
+    }
   },
   methods:{
     setOrder(order){

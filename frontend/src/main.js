@@ -10,6 +10,8 @@ import 'primeicons/primeicons.css';
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import '@mdi/font/css/materialdesignicons.css'
+import { isAxiosError} from "axios";
+import { UseAuthStore } from "@/stores/AuthStore.js";
 
 
 import App from './App.vue'
@@ -33,16 +35,36 @@ axios.interceptors.request.use((config) => {
     config.headers.Accept = "application/vnd.api+json";
     return config;
 });
-
-app.use(createPinia());
 app.use(router);
 
-i18n.global.locale = lang.value;
+axios.interceptors.response.use(
+    response => response,
+    error => {
+        if (isAxiosError(error)) {
+            const authStore = UseAuthStore();
+            console.log("Global Axios Error", error.response?.status);
+            if (error.response?.status === 401) {
+                authStore.clear_user();
+                router.push({ name: 'login' });
+            }
+        }
+        return Promise.reject(error);
+    }
+);
 
 const vuetify = createVuetify({
     components,
     directives,
 });
+
+i18n.global.locale = lang.value;
+
+const pinia = createPinia().use(() => {
+    const  t  = i18n.global.t
+    return { t }
+})
+
+app.use(pinia);
 
 app.use(vuetify);
 app.use(i18n);

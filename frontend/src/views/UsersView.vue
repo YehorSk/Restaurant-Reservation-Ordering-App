@@ -100,10 +100,12 @@
           :label="$t('Users.Email')"
       ></v-text-field>
       <v-select
-        v-model="edit_user.role"
-        :label="$t('Users.Role')"
-        :items="roles"
-      ></v-select>
+          v-model="edit_user.role"
+          :label="$t('Users.Role')"
+          :items="roles"
+          item-title="label"
+          item-value="value"
+      />
       <template v-slot:actions>
         <v-btn class="ms-auto" :text="$t('Users.Close')" @click="dialog = false"></v-btn>
         <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('Users.Update')" @click="dialog = false, updateUser(edit_user)"></v-btn>
@@ -165,6 +167,16 @@ export default {
       }
     });
   },
+  computed: {
+    roles() {
+      return [
+        { label: this.getRoleTranslation("user"), value: "user" },
+        { label: this.getRoleTranslation("waiter"), value: "waiter" },
+        { label: this.getRoleTranslation("chef"), value: "chef" },
+        { label: this.getRoleTranslation("admin"), value: "admin" },
+      ];
+    }
+  },
   beforeMount(){
     this.userStore.fetchUsers()
   },
@@ -172,9 +184,6 @@ export default {
     this.userStore.success = "";
   },
   methods: {
-    submitForm(){
-
-    },
     setUser(user){
       this.edit_user = JSON.parse(JSON.stringify(user));
     },

@@ -2,6 +2,7 @@ import axios from "axios";
 import {defineStore} from "pinia";
 import {useStorage} from "@vueuse/core";
 import router from "@/router/index.js";
+import {handleError} from "@/utils/errorHandler.js";
 
 export const UseAuthStore = defineStore("auth",{
     state:() => ({
@@ -40,13 +41,7 @@ export const UseAuthStore = defineStore("auth",{
                 console.log("Auth "+this.token);
             } catch (error) {
                 console.log(error.response.data.message);
-                if (error.response.status === 422) {
-                    this.errors = error.response.data.message;
-                }
-                if (error.response.status === 401) {
-                    this.user = {};
-                    this.token = null;
-                }
+                handleError(error, this);
             }
         },
         async login(email,password){
@@ -65,45 +60,20 @@ export const UseAuthStore = defineStore("auth",{
                 console.log(this.token)
             } catch (error) {
                 console.log(error.response);
-                if(error.response.status === 422){
-                    this.credentials = error.response.data.message;
-                    console.log(this.credentials);
-                }
-                else if(error.response.status === 401){
-                    this.errors = error.response.data.errors;
-                    console.log(this.errors);
-                }
+                handleError(error, this);
             }
         },
         async logout() {
             try {
                 await this.getToken();
                 const response = await axios.post('logout', null);
-                this.successLoggedOut = response.data.data.message;
+                this.success = response.data.data.message;
                 this.user = {};
                 this.token = null;
                 window.location.reload();
             } catch (error) {
                 console.log(error.response.data.message);
-                if (error.response.status === 422) {
-                    this.errors = error.response.data.message;
-                }
-            }
-        },
-        async forgot_password(email){
-            try {
-                const response = await axios.post('forgot-password', {
-                    email: email,
-                });
-                this.success = "A link to reset your password has been sent to your email. Please check your inbox and follow the instructions to reset your password. If you do not see the email, please check your spam or junk folder.";
-            } catch (error) {
-                console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
-            } finally {
-                this.isLoading = false;
+                handleError(error, this);
             }
         },
         async reset_password(new_pwd,confirm_new_pwd,email,token){
@@ -118,13 +88,14 @@ export const UseAuthStore = defineStore("auth",{
                 this.success = "Updated successfully";
             } catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
         },
+        clear_user(){
+            this.token = {};
+            this.user = {};
+        }
     }
 })

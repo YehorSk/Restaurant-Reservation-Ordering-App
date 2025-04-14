@@ -93,7 +93,7 @@
               {{ $t('MenuItems.Edit') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              {{ $t('MenuItems.Delet') }}
+              {{ $t('MenuItems.Delete') }}
             </th>
           </tr>
           </thead>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import {useStorage} from "@vueuse/core";
 import {defineStore} from "pinia";
+import {handleError} from "@/utils/errorHandler.js";
 
 export const UseUserStore = defineStore("users",{
    state:() => ({
@@ -38,10 +39,7 @@ export const UseUserStore = defineStore("users",{
                 this.users = response.data.data;
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -59,10 +57,7 @@ export const UseUserStore = defineStore("users",{
                 await this.fetchUsers();
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -76,10 +71,7 @@ export const UseUserStore = defineStore("users",{
                 await this.fetchUsers();
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }

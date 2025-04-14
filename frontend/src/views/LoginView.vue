@@ -75,7 +75,6 @@
               type="email"
               id="email"
               v-model="email"
-              :class="{'is-invalid':authStore.errors['email']}"
               class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="your@email.com"
               required
@@ -87,15 +86,11 @@
               type="password"
               id="password"
               v-model="password"
-              :class="{ 'is-invalid': authStore.errors['password'] || authStore.credentials }"
               class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               placeholder="Enter your password"
               required
           >
           <i style="color: #FF6600" class="input-icon uil uil-lock-alt"></i>
-          <div v-if="authStore.credentials" class="invalid-feedback">
-            <p class="mt-2 text-sm text-red-600 dark:text-red-500"><span class="font-medium">{{ authStore.credentials }}</span></p>
-          </div>
         </div>
         <button
             type="submit"

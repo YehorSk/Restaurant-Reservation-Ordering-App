@@ -12,6 +12,7 @@
     "Users": "Users"
   },
   "Forms": {
+    "Restaurant_Information": "Restaurant Information",
     "Name": "Name",
     "Description": "Description",
     "Save": "Save",
@@ -170,5 +171,10 @@
     "Pending": "Pending",
     "Confirmed": "Confirmed",
     "Cancelled": "Cancelled"
+  },
+  "errors": {
+    "network": "Network error. Please check your internet connection.",
+    "unexpected": "Unexpected server error. Please try again later.",
+    "validation": "Some fields are invalid. Please correct them."
   }
 }

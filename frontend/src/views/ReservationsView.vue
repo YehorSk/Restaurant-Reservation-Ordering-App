@@ -113,7 +113,10 @@
       <v-select
           v-model="edit_reservation.status"
           :label="$t('Reservation.Status')"
-          :items="statuses"></v-select>
+          :items="statuses"
+          item-title="label"
+          item-value="value"
+      ></v-select>
       <template v-slot:actions>
         <v-btn class="ms-auto" :text="$t('Reservation.Close')" @click="dialog = false"></v-btn>
         <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('Reservation.Update')" @click="dialog = false, reservationStore.updateReservation(edit_reservation)"></v-btn>
@@ -175,6 +178,15 @@ export default {
         this.reservationStore.fetchReservations(this.search)
       }
     });
+  },
+  computed: {
+    statuses() {
+      return [
+        { label: this.getTranslation("Pending"), value: "Pending" },
+        { label: this.getTranslation("Confirmed"), value: "Confirmed" },
+        { label: this.getTranslation("Cancelled"), value: "Cancelled" },
+      ]
+    }
   },
   beforeMount(){
     this.reservationStore.fetchReservations();

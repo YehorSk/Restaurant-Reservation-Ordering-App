@@ -1,7 +1,8 @@
 <template>
   <NavComponent/>
   <div class="p-4 sm:ml-64">
-    <h2 class="text-4xl font-extrabold dark:text-white">Restaurant Information</h2>
+    <h2 class="text-4xl font-extrabold dark:text-white">{{ $t('Forms.Restaurant_Information') }}</h2>
+    <br>
     <v-sheet class="max-w-full">
       <div class="flex flex-wrap">
         <!-- First Column (General Info) -->

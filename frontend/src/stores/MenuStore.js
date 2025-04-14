@@ -1,6 +1,7 @@
 import axios from "axios";
 import {defineStore} from "pinia";
 import {useStorage} from "@vueuse/core";
+import {handleError} from "@/utils/errorHandler.js";
 
 export const UseMenuStore = defineStore("menu",{
     state:() => ({
@@ -44,10 +45,7 @@ export const UseMenuStore = defineStore("menu",{
                 this.menus = response.data.data;
             } catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             }finally {
                 this.isLoading = false;
             }
@@ -68,10 +66,7 @@ export const UseMenuStore = defineStore("menu",{
                 this.menuItems = response.data.data;
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             }finally {
                 this.isLoading = false;
             }
@@ -88,10 +83,7 @@ export const UseMenuStore = defineStore("menu",{
                 await this.fetchMenus();
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -109,10 +101,7 @@ export const UseMenuStore = defineStore("menu",{
                 await this.fetchMenus();
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -124,12 +113,9 @@ export const UseMenuStore = defineStore("menu",{
                 console.log(response.data);
                 this.success = response.data.message;
                 await this.fetchMenus();
-            }catch (error) {
+            }catch(error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -154,10 +140,7 @@ export const UseMenuStore = defineStore("menu",{
                 await this.fetchMenuItems('',id);
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -195,10 +178,7 @@ export const UseMenuStore = defineStore("menu",{
                 await this.fetchMenuItems('',id);
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
@@ -212,10 +192,7 @@ export const UseMenuStore = defineStore("menu",{
                 await this.fetchMenuItems('',id);
             }catch (error) {
                 console.log(error);
-                if(error.response.status === 422){
-                    this.errors = error.response.data.errors;
-                    this.failure = error.response.data.message;
-                }
+                handleError(error, this);
             } finally {
                 this.isLoading = false;
             }
