@@ -147,10 +147,24 @@
 
 
         'attributes' => [
-            'name' => 'ім\'я',
-            'email' => 'електронна пошта',
-            'password' => 'пароль',
+            "start_time" => "Час початку",
+            "end_time" => "Час завершення",
+            "name" => "Ім’я",
+            "email" => "Електронна пошта",
+            "password" => "Пароль",
+            "role" => "Роль",
+            "phone" => "Телефон",
+            "address" => "Адреса",
+            "language" => "Мова",
+            "number" => "Номер столу",
+            "capacity" => "Місткість",
+            "description" => "Опис",
+            "picture" => "Зображення",
+            "recipe" => "Рецепт",
+            "long_description" => "Довгий опис",
+            "short_description" => "Короткий опис",
         ],
+
 
     ];
 

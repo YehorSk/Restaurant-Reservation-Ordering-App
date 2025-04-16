@@ -27,9 +27,15 @@ class TimeSlotController extends Controller
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
             $data = $request->validate([
-                "start_time" => "required",
-                "end_time" => "required",
+                "start_time" => ["required", "date_format:H:i"],
+                "end_time" => ["required", "date_format:H:i", "after:start_time"],
             ]);
+            $checkItems = TimeSlot::where('start_time', $data['start_time'])
+                ->where('end_time', $data['end_time'])
+                ->get();
+            if($checkItems->count() > 0){
+                return $this->error('', __("messages.time_slot_already_exists"), 409);
+            }
             $item = new TimeSlot($data);
             $item->save();
             return $this->success(data: $item, message: __("messages.item_was_added"));
@@ -42,9 +48,15 @@ class TimeSlotController extends Controller
         if ($user instanceof User) {
             $item = TimeSlot::find($id);
             $data = $request->validate([
-                "start_time" => "required",
-                "end_time" => "required",
+                "start_time" => ["required", "date_format:H:i"],
+                "end_time" => ["required", "date_format:H:i", "after:start_time"],
             ]);
+            $checkItems = TimeSlot::where('start_time', $data['start_time'])
+                ->where('end_time', $data['end_time'])
+                ->get();
+            if($checkItems->count() > 0){
+                return $this->error('', __("messages.time_slot_already_exists"), 409);
+            }
             $item->update($data);
             return $this->success(data: $item, message: __("messages.item_was_updated"));
         }

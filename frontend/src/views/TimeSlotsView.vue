@@ -17,7 +17,7 @@
                 color="orange"
                 type="time"
             ></v-text-field>
-            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" :disabled="!isFormValid" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
           </v-form>
         </div>
       </div>
@@ -91,7 +91,7 @@
       ></v-text-field>
       <template v-slot:actions>
         <v-btn class="ms-auto" :text="$t('TimeSlots.Close')" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('TimeSlots.Update')" @click="dialog = false, timeSlotStore.updateTimeSlot(editTimeSlot.id, editTimeSlot)"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('TimeSlots.Update')" :disabled="!isUpdateFormValid" @click="dialog = false, timeSlotStore.updateTimeSlot(editTimeSlot.id, editTimeSlot)"></v-btn>
       </template>
     </v-card>
   </v-dialog>
@@ -138,6 +138,14 @@ export default {
       },
       immediate: true,
     },
+  },
+  computed: {
+    isFormValid() {
+      return this.start_time && this.end_time && this.start_time < this.end_time;
+    },
+    isUpdateFormValid() {
+      return this.editTimeSlot.start_time && this.editTimeSlot.end_time && this.editTimeSlot.start_time < this.editTimeSlot.end_time;
+    }
   },
   mounted() {
     initFlowbite();

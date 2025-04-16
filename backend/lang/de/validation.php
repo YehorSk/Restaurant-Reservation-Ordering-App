@@ -126,9 +126,22 @@
 
 
         'attributes' => [
-            'name' => 'Name',
-            'email' => 'E-Mail-Adresse',
-            'password' => 'Passwort',
+            "start_time" => "Startzeit",
+            "end_time" => "Endzeit",
+            "name" => "Name",
+            "email" => "E-Mail",
+            "password" => "Passwort",
+            "role" => "Rolle",
+            "phone" => "Telefon",
+            "address" => "Adresse",
+            "language" => "Sprache",
+            "number" => "Tischnummer",
+            "capacity" => "Kapazität",
+            "description" => "Beschreibung",
+            "picture" => "Bild",
+            "recipe" => "Rezept",
+            "long_description" => "Lange Beschreibung",
+            "short_description" => "Kurze Beschreibung",
         ],
 
     ];

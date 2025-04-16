@@ -189,6 +189,23 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        "start_time" => "Start time",
+        "end_time" => "End time",
+        "name" => "Name",
+        "email" => "Email",
+        "password" => "Password",
+        "role" => "Role",
+        "phone" => "Phone",
+        "address" => "Address",
+        "language" => "Language",
+        "number" => "Number", // Table Number
+        "capacity" => "Capacity", // Table Capacity,
+        "description" => "Description",
+        "picture" => "Picture",
+        "recipe" => "Recipe",
+        "long_description" => "Long description",
+        "short_description" => "Short description",
+    ],
 
 ];

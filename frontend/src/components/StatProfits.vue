@@ -19,8 +19,11 @@ export default {
     chartData() {
       const months = this.data.months;
       const dataStats = this.data.data_stats;
+
+      const translatedMonths = months.map((m, i) => this.$t(`Home.${m}`));
+
       return {
-        labels: months,
+        labels: translatedMonths,
         datasets: [{
           label: this.label,
           data: dataStats,

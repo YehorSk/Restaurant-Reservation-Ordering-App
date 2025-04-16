@@ -60,7 +60,8 @@
         'cart_item_removed' => '":itemName" wurde aus deinem Warenkorb entfernt.',
         'cart_item_not_available' => '":itemName" ist vorübergehend nicht verfügbar und wurde aus deinem Warenkorb entfernt.',
         'item_not_available' => 'Entschuldigung, dieses Gericht ist vorübergehend nicht verfügbar.',
-        'tables_not_available' => 'Entschuldigung, es sind keine Tische für den ausgewählten Zeitraum verfügbar.'
+        'tables_not_available' => 'Entschuldigung, es sind keine Tische für den ausgewählten Zeitraum verfügbar.',
+        'time_slot_already_exists' => 'Der Zeitblock existiert bereits.'
     ];
 
 

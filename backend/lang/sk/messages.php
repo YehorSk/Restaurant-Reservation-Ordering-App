@@ -60,7 +60,8 @@
         'cart_item_removed' => '":itemName" bol odstránený z vášho košíka.',
         'cart_item_not_available' => '":itemName" je dočasne nedostupné a bolo odstránené z tvojej nákupnej tašky.',
         'item_not_available' => 'Ospravedlňujeme sa, toto jedlo je dočasne nedostupné.',
-        'tables_not_available' => 'Prepáčte, na zvolený čas nie sú k dispozícii žiadne stoly.'
+        'tables_not_available' => 'Prepáčte, na zvolený čas nie sú k dispozícii žiadne stoly.',
+        'time_slot_already_exists' => 'Časový slot už existuje.'
     ];
 
 ?>

@@ -47,7 +47,19 @@
     "Total_reservations_created:": "Gesamtzahl erstellter Reservierungen:",
     "Today:": "Heute:",
     "Revenue": "Einnahmen",
-    "Total": "Gesamt"
+    "Total": "Gesamt",
+    "January": "Januar",
+    "February": "Februar",
+    "March": "März",
+    "April": "April",
+    "May": "Mai",
+    "June": "Juni",
+    "July": "Juli",
+    "August": "August",
+    "September": "September",
+    "October": "Oktober",
+    "November": "November",
+    "December": "Dezember"
   },
   "Menu": {
     "All_Menus": "Alle Menüs",

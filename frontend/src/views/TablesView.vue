@@ -17,7 +17,7 @@
                 type="number"
                 color="orange"
             ></v-text-field>
-            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" :disabled="!isFormValid" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
           </v-form>
         </div>
       </div>
@@ -99,7 +99,7 @@
       ></v-text-field>
       <template v-slot:actions>
         <v-btn class="ms-auto" :text="$t('Tables.Close')" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('Tables.Update')" @click="dialog = false, tableStore.updateTable(editTable)"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :disabled="!isUpdateFormValid" :text="$t('Tables.Update')" @click="dialog = false, tableStore.updateTable(editTable)"></v-btn>
       </template>
     </v-card>
   </v-dialog>
@@ -147,6 +147,14 @@ export default {
       immediate: true,
     },
   },
+  computed: {
+    isFormValid() {
+      return this.number > 0 && this.capacity > 0;
+    },
+    isUpdateFormValid() {
+      return this.editTable.number > 0 && this.editTable.capacity > 0;
+    }
+  },
   mounted() {
     initFlowbite();
   },
@@ -164,7 +172,7 @@ export default {
       this.tableStore.insertTable(this.number, this.capacity);
       this.number = "";
       this.capacity = 0;
-    },
+    }
   }
 }
 </script>

@@ -125,9 +125,22 @@
 
 
         'attributes' => [
-            'name' => 'meno',
-            'email' => 'emailová adresa',
-            'password' => 'heslo',
+            "start_time" => "Čas začiatku",
+            "end_time" => "Čas konca",
+            "name" => "Meno",
+            "email" => "E-mail",
+            "password" => "Heslo",
+            "role" => "Rola",
+            "phone" => "Telefón",
+            "address" => "Adresa",
+            "language" => "Jazyk",
+            "number" => "Číslo stola",
+            "capacity" => "Kapacita",
+            "description" => "Popis",
+            "picture" => "Obrázok",
+            "recipe" => "Recept",
+            "long_description" => "Dlhý popis",
+            "short_description" => "Krátky popis",
         ],
 
     ];

@@ -35,7 +35,7 @@ class RestaurantInfoController extends Controller
             ]);
             $item = RestaurantInfo::first();
             $item->update($data);
-            return $this->success([$item], "Updated");
+            return $this->success([$item], __("messages.item_was_updated"));
         }
     }
 }

@@ -60,7 +60,8 @@
         'cart_item_removed' => '":itemName" has been removed from your cart.',
         'cart_item_not_available' => '":itemName" is temporarily unavailable and has been removed from your cart.',
         'item_not_available' => 'Sorry, this meal is temporarily unavailable.',
-        'tables_not_available' => 'Sorry, there are no available tables for the selected time slot'
+        'tables_not_available' => 'Sorry, there are no available tables for the selected time slot',
+        'time_slot_already_exists' => 'The time slot already exists.'
     ];
 
 ?>

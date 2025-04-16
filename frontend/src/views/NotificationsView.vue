@@ -15,7 +15,7 @@
                 :label="$t('Forms.Body')"
                 color="orange"
             ></v-text-field>
-            <v-btn class="mt-2 mx-2" type="submit" @click="sendNotification()" block>{{ $t('Forms.Send') }}</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" @click="sendNotification()" :disabled="!isFormValid" block>{{ $t('Forms.Send') }}</v-btn>
           </v-form>
         </div>
       </div>
@@ -50,6 +50,21 @@ export default {
         }
       },
       immediate: true,
+    },
+    "notificationsStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.notificationsStore.failure = "";
+        }
+      },
+      immediate: true,
+    },
+  },
+  computed: {
+    isFormValid() {
+      return this.title !== "" && this.body !== "";
     },
   },
   mounted() {

@@ -7,6 +7,7 @@ use App\Models\TimeSlot;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TableController extends Controller
 {
@@ -46,8 +47,8 @@ class TableController extends Controller
         $user = auth('sanctum')->user();
         if ($user instanceof User) {
             $data = $request->validate([
-                "number" => "required",
-                "capacity" => "required",
+                "number" => "required|min:0|unique:tables",
+                "capacity" => "required|min:0",
             ]);
             $item = new Table($data);
             $item->save();
@@ -62,8 +63,8 @@ class TableController extends Controller
         if ($user instanceof User) {
             $item = Table::find($id);
             $data = $request->validate([
-                "number" => "required",
-                "capacity" => "required",
+                "number" => ["required", "min:0", Rule::unique('tables', 'number')->ignore($item->id)],
+                "capacity" => "required|min:0",
             ]);
             $item->update($data);
             return $this->success(data: $item, message: __("messages.item_was_updated"));

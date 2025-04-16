@@ -79,9 +79,9 @@ class MenuItemController extends Controller
         if ($user instanceof User) {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
-                'short_description' => 'nullable|string',
-                'long_description' => 'nullable|string',
-                'recipe' => 'nullable|string',
+                'short_description' => 'string',
+                'long_description' => 'string',
+                'recipe' => 'string',
                 'picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'price' => 'required|numeric|min:0',
             ]);
@@ -119,9 +119,9 @@ class MenuItemController extends Controller
             }
             $validatedData = $request->validate([
                 'name' => ['required', Rule::unique('menu_items')->ignore($menuItem->id)],
-                'short_description' => 'nullable|string',
-                'long_description' => 'nullable|string',
-                'recipe' => 'nullable|string',
+                'short_description' => 'string',
+                'long_description' => 'string',
+                'recipe' => 'string',
                 'picture' => 'nullable',
                 'price' => 'required|numeric|min:0',
                 'availability' => 'required|in:0,1',

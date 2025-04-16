@@ -139,6 +139,16 @@ export default {
       },
       immediate: true,
     },
+    "infoStore.failure": {
+      handler(newValue) {
+        if (newValue) {
+          const toast = useToast();
+          toast.error(newValue);
+          this.infoStore.failure = "";
+        }
+      },
+      immediate: true,
+    },
     "infoStore.getInfo":{
       handler(newInfo) {
         if (newInfo.length > 0) {

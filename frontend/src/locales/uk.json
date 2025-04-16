@@ -47,7 +47,19 @@
     "Total_reservations_created:": "Загальна кількість створених бронювань: ",
     "Today:": "Сьогодні: ",
     "Revenue": "Дохід",
-    "Total": "Загалом"
+    "Total": "Загалом",
+    "January": "Січень",
+    "February": "Лютий",
+    "March": "Березень",
+    "April": "Квітень",
+    "May": "Травень",
+    "June": "Червень",
+    "July": "Липень",
+    "August": "Серпень",
+    "September": "Вересень",
+    "October": "Жовтень",
+    "November": "Листопад",
+    "December": "Грудень"
   },
   "Menu": {
     "All_Menus": "Усі меню",
