@@ -17,7 +17,7 @@
                 color="orange"
                 type="time"
             ></v-text-field>
-            <v-btn class="mt-2 mx-2" type="submit" :disabled="!isFormValid" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" :disabled="!isFormValid" @click="submitForm()" block>{{ $t('default.Save') }}</v-btn>
           </v-form>
         </div>
       </div>
@@ -42,10 +42,10 @@
             {{$t('TimeSlots.End_Time')}}
           </th>
           <th scope="col" class="px-6 py-3">
-            {{$t('TimeSlots.Edit')}}
+            {{$t('default.Edit')}}
           </th>
           <th scope="col" class="px-6 py-3">
-            {{$t('TimeSlots.Delete')}}
+            {{$t('default.Delete')}}
           </th>
         </tr>
         </thead>
@@ -59,14 +59,14 @@
           </td>
           <td>
             <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setTimeSlot(slot)">
-              {{ $t('TimeSlots.Update') }}
+              {{ $t('default.Update') }}
             </v-btn>
           </td>
           <td>
             <form @submit.prevent class="inline-block">
               <v-btn @click="timeSlotStore.deleteTimeSlot(slot.id)"
                      color="red-lighten-2"
-                     :text="$t('TimeSlots.Delete')"
+                     :text="$t('default.Delete')"
               ></v-btn>
             </form>
           </td>
@@ -90,8 +90,8 @@
           type="time"
       ></v-text-field>
       <template v-slot:actions>
-        <v-btn class="ms-auto" :text="$t('TimeSlots.Close')" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('TimeSlots.Update')" :disabled="!isUpdateFormValid" @click="dialog = false, timeSlotStore.updateTimeSlot(editTimeSlot.id, editTimeSlot)"></v-btn>
+        <v-btn class="ms-auto" :text="$t('default.Close')" @click="dialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('default.Update')" :disabled="!isUpdateFormValid" @click="dialog = false, timeSlotStore.updateTimeSlot(editTimeSlot.id, editTimeSlot)"></v-btn>
       </template>
     </v-card>
   </v-dialog>

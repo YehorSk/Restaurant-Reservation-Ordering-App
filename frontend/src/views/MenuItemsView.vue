@@ -40,7 +40,7 @@
                 :label="$t('MenuItems.Choose_Image')"
             ></v-file-input>
             <v-img v-if="addImageUrl" :src="addImageUrl"></v-img>
-            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{ $t('MenuItems.Save') }}</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{ $t('default.Save') }}</v-btn>
           </v-form>
         </div>
       </div>
@@ -50,7 +50,7 @@
       <br>
       <form class="flex items-center max-w-sm mx-auto" @submit.prevent="onSearch">
         <div class="relative w-full">
-          <input type="text" v-model="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder="$t('MenuItems.Search')" />
+          <input type="text" v-model="search" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" :placeholder="$t('default.Search')" />
         </div>
         <button type="submit" class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
           <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -90,10 +90,10 @@
               {{ $t('MenuItems.Availability') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              {{ $t('MenuItems.Edit') }}
+              {{ $t('default.Edit') }}
             </th>
             <th scope="col" class="px-6 py-3">
-              {{ $t('MenuItems.Delete') }}
+              {{ $t('default.Delete') }}
             </th>
           </tr>
           </thead>
@@ -119,14 +119,14 @@
             </td>
             <td>
               <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setMenuItem(item)">
-                {{ $t('MenuItems.Update_Show') }}
+                {{ $t('default.Update') }}
               </v-btn>
             </td>
             <td>
               <form @submit.prevent class="inline-block">
-                <v-btn @click="menuStore.destroyMenuItem(this.route.params.id, item)"
+                <v-btn @click="deleteDialog = true"
                        color="red-lighten-2"
-                       :text="$t('MenuItems.Delete')"
+                       :text="$t('default.Delete')"
                 ></v-btn>
               </form>
             </td>
@@ -144,7 +144,7 @@
     </div>
   </div>
   <v-dialog v-model="dialog" max-width="900" persistent>
-    <v-card prepend-icon="mdi-update" title="Update Menu Item">
+    <v-card prepend-icon="mdi-update" :title="$t('MenuItems.Update_Menu_Item')">
       <v-text-field
           v-model="editMenuItem.name"
           hide-details="auto"
@@ -174,8 +174,19 @@
       <v-checkbox v-model="editMenuItem.availability" :true-value="1" :false-value="0" :label="$t('MenuItems.Is_available')"></v-checkbox>
       <input type="file" accept="image/*" @change="onFileChange($event, 'update')" class="mb-4">
       <template v-slot:actions>
-        <v-btn class="ms-auto" text="Close" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('MenuItems.Update')" @click="updateMenuItem"></v-btn>
+        <v-btn class="ms-auto" :text="$t('default.Close')" @click="dialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('default.Update')" @click="updateMenuItem"></v-btn>
+      </template>
+    </v-card>
+  </v-dialog>
+  <v-dialog v-model="deleteDialog" max-width="600" persistent>
+    <v-card prepend-icon="mdi-update" :title="$t('MenuItems.Delete_Menu_Item')">
+      <v-card-text>
+        {{ $t("MenuItems.Delete_Menu_Item_Confirmation") }}
+      </v-card-text>
+      <template v-slot:actions>
+        <v-btn class="ms-auto" :text="$t('default.Close')" @click="deleteDialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :text="$t('default.Delete')" @click="menuStore.destroyMenuItem(this.route.params.id, item)"></v-btn>
       </template>
     </v-card>
   </v-dialog>
@@ -207,6 +218,7 @@ export default {
       updateImageUrl: "",
       price: 0,
       dialog: false,
+      deleteDialog: false,
       editMenuItem: {},
       search: '',
       showAddMenu: false

@@ -17,7 +17,7 @@
                 type="number"
                 color="orange"
             ></v-text-field>
-            <v-btn class="mt-2 mx-2" type="submit" :disabled="!isFormValid" @click="submitForm()" block>{{ $t('Forms.Save') }}</v-btn>
+            <v-btn class="mt-2 mx-2" type="submit" :disabled="!isFormValid" @click="submitForm()" block>{{ $t('default.Save') }}</v-btn>
           </v-form>
         </div>
       </div>
@@ -45,10 +45,10 @@
             {{ $t('Tables.Capacity') }}
           </th>
           <th scope="col" class="px-6 py-3">
-            {{ $t('Tables.Edit') }}
+            {{ $t('default.Edit') }}
           </th>
           <th scope="col" class="px-6 py-3">
-            {{ $t('Tables.Delete') }}
+            {{ $t('default.Delete') }}
           </th>
         </tr>
         </thead>
@@ -65,14 +65,14 @@
           </td>
           <td>
             <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline inline-block" @click="dialog = true, setTable(table)">
-              {{ $t('Tables.Update') }}
+              {{ $t('default.Update') }}
             </v-btn>
           </td>
           <td>
             <form @submit.prevent class="inline-block">
               <v-btn @click="tableStore.deleteTable(table.id)"
                      color="red-lighten-2"
-                     :text="$t('Tables.Delete')"
+                     :text="$t('default.Delete')"
               ></v-btn>
             </form>
           </td>
@@ -98,8 +98,8 @@
           type="number"
       ></v-text-field>
       <template v-slot:actions>
-        <v-btn class="ms-auto" :text="$t('Tables.Close')" @click="dialog = false"></v-btn>
-        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :disabled="!isUpdateFormValid" :text="$t('Tables.Update')" @click="dialog = false, tableStore.updateTable(editTable)"></v-btn>
+        <v-btn class="ms-auto" :text="$t('default.Close')" @click="dialog = false"></v-btn>
+        <v-btn class="font-medium text-green-600 dark:text-green-500 hover:underline" :disabled="!isUpdateFormValid" :text="$t('default.Update')" @click="dialog = false, tableStore.updateTable(editTable)"></v-btn>
       </template>
     </v-card>
   </v-dialog>

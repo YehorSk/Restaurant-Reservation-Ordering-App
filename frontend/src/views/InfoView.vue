@@ -81,7 +81,7 @@
 
         <!-- Submit Button spanning both columns -->
         <div class="w-1/2 p-2 flex justify-center">
-          <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{$t('Forms.Save')}}</v-btn>
+          <v-btn class="mt-2 mx-2" type="submit" @click="submitForm()" block>{{$t('default.Save')}}</v-btn>
         </div>
       </div>
     </v-sheet>
