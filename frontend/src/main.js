@@ -57,8 +57,6 @@ const vuetify = createVuetify({
     directives,
 });
 
-i18n.global.locale = lang.value;
-
 const pinia = createPinia().use(() => {
     const  t  = i18n.global.t
     return { t }
@@ -68,6 +66,9 @@ app.use(pinia);
 
 app.use(vuetify);
 app.use(i18n);
+
+i18n.global.locale = lang.value;
+
 app.use(Toast)
 
 

@@ -52,11 +52,11 @@ export const UseAuthStore = defineStore("auth",{
                     password: password,
                 });
                 console.log(response)
+                this.lang = response.data.data[0].user.language;
                 this.success = response.data.data.message;
                 this.user = response.data.data[0].user;
-                this.lang = response.data.data[0].user.language;
                 this.token = response.data.data[0].token;
-                await router.push('/');
+                window.location.reload();
                 console.log(this.token)
             } catch (error) {
                 console.log(error.response);
@@ -69,6 +69,7 @@ export const UseAuthStore = defineStore("auth",{
                 const response = await axios.post('logout', null);
                 this.success = response.data.data.message;
                 this.user = {};
+                this.lang = 'en';
                 this.token = null;
                 window.location.reload();
             } catch (error) {
@@ -95,6 +96,7 @@ export const UseAuthStore = defineStore("auth",{
         },
         clear_user(){
             this.token = {};
+            this.lang = 'en';
             this.user = {};
         }
     }
