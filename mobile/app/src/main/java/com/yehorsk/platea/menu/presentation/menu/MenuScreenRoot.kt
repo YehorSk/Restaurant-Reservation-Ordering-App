@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Event
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ahmadhamwi.tabsync_compose.lazyListTabSync
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
@@ -34,9 +32,6 @@ import com.yehorsk.platea.menu.presentation.components.MenuList
 import com.yehorsk.platea.menu.presentation.components.MenuTabBar
 import com.yehorsk.platea.menu.presentation.components.SearchBar
 
-@OptIn(ExperimentalFoundationApi::class,ExperimentalFoundationApi::class,
-    ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class
-)
 @Composable
 fun MenuScreenRoot(
     modifier: Modifier = Modifier,
@@ -47,7 +42,6 @@ fun MenuScreenRoot(
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
     val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle()
 
     if(uiState.isLoading){
@@ -56,7 +50,6 @@ fun MenuScreenRoot(
         MenuScreen(
             modifier = modifier,
             uiState = uiState,
-            menuUiState = menuUiState,
             isConnected = isConnected,
             onSearchClicked = { onSearchClicked() },
             onCreateReservationClicked = { onCreateReservationClicked() },
@@ -67,18 +60,17 @@ fun MenuScreenRoot(
 
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MenuScreen(
     modifier: Modifier = Modifier,
     uiState: MenuScreenUiState,
-    menuUiState: List<MenuWithMenuItems>,
     isConnected: Boolean,
     onSearchClicked: () -> Unit,
     onCreateReservationClicked: () -> Unit,
     onAction: (MenuAction) -> Unit,
     isUser: Boolean
 ){
+    val menuUiState = uiState.menuWithMenuItems
 
     if(menuUiState.isNotEmpty()){
 

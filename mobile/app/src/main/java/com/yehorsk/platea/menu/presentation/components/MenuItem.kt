@@ -3,12 +3,14 @@ package com.yehorsk.platea.menu.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,9 +21,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
@@ -81,8 +83,12 @@ fun MenuItem(
         AsyncImage(
             model = "$imgUrl${menuItem.picture}",
             modifier = Modifier
-                .weight(1f)
-                .padding(26.dp)
+                .size(120.dp)
+                .padding(
+                    top = 16.dp,
+                    bottom = 16.dp,
+                    end = 16.dp
+                )
                 .clip(RoundedCornerShape(10.dp)),
             contentDescription = menuItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),
@@ -92,7 +98,7 @@ fun MenuItem(
     }
 }
 
-@PreviewLightDark
+@Preview
 @Composable
 fun MenuItemPreview(){
     MobileTheme {

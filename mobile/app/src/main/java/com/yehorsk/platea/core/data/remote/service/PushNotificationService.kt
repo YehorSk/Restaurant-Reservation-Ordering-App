@@ -11,9 +11,8 @@ import com.google.firebase.messaging.RemoteMessage
 import com.yehorsk.platea.MainActivity
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.dao.CartDao
-import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
-import com.yehorsk.platea.menu.data.dao.MenuDao
-import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
+import com.yehorsk.platea.cart.domain.repository.CartRepository
+import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,16 +25,13 @@ import javax.inject.Inject
 class PushNotificationService: FirebaseMessagingService() {
 
     @Inject
-    lateinit var menuDao: MenuDao
-
-    @Inject
     lateinit var cartDao: CartDao
 
     @Inject
-    lateinit var menuRepositoryImpl: MenuRepositoryImpl
+    lateinit var menuRepository: MenuRepository
 
     @Inject
-    lateinit var cartRepositoryImpl: CartRepositoryImpl
+    lateinit var cartRepositoryImpl: CartRepository
 
 
     override fun onNewToken(token: String) {
@@ -66,16 +62,16 @@ class PushNotificationService: FirebaseMessagingService() {
                     }
                     "menu_update" -> {
                         val newPrice = jsonObject.getString("new_price")
-                        menuDao.updateMenuItemPrice(itemId, newPrice)
+                        menuRepository.updateMenuItemPrice(itemId, newPrice)
                     }
                     "cart_update" -> cartDao.deleteCartItem(itemId)
                     "cart_not_available" -> cartDao.deleteCartItem(itemId)
                     "menu_item_availability" -> {
                         val availability = jsonObject.getInt("availability")
-                        menuDao.changeMenuItemAvailability(itemId, availability)
+                        menuRepository.changeMenuItemAvailability(itemId, availability)
                     }
                     "menu_availability" -> {
-                        menuRepositoryImpl.getAllMenus()
+                        menuRepository.getAllMenus()
                         cartRepositoryImpl.getAllItems()
                     }
                     else -> {}

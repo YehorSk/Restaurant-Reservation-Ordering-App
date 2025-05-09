@@ -1,22 +1,24 @@
 package com.yehorsk.platea.menu.presentation.menu
 
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
+import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuEntity
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
-import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
+import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import com.yehorsk.platea.menu.presentation.BaseMenuViewModel
 import com.yehorsk.platea.menu.presentation.MenuAction
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -25,18 +27,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MenuScreenViewModel @Inject constructor(
-    menuRepositoryImpl: MenuRepositoryImpl,
-    cartRepositoryImpl: CartRepositoryImpl,
-    networkConnectivityObserver: ConnectivityObserver,
-    menuDao: MenuDao
-) : BaseMenuViewModel(menuRepositoryImpl, cartRepositoryImpl, networkConnectivityObserver, menuDao){
-
-    val favoriteUiState: StateFlow<List<MenuItemEntity>> = menuDao.getFavoriteItems()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = listOf()
-        )
+    menuRepositoryImpl: MenuRepository,
+    cartRepositoryImpl: CartRepository,
+    networkConnectivityObserver: ConnectivityObserver
+) : BaseMenuViewModel(menuRepositoryImpl, cartRepositoryImpl, networkConnectivityObserver){
 
     fun onAction(action: MenuAction){
         when(action){
@@ -128,7 +122,7 @@ class MenuScreenViewModel @Inject constructor(
 
     fun addUserCartItem(){
         viewModelScope.launch {
-            cartRepositoryImpl.addUserCartItem(cartForm = _uiState.value.cartForm)
+            cartRepository.addUserCartItem(cartForm = _uiState.value.cartForm)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -161,7 +155,7 @@ class MenuScreenViewModel @Inject constructor(
     fun addUserFavoriteItem(){
         Timber.d("addUserFavoriteItem")
         viewModelScope.launch {
-            menuRepositoryImpl.addFavorite(_uiState.value.currentMenuItem!!.id.toString())
+            menuRepository.addFavorite(_uiState.value.currentMenuItem!!.id.toString())
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -182,7 +176,7 @@ class MenuScreenViewModel @Inject constructor(
     fun deleteUserFavoriteItem(){
         Timber.d("deleteUserFavoriteItem")
         viewModelScope.launch {
-            menuRepositoryImpl.deleteFavorite(_uiState.value.currentMenuItem!!.id.toString())
+            menuRepository.deleteFavorite(_uiState.value.currentMenuItem!!.id.toString())
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

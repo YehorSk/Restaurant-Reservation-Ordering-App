@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
@@ -83,8 +84,12 @@ fun CartItem(
         AsyncImage(
             model = "$imgUrl${cartItem.picture}",
             modifier = Modifier
-                .weight(1f)
-                .padding(32.dp)
+                .size(120.dp)
+                .padding(
+                    top = 16.dp,
+                    bottom = 16.dp,
+                    end = 16.dp
+                )
                 .clip(RoundedCornerShape(10.dp)),
             contentDescription = cartItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),

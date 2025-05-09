@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
+import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.cart.presentation.cart.CartAction
 import com.yehorsk.platea.cart.presentation.cart.CartScreenUiState
 import com.yehorsk.platea.core.domain.remote.onError
@@ -30,7 +31,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartScreenViewModel @Inject constructor(
-    val cartRepositoryImpl: CartRepositoryImpl,
+    val cartRepositoryImpl: CartRepository,
     val networkConnectivityObserver: ConnectivityObserver,
     val cartDao: CartDao
 ) : ViewModel(){

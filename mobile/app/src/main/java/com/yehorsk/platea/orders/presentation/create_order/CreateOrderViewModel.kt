@@ -17,6 +17,7 @@ import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
+import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,7 +31,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateOrderViewModel @Inject constructor(
      networkConnectivityObserver: ConnectivityObserver,
-     orderRepositoryImpl: OrderRepositoryImpl,
+     orderRepositoryImpl: OrderRepository,
      orderDao: OrderDao,
      cartDao: CartDao,
      preferencesRepository: MainPreferencesRepository,
