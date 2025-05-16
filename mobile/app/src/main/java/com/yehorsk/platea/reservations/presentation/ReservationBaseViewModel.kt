@@ -9,6 +9,7 @@ import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
+import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 open class ReservationBaseViewModel @Inject constructor(
     val networkConnectivityObserver: ConnectivityObserver,
-    val reservationRepositoryImpl: ReservationRepositoryImpl,
+    val reservationRepository: ReservationRepository,
     val reservationDao: ReservationDao,
     val preferencesRepository: MainPreferencesRepository,
     val restaurantInfoDao: RestaurantInfoDao

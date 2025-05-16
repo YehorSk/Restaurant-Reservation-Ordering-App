@@ -9,6 +9,7 @@ import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
+import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +26,7 @@ import javax.inject.Inject
 @HiltViewModel
 open class OrderBaseViewModel @Inject constructor(
     val networkConnectivityObserver: ConnectivityObserver,
-    val orderRepositoryImpl: OrderRepositoryImpl,
+    val orderRepository: OrderRepository,
     val orderDao: OrderDao,
     val preferencesRepository: MainPreferencesRepository,
     val restaurantInfoDao: RestaurantInfoDao

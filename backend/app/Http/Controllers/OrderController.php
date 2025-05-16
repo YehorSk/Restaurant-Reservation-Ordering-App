@@ -16,7 +16,7 @@ class OrderController extends Controller
     public function getStats($year){
         $user = auth('sanctum')->user();
         if($user instanceof User && $user->role === "admin"){
-            $data_today = Order::whereDay('created_at', now()->day)->get();
+            $data_today = Order::whereDate('created_at', now()->toDateString())->get();
             $data_all = Order::all();
 
             $data_stats = Order::selectRaw('SUM(price) as total_price, MONTHNAME(created_at) AS month_name, MONTH(created_at) AS month_number')

@@ -17,6 +17,7 @@ import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
+import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,13 +30,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateOrderViewModel @Inject constructor(
-     networkConnectivityObserver: ConnectivityObserver,
-     orderRepositoryImpl: OrderRepositoryImpl,
-     orderDao: OrderDao,
-     cartDao: CartDao,
-     preferencesRepository: MainPreferencesRepository,
-     restaurantInfoDao: RestaurantInfoDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository, restaurantInfoDao){
+    networkConnectivityObserver: ConnectivityObserver,
+    orderRepository: OrderRepository,
+    orderDao: OrderDao,
+    cartDao: CartDao,
+    preferencesRepository: MainPreferencesRepository,
+    restaurantInfoDao: RestaurantInfoDao
+): OrderBaseViewModel(networkConnectivityObserver, orderRepository, orderDao, preferencesRepository, restaurantInfoDao){
 
     val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantInfoDao.getRestaurantInfo()
         .stateIn(
@@ -206,7 +207,7 @@ class CreateOrderViewModel @Inject constructor(
     fun getUserOrderItems(){
         Timber.d("getUserOrderItems")
         viewModelScope.launch{
-            orderRepositoryImpl.getUserOrderItems()
+            orderRepository.getUserOrderItems()
                 .onSuccess { data, message ->
                     _uiState.update {
                         it.copy(orderItems = data)
@@ -225,7 +226,7 @@ class CreateOrderViewModel @Inject constructor(
     fun makePickupOrder(){
         Timber.d("makePickupOrder")
         viewModelScope.launch{
-            orderRepositoryImpl.makeUserPickUpOrder(uiState.value.orderForm)
+            orderRepository.makeUserPickUpOrder(uiState.value.orderForm)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -247,7 +248,7 @@ class CreateOrderViewModel @Inject constructor(
     fun makeDeliveryOrder(){
         Timber.d("makeDeliveryOrder")
         viewModelScope.launch{
-            orderRepositoryImpl.makeUserDeliveryOrder(uiState.value.orderForm)
+            orderRepository.makeUserDeliveryOrder(uiState.value.orderForm)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -277,7 +278,7 @@ class CreateOrderViewModel @Inject constructor(
                     )
                 )
             }
-            orderRepositoryImpl.makeWaiterOrder(uiState.value.orderForm)
+            orderRepository.makeWaiterOrder(uiState.value.orderForm)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -300,7 +301,7 @@ class CreateOrderViewModel @Inject constructor(
         Timber.d("getTables")
         viewModelScope.launch{
             setLoadingState(true)
-            orderRepositoryImpl.getTables()
+            orderRepository.getTables()
                 .onSuccess { data, message ->
                     _uiState.update {
                         it.copy(tables = data)

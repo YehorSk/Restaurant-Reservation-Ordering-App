@@ -12,6 +12,7 @@ import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
+import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,12 +30,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrdersViewModel @Inject constructor(
-        networkConnectivityObserver: ConnectivityObserver,
-        orderRepositoryImpl: OrderRepositoryImpl,
-        orderDao: OrderDao,
-        preferencesRepository: MainPreferencesRepository,
-        restaurantInfoDao: RestaurantInfoDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository, restaurantInfoDao){
+    networkConnectivityObserver: ConnectivityObserver,
+    orderRepository: OrderRepository,
+    orderDao: OrderDao,
+    preferencesRepository: MainPreferencesRepository,
+    restaurantInfoDao: RestaurantInfoDao
+): OrderBaseViewModel(networkConnectivityObserver, orderRepository, orderDao, preferencesRepository, restaurantInfoDao){
 
     private val _filterOption = MutableStateFlow(OrderFilter.ALL)
     val filterOption= _filterOption.asStateFlow()
@@ -84,7 +85,7 @@ class OrdersViewModel @Inject constructor(
         Timber.d("getUserOrders")
         viewModelScope.launch{
             setLoadingState(true)
-            orderRepositoryImpl.getUserOrders()
+            orderRepository.getUserOrders()
                 .onSuccess { data, message ->
 
                 }

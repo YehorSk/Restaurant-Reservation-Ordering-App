@@ -13,6 +13,7 @@ import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
 import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
+import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,11 +32,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ReservationScreenViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
-    reservationRepositoryImpl: ReservationRepositoryImpl,
+    reservationRepository: ReservationRepository,
     reservationDao: ReservationDao,
     preferencesRepository: MainPreferencesRepository,
     restaurantInfoDao: RestaurantInfoDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository, restaurantInfoDao){
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, reservationDao, preferencesRepository, restaurantInfoDao){
 
     private val _filterOption = MutableStateFlow(ReservationFilter.ALL)
     val filterOption= _filterOption.asStateFlow()
@@ -84,7 +85,7 @@ class ReservationScreenViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
             val localItems = reservationItemUiState.value
 
-            reservationRepositoryImpl.getUserReservations()
+            reservationRepository.getUserReservations()
                 .onSuccess { data, message ->
                     val serverItemIds = data.map { it.id }.toSet()
                     val itemsToDelete = localItems.filter { it.id !in serverItemIds }

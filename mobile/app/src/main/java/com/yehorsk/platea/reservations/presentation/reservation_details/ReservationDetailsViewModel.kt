@@ -11,6 +11,7 @@ import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
+import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,11 +24,11 @@ import javax.inject.Inject
 @HiltViewModel
 class ReservationDetailsViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
-    reservationRepositoryImpl: ReservationRepositoryImpl,
+    reservationRepository: ReservationRepository,
     reservationDao: ReservationDao,
     preferencesRepository: MainPreferencesRepository,
     restaurantInfoDao: RestaurantInfoDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository, restaurantInfoDao){
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, reservationDao, preferencesRepository, restaurantInfoDao){
 
     val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationDao.getUserReservations()
         .stateIn(
@@ -51,7 +52,7 @@ class ReservationDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            reservationRepositoryImpl.getUserReservationDetails(id)
+            reservationRepository.getUserReservationDetails(id)
                 .onError { error ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -70,7 +71,7 @@ class ReservationDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            reservationRepositoryImpl.cancelUserReservation(id)
+            reservationRepository.cancelUserReservation(id)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -96,7 +97,7 @@ class ReservationDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            reservationRepositoryImpl.updateReservation(id, status)
+            reservationRepository.updateReservation(id, status)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

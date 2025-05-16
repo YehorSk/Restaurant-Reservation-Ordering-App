@@ -13,7 +13,7 @@ data class OrderMenuItemDto(
     @SerialName("updated_at")
     val updatedAt: String,
     @SerialName("menu_id")
-    val menuId: Int,
+    val menuId: String,
     val name: String,
     @SerialName("short_description")
     val shortDescription: String,
@@ -29,7 +29,7 @@ data class OrderMenuItemDto(
 data class Pivot(
     val id: Int,
     @SerialName("order_id")
-    val orderId: Int?=null,
+    val orderId: String?=null,
     @SerialName("user_id")
     val userId: Int?=null,
     @SerialName("menu_item_id")
@@ -60,7 +60,7 @@ fun OrderMenuItemDto.toOrderMenuItemEntity(): OrderItemEntity{
 
 fun Pivot.toPivotEntity() = PivotOrderItemEntity(
     id = this.id,
-    orderId = this.orderId!!.toInt(),
+    orderId = this.orderId!!,
     menuItemId = this.menuItemId,
     quantity = this.quantity,
     price = this.price,

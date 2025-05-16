@@ -13,7 +13,7 @@ data class MenuItemDto(
     @SerialName("updated_at")
     val updatedAt: String,
     @SerialName("menu_id")
-    val menuId: Int,
+    val menuId: String,
     val name: String,
     @SerialName("short_description")
     val shortDescription: String,

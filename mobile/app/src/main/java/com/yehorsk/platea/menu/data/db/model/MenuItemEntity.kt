@@ -14,7 +14,7 @@ data class MenuItemEntity(
     @ColumnInfo("updated_at")
     val updatedAt: String,
     @ColumnInfo("menu_id")
-    val menuId: Int,
+    val menuId: String,
     val name: String,
     @ColumnInfo("short_description")
     val shortDescription: String,
