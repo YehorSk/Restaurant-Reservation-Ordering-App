@@ -2,10 +2,8 @@ package com.yehorsk.platea.core.data.remote.service
 
 import com.yehorsk.platea.auth.data.remote.model.UserDto
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
-import com.yehorsk.platea.core.data.remote.dto.RestaurantInfoDto
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface ProfileService {
@@ -21,8 +19,5 @@ interface ProfileService {
 
     @POST("delete-account")
     suspend fun deleteAccount(): ResponseDto<String>
-
-    @GET("get-restaurant-info")
-    suspend fun getRestaurantInfo(): ResponseDto<RestaurantInfoDto>
 
 }

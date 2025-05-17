@@ -9,9 +9,7 @@ import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
-import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,10 +30,9 @@ import javax.inject.Inject
 class OrdersViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     orderRepository: OrderRepository,
-    orderDao: OrderDao,
     preferencesRepository: MainPreferencesRepository,
     restaurantInfoDao: RestaurantInfoDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepository, orderDao, preferencesRepository, restaurantInfoDao){
+): OrderBaseViewModel(networkConnectivityObserver, orderRepository, preferencesRepository, restaurantInfoDao){
 
     private val _filterOption = MutableStateFlow(OrderFilter.ALL)
     val filterOption= _filterOption.asStateFlow()
@@ -46,13 +43,13 @@ class OrdersViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val orderItemsUiState: StateFlow<List<OrderEntity>> = combine(_filterOption, _searchText) { filter, search ->
             when (filter) {
-                OrderFilter.COMPLETED -> orderDao.getUserOrders(search, "Completed")
-                OrderFilter.PENDING -> orderDao.getUserOrders(search, "Pending")
-                OrderFilter.CANCELLED -> orderDao.getUserOrders(search, "Cancelled")
-                OrderFilter.CONFIRMED -> orderDao.getUserOrders(search, "Confirmed")
-                OrderFilter.PREPARING -> orderDao.getUserOrders(search, "Preparing")
-                OrderFilter.READY -> orderDao.getUserOrders(search, "Ready for Pickup")
-                else -> orderDao.getUserOrders(search)
+                OrderFilter.COMPLETED -> orderRepository.getUserOrders(search, "Completed")
+                OrderFilter.PENDING -> orderRepository.getUserOrders(search, "Pending")
+                OrderFilter.CANCELLED -> orderRepository.getUserOrders(search, "Cancelled")
+                OrderFilter.CONFIRMED -> orderRepository.getUserOrders(search, "Confirmed")
+                OrderFilter.PREPARING -> orderRepository.getUserOrders(search, "Preparing")
+                OrderFilter.READY -> orderRepository.getUserOrders(search, "Ready for Pickup")
+                else -> orderRepository.getUserOrders(search)
             }
         }.flattenMerge()
         .stateIn(

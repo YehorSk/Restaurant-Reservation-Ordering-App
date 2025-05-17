@@ -3,6 +3,7 @@ package com.yehorsk.platea.core.di
 import com.yehorsk.platea.auth.data.remote.service.AuthService
 import com.yehorsk.platea.cart.data.remote.service.CartService
 import com.yehorsk.platea.core.data.remote.service.ProfileService
+import com.yehorsk.platea.core.data.remote.service.RestaurantService
 import com.yehorsk.platea.menu.data.remote.service.MenuService
 import com.yehorsk.platea.orders.data.remote.service.OrderService
 import com.yehorsk.platea.reservations.data.remote.service.ReservationService
@@ -40,5 +41,9 @@ object ServiceModule {
     @Provides
     @Singleton
     fun provideReservationApiService(retrofit: Retrofit): ReservationService = retrofit.create(ReservationService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRestaurantApiService(retrofit: Retrofit): RestaurantService = retrofit.create(RestaurantService::class.java)
 
 }

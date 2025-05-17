@@ -5,6 +5,7 @@ import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
+import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
@@ -25,12 +26,11 @@ import javax.inject.Inject
 class ReservationDetailsViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     reservationRepository: ReservationRepository,
-    reservationDao: ReservationDao,
     preferencesRepository: MainPreferencesRepository,
-    restaurantInfoDao: RestaurantInfoDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, reservationDao, preferencesRepository, restaurantInfoDao){
+    restaurantRepository: RestaurantRepository
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, preferencesRepository, restaurantRepository){
 
-    val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationDao.getUserReservations()
+    val reservationItemUiState: StateFlow<List<ReservationEntity>> = reservationRepository.getUserReservationsFlow()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

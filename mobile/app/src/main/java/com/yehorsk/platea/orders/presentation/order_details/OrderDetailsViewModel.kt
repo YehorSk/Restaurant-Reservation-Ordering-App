@@ -8,8 +8,6 @@ import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.orders.data.dao.OrderDao
-import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,10 +19,9 @@ import javax.inject.Inject
 class OrderDetailsViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     orderRepository: OrderRepository,
-    orderDao: OrderDao,
     preferencesRepository: MainPreferencesRepository,
     restaurantInfoDao: RestaurantInfoDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepository, orderDao, preferencesRepository, restaurantInfoDao){
+): OrderBaseViewModel(networkConnectivityObserver, orderRepository, preferencesRepository, restaurantInfoDao){
 
     fun onAction(action: OrderDetailsAction){
         when(action){

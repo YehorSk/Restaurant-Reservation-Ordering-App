@@ -5,12 +5,14 @@ import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
+import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
 import com.yehorsk.platea.menu.data.remote.dto.MenuDto
 import com.yehorsk.platea.menu.data.remote.dto.toMenuEntity
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
 import com.yehorsk.platea.menu.data.remote.service.MenuService
 import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,7 +22,7 @@ class MenuRepositoryImpl @Inject constructor(
     private val menuDao: MenuDao,
 ) : MenuRepository {
     
-    suspend fun syncMenusWithServer(serverMenuDtos: List<MenuDto>) = withContext(Dispatchers.IO) {
+    private suspend fun syncMenusWithServer(serverMenuDtos: List<MenuDto>) = withContext(Dispatchers.IO) {
         val localMenus = menuDao.getMenuWithMenuItemsOnce()
 
         val serverMenuIds = serverMenuDtos.map { it.id }.toSet()
@@ -50,7 +52,7 @@ class MenuRepositoryImpl @Inject constructor(
         }
     }
 
-    suspend fun deleteMenuItems(menuItems: List<MenuItemEntity>) = withContext(Dispatchers.IO) {
+    private suspend fun deleteMenuItems(menuItems: List<MenuItemEntity>) = withContext(Dispatchers.IO) {
         for (item in menuItems) {
             menuDao.deleteMenuItem(item)
         }
@@ -71,7 +73,6 @@ class MenuRepositoryImpl @Inject constructor(
     override suspend fun addFavorite(menuItemId: String): Result<List<String>, AppError> {
         Timber.d("Menu addFavorite")
         return safeCall<String>(
-            
             execute = {
                 menuService.addFavoriteItem(menuItemId = menuItemId)
             },
@@ -84,13 +85,24 @@ class MenuRepositoryImpl @Inject constructor(
     override suspend fun deleteFavorite(menuItemId: String): Result<List<String>, AppError> {
         Timber.d("Menu deleteFavorite")
         return safeCall<String>(
-            
             execute = {
                 menuService.deleteFavoriteItem(menuItemId = menuItemId)
             },
-            onSuccess = { data ->
+            onSuccess = { _ ->
                 menuDao.deleteFavorite(menuItemId = menuItemId)
             }
         )
+    }
+
+    override fun getMenuWithMenuItems(): Flow<List<MenuWithMenuItems>> {
+        return menuDao.getMenuWithMenuItems()
+    }
+
+    override fun searchItems(text: String): Flow<List<MenuItemEntity>> {
+        return menuDao.searchItems(text)
+    }
+
+    override fun getFavoriteItems(): Flow<List<MenuItemEntity>> {
+        return menuDao.getFavoriteItems()
     }
 }

@@ -1,17 +1,16 @@
 package com.yehorsk.platea.reservations.presentation.create_reservation
 
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
+import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.presentation.OrderForm
-import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,10 +23,9 @@ import javax.inject.Inject
 class CreateReservationViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     reservationRepository: ReservationRepository,
-    reservationDao: ReservationDao,
     preferencesRepository: MainPreferencesRepository,
-    restaurantInfoDao: RestaurantInfoDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, reservationDao, preferencesRepository, restaurantInfoDao){
+    restaurantRepository: RestaurantRepository
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, preferencesRepository, restaurantRepository){
 
     fun onAction(action: CreateReservationAction){
         when(action){

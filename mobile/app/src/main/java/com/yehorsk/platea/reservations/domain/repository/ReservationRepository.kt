@@ -3,9 +3,11 @@ package com.yehorsk.platea.reservations.domain.repository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
+import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.data.remote.dto.ReservationDto
 import com.yehorsk.platea.reservations.presentation.reservation_details.Status
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
+import kotlinx.coroutines.flow.Flow
 
 interface ReservationRepository {
 
@@ -22,5 +24,7 @@ interface ReservationRepository {
     suspend fun updateReservation(id: String, status: Status) : Result<List<ReservationDto>, AppError>
 
     suspend fun cancelUserReservation(id: String) : Result<List<ReservationDto>, AppError>
+
+    fun getUserReservationsFlow(search: String = "", filter: String = ""): Flow<List<ReservationEntity>>
 
 }

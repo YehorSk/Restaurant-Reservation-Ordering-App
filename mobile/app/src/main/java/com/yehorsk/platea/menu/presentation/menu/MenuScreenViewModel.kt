@@ -1,7 +1,6 @@
 package com.yehorsk.platea.menu.presentation.menu
 
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
 import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
@@ -9,10 +8,8 @@ import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuEntity
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
-import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
 import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import com.yehorsk.platea.menu.presentation.BaseMenuViewModel
 import com.yehorsk.platea.menu.presentation.MenuAction
@@ -29,11 +26,10 @@ import javax.inject.Inject
 class MenuScreenViewModel @Inject constructor(
     menuRepository: MenuRepository,
     cartRepository: CartRepository,
-    networkConnectivityObserver: ConnectivityObserver,
-    menuDao: MenuDao
-) : BaseMenuViewModel(menuRepository, cartRepository, networkConnectivityObserver, menuDao){
+    networkConnectivityObserver: ConnectivityObserver
+) : BaseMenuViewModel(menuRepository, cartRepository, networkConnectivityObserver){
 
-    val favoriteUiState: StateFlow<List<MenuItemEntity>> = menuDao.getFavoriteItems()
+    val favoriteUiState: StateFlow<List<MenuItemEntity>> = menuRepository.getFavoriteItems()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -53,7 +49,7 @@ class MenuScreenViewModel @Inject constructor(
             MenuAction.HideMenuDetails -> hideMenuDetails()
             is MenuAction.OnMenuItemClick -> {
                 setMenu(action.item)
-                updatePrice(action.item.price.toDouble())
+                updatePrice(action.item.price)
                 setMenuItemId(action.item.id)
                 setMenuItemFavorite(action.item.isFavorite)
                 showBottomSheet()

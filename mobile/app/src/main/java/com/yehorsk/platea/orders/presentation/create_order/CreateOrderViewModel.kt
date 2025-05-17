@@ -1,7 +1,6 @@
 package com.yehorsk.platea.orders.presentation.create_order
 
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
@@ -14,8 +13,6 @@ import com.yehorsk.platea.core.utils.Utility.getEndTime
 import com.yehorsk.platea.core.utils.Utility.getStartTime
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.orders.data.dao.OrderDao
-import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
@@ -32,11 +29,9 @@ import javax.inject.Inject
 class CreateOrderViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
     orderRepository: OrderRepository,
-    orderDao: OrderDao,
-    cartDao: CartDao,
     preferencesRepository: MainPreferencesRepository,
     restaurantInfoDao: RestaurantInfoDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepository, orderDao, preferencesRepository, restaurantInfoDao){
+): OrderBaseViewModel(networkConnectivityObserver, orderRepository, preferencesRepository, restaurantInfoDao){
 
     val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantInfoDao.getRestaurantInfo()
         .stateIn(
@@ -45,7 +40,7 @@ class CreateOrderViewModel @Inject constructor(
             initialValue = null
         )
 
-    val cartItemsUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
+    val cartItemsUiState: StateFlow<List<CartItemEntity>> = orderRepository.getAllCartItems()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

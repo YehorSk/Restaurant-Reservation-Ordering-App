@@ -16,6 +16,9 @@ interface ReservationDao {
     @Query("SELECT * FROM reservation_table WHERE (:search = '' OR code LIKE '%' || :search || '%') AND (:filter = '' OR status LIKE :filter) ORDER BY date ASC, start_time ASC;")
     fun getUserReservations(search: String = "", filter: String = ""): Flow<List<ReservationEntity>>
 
+    @Query("SELECT * FROM reservation_table;")
+    suspend fun getUserReservationsOnce(): List<ReservationEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReservations(reservations: List<ReservationEntity>)
 

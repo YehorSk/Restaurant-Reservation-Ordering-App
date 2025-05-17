@@ -10,9 +10,12 @@ import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.MainRoomDatabase
 import com.yehorsk.platea.core.data.remote.service.ProfileService
+import com.yehorsk.platea.core.data.remote.service.RestaurantService
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.data.repository.ProfileRepositoryImpl
+import com.yehorsk.platea.core.data.repository.RestaurantRepositoryImpl
 import com.yehorsk.platea.core.domain.repository.ProfileRepository
+import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
 import com.yehorsk.platea.menu.data.remote.service.MenuService
@@ -49,7 +52,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideProfileRepositoryImpl(profileService: ProfileService, mainPreferencesRepository: MainPreferencesRepository, mainRoomDatabase: MainRoomDatabase, restaurantInfoDao: RestaurantInfoDao) : ProfileRepository = ProfileRepositoryImpl(profileService, mainPreferencesRepository, mainRoomDatabase, restaurantInfoDao)
+    fun provideProfileRepositoryImpl(profileService: ProfileService, mainPreferencesRepository: MainPreferencesRepository, mainRoomDatabase: MainRoomDatabase, restaurantInfoDao: RestaurantInfoDao) : ProfileRepository = ProfileRepositoryImpl(profileService, mainPreferencesRepository, mainRoomDatabase)
 
     @Provides
     @Singleton
@@ -58,5 +61,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesReservationRepositoryImpl(reservationDao: ReservationDao, orderDao: OrderDao, reservationService: ReservationService) : ReservationRepository = ReservationRepositoryImpl(reservationDao, orderDao, reservationService)
+
+    @Provides
+    @Singleton
+    fun providesRestaurantRepositoryImpl(restaurantInfoDao: RestaurantInfoDao, restaurantService: RestaurantService) : RestaurantRepository = RestaurantRepositoryImpl(restaurantInfoDao, restaurantService)
+
 
 }

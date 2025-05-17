@@ -1,11 +1,14 @@
 package com.yehorsk.platea.orders.data.remote
 
 import com.yehorsk.platea.cart.data.dao.CartDao
+import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.orders.data.dao.OrderDao
+import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.data.db.model.OrderItemEntity
+import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
 import com.yehorsk.platea.orders.data.remote.dto.OrderDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
@@ -16,6 +19,7 @@ import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.order_details.Status
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -172,6 +176,21 @@ class OrderRepositoryImpl @Inject constructor(
                 })
             }
         )
+    }
+
+    override fun getOrderWithOrderItems(): Flow<List<OrderWithOrderItems>> {
+        return orderDao.getOrderWithOrderItems()
+    }
+
+    override fun getUserOrders(
+        search: String,
+        filter: String
+    ): Flow<List<OrderEntity>> {
+        return orderDao.getUserOrders(search, filter)
+    }
+
+    override fun getAllCartItems(): Flow<List<CartItemEntity>> {
+        return cartDao.getAllItems()
     }
 
 }

@@ -11,7 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.yehorsk.platea.cart.presentation.cart.CartScreenRoot
-import com.yehorsk.platea.cart.presentation.cart.viewmodel.CartScreenViewModel
+import com.yehorsk.platea.cart.presentation.cart.CartScreenViewModel
 import com.yehorsk.platea.core.navigation.navTypes.OrderFormNavType
 import com.yehorsk.platea.core.presentation.settings.ChangeLanguageScreen
 import com.yehorsk.platea.core.presentation.settings.ChangeThemeScreen

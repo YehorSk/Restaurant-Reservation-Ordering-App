@@ -1,13 +1,9 @@
-package com.yehorsk.platea.cart.presentation.cart.viewmodel
+package com.yehorsk.platea.cart.presentation.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.cart.data.dao.CartDao
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
-import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
 import com.yehorsk.platea.cart.domain.repository.CartRepository
-import com.yehorsk.platea.cart.presentation.cart.CartAction
-import com.yehorsk.platea.cart.presentation.cart.CartScreenUiState
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
@@ -32,8 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CartScreenViewModel @Inject constructor(
     val cartRepository: CartRepository,
-    val networkConnectivityObserver: ConnectivityObserver,
-    val cartDao: CartDao
+    val networkConnectivityObserver: ConnectivityObserver
 ) : ViewModel(){
 
     private val _uiState = MutableStateFlow(CartScreenUiState())
@@ -41,24 +36,24 @@ class CartScreenViewModel @Inject constructor(
 
     val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)
 
-    val cartItemUiState: StateFlow<List<CartItemEntity>> = cartDao.getAllItems()
+    val cartItemUiState: StateFlow<List<CartItemEntity>> = cartRepository.getAllItemsFlow()
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
+            started = SharingStarted.Companion.WhileSubscribed(5000),
             initialValue = listOf()
         )
 
-    private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
+    private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.Factory.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
 
     init {
-        viewModelScope.launch{
+        viewModelScope.launch {
             networkConnectivityObserver.observe().collect { status ->
                 isNetwork.value = status
             }
         }
-        Timber.d("Cart items get init")
+        Timber.Forest.d("Cart items get init")
         getItems()
     }
 
