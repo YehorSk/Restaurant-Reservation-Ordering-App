@@ -22,7 +22,7 @@ class ReservationController extends Controller
     public function getStats($year){
         $user = auth('sanctum')->user();
         if($user instanceof User && $user->role === "admin"){
-            $data_today = Reservation::whereDay('created_at', now()->day)->get();
+            $data_today = Reservation::whereDate('created_at', now()->toDateString())->get();
             $data_all = Reservation::all();
             $data_stats = Reservation::selectRaw('COUNT(*) AS amount, MONTHNAME(created_at) AS month_name, MONTH(created_at) AS month_number')
                 ->whereYear('created_at', $year)

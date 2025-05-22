@@ -92,7 +92,7 @@ fun OrderDetailsListItemPreview(){
                 id = 0,
                 createdAt = "",
                 updatedAt = "",
-                menuId = 123,
+                menuId = "123",
                 name = "Pancakes",
                 longDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 shortDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
@@ -101,7 +101,7 @@ fun OrderDetailsListItemPreview(){
                 price = 5.99,
                 pivot = PivotOrderItemEntity(
                     id = 1,
-                    orderId = 10,
+                    orderId = "10",
                     menuItemId = 1,
                     quantity = 2,
                     price = 17.98,

@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
+import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.SideEffect
-import com.yehorsk.platea.reservations.data.dao.ReservationDao
-import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
+import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,13 +28,12 @@ import javax.inject.Inject
 @HiltViewModel
 open class ReservationBaseViewModel @Inject constructor(
     val networkConnectivityObserver: ConnectivityObserver,
-    val reservationRepositoryImpl: ReservationRepositoryImpl,
-    val reservationDao: ReservationDao,
+    val reservationRepository: ReservationRepository,
     val preferencesRepository: MainPreferencesRepository,
-    val restaurantInfoDao: RestaurantInfoDao
+    val restaurantRepository: RestaurantRepository
 ): ViewModel(){
 
-    val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantInfoDao.getRestaurantInfo()
+    val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantRepository.getRestaurantInfoFlow()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

@@ -383,7 +383,7 @@ fun PreviewMenuItemModal() {
             id = 1,
             createdAt = "2023-01-01",
             updatedAt = "2023-01-02",
-            menuId = 123,
+            menuId = "123",
             name = "Delicious Pizza",
             shortDescription = "A short description of the pizza.",
             longDescription = "A delicious pizza topped with fresh ingredients, including tomatoes, cheese, and basil.",

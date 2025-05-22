@@ -1,18 +1,15 @@
 package com.yehorsk.platea.reservations.presentation.reservations
 
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
 import com.yehorsk.platea.core.domain.remote.onError
-import com.yehorsk.platea.core.domain.remote.onSuccess
+import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
-import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
-import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
+import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,11 +28,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ReservationScreenViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
-    reservationRepositoryImpl: ReservationRepositoryImpl,
-    reservationDao: ReservationDao,
+    reservationRepository: ReservationRepository,
     preferencesRepository: MainPreferencesRepository,
-    restaurantInfoDao: RestaurantInfoDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository, restaurantInfoDao){
+    restaurantRepository: RestaurantRepository
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, preferencesRepository, restaurantRepository){
 
     private val _filterOption = MutableStateFlow(ReservationFilter.ALL)
     val filterOption= _filterOption.asStateFlow()
@@ -46,10 +42,10 @@ class ReservationScreenViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val reservationItemUiState: StateFlow<List<ReservationEntity>> = combine(_filterOption, _searchText) { filter, search ->
         when (filter) {
-            ReservationFilter.PENDING -> reservationDao.getUserReservations(search, "Pending")
-            ReservationFilter.CANCELLED -> reservationDao.getUserReservations(search, "Cancelled")
-            ReservationFilter.CONFIRMED -> reservationDao.getUserReservations(search, "Confirmed")
-            else -> reservationDao.getUserReservations(search)
+            ReservationFilter.PENDING -> reservationRepository.getUserReservationsFlow(search, "Pending")
+            ReservationFilter.CANCELLED -> reservationRepository.getUserReservationsFlow(search, "Cancelled")
+            ReservationFilter.CONFIRMED -> reservationRepository.getUserReservationsFlow(search, "Confirmed")
+            else -> reservationRepository.getUserReservationsFlow(search)
         }
     }.flattenMerge()
         .stateIn(
@@ -82,18 +78,7 @@ class ReservationScreenViewModel @Inject constructor(
         Timber.d("getReservations")
         viewModelScope.launch{
             _uiState.update { it.copy(isLoading = true) }
-            val localItems = reservationItemUiState.value
-
-            reservationRepositoryImpl.getUserReservations()
-                .onSuccess { data, message ->
-                    val serverItemIds = data.map { it.id }.toSet()
-                    val itemsToDelete = localItems.filter { it.id !in serverItemIds }
-
-                    reservationDao.runInTransaction {
-                        reservationDao.insertReservations(data.map { it.toReservationEntity() })
-                        reservationDao.deleteItems(itemsToDelete)
-                    }
-                }
+            reservationRepository.getUserReservations()
                 .onError { error ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

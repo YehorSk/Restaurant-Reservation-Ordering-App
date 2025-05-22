@@ -20,6 +20,7 @@ async function checkAuth(roleCheck, next) {
   if (roleCheck(authStore.user)) {
     next();
   } else {
+    authStore.clear_user();
     next({ name: 'login' });
   }
 }

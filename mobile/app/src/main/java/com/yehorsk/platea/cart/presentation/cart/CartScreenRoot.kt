@@ -31,7 +31,6 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.db.model.toMenuItem
 import com.yehorsk.platea.cart.presentation.cart.components.CartItem
-import com.yehorsk.platea.cart.presentation.cart.viewmodel.CartScreenViewModel
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.presentation.components.NavBar

@@ -12,7 +12,7 @@ data class OrderItemEntity(
     val id: Int,
     @ColumnInfo("created_at") val createdAt: String,
     @ColumnInfo("updated_at") val updatedAt: String,
-    @ColumnInfo(name = "menu_id") val menuId: Int,
+    @ColumnInfo(name = "menu_id") val menuId: String,
     val name: String,
     @ColumnInfo(name = "short_description") val shortDescription: String,
     @ColumnInfo(name = "long_description") val longDescription: String,
@@ -24,7 +24,7 @@ data class OrderItemEntity(
 
 data class PivotOrderItemEntity(
     @ColumnInfo(name = "pivot_id") val id: Int,
-    @ColumnInfo(name = "order_id") val orderId: Int,
+    @ColumnInfo(name = "order_id") val orderId: String,
     @ColumnInfo(name = "menu_item_id") val menuItemId: Int,
     val quantity: Int,
     @ColumnInfo(name = "pivot_price") val price: Double,

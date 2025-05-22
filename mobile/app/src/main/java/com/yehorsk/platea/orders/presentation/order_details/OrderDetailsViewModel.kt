@@ -8,8 +8,7 @@ import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.orders.data.dao.OrderDao
-import com.yehorsk.platea.orders.data.remote.OrderRepositoryImpl
+import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -19,11 +18,10 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderDetailsViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
-    orderRepositoryImpl: OrderRepositoryImpl,
-    orderDao: OrderDao,
+    orderRepository: OrderRepository,
     preferencesRepository: MainPreferencesRepository,
     restaurantInfoDao: RestaurantInfoDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepositoryImpl, orderDao, preferencesRepository, restaurantInfoDao){
+): OrderBaseViewModel(networkConnectivityObserver, orderRepository, preferencesRepository, restaurantInfoDao){
 
     fun onAction(action: OrderDetailsAction){
         when(action){
@@ -41,7 +39,7 @@ class OrderDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            orderRepositoryImpl.getUserOrderDetails(id)
+            orderRepository.getUserOrderDetails(id)
                 .onError { error ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -60,7 +58,7 @@ class OrderDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            orderRepositoryImpl.cancelUserOrder(id)
+            orderRepository.cancelUserOrder(id)
                 .onSuccess { data,message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
@@ -87,7 +85,7 @@ class OrderDetailsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            orderRepositoryImpl.updateOrderStatus(id, status)
+            orderRepository.updateOrderStatus(id, status)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

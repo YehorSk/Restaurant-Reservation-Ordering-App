@@ -6,12 +6,15 @@ import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
+import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.data.remote.dto.ReservationDto
 import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
 import com.yehorsk.platea.reservations.data.remote.service.ReservationService
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.reservation_details.Status
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,6 +23,17 @@ class ReservationRepositoryImpl @Inject constructor(
     private val orderDao: OrderDao,
     private val reservationService: ReservationService
 ) : ReservationRepository {
+
+    private suspend fun syncUserReservationsWithServer(data: List<ReservationDto>){
+        val localItems = reservationDao.getUserReservationsOnce()
+        val serverItemIds = data.map { it.id }.toSet()
+        val itemsToDelete = localItems.filter { it.id !in serverItemIds }
+
+        reservationDao.runInTransaction {
+            reservationDao.insertReservations(data.map { it.toReservationEntity() })
+            reservationDao.deleteItems(itemsToDelete)
+        }
+    }
 
     override suspend fun getAvailableTimeSlots(reservationForm: ReservationForm): Result<List<TimeSlotDto>, AppError> {
         Timber.d("getAvailableTimeSlots")
@@ -52,7 +66,7 @@ class ReservationRepositoryImpl @Inject constructor(
                 reservationService.getReservations()
             },
             onSuccess = { data ->
-                reservationDao.insertReservations(data.map { it.toReservationEntity() })
+                syncUserReservationsWithServer(data)
             }
         )
     }
@@ -103,6 +117,13 @@ class ReservationRepositoryImpl @Inject constructor(
                 reservationDao.insertReservation(data.first().toReservationEntity())
             }
         )
+    }
+
+    override fun getUserReservationsFlow(
+        search: String,
+        filter: String
+    ): Flow<List<ReservationEntity>> {
+        return reservationDao.getUserReservations()
     }
 
 }

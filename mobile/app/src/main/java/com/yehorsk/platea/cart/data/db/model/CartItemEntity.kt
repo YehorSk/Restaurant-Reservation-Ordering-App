@@ -13,7 +13,7 @@ data class CartItemEntity(
     val id: Int,
     @ColumnInfo("created_at") val createdAt: String,
     @ColumnInfo("updated_at") val updatedAt: String,
-    @ColumnInfo(name = "menu_id") val menuId: Int,
+    @ColumnInfo(name = "menu_id") val menuId: String,
     val name: String,
     @ColumnInfo(name = "short_description") val shortDescription: String,
     @ColumnInfo(name = "long_description") val longDescription: String,

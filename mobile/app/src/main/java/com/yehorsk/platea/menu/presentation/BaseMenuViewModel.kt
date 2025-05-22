@@ -2,15 +2,14 @@ package com.yehorsk.platea.menu.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.cart.data.remote.CartRepositoryImpl
+import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
-import com.yehorsk.platea.menu.data.remote.MenuRepositoryImpl
+import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,16 +27,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class BaseMenuViewModel @Inject constructor(
-    val menuRepositoryImpl: MenuRepositoryImpl,
-    val cartRepositoryImpl: CartRepositoryImpl,
-    val networkConnectivityObserver: ConnectivityObserver,
-    val menuDao: MenuDao
+    val menuRepository: MenuRepository,
+    val cartRepository: CartRepository,
+    val networkConnectivityObserver: ConnectivityObserver
 ) : ViewModel(){
 
     protected val _uiState = MutableStateFlow(MenuScreenUiState())
     val uiState: StateFlow<MenuScreenUiState> = _uiState.asStateFlow()
 
-    val menuUiState: StateFlow<List<MenuWithMenuItems>> = menuDao.getMenuWithMenuItems()
+    val menuUiState: StateFlow<List<MenuWithMenuItems>> = menuRepository.getMenuWithMenuItems()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -51,7 +49,7 @@ open class BaseMenuViewModel @Inject constructor(
         .map { it.searchText }
         .distinctUntilChanged()
         .flatMapLatest { query ->
-            menuDao.searchItems("%$query%")
+            menuRepository.searchItems("%$query%")
         }
         .stateIn(
             scope = viewModelScope,
@@ -78,10 +76,10 @@ open class BaseMenuViewModel @Inject constructor(
         }
     }
 
-    fun getMenus(){
+    private fun getMenus(){
         viewModelScope.launch {
             setLoadingState(true)
-            menuRepositoryImpl.getAllMenus()
+            menuRepository.getAllMenus()
                 .onError { error ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

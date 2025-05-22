@@ -90,7 +90,7 @@ fun OrderListItemPreview(){
                 id = 0,
                 createdAt = "",
                 updatedAt = "",
-                menuId = 123,
+                menuId = "123",
                 name = "Pancakes",
                 longDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 shortDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",

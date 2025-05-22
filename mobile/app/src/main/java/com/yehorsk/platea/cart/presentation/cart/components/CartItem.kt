@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,7 +40,7 @@ fun CartItem(
     val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
         modifier = Modifier.background(MaterialTheme.colorScheme.background)
-            .height(IntrinsicSize.Max)
+            .height(IntrinsicSize.Min)
             .clickable {
                 onClick(cartItem)
             },
@@ -83,8 +84,12 @@ fun CartItem(
         AsyncImage(
             model = "$imgUrl${cartItem.picture}",
             modifier = Modifier
-                .weight(1f)
-                .padding(32.dp)
+                .size(120.dp)
+                .padding(
+                    top = 16.dp,
+                    end = 16.dp,
+                    bottom = 16.dp
+                )
                 .clip(RoundedCornerShape(10.dp)),
             contentDescription = cartItem.name,
             placeholder = painterResource(R.drawable.menu_item_placeholder),
@@ -101,7 +106,7 @@ fun MenuItemPreview(){
         CartItem(
             cartItem = CartItemEntity(
                 id = 0,
-                menuId = 0,
+                menuId = "0",
                 name = "Pancakes",
                 longDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 shortDescription = "Fluffy pancakes with maple syrup, butter, and fresh fruit",

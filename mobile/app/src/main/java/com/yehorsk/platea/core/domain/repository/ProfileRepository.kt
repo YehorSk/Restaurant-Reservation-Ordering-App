@@ -16,6 +16,4 @@ interface ProfileRepository {
 
     suspend fun deleteAccount(): Result<List<String>, AppError>
 
-    suspend fun getRestaurantInfo(): Result<List<RestaurantInfoDto>, AppError>
-
 }

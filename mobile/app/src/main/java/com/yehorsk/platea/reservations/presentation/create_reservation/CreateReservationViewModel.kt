@@ -1,18 +1,17 @@
 package com.yehorsk.platea.reservations.presentation.create_reservation
 
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
+import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.presentation.OrderForm
-import com.yehorsk.platea.reservations.data.dao.ReservationDao
-import com.yehorsk.platea.reservations.data.remote.ReservationRepositoryImpl
+import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
@@ -23,11 +22,10 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateReservationViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver,
-    reservationRepositoryImpl: ReservationRepositoryImpl,
-    reservationDao: ReservationDao,
+    reservationRepository: ReservationRepository,
     preferencesRepository: MainPreferencesRepository,
-    restaurantInfoDao: RestaurantInfoDao
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepositoryImpl, reservationDao, preferencesRepository, restaurantInfoDao){
+    restaurantRepository: RestaurantRepository
+): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, preferencesRepository, restaurantRepository){
 
     fun onAction(action: CreateReservationAction){
         when(action){
@@ -120,7 +118,7 @@ class CreateReservationViewModel @Inject constructor(
     fun getAvailableTimeSlots(){
         Timber.d("getAvailableTimeSlots")
         viewModelScope.launch{
-            reservationRepositoryImpl.getAvailableTimeSlots(uiState.value.reservationForm)
+            reservationRepository.getAvailableTimeSlots(uiState.value.reservationForm)
                 .onSuccess { data, message ->
                     _uiState.update {
                         it.copy(timeSlots = data)
@@ -139,7 +137,7 @@ class CreateReservationViewModel @Inject constructor(
     fun getMaxCapacity(){
         Timber.d("getMaxCapacity")
         viewModelScope.launch{
-            reservationRepositoryImpl.getMaxCapacity()
+            reservationRepository.getMaxCapacity()
                 .onSuccess { data, _ ->
                     _uiState.update {
                         it.copy(maxCapacity = data.first())
@@ -159,7 +157,7 @@ class CreateReservationViewModel @Inject constructor(
     fun createReservation(){
         Timber.d("createReservation")
         viewModelScope.launch{
-            reservationRepositoryImpl.createReservation(uiState.value.reservationForm)
+            reservationRepository.createReservation(uiState.value.reservationForm)
                 .onSuccess { data, message ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

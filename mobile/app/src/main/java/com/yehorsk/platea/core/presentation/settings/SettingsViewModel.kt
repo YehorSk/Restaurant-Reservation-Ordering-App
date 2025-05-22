@@ -3,13 +3,13 @@ package com.yehorsk.platea.core.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
-import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
-import com.yehorsk.platea.core.data.repository.ProfileRepositoryImpl
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
+import com.yehorsk.platea.core.domain.repository.ProfileRepository
+import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
@@ -30,9 +30,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     val authRepository: AuthRepository,
-    val profileRepositoryImpl: ProfileRepositoryImpl,
+    val profileRepository: ProfileRepository,
     val preferencesRepository: MainPreferencesRepository,
-    val restaurantInfoDao: RestaurantInfoDao
+    val restaurantRepository: RestaurantRepository
 ): ViewModel() {
 
     val userRole: StateFlow<String?> = preferencesRepository.userRoleFlow
@@ -59,7 +59,7 @@ class SettingsViewModel @Inject constructor(
     val _uiState = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState.asStateFlow()
 
-    val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantInfoDao.getRestaurantInfo()
+    val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantRepository.getRestaurantInfoFlow()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -134,7 +134,7 @@ class SettingsViewModel @Inject constructor(
     fun getRestaurantInfo(){
         viewModelScope.launch {
             setLoadingState(true)
-            profileRepositoryImpl.getRestaurantInfo()
+            restaurantRepository.getRestaurantInfo()
             setLoadingState(false)
         }
     }
@@ -147,7 +147,7 @@ class SettingsViewModel @Inject constructor(
                 )
             }
             hideDeleteDialog()
-            profileRepositoryImpl.deleteAccount()
+            profileRepository.deleteAccount()
                 .onSuccess { data,message ->
                     _uiState.update { currentState ->
                         currentState.copy(
@@ -291,7 +291,7 @@ class SettingsViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true)
             }
-            profileRepositoryImpl.updateProfile(name, address, phone, code)
+            profileRepository.updateProfile(name, address, phone, code)
                 .onSuccess { data,message ->
                     _uiState.update {
                         it.copy(
