@@ -133,7 +133,6 @@ dependencies {
     // Retrofit with Kotlin serialization Converter
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.okhttp)
-    implementation(libs.coil.compose)
     implementation(libs.androidx.datastore.preferences)
 
     //Dagger-Hilt
@@ -150,6 +149,8 @@ dependencies {
 
     //Coil
     implementation(libs.coil)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
     //Icons
     implementation(libs.androidx.material.icons.extended)

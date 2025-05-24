@@ -21,45 +21,48 @@ class MenuRepositoryImpl @Inject constructor(
     private val menuService: MenuService,
     private val menuDao: MenuDao,
 ) : MenuRepository {
-    
-    private suspend fun syncMenusWithServer(serverMenuDtos: List<MenuDto>) = withContext(Dispatchers.IO) {
-        val localMenus = menuDao.getMenuWithMenuItemsOnce()
 
-        val serverMenuIds = serverMenuDtos.map { it.id }.toSet()
-        val serverMenuItemsIds = serverMenuDtos.flatMap { menu -> menu.items.map { it.id } }.toSet()
+    private suspend fun syncMenusWithServer(serverMenuDtos: List<MenuDto>) =
+        withContext(Dispatchers.IO) {
+            val localMenus = menuDao.getMenuWithMenuItemsOnce()
 
-        val menusToDelete = localMenus.filter { it.menu.id !in serverMenuIds }
-        val menuItemsToDelete = localMenus.flatMap { localMenu ->
-            localMenu.menuItems.filter { it.id !in serverMenuItemsIds }
-        }
+            val serverMenuIds = serverMenuDtos.map { it.id }.toSet()
+            val serverMenuItemsIds =
+                serverMenuDtos.flatMap { menu -> menu.items.map { it.id } }.toSet()
 
-        menuDao.runInTransaction {
-            menusToDelete.forEach { menu ->
-                menuDao.deleteMenu(menu.menu)
-                deleteMenuItems(menu.menuItems.map { it })
+            val menusToDelete = localMenus.filter { it.menu.id !in serverMenuIds }
+            val menuItemsToDelete = localMenus.flatMap { localMenu ->
+                localMenu.menuItems.filter { it.id !in serverMenuItemsIds }
             }
-            deleteMenuItems(menuItemsToDelete)
-            insert(serverMenuDtos)
+
+            menuDao.runInTransaction {
+                menusToDelete.forEach { menu ->
+                    menuDao.deleteMenu(menu.menu)
+                    deleteMenuItems(menu.menuItems.map { it })
+                }
+                deleteMenuItems(menuItemsToDelete)
+                insert(serverMenuDtos)
+            }
         }
-    }
 
     suspend fun insert(menuDtos: List<MenuDto>) = withContext(Dispatchers.IO) {
-        for(item in menuDtos){
+        for (item in menuDtos) {
             menuDao.insertMenu(item.toMenuEntity())
-            for(menuItem in item.items){
+            for (menuItem in item.items) {
                 menuDao.insertMenuItem(menuItem.toMenuItemEntity())
             }
         }
     }
 
-    private suspend fun deleteMenuItems(menuItems: List<MenuItemEntity>) = withContext(Dispatchers.IO) {
-        for (item in menuItems) {
-            menuDao.deleteMenuItem(item)
+    private suspend fun deleteMenuItems(menuItems: List<MenuItemEntity>) =
+        withContext(Dispatchers.IO) {
+            for (item in menuItems) {
+                menuDao.deleteMenuItem(item)
+            }
         }
-    }
 
     override suspend fun getAllMenus(): Result<List<MenuDto>, AppError> {
-        Timber.d("Menu getAllMenus")
+        Timber.Forest.d("Menu getAllMenus")
         return safeCall<MenuDto>(
             execute = {
                 menuService.getAllMenus()
@@ -71,7 +74,7 @@ class MenuRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addFavorite(menuItemId: String): Result<List<String>, AppError> {
-        Timber.d("Menu addFavorite")
+        Timber.Forest.d("Menu addFavorite")
         return safeCall<String>(
             execute = {
                 menuService.addFavoriteItem(menuItemId = menuItemId)
@@ -83,7 +86,7 @@ class MenuRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteFavorite(menuItemId: String): Result<List<String>, AppError> {
-        Timber.d("Menu deleteFavorite")
+        Timber.Forest.d("Menu deleteFavorite")
         return safeCall<String>(
             execute = {
                 menuService.deleteFavoriteItem(menuItemId = menuItemId)

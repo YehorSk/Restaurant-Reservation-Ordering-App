@@ -3,7 +3,6 @@ package com.yehorsk.platea.menu.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.yehorsk.platea.menu.data.remote.dto.MenuItemDto
 
 @Entity("menu_item_table")
 data class MenuItemEntity(
@@ -26,20 +25,3 @@ data class MenuItemEntity(
     val availability: Boolean,
     val isFavorite: Boolean = false
 )
-
-fun MenuItemEntity.toMenuItem(): MenuItemDto {
-    return MenuItemDto(
-        id = this.id,
-        createdAt = this.createdAt,
-        updatedAt = this.updatedAt,
-        menuId = this.menuId,
-        name = this.name,
-        shortDescription = this.shortDescription,
-        longDescription = this.longDescription,
-        recipe = this.recipe,
-        picture = this.picture,
-        price = this.price,
-        isFavorite = this.isFavorite,
-        availability = this.availability
-    )
-}
