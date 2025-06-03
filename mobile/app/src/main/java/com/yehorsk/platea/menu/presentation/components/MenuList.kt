@@ -9,16 +9,16 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
-import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
+import com.yehorsk.platea.menu.domain.models.Menu
+import com.yehorsk.platea.menu.domain.models.MenuItem
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MenuList(
     modifier: Modifier = Modifier,
-    items: List<MenuWithMenuItems>,
-    onClick: (MenuItemEntity) -> Unit,
+    items: List<Menu>,
+    onClick: (MenuItem) -> Unit,
     listState: LazyListState = rememberLazyListState(),
 ){
     Column{
@@ -27,21 +27,21 @@ fun MenuList(
             modifier = modifier
         ) {
             itemsIndexed(items){ _, menu ->
-                if(menu.menu.availability){
+                if(menu.availability){
                     MenuHeader(
-                        menuDto = menu.menu,
+                        menu = menu,
                         onMenuClick = {  }
                     )
                     var i = 0;
                     Column {
-                        menu.menuItems.forEach{ item ->
+                        menu.items.forEach{ item ->
                             MenuItem(
                                 menuItem = item,
                                 onClick = { menuItem ->
                                     onClick(menuItem)
                                 }
                             )
-                            if(i++ != menu.menuItems.size -1) HorizontalDivider()
+                            if(i++ != menu.items.size -1) HorizontalDivider()
                         }
                     }
                 }

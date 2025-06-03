@@ -1,7 +1,7 @@
 package com.yehorsk.platea.menu.presentation
 
-import com.yehorsk.platea.menu.data.db.model.MenuEntity
-import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
+import com.yehorsk.platea.menu.domain.models.Menu
+import com.yehorsk.platea.menu.domain.models.MenuItem
 
 sealed interface MenuAction {
 
@@ -11,7 +11,7 @@ sealed interface MenuAction {
 
     data object DeleteFavoriteItem: MenuAction
 
-    data class ShowMenuDetails(val menu: MenuEntity): MenuAction
+    data class ShowMenuDetails(val menu: Menu): MenuAction
 
     data object HideMenuDetails: MenuAction
 
@@ -25,6 +25,6 @@ sealed interface MenuAction {
 
     data class SetMenuFavoriteItem(val value: Boolean): MenuAction
 
-    data class OnMenuItemClick(val item: MenuItemEntity): MenuAction
+    data class OnMenuItemClick(val item: MenuItem): MenuAction
 
 }

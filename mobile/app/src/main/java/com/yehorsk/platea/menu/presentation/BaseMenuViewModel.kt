@@ -7,8 +7,8 @@ import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
-import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
+import com.yehorsk.platea.menu.domain.models.Menu
+import com.yehorsk.platea.menu.domain.models.MenuItem
 import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,7 +35,7 @@ open class BaseMenuViewModel @Inject constructor(
     protected val _uiState = MutableStateFlow(MenuScreenUiState())
     val uiState: StateFlow<MenuScreenUiState> = _uiState.asStateFlow()
 
-    val menuUiState: StateFlow<List<MenuWithMenuItems>> = menuRepository.getMenuWithMenuItems()
+    val menuUiState: StateFlow<List<Menu>> = menuRepository.getMenuWithMenuItems()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -45,7 +45,7 @@ open class BaseMenuViewModel @Inject constructor(
     val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val searchUiState: StateFlow<List<MenuItemEntity>> = _uiState
+    val searchUiState: StateFlow<List<MenuItem>> = _uiState
         .map { it.searchText }
         .distinctUntilChanged()
         .flatMapLatest { query ->

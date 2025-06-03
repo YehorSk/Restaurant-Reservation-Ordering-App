@@ -57,13 +57,14 @@ import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
+import com.yehorsk.platea.menu.domain.models.MenuItem
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuItemModal(
     onDismiss:()->Unit,
-    menuItem: MenuItemEntity,
+    menuItem: MenuItem,
     modifier: Modifier = Modifier,
     cartForm: CartForm,
     onQuantityChange: (Int) -> Unit,
@@ -103,7 +104,7 @@ fun MenuItemModal(
 @Composable
 fun MenuItemModalContent(
     onDismiss:()->Unit,
-    menuItem: MenuItemEntity,
+    menuItem: MenuItem,
     modifier: Modifier = Modifier,
     cartForm: CartForm,
     onQuantityChange: (Int) -> Unit,
@@ -379,7 +380,7 @@ fun MenuItemModalContent(
 @Composable
 fun PreviewMenuItemModal() {
     MobileTheme {
-        val menuItem = MenuItemEntity(
+        val menuItem = MenuItem(
             id = 1,
             createdAt = "2023-01-01",
             updatedAt = "2023-01-02",

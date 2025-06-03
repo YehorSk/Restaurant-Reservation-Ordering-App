@@ -3,7 +3,7 @@ package com.yehorsk.platea.cart.data.db.model
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
-import com.yehorsk.platea.menu.data.remote.dto.MenuItemDto
+import com.yehorsk.platea.menu.domain.models.MenuItem
 
 @Entity(
     tableName = "cart_table",
@@ -33,19 +33,4 @@ data class PivotCartItemEntity(
     @ColumnInfo(name = "pivot_price") val price: Double,
     @ColumnInfo(name = "pivot_created_at") val createdAt: String,
     @ColumnInfo(name = "pivot_updated_at") val updatedAt: String
-)
-
-fun CartItemEntity.toMenuItem() = MenuItemDto(
-    id = this.id,
-    createdAt = this.createdAt,
-    updatedAt = this.updatedAt,
-    menuId = this.menuId,
-    name = this.name,
-    shortDescription = this.shortDescription,
-    longDescription = this.longDescription,
-    recipe = this.recipe,
-    picture = this.picture,
-    price = this.price,
-    isFavorite = this.isFavorite,
-    availability = this.availability
 )

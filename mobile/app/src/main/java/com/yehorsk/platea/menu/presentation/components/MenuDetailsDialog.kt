@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.yehorsk.platea.menu.data.db.model.MenuEntity
+import com.yehorsk.platea.menu.domain.models.Menu
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun MenuDetailsDialog(
     modifier: Modifier = Modifier, 
-    menu: MenuEntity,
+    menu: Menu,
     onDismissRequest: () -> Unit
     ){
     Dialog(
@@ -58,13 +58,14 @@ fun MenuDetailsDialog(
 fun MenuDetailsDialogPreview(){
     MobileTheme { 
         MenuDetailsDialog(
-            menu = MenuEntity(
+            menu = Menu(
                 id = "1",
                 createdAt = "2024-09-25T10:00:00Z",
                 updatedAt = "2024-09-25T12:30:00Z",
                 name = "Seasonal Special Menu",
                 description = "Enjoy a variety of our chef's signature dishes, featuring locally sourced ingredients and seasonal flavors. Perfect for any occasion, our special menu includes a mix of appetizers, mains, and desserts crafted to delight your taste buds.",
-                availability = true
+                availability = true,
+                items = listOf()
             ),
             onDismissRequest = {}
         )

@@ -6,13 +6,18 @@ import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
+import com.yehorsk.platea.menu.data.mappers.toMenu
+import com.yehorsk.platea.menu.data.mappers.toMenuItem
 import com.yehorsk.platea.menu.data.remote.dto.MenuDto
 import com.yehorsk.platea.menu.data.remote.dto.toMenuEntity
 import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
 import com.yehorsk.platea.menu.data.remote.service.MenuService
+import com.yehorsk.platea.menu.domain.models.Menu
+import com.yehorsk.platea.menu.domain.models.MenuItem
 import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
@@ -97,15 +102,33 @@ class MenuRepositoryImpl @Inject constructor(
         )
     }
 
-    override fun getMenuWithMenuItems(): Flow<List<MenuWithMenuItems>> {
-        return menuDao.getMenuWithMenuItems()
+    override fun getMenuWithMenuItems(): Flow<List<Menu>> {
+        return menuDao
+            .getMenuWithMenuItems()
+            .map { entities ->
+                entities.map {
+                    it.toMenu()
+                }
+            }
     }
 
-    override fun searchItems(text: String): Flow<List<MenuItemEntity>> {
-        return menuDao.searchItems(text)
+    override fun searchItems(text: String): Flow<List<MenuItem>> {
+        return menuDao
+            .searchItems(text)
+            .map { entities ->
+                entities.map {
+                    it.toMenuItem()
+                }
+            }
     }
 
-    override fun getFavoriteItems(): Flow<List<MenuItemEntity>> {
-        return menuDao.getFavoriteItems()
+    override fun getFavoriteItems(): Flow<List<MenuItem>> {
+        return menuDao
+            .getFavoriteItems()
+            .map { entities ->
+                entities.map {
+                    it.toMenuItem()
+                }
+            }
     }
 }

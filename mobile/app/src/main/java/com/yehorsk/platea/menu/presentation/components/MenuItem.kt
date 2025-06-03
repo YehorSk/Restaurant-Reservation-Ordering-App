@@ -28,14 +28,14 @@ import coil3.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
-import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
+import com.yehorsk.platea.menu.domain.models.MenuItem
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun MenuItem(
-    menuItem: MenuItemEntity,
+    menuItem: MenuItem,
     modifier: Modifier = Modifier,
-    onClick: (MenuItemEntity) -> Unit
+    onClick: (MenuItem) -> Unit
 ){
     val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
@@ -112,7 +112,7 @@ fun MenuItem(
 fun MenuItemPreview(){
     MobileTheme {
         MenuItem(
-            menuItem = MenuItemEntity(
+            menuItem = MenuItem(
                 id = 0,
                 createdAt = "",
                 updatedAt = "",

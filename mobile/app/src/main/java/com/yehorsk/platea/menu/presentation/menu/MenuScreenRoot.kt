@@ -24,7 +24,7 @@ import com.ahmadhamwi.tabsync_compose.lazyListTabSync
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
-import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
+import com.yehorsk.platea.menu.domain.models.Menu
 import com.yehorsk.platea.menu.presentation.MenuAction
 import com.yehorsk.platea.menu.presentation.components.MenuDetailsDialog
 import com.yehorsk.platea.menu.presentation.components.MenuList
@@ -65,7 +65,7 @@ fun MenuScreenRoot(
 fun MenuScreen(
     modifier: Modifier = Modifier,
     uiState: MenuScreenUiState,
-    menuUiState: List<MenuWithMenuItems>,
+    menuUiState: List<Menu>,
     isConnected: Boolean,
     onSearchClicked: () -> Unit,
     onCreateReservationClicked: () -> Unit,
@@ -75,7 +75,7 @@ fun MenuScreen(
 
     if(menuUiState.isNotEmpty()){
 
-        val (selectedTabIndex, setSelectedTabIndex, lazyListState) = lazyListTabSync(menuUiState.map { it.menu.id }.indices.toList())
+        val (selectedTabIndex, setSelectedTabIndex, lazyListState) = lazyListTabSync(menuUiState.map { it.id }.indices.toList())
 
         Box(
             modifier = modifier
@@ -92,7 +92,7 @@ fun MenuScreen(
                     isConnected = isConnected
                 )
                 MenuTabBar(
-                    menus = menuUiState.map { it.menu },
+                    menus = menuUiState,
                     selectedMenu = selectedTabIndex,
                     onMenuClicked = {index, _ -> setSelectedTabIndex(index) }
                 )

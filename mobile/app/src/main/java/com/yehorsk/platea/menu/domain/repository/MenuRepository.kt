@@ -5,6 +5,8 @@ import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
 import com.yehorsk.platea.menu.data.remote.dto.MenuDto
+import com.yehorsk.platea.menu.domain.models.Menu
+import com.yehorsk.platea.menu.domain.models.MenuItem
 import kotlinx.coroutines.flow.Flow
 
 interface MenuRepository {
@@ -15,10 +17,10 @@ interface MenuRepository {
 
     suspend fun deleteFavorite(menuItemId: String): Result<List<String>, AppError>
 
-    fun getMenuWithMenuItems(): Flow<List<MenuWithMenuItems>>
+    fun getMenuWithMenuItems(): Flow<List<Menu>>
 
-    fun searchItems(text: String): Flow<List<MenuItemEntity>>
+    fun searchItems(text: String): Flow<List<MenuItem>>
 
-    fun getFavoriteItems(): Flow<List<MenuItemEntity>>
+    fun getFavoriteItems(): Flow<List<MenuItem>>
 
 }

@@ -1,7 +1,5 @@
 package com.yehorsk.platea.cart.domain.models
 
-import com.yehorsk.platea.cart.data.db.model.PivotCartItemEntity
-
 data class CartItem(
     val id: Int,
     val createdAt: String,
@@ -15,7 +13,7 @@ data class CartItem(
     val price: Double,
     val availability: Boolean,
     val isFavorite: Boolean,
-    val pivot: PivotCartItemEntity
+    val pivot: PivotCartItem
 )
 
 data class PivotCartItem(

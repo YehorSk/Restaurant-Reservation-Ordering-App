@@ -8,8 +8,8 @@ import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.menu.data.db.model.MenuEntity
-import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
+import com.yehorsk.platea.menu.domain.models.Menu
+import com.yehorsk.platea.menu.domain.models.MenuItem
 import com.yehorsk.platea.menu.domain.repository.MenuRepository
 import com.yehorsk.platea.menu.presentation.BaseMenuViewModel
 import com.yehorsk.platea.menu.presentation.MenuAction
@@ -29,7 +29,7 @@ class MenuScreenViewModel @Inject constructor(
     networkConnectivityObserver: ConnectivityObserver
 ) : BaseMenuViewModel(menuRepository, cartRepository, networkConnectivityObserver){
 
-    val favoriteUiState: StateFlow<List<MenuItemEntity>> = menuRepository.getFavoriteItems()
+    val favoriteUiState: StateFlow<List<MenuItem>> = menuRepository.getFavoriteItems()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -61,7 +61,7 @@ class MenuScreenViewModel @Inject constructor(
         }
     }
 
-    private fun showMenuDetails(menu: MenuEntity){
+    private fun showMenuDetails(menu: Menu){
         _uiState.update {
             it.copy(
                 showMenuDialog = true,
@@ -198,7 +198,7 @@ class MenuScreenViewModel @Inject constructor(
         }
     }
 
-    fun setMenu(menu: MenuItemEntity){
+    fun setMenu(menu: MenuItem){
         _uiState.update {
             it.copy(currentMenuItem = menu)
         }

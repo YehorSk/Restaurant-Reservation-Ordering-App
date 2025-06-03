@@ -11,11 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.yehorsk.platea.menu.data.db.model.MenuEntity
+import com.yehorsk.platea.menu.domain.models.Menu
 
 @Composable
 fun MenuHeader(
-    menuDto: MenuEntity,
+    menu: Menu,
     modifier: Modifier = Modifier,
     onMenuClick: () -> Unit
 ){
@@ -26,7 +26,7 @@ fun MenuHeader(
             }
     ) {
         Text(
-            text = menuDto.name,
+            text = menu.name,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             modifier = modifier
@@ -34,7 +34,7 @@ fun MenuHeader(
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
         )
         Text(
-            text = menuDto.description,
+            text = menu.description,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             style = MaterialTheme.typography.bodyLarge,

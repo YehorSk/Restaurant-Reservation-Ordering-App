@@ -1,6 +1,8 @@
 package com.yehorsk.platea.menu.domain.models
 
 data class MenuItem(
+    val createdAt: String,
+    val updatedAt: String,
     val id: Int,
     val menuId: String,
     val name: String,

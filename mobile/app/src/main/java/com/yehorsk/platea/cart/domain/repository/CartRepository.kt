@@ -2,6 +2,7 @@ package com.yehorsk.platea.cart.domain.repository
 
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.remote.dto.CartItemDto
+import com.yehorsk.platea.cart.domain.models.CartItem
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.core.presentation.components.CartForm
@@ -17,7 +18,7 @@ interface CartRepository {
 
     suspend fun updateUserCartItem(cartForm: CartForm): Result<List<CartItemDto>, AppError>
 
-    fun getAllItemsFlow() : Flow<List<CartItemEntity>>
+    fun getAllItemsFlow() : Flow<List<CartItem>>
 
     fun getAmountOfItems(): Flow<Int>
 

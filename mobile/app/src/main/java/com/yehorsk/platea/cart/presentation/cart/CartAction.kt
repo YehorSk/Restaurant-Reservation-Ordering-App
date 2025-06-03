@@ -1,13 +1,13 @@
 package com.yehorsk.platea.cart.presentation.cart
 
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
-import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
+import com.yehorsk.platea.cart.domain.models.CartItem
+import com.yehorsk.platea.menu.domain.models.MenuItem
 
 sealed interface CartAction {
 
-    data class SetItem(val item: CartItemEntity): CartAction
+    data class SetItem(val item: CartItem): CartAction
 
-    data class SetMenuItem(val item: MenuItemEntity): CartAction
+    data class SetMenuItem(val item: MenuItem): CartAction
 
     data object GetItems: CartAction
 

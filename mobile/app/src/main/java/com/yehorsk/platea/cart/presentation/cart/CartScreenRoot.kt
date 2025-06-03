@@ -28,14 +28,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
-import com.yehorsk.platea.cart.data.db.model.toMenuItem
+import com.yehorsk.platea.cart.data.mappers.toMenuItem
+import com.yehorsk.platea.cart.domain.models.CartItem
 import com.yehorsk.platea.cart.presentation.cart.components.CartItem
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.utils.formattedPrice
-import com.yehorsk.platea.menu.data.remote.dto.toMenuItemEntity
 
 @Composable
 fun CartScreenRoot(
@@ -66,7 +65,7 @@ fun CartScreenRoot(
 fun CartScreen(
     modifier: Modifier = Modifier,
     uiState: CartScreenUiState,
-    cartItems: List<CartItemEntity>,
+    cartItems: List<CartItem>,
     isConnected: Boolean,
     onGoToCheckoutClick: () -> Unit,
     onAction: (CartAction) -> Unit
@@ -103,7 +102,7 @@ fun CartScreen(
                             cartItem = item,
                             onClick = { cartItem ->
                                 onAction(CartAction.SetItem(cartItem))
-                                onAction(CartAction.SetMenuItem(cartItem.toMenuItem().toMenuItemEntity()))
+                                onAction(CartAction.SetMenuItem(cartItem.toMenuItem()))
                                 onAction(CartAction.ShowBottomSheet)
                             },
                         )

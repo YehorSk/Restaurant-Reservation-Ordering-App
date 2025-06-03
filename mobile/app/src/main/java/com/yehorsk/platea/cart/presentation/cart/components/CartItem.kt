@@ -27,16 +27,16 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
-import com.yehorsk.platea.cart.data.db.model.PivotCartItemEntity
+import com.yehorsk.platea.cart.domain.models.CartItem
+import com.yehorsk.platea.cart.domain.models.PivotCartItem
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun CartItem(
-    cartItem: CartItemEntity,
+    cartItem: CartItem,
     modifier: Modifier = Modifier,
-    onClick: (CartItemEntity) -> Unit
+    onClick: (CartItem) -> Unit
 ){
     val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
@@ -112,7 +112,7 @@ fun CartItem(
 fun MenuItemPreview(){
     MobileTheme {
         CartItem(
-            cartItem = CartItemEntity(
+            cartItem = CartItem(
                 id = 0,
                 menuId = "0",
                 name = "Pancakes",
@@ -123,7 +123,7 @@ fun MenuItemPreview(){
                 price = 5.99,
                 createdAt = "",
                 updatedAt = "",
-                pivot = PivotCartItemEntity(
+                pivot = PivotCartItem(
                     userId = 0,
                     menuItemId = 0,
                     price = 1000.0,

@@ -2,7 +2,7 @@ package com.yehorsk.platea.cart.presentation.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
+import com.yehorsk.platea.cart.domain.models.CartItem
 import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
@@ -10,7 +10,7 @@ import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
+import com.yehorsk.platea.menu.domain.models.MenuItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -36,7 +36,7 @@ class CartScreenViewModel @Inject constructor(
 
     val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)
 
-    val cartItemUiState: StateFlow<List<CartItemEntity>> = cartRepository.getAllItemsFlow()
+    val cartItemUiState: StateFlow<List<CartItem>> = cartRepository.getAllItemsFlow()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Companion.WhileSubscribed(5000),
@@ -130,7 +130,7 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    private fun setItem(item: CartItemEntity){
+    private fun setItem(item: CartItem){
         _uiState.update {
             it.copy(cartItem = item)
         }
@@ -186,7 +186,7 @@ class CartScreenViewModel @Inject constructor(
         clearForm()
     }
 
-    private fun setMenuItem(menu: MenuItemEntity){
+    private fun setMenuItem(menu: MenuItem){
         _uiState.update {
             it.copy(currentItem = menu)
         }

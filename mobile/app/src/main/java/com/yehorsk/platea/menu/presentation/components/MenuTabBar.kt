@@ -8,14 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.yehorsk.platea.menu.data.db.model.MenuEntity
+import com.yehorsk.platea.menu.domain.models.Menu
 
 @Composable
 fun MenuTabBar(
     modifier: Modifier = Modifier,
-    menus: List<MenuEntity>,
+    menus: List<Menu>,
     selectedMenu: Int,
-    onMenuClicked: (Int, MenuEntity) -> Unit
+    onMenuClicked: (Int, Menu) -> Unit
 ){
     ScrollableTabRow(
         modifier = modifier,

@@ -44,8 +44,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val startTime = System.currentTimeMillis()
-
         requestNotificationPermission()
         Timber.plant(Timber.DebugTree())
 
@@ -87,9 +85,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-        val endTime = System.currentTimeMillis()
-        Timber.d("MainActivity startup time: ${endTime - startTime} ms")
     }
 
 
