@@ -2,6 +2,7 @@ package com.yehorsk.platea.orders.presentation.create_order
 
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.cart.data.db.model.CartItemEntity
+import com.yehorsk.platea.cart.domain.models.CartItem
 import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
@@ -40,7 +41,7 @@ class CreateOrderViewModel @Inject constructor(
             initialValue = null
         )
 
-    val cartItemsUiState: StateFlow<List<CartItemEntity>> = orderRepository.getAllCartItems()
+    val cartItemsUiState: StateFlow<List<CartItem>> = orderRepository.getAllCartItems()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

@@ -6,7 +6,7 @@ import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.SideEffect
-import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
+import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -44,7 +44,7 @@ open class OrderBaseViewModel @Inject constructor(
     protected val _uiState = MutableStateFlow(OrderUiState())
     val uiState = _uiState.asStateFlow()
 
-    val ordersUiState: StateFlow<List<OrderWithOrderItems>> = orderRepository.getOrderWithOrderItems()
+    val ordersUiState: StateFlow<List<Order>> = orderRepository.getOrderWithOrderItems()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),

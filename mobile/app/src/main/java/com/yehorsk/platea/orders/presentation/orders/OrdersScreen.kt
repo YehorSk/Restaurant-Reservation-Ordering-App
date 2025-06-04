@@ -17,7 +17,7 @@ import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
 import com.yehorsk.platea.core.presentation.components.OrdersDropdownList
-import com.yehorsk.platea.orders.data.db.model.OrderEntity
+import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.presentation.orders.components.OrdersList
 
 @Composable
@@ -63,7 +63,7 @@ fun OrdersScreenRoot(
     onGoToOrderDetails: (Int) -> Unit,
     searchText: String,
     filterOption: OrderFilter,
-    orders: List<OrderEntity>,
+    orders: List<Order>,
     onAction: (OrdersAction) -> Unit,
     showStatus: Boolean = false
 ){

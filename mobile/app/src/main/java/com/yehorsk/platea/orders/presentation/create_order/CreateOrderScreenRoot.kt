@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
+import com.yehorsk.platea.cart.domain.models.CartItem
 import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBar
@@ -96,7 +96,7 @@ fun CreateOrderScreen(
     modifier: Modifier = Modifier,
     uiState: OrderUiState,
     isConnected: Boolean,
-    items: List<CartItemEntity>,
+    items: List<CartItem>,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
     onGoToMakeReservation: () -> Unit,
@@ -114,7 +114,6 @@ fun CreateOrderScreen(
                 .verticalScroll(rememberScrollState())
                 .background(MaterialTheme.colorScheme.background)
         ) {
-
             NavBar(
                 onGoBack = onGoToCart,
                 title = R.string.go_back

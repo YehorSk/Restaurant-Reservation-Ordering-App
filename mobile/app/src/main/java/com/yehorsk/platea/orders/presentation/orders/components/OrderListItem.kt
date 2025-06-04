@@ -31,7 +31,7 @@ import com.yehorsk.platea.core.utils.Utility.getOrderColorIndicator
 import com.yehorsk.platea.core.utils.Utility.statusToString
 import com.yehorsk.platea.core.utils.formatOrderDateTime
 import com.yehorsk.platea.core.utils.formattedPrice
-import com.yehorsk.platea.orders.data.db.model.OrderEntity
+import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.ui.theme.MobileTheme
 import java.time.LocalDate
 import java.time.LocalTime
@@ -39,7 +39,7 @@ import java.time.LocalTime
 @Composable
 fun OrderListItem(
     modifier: Modifier = Modifier,
-    orderEntity: OrderEntity,
+    orderEntity: Order,
     onGoToOrderDetails: (Int) -> Unit,
     showStatus: Boolean = false
 ){
@@ -112,7 +112,7 @@ fun OrderListItem(
 @Preview
 @Composable
 fun OrderItemPreview(){
-    val fakeOrder = OrderEntity(
+    val fakeOrder = Order(
         id = "order_12345",
         createdAt = "2024-12-01T12:34:56",
         updatedAt = "2024-12-01T12:45:00",

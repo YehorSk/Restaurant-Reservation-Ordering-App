@@ -22,11 +22,11 @@ data class OrderMenuItemDto(
     val recipe: String,
     val picture: String,
     val price: Double,
-    val pivot: Pivot
+    val pivot: OrderMenuItemDtoPivot
 )
 
 @Serializable
-data class Pivot(
+data class OrderMenuItemDtoPivot(
     val id: Int,
     @SerialName("order_id")
     val orderId: String?=null,
@@ -58,7 +58,7 @@ fun OrderMenuItemDto.toOrderMenuItemEntity(): OrderItemEntity{
     )
 }
 
-fun Pivot.toPivotEntity() = PivotOrderItemEntity(
+fun OrderMenuItemDtoPivot.toPivotEntity() = PivotOrderItemEntity(
     id = this.id,
     orderId = this.orderId!!,
     menuItemId = this.menuItemId,

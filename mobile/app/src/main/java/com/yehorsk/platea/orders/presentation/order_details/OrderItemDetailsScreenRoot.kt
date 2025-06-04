@@ -28,6 +28,7 @@ import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
+import com.yehorsk.platea.orders.domain.models.Order
 import kotlin.collections.List
 
 @Composable
@@ -58,8 +59,8 @@ fun OrderItemDetailsScreenRoot(
 
 @Composable
 fun OrderItemDetailsScreen(
-    modifier: Modifier = Modifier ,
-    ordersUiState: List<OrderWithOrderItems>,
+    modifier: Modifier = Modifier,
+    ordersUiState: List<Order>,
     id: Int,
     onGoBack: () -> Unit
 ){

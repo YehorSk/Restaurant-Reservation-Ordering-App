@@ -9,6 +9,7 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
+import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.presentation.create_order.components.TimeItem
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import kotlinx.serialization.SerialName
@@ -296,10 +297,10 @@ object Utility {
 
     data class SectionedOrders(
         @StringRes val title: Int,
-        val orders: List<OrderEntity>
+        val orders: List<Order>
     )
 
-    fun groupOrdersByDate(orders: List<OrderEntity>): List<SectionedOrders>{
+    fun groupOrdersByDate(orders: List<Order>): List<SectionedOrders>{
         val today = LocalDate.now()
         val time = LocalTime.now()
 

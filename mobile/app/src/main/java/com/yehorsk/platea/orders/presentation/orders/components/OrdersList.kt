@@ -18,14 +18,14 @@ import androidx.compose.ui.Modifier
 import com.yehorsk.platea.core.presentation.components.ListHeader
 import com.yehorsk.platea.core.utils.Utility.SectionedOrders
 import com.yehorsk.platea.core.utils.Utility.groupOrdersByDate
-import com.yehorsk.platea.orders.data.db.model.OrderEntity
+import com.yehorsk.platea.orders.domain.models.Order
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrdersList(
     modifier: Modifier = Modifier,
-    orders: List<OrderEntity>,
+    orders: List<Order>,
     onGoToOrderDetails: (Int) -> Unit,
     showStatus: Boolean = false,
 ){

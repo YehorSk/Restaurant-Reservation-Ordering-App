@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
+import com.yehorsk.platea.cart.domain.models.CartItem
 
 @Composable
 fun OrderItemList(
-    items: List<CartItemEntity>
+    items: List<CartItem>
 ){
     Column(
         modifier = Modifier

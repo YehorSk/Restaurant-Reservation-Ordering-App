@@ -2,8 +2,6 @@ package com.yehorsk.platea.menu.domain.repository
 
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
-import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
-import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
 import com.yehorsk.platea.menu.data.remote.dto.MenuDto
 import com.yehorsk.platea.menu.domain.models.Menu
 import com.yehorsk.platea.menu.domain.models.MenuItem

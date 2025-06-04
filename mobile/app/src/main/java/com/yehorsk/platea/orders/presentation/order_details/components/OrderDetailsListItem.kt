@@ -27,15 +27,15 @@ import coil3.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.formattedPrice
-import com.yehorsk.platea.orders.data.db.model.OrderItemEntity
-import com.yehorsk.platea.orders.data.db.model.PivotOrderItemEntity
+import com.yehorsk.platea.orders.domain.models.OrderMenuItem
+import com.yehorsk.platea.orders.domain.models.OrderMenuItemPivot
 import com.yehorsk.platea.ui.theme.MobileTheme
 
 @Composable
 fun OrderDetailsListItem(
-    menuItem: OrderItemEntity,
+    menuItem: OrderMenuItem,
     modifier: Modifier = Modifier,
-    onClick: (OrderItemEntity) -> Unit,
+    onClick: (OrderMenuItem) -> Unit,
 ){
     val imgUrl = BuildConfig.BASE_URL_IMG
     Row(
@@ -88,7 +88,7 @@ fun OrderDetailsListItem(
 fun OrderDetailsListItemPreview(){
     MobileTheme {
         OrderDetailsListItem(
-            menuItem = OrderItemEntity(
+            menuItem = OrderMenuItem(
                 id = 0,
                 createdAt = "",
                 updatedAt = "",
@@ -99,7 +99,7 @@ fun OrderDetailsListItemPreview(){
                 recipe = "Fluffy pancakes with maple syrup, butter, and fresh fruit",
                 picture = "",
                 price = 5.99,
-                pivot = PivotOrderItemEntity(
+                pivot = OrderMenuItemPivot(
                     id = 1,
                     orderId = "10",
                     menuItemId = 1,

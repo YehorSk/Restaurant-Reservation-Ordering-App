@@ -9,7 +9,7 @@ import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.orders.data.db.model.OrderEntity
+import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,7 +41,7 @@ class OrdersViewModel @Inject constructor(
     val searchText = _searchText.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val orderItemsUiState: StateFlow<List<OrderEntity>> = combine(_filterOption, _searchText) { filter, search ->
+    val orderItemsUiState: StateFlow<List<Order>> = combine(_filterOption, _searchText) { filter, search ->
             when (filter) {
                 OrderFilter.COMPLETED -> orderRepository.getUserOrders(search, "Completed")
                 OrderFilter.PENDING -> orderRepository.getUserOrders(search, "Pending")
@@ -83,9 +83,6 @@ class OrdersViewModel @Inject constructor(
         viewModelScope.launch{
             setLoadingState(true)
             orderRepository.getUserOrders()
-                .onSuccess { data, message ->
-
-                }
                 .onError { result ->
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(

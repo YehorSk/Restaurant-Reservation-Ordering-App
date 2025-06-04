@@ -1,6 +1,5 @@
 package com.yehorsk.platea.cart.domain.repository
 
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.remote.dto.CartItemDto
 import com.yehorsk.platea.cart.domain.models.CartItem
 import com.yehorsk.platea.core.domain.remote.AppError

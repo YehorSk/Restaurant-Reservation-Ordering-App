@@ -25,6 +25,7 @@ import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
+import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.presentation.OrderUiState
 import com.yehorsk.platea.orders.presentation.components.OrderDetailsItemList
 import com.yehorsk.platea.orders.presentation.create_order.components.TotalPrice
@@ -75,7 +76,7 @@ fun OrderDetailsScreenRoot(
 @Composable
 fun OrderDetailsScreen(
     modifier: Modifier = Modifier,
-    ordersUiState: List<OrderWithOrderItems>,
+    ordersUiState: List<Order>,
     uiState: OrderUiState,
     onGoToOrders: () -> Unit,
     onOpenItemDetails: (Int) -> Unit,
@@ -84,7 +85,7 @@ fun OrderDetailsScreen(
     onAction: (OrderDetailsAction) -> Unit,
     role: String
 ){
-    val data = ordersUiState.find { it.order.id == id.toString() }
+    val data = ordersUiState.find { it.id == id.toString() }
     if(uiState.isLoading){
         LoadingPart()
     }else if(data!=null){
@@ -100,12 +101,12 @@ fun OrderDetailsScreen(
                 title = R.string.go_back
             )
             OrderStatus(
-                status = data.order.status,
-                date = data.order.createdAt,
-                code = data.order.code,
-                startTime = data.order.startTime,
-                endTime = data.order.endTime,
-                preparationDate = data.order.date ?: ""
+                status = data.status,
+                date = data.createdAt,
+                code = data.code,
+                startTime = data.startTime,
+                endTime = data.endTime,
+                preparationDate = data.date ?: ""
             )
             HorizontalDivider()
             OrderDetailsItemList(
@@ -116,14 +117,14 @@ fun OrderDetailsScreen(
             )
             HorizontalDivider()
             TotalPrice(
-                price = formattedPrice(data.order.price)
+                price = formattedPrice(data.price)
             )
             HorizontalDivider()
-            if(data.order.orderType==1){
+            if(data.orderType==1){
                 DeliveryDetails(
-                    address = data.order.address.toString(),
-                    instructions = data.order.instructions.toString(),
-                    phone = data.order.phone.toString()
+                    address = data.address.toString(),
+                    instructions = data.instructions.toString(),
+                    phone = data.phone.toString()
                 )
             }
             if(isConnected){
@@ -133,7 +134,7 @@ fun OrderDetailsScreen(
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxWidth()
                     ) {
-                        if(data.order.status == "Pending"){
+                        if(data.status == "Pending"){
                             ActionButton(
                                 modifier = Modifier
                                     .padding(
@@ -142,9 +143,9 @@ fun OrderDetailsScreen(
                                         top = 5.dp,
                                         bottom = 20.dp
                                     ),
-                                onAction = { onAction(OrderDetailsAction.UserCancelOrder((data.order.id))) },
+                                onAction = { onAction(OrderDetailsAction.UserCancelOrder((data.id))) },
                                 text = R.string.cancel_order,
-                                enabled = data.order.status == "Pending"
+                                enabled = data.status == "Pending"
                             )
                         }
                     }
@@ -162,9 +163,9 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.SetConfirmedStatus((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetConfirmedStatus((data.id))) },
                             text = R.string.confirm_order,
-                            enabled = data.order.status != "Confirmed"
+                            enabled = data.status != "Confirmed"
                         )
                         ActionButton(
                             modifier = Modifier
@@ -174,9 +175,9 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.SetPreparingStatus((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetPreparingStatus((data.id))) },
                             text = R.string.prepare_order,
-                            enabled = data.order.status != "Preparing"
+                            enabled = data.status != "Preparing"
                         )
                         ActionButton(
                             modifier = Modifier
@@ -186,9 +187,9 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.SetCompletedStatus((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetCompletedStatus((data.id))) },
                             text = R.string.complete_order,
-                            enabled = data.order.status != "Completed"
+                            enabled = data.status != "Completed"
                         )
                         ActionButton(
                             modifier = Modifier
@@ -198,9 +199,9 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.SetReadyForPickupStatus((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetReadyForPickupStatus((data.id))) },
                             text = R.string.ready_order,
-                            enabled = data.order.status != "Ready for Pickup"
+                            enabled = data.status != "Ready for Pickup"
                         )
                         ActionButton(
                             modifier = Modifier
@@ -210,9 +211,9 @@ fun OrderDetailsScreen(
                                     top = 5.dp,
                                     bottom = 20.dp
                                 ),
-                            onAction = { onAction(OrderDetailsAction.SetCancelledStatus((data.order.id))) },
+                            onAction = { onAction(OrderDetailsAction.SetCancelledStatus((data.id))) },
                             text = R.string.cancel_order,
-                            enabled = data.order.status != "Cancelled"
+                            enabled = data.status != "Cancelled"
                         )
                     }
                 }
