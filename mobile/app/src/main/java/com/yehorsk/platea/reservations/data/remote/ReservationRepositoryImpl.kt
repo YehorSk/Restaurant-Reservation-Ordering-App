@@ -3,20 +3,25 @@ package com.yehorsk.platea.reservations.data.remote
 import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
+import com.yehorsk.platea.core.domain.remote.map
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
+import com.yehorsk.platea.reservations.data.mappers.toReservation
 import com.yehorsk.platea.reservations.data.remote.dto.ReservationDto
 import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
 import com.yehorsk.platea.reservations.data.remote.service.ReservationService
+import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.reservation_details.Status
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.collections.map
 
 class ReservationRepositoryImpl @Inject constructor(
     private val reservationDao: ReservationDao,
@@ -59,7 +64,7 @@ class ReservationRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getUserReservations(): Result<List<ReservationDto>, AppError> {
+    override suspend fun getUserReservations(): Result<List<Reservation>, AppError> {
         Timber.d("getUserReservations")
         return safeCall<ReservationDto>(
             execute = {
@@ -68,7 +73,11 @@ class ReservationRepositoryImpl @Inject constructor(
             onSuccess = { data ->
                 syncUserReservationsWithServer(data)
             }
-        )
+        ).map { data ->
+            data.map {
+                it.toReservation()
+            }
+        }
     }
 
     override suspend fun getMaxCapacity(): Result<List<Int>, AppError> {
@@ -80,7 +89,7 @@ class ReservationRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getUserReservationDetails(id: String): Result<List<ReservationDto>, AppError> {
+    override suspend fun getUserReservationDetails(id: String): Result<List<Reservation>, AppError> {
         Timber.d("getUserReservations")
         return safeCall<ReservationDto>(
             execute = {
@@ -89,7 +98,11 @@ class ReservationRepositoryImpl @Inject constructor(
             onSuccess = { data ->
                 reservationDao.insertReservation(data.first().toReservationEntity())
             }
-        )
+        ).map { data ->
+            data.map {
+                it.toReservation()
+            }
+        }
     }
 
     override suspend fun updateReservation(
@@ -122,8 +135,12 @@ class ReservationRepositoryImpl @Inject constructor(
     override fun getUserReservationsFlow(
         search: String,
         filter: String
-    ): Flow<List<ReservationEntity>> {
-        return reservationDao.getUserReservations()
+    ): Flow<List<Reservation>> {
+        return reservationDao.getUserReservations().map { data ->
+            data.map {
+                it.toReservation()
+            }
+        }
     }
 
 }

@@ -12,6 +12,7 @@ import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.presentation.create_order.components.TimeItem
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
+import com.yehorsk.platea.reservations.domain.models.Reservation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -292,7 +293,7 @@ object Utility {
 
     data class SectionedReservation(
         @StringRes val title: Int,
-        val reservations: List<ReservationEntity>
+        val reservations: List<Reservation>
     )
 
     data class SectionedOrders(
@@ -322,7 +323,7 @@ object Utility {
         return grouped.filter { it.orders.isNotEmpty() }
     }
 
-    fun groupReservationsByDate(reservations: List<ReservationEntity>): List<SectionedReservation>{
+    fun groupReservationsByDate(reservations: List<Reservation>): List<SectionedReservation>{
         val today = LocalDate.now()
         val time = LocalTime.now()
 

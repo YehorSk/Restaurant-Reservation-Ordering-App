@@ -24,6 +24,7 @@ import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
+import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationDetails
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationStatus
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationUiState
@@ -76,7 +77,7 @@ fun ReservationDetailsScreen(
     isConnected: Boolean,
     onAction: (ReservationDetailsAction) -> Unit,
     uiState: ReservationUiState,
-    reservationItemUiState: List<ReservationEntity>,
+    reservationItemUiState: List<Reservation>,
     userRole: String
 ){
     val data = reservationItemUiState.find { it.id.toString() == id.toString() }

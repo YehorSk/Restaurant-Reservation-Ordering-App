@@ -9,6 +9,7 @@ import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
+import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,7 +41,7 @@ class ReservationScreenViewModel @Inject constructor(
     val searchText = _searchText.asStateFlow()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val reservationItemUiState: StateFlow<List<ReservationEntity>> = combine(_filterOption, _searchText) { filter, search ->
+    val reservationItemUiState: StateFlow<List<Reservation>> = combine(_filterOption, _searchText) { filter, search ->
         when (filter) {
             ReservationFilter.PENDING -> reservationRepository.getUserReservationsFlow(search, "Pending")
             ReservationFilter.CANCELLED -> reservationRepository.getUserReservationsFlow(search, "Cancelled")

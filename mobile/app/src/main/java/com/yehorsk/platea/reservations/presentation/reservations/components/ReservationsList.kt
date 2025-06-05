@@ -18,13 +18,14 @@ import com.yehorsk.platea.core.presentation.components.ListHeader
 import com.yehorsk.platea.core.utils.Utility.SectionedReservation
 import com.yehorsk.platea.core.utils.Utility.groupReservationsByDate
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
+import com.yehorsk.platea.reservations.domain.models.Reservation
 import kotlin.collections.List
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ReservationsList(
     modifier: Modifier = Modifier,
-    items: List<ReservationEntity>,
+    items: List<Reservation>,
     onGoToReservationDetails: (Int) -> Unit,
     showStatus: Boolean = false
 ){

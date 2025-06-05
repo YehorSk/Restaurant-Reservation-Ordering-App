@@ -18,6 +18,7 @@ import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
 import com.yehorsk.platea.core.presentation.components.ReservationDropdownList
 import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
+import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.presentation.reservations.components.ReservationsList
 
 @Composable
@@ -63,7 +64,7 @@ fun ReservationScreen(
     searchText: String,
     filterOption: ReservationFilter,
     showGoBack: Boolean,
-    reservations: List<ReservationEntity>,
+    reservations: List<Reservation>,
     onAction: (ReservationScreenAction) -> Unit,
     showStatus: Boolean = false
 ){

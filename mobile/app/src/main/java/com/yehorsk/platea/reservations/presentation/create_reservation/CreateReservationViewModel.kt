@@ -159,6 +159,7 @@ class CreateReservationViewModel @Inject constructor(
         viewModelScope.launch{
             reservationRepository.createReservation(uiState.value.reservationForm)
                 .onSuccess { data, message ->
+                    Timber.d("createReservation success -> $message")
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
                             message = message.toString()
@@ -168,6 +169,7 @@ class CreateReservationViewModel @Inject constructor(
                     clearForm()
                 }
                 .onError { error ->
+                    Timber.d("createReservation error -> $error")
                     when(error){
                         is AppError.CONFLICT -> {
                             SnackbarController.sendEvent(
