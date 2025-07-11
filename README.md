@@ -4,7 +4,8 @@
 
 ## Objective of the Application:
 
-This mobile application is designed for table reservations and food ordering in restaurants. It allows customers to book a table, place food orders for dine-in or delivery, and track their orders seamlessly. Additionally, it includes a module that streamlines the ordering process for waiters and ensures efficient order delivery to the kitchen. The app is built with a clear distinction between user roles, providing an intuitive and user-friendly interface for customers and restaurant staff.
+The mobile application is designed for table reservations and food ordering in restaurants. It enables customers to book tables, place dine-in or delivery orders, and track them seamlessly. The system also includes dedicated modules for Waiters, Chefs, and Admins.
+In addition, a web-based admin panel was developed to manage the restaurant, and the back-end, built with a REST API, handles communication with both the web and mobile applications.
 
 ## Download
 
@@ -35,7 +36,7 @@ Go to the [releases page](https://github.com/YehorSk/Restaurant-Reservation-Orde
   <img src="screenshots/reservation_details.jpg" width="250" alt="Reservation Details">
 </p>
 
-# Tech Stack
+# Mobile App Tech Stack
 
 ## Core Libraries:
 
