@@ -7,6 +7,7 @@ import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
+import com.yehorsk.platea.core.utils.UiText
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.domain.models.Order
@@ -14,16 +15,22 @@ import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flattenMerge
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
 import javax.inject.Inject
 
 @HiltViewModel
@@ -94,4 +101,30 @@ class OrdersViewModel @Inject constructor(
             setLoadingState(false)
         }
     }
+
+//    private fun Flow<List<Order>>.groupByOrderStatus(): Flow<Map<UiText, List<Order>>>{
+//        return map { orders ->
+//            orders
+//                .groupBy { order ->
+//                    val orderDate = order.date?.let { LocalDate.parse(it) }
+//                    val orderEndTime = order.endTime.let { LocalTime.parse(it) }
+//                    LocalDate.ofInstant(
+//                        orderDate,
+//                        ZoneId.systemDefault()
+//                    )
+//                }
+//                .mapValues { (_, orders) -> orders.sortedBy { order ->
+//                    order.date?.let { LocalDate.parse(it) }
+//                } }
+//                .toSortedMap(compareBy{ it })
+//                .mapKeys { (date, order) ->
+//                    val orderDate = date?.let { LocalDate.parse(it) }
+//
+//                    when(date) {
+//
+//                    }
+//                }
+//        }
+//    }
+
 }

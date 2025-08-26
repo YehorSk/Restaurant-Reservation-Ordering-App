@@ -8,10 +8,8 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
-import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.presentation.create_order.components.TimeItem
-import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.domain.models.Reservation
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -317,7 +315,6 @@ object Utility {
                     FilterTypeOrder.HISTORY -> orderDate!!.isBefore(today)
                 }
             }
-
             SectionedOrders(title = type.label, orders = filteredOrders)
         }
         return grouped.filter { it.orders.isNotEmpty() }
@@ -325,7 +322,6 @@ object Utility {
 
     fun groupReservationsByDate(reservations: List<Reservation>): List<SectionedReservation>{
         val today = LocalDate.now()
-        val time = LocalTime.now()
 
         val grouped = FilterTypeReservation.entries.map { type ->
             val filteredOrders = reservations.filter { reservation ->
@@ -342,12 +338,5 @@ object Utility {
         }
         return grouped.filter { it.reservations.isNotEmpty() }
     }
-
-    fun calculateRemainingTime(endTime: String): Long {
-        val endLocalTime = LocalTime.parse(endTime)
-        val currentTime = LocalTime.now()
-        return ChronoUnit.MINUTES.between(currentTime, endLocalTime)
-    }
-
 
 }

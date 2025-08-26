@@ -23,7 +23,6 @@ import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
-import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationDetails
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationStatus

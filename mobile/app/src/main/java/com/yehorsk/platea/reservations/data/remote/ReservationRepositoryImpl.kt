@@ -4,6 +4,7 @@ import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.core.domain.remote.map
+import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
 import com.yehorsk.platea.reservations.data.dao.ReservationDao
@@ -54,14 +55,13 @@ class ReservationRepositoryImpl @Inject constructor(
         return safeCall<ReservationDto>(
             execute = {
                 reservationService.createReservation(reservationForm)
-            },
-            onSuccess = { data ->
-                reservationDao.insertReservation(data.first().toReservationEntity())
-                if(reservationForm.withOrder){
-                    orderDao.deleteAllCartItems()
-                }
             }
-        )
+        ).onSuccess { data, _ ->
+            reservationDao.insertReservation(data.first().toReservationEntity())
+            if(reservationForm.withOrder){
+                orderDao.deleteAllCartItems()
+            }
+        }
     }
 
     override suspend fun getUserReservations(): Result<List<Reservation>, AppError> {
@@ -69,11 +69,10 @@ class ReservationRepositoryImpl @Inject constructor(
         return safeCall<ReservationDto>(
             execute = {
                 reservationService.getReservations()
-            },
-            onSuccess = { data ->
-                syncUserReservationsWithServer(data)
             }
-        ).map { data ->
+        ).onSuccess { data, _ ->
+            syncUserReservationsWithServer(data)
+        }.map { data ->
             data.map {
                 it.toReservation()
             }
@@ -94,11 +93,10 @@ class ReservationRepositoryImpl @Inject constructor(
         return safeCall<ReservationDto>(
             execute = {
                 reservationService.getReservationDetails(id)
-            },
-            onSuccess = { data ->
-                reservationDao.insertReservation(data.first().toReservationEntity())
             }
-        ).map { data ->
+        ).onSuccess { data, _ ->
+            reservationDao.insertReservation(data.first().toReservationEntity())
+        }.map { data ->
             data.map {
                 it.toReservation()
             }
@@ -113,11 +111,10 @@ class ReservationRepositoryImpl @Inject constructor(
         return safeCall<ReservationDto>(
             execute = {
                 reservationService.updateReservation(id, status)
-            },
-            onSuccess = { data ->
-                reservationDao.insertReservation(data.first().toReservationEntity())
             }
-        )
+        ).onSuccess { data, _ ->
+            reservationDao.insertReservation(data.first().toReservationEntity())
+        }
     }
 
     override suspend fun cancelUserReservation(id: String): Result<List<ReservationDto>, AppError> {
@@ -125,11 +122,10 @@ class ReservationRepositoryImpl @Inject constructor(
         return safeCall<ReservationDto>(
             execute = {
                 reservationService.cancelUserReservation(id)
-            },
-            onSuccess = { data ->
-                reservationDao.insertReservation(data.first().toReservationEntity())
             }
-        )
+        ).onSuccess { data, _ ->
+            reservationDao.insertReservation(data.first().toReservationEntity())
+        }
     }
 
     override fun getUserReservationsFlow(

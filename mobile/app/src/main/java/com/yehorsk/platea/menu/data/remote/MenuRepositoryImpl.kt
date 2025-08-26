@@ -3,6 +3,7 @@ package com.yehorsk.platea.menu.data.remote
 import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
+import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.menu.data.dao.MenuDao
 import com.yehorsk.platea.menu.data.db.model.MenuItemEntity
 import com.yehorsk.platea.menu.data.db.model.MenuWithMenuItems
@@ -71,11 +72,10 @@ class MenuRepositoryImpl @Inject constructor(
         return safeCall<MenuDto>(
             execute = {
                 menuService.getAllMenus()
-            },
-            onSuccess = { data ->
-                syncMenusWithServer(data)
             }
-        )
+        ).onSuccess { data, _ ->
+            syncMenusWithServer(data)
+        }
     }
 
     override suspend fun addFavorite(menuItemId: String): Result<List<String>, AppError> {
@@ -83,11 +83,10 @@ class MenuRepositoryImpl @Inject constructor(
         return safeCall<String>(
             execute = {
                 menuService.addFavoriteItem(menuItemId = menuItemId)
-            },
-            onSuccess = { data ->
-                menuDao.addFavorite(menuItemId = menuItemId)
             }
-        )
+        ).onSuccess { data, _ ->
+            menuDao.addFavorite(menuItemId = menuItemId)
+        }
     }
 
     override suspend fun deleteFavorite(menuItemId: String): Result<List<String>, AppError> {
@@ -95,11 +94,10 @@ class MenuRepositoryImpl @Inject constructor(
         return safeCall<String>(
             execute = {
                 menuService.deleteFavoriteItem(menuItemId = menuItemId)
-            },
-            onSuccess = { _ ->
-                menuDao.deleteFavorite(menuItemId = menuItemId)
             }
-        )
+        ).onSuccess { data, _ ->
+            menuDao.deleteFavorite(menuItemId = menuItemId)
+        }
     }
 
     override fun getMenuWithMenuItems(): Flow<List<Menu>> {

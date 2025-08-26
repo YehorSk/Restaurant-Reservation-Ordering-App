@@ -12,6 +12,8 @@ import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
+import com.yehorsk.platea.core.domain.remote.onError
+import com.yehorsk.platea.core.domain.remote.onSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -28,11 +30,10 @@ class AuthRepositoryImpl @Inject constructor(
         return safeCall<AuthDataDto>(
             execute = {
                 authService.register(registerForm)
-            },
-            onSuccess = { result ->
-                prefs.saveUser(result.first())
             }
-        )
+        ).onSuccess { data, _ ->
+            prefs.saveUser(data.first())
+        }
     }
 
     override suspend fun login(loginForm: LoginForm): Result<List<AuthDataDto>, AppError> {
@@ -40,49 +41,32 @@ class AuthRepositoryImpl @Inject constructor(
         return safeCall<AuthDataDto>(
             execute = {
                 authService.login(loginForm)
-            },
-            onSuccess = { result ->
-                prefs.saveUser(result.first())
-            },
-            onFailure = { error ->
-                if (error == AppError.UNAUTHORIZED) {
-                    prefs.clearAllTokens()
-                }
             }
-        )
+        ).onSuccess { data, _ ->
+            prefs.saveUser(data.first())
+        }.onError { error ->
+            if (error == AppError.UNAUTHORIZED) {
+                prefs.clearAllTokens()
+            }
+        }
     }
 
     override suspend fun authenticate(authState: AuthState): Result<List<AuthDataDto>, AppError> {
-        Timber.d("Auth authenticate START")
-        val totalStart = System.currentTimeMillis()
-
-        val httpStart = System.currentTimeMillis()
-        val result = safeCall<AuthDataDto>(
+        Timber.d("Auth authenticate")
+        return safeCall<AuthDataDto>(
             execute = {
                 authService.authenticate(authState)
-            },
-            onSuccess = { result ->
-                val successStart = System.currentTimeMillis()
-                Timber.d("Auth HTTP request took ${successStart - httpStart} ms")
-                prefs.saveUser(result.first())
-                Timber.d("Auth prefs.saveUser() took ${System.currentTimeMillis() - successStart} ms")
-//                setLocale(Locale.current.language)
-//                Timber.d("Auth setLocale() took ${System.currentTimeMillis() - successStart} ms")
-            },
-            onFailure = { error ->
-                val failureStart = System.currentTimeMillis()
-                if (error == AppError.UNAUTHORIZED) {
-                    prefs.clearAllTokens()
-                    withContext(Dispatchers.IO) {
-                        mainRoomDatabase.clearAllTables()
-                    }
-                }
-                Timber.d("Auth Failure handling took ${System.currentTimeMillis() - failureStart} ms")
             }
-        )
-
-        Timber.d("Auth authenticate() took ${System.currentTimeMillis() - totalStart} ms")
-        return result
+        ).onSuccess { data, _ ->
+            prefs.saveUser(data.first())
+        }.onError { error ->
+            if (error == AppError.UNAUTHORIZED) {
+                prefs.clearAllTokens()
+                withContext(Dispatchers.IO) {
+                    mainRoomDatabase.clearAllTables()
+                }
+            }
+        }
     }
 
     override suspend fun logout(): Result<List<AuthDataDto>, AppError> {
@@ -90,25 +74,23 @@ class AuthRepositoryImpl @Inject constructor(
         return safeCall<AuthDataDto>(
             execute = {
                 authService.logout()
-            },
-            onSuccess = { result ->
-                prefs.clearAllTokens()
-                withContext(Dispatchers.IO) {
-                    mainRoomDatabase.clearAllTables()
-                }
-            },
-            onFailure = { error ->
-                when (error) {
-                    AppError.UNAUTHORIZED -> {
-                        prefs.clearAllTokens()
-                        withContext(Dispatchers.IO) {
-                            mainRoomDatabase.clearAllTables()
-                        }
-                    }
-                    else -> {}
-                }
             }
-        )
+        ).onSuccess { data, _ ->
+            prefs.clearAllTokens()
+            withContext(Dispatchers.IO) {
+                mainRoomDatabase.clearAllTables()
+            }
+        }.onError { error ->
+            when (error) {
+                AppError.UNAUTHORIZED -> {
+                    prefs.clearAllTokens()
+                    withContext(Dispatchers.IO) {
+                        mainRoomDatabase.clearAllTables()
+                    }
+                }
+                else -> {}
+            }
+        }
     }
 
     override suspend fun forgotPassword(forgotFormState: ForgotFormState): Result<List<String>, AppError> {

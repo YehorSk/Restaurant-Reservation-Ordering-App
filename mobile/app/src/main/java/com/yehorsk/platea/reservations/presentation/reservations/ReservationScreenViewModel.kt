@@ -8,7 +8,6 @@ import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel

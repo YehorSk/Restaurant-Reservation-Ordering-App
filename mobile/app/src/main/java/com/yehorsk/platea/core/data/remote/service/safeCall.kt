@@ -15,31 +15,25 @@ import java.net.UnknownHostException
 import kotlin.coroutines.coroutineContext
 
 suspend inline fun <reified T> safeCall(
-    execute: () -> ResponseDto<T>,
-    onSuccess: (List<T>) -> Unit = {},
-    onFailure: (AppError) -> Unit = {}
+    execute: () -> ResponseDto<T>
 ): Result<List<T>, AppError> {
     return try {
         val response = execute()
-        onSuccess(response.data!!)
-        Result.Success(data = response.data, message = response.message)
+        Result.Success(data = response.data!!, message = response.message)
     }catch (e: UnknownHostException) {
         Timber.d("ERROR UnknownHostException ${e.message}")
         FirebaseCrashlytics.getInstance().recordException(e)
         val error = AppError.NO_INTERNET
-        onFailure(error)
         Result.Error(error = error)
     } catch (e: IOException) {
         Timber.d("ERROR IOException ${e.message}")
         FirebaseCrashlytics.getInstance().recordException(e)
         val error = AppError.NO_INTERNET
-        onFailure(error)
         Result.Error(error = error)
     } catch (e: SerializationException) {
         Timber.d("ERROR SerializationException")
         FirebaseCrashlytics.getInstance().recordException(e)
         val error = AppError.SERIALIZATION_ERROR
-        onFailure(error)
         Result.Error(error = error)
     } catch (e: HttpException) {
         Timber.d("ERROR HttpException - ${e.code()} ${e.response()!!.errorBody()}")
@@ -65,13 +59,11 @@ suspend inline fun <reified T> safeCall(
             }
             else -> AppError.UNKNOWN_ERROR
         }
-        onFailure(error)
         Result.Error(error = error)
     } catch (e: Exception) {
         coroutineContext.ensureActive()
         Timber.d("Error $e")
         val error = AppError.UNKNOWN_ERROR
-        onFailure(error)
         Result.Error(error = error)
     }
 }

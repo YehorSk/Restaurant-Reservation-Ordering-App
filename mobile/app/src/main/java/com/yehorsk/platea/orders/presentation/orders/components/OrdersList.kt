@@ -20,7 +20,6 @@ import com.yehorsk.platea.core.utils.Utility.SectionedOrders
 import com.yehorsk.platea.core.utils.Utility.groupOrdersByDate
 import com.yehorsk.platea.orders.domain.models.Order
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrdersList(

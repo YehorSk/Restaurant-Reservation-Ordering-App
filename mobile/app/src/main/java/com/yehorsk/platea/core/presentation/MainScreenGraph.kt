@@ -42,7 +42,6 @@ import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.toString
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun MainScreenGraph(
     navController: NavHostController = rememberNavController(),

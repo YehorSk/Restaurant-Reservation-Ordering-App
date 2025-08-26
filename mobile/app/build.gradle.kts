@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.10"
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
@@ -24,12 +24,12 @@ if (localPropertiesFile.exists() && localPropertiesFile.isFile) {
 
 android {
     namespace = "com.yehorsk.platea"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.yehorsk.platea"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -103,6 +103,8 @@ dependencies {
     implementation(libs.accompanist.permissions)
 
     implementation(libs.secrets.gradle.plugin)
+
+    debugImplementation(libs.leakcanary)
 
     // Tab Synchronizer
     implementation(libs.tabsync.compose)

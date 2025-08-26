@@ -1,7 +1,6 @@
 package com.yehorsk.platea.cart.data.remote
 
 import com.yehorsk.platea.cart.data.dao.CartDao
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.data.mappers.toCartItem
 import com.yehorsk.platea.cart.data.remote.dto.CartItemDto
 import com.yehorsk.platea.cart.data.remote.dto.toCartItemEntity
@@ -11,6 +10,7 @@ import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
+import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.presentation.components.CartForm
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -43,11 +43,10 @@ class CartRepositoryImpl @Inject constructor(
         return safeCall<CartItemDto>(
             execute = {
                 cartService.getUserCartItems()
-            },
-            onSuccess = { data ->
-                syncCartItemsWithServer(data)
             }
-        )
+        ).onSuccess{ data, _ ->
+            syncCartItemsWithServer(data)
+        }
     }
 
     override suspend fun addUserCartItem(cartForm: CartForm): Result<List<CartItemDto>, AppError> {
@@ -55,11 +54,10 @@ class CartRepositoryImpl @Inject constructor(
         return safeCall<CartItemDto>(
             execute = {
                 cartService.addUserCartItem(cartForm)
-            },
-            onSuccess = { data ->
-                cartDao.insertItem(data.first().toCartItemEntity())
             }
-        )
+        ).onSuccess { data, _ ->
+            cartDao.insertItem(data.first().toCartItemEntity())
+        }
     }
 
     override suspend fun deleteUserCartItem(cartForm: CartForm): Result<List<CartItemDto>, AppError> {
@@ -67,11 +65,10 @@ class CartRepositoryImpl @Inject constructor(
         return safeCall<CartItemDto>(
             execute = {
                 cartService.deleteUserCartItem(cartForm)
-            },
-            onSuccess = { data ->
-                cartDao.deleteItem(data.first().toCartItemEntity())
             }
-        )
+        ).onSuccess { data, _ ->
+            cartDao.deleteItem(data.first().toCartItemEntity())
+        }
     }
 
     override suspend fun updateUserCartItem(cartForm: CartForm): Result<List<CartItemDto>, AppError> {
@@ -79,11 +76,10 @@ class CartRepositoryImpl @Inject constructor(
         return safeCall<CartItemDto>(
             execute = {
                 cartService.updateUserCartItem(cartForm)
-            },
-            onSuccess = { data ->
-                cartDao.updateItem(data.first().toCartItemEntity())
-            },
-        )
+            }
+        ).onSuccess { data, _ ->
+            cartDao.updateItem(data.first().toCartItemEntity())
+        }
     }
 
     override fun getAllItemsFlow(): Flow<List<CartItem>> {

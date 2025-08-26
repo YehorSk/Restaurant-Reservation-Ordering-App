@@ -8,6 +8,7 @@ import com.yehorsk.platea.core.data.remote.service.RestaurantService
 import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
+import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.domain.repository.RestaurantRepository
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
@@ -30,11 +31,10 @@ class RestaurantRepositoryImpl @Inject constructor(
         return safeCall<RestaurantInfoDto>(
             execute = {
                 restaurantService.getRestaurantInfo()
-            },
-            onSuccess = { data ->
-                Timber.d("Restaurant $data")
-                restaurantInfoDao.upsertRestaurantInfo(data.first().toRestaurantInfoEntity())
             }
-        )
+        ).onSuccess { data, _ ->
+            Timber.d("Restaurant $data")
+            restaurantInfoDao.upsertRestaurantInfo(data.first().toRestaurantInfoEntity())
+        }
     }
 }

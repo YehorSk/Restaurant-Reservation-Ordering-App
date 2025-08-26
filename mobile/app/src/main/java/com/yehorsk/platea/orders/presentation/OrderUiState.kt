@@ -3,14 +3,13 @@ package com.yehorsk.platea.orders.presentation
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.domain.models.OrderMenuItem
-import com.yehorsk.platea.orders.domain.models.Table
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
 data class OrderUiState(
-    val orderItems: List<OrderMenuItem>? = null,
-    val orders: List<Order>? = null,
+    val orderItems: List<OrderMenuItem> = emptyList(),
+    val orders: List<Order> = emptyList(),
     val orderForm: OrderForm = OrderForm(),
     val isLoading: Boolean = false,
     val isLoadingPlaces: Boolean = false,

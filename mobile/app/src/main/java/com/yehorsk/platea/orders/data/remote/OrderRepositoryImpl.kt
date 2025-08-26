@@ -8,6 +8,7 @@ import com.yehorsk.platea.core.data.remote.service.safeCall
 import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.Result
 import com.yehorsk.platea.core.domain.remote.map
+import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.orders.data.dao.OrderDao
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
 import com.yehorsk.platea.orders.data.db.model.OrderItemEntity
@@ -27,6 +28,7 @@ import com.yehorsk.platea.orders.domain.models.toOrderMenuItem
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
 import com.yehorsk.platea.orders.presentation.OrderForm
 import com.yehorsk.platea.orders.presentation.order_details.Status
+import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -94,11 +96,10 @@ class OrderRepositoryImpl @Inject constructor(
         return safeCall<OrderDto>(
             execute = {
                 orderService.getUserOrders()
-            },
-            onSuccess = { data ->
-                syncOrdersWithDb(data)
             }
-        )
+        ).onSuccess { data, _ ->
+            syncOrdersWithDb(data)
+        }
     }
 
     override suspend fun getUserOrderDetails(id: String): Result<List<OrderDto>, AppError> {
@@ -106,14 +107,13 @@ class OrderRepositoryImpl @Inject constructor(
         return safeCall<OrderDto>(
             execute = {
                 orderService.getUserOrderDetails(id)
-            },
-            onSuccess = { data ->
-                orderDao.insertOrder(data.first().toOrderEntity())
-                orderDao.insertOrderItems(data.first().orderItems.map {
-                    it.toOrderMenuItemEntity()
-                })
             }
-        )
+        ).onSuccess { data, _ ->
+            orderDao.insertOrder(data.first().toOrderEntity())
+            orderDao.insertOrderItems(data.first().orderItems.map {
+                it.toOrderMenuItemEntity()
+            })
+        }
     }
 
     override suspend fun cancelUserOrder(id: String): Result<List<OrderDto>, AppError> {
@@ -121,14 +121,13 @@ class OrderRepositoryImpl @Inject constructor(
         return safeCall<OrderDto>(
             execute = {
                 orderService.cancelUserOrder(id)
-            },
-            onSuccess = { data ->
-                orderDao.insertOrder(data.first().toOrderEntity())
-                orderDao.insertOrderItems(data.first().orderItems.map {
-                    it.toOrderMenuItemEntity()
-                })
             }
-        )
+        ).onSuccess { data, _ ->
+            orderDao.insertOrder(data.first().toOrderEntity())
+            orderDao.insertOrderItems(data.first().orderItems.map {
+                it.toOrderMenuItemEntity()
+            })
+        }
     }
 
 
@@ -137,11 +136,10 @@ class OrderRepositoryImpl @Inject constructor(
         return safeCall<OrderDto>(
             execute = {
                 orderService.makeUserPickUpOrder(orderForm)
-            },
-            onSuccess = {
-                orderDao.deleteAllCartItems()
             }
-        )
+        ).onSuccess { data, _ ->
+            orderDao.deleteAllCartItems()
+        }
     }
 
     override suspend fun makeUserDeliveryOrder(orderForm: OrderForm): Result<List<OrderDto>, AppError> {
@@ -149,11 +147,10 @@ class OrderRepositoryImpl @Inject constructor(
         return safeCall<OrderDto>(
             execute = {
                 orderService.makeUserDeliveryOrder(orderForm)
-            },
-            onSuccess = {
-                orderDao.deleteAllCartItems()
             }
-        )
+        ).onSuccess { data, _ ->
+            orderDao.deleteAllCartItems()
+        }
     }
 
     override suspend fun makeWaiterOrder(orderForm: OrderForm): Result<List<OrderDto>, AppError> {
@@ -161,11 +158,10 @@ class OrderRepositoryImpl @Inject constructor(
         return safeCall<OrderDto>(
             execute = {
                 orderService.makeWaiterOrder(orderForm)
-            },
-            onSuccess = {
-                orderDao.deleteAllCartItems()
             }
-        )
+        ).onSuccess { data, _ ->
+            orderDao.deleteAllCartItems()
+        }
     }
 
     override suspend fun getTables(): Result<List<TableDto>, AppError> {
@@ -175,11 +171,6 @@ class OrderRepositoryImpl @Inject constructor(
                 orderService.getTables()
             }
         )
-//            .map { data ->
-//            data.map {
-//                it.toTable()
-//            }
-//        }
     }
 
     override suspend fun updateOrderStatus(id: String, status: Status): Result<List<OrderDto>, AppError> {
@@ -187,14 +178,13 @@ class OrderRepositoryImpl @Inject constructor(
         return safeCall<OrderDto>(
             execute = {
                 orderService.updateOrderStatus(id, status = status)
-            },
-            onSuccess = { data ->
-                orderDao.insertOrder(data.first().toOrderEntity())
-                orderDao.insertOrderItems(data.first().orderItems.map {
-                    it.toOrderMenuItemEntity()
-                })
             }
-        )
+        ).onSuccess { data, _ ->
+            orderDao.insertOrder(data.first().toOrderEntity())
+            orderDao.insertOrderItems(data.first().orderItems.map {
+                it.toOrderMenuItemEntity()
+            })
+        }
     }
 
     override fun getOrderWithOrderItems(): Flow<List<Order>> {
