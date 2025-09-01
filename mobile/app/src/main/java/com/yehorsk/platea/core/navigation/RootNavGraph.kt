@@ -14,7 +14,6 @@ fun RootNavGraph(
     loginViewModel: LoginViewModel,
     startDestination: String
 ) {
-
     NavHost(
         navController = navController,
         route = Graph.ROOT,

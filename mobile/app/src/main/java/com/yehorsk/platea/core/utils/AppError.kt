@@ -15,6 +15,8 @@ fun AppError.toString(context: Context): String {
         is AppError.IncorrectData -> R.string.error_incorrect_data
         AppError.SERVER_ERROR -> R.string.error_server_error
         is AppError.CONFLICT -> R.string.conflict_error
+        AppError.CANCELLED -> R.string.error_cancelled
+        AppError.NO_CREDENTIAL -> R.string.error_no_credential
     }
     return context.getString(resId)
 }

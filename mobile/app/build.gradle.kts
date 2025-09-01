@@ -157,6 +157,11 @@ dependencies {
     //Icons
     implementation(libs.androidx.material.icons.extended)
 
+    implementation(libs.material3.adaptive.navigation.suite)
+
+    implementation(libs.androidx.credentials.core)
+    implementation(libs.androidx.credentials.compat)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -1,6 +1,7 @@
 package com.yehorsk.platea.auth.presentation.login
 
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -91,7 +92,7 @@ fun LoginScreen(
                 onItemValueChange = loginViewModel::updateLogUiState,
                 onLogClick = {
                     coroutineScope.launch {
-                        loginViewModel.login()
+                        loginViewModel.login(context as ComponentActivity)
                     }
                 },
                 modifier = Modifier
@@ -102,6 +103,13 @@ fun LoginScreen(
                 isConnected = isConnected
             )
         }
+
+        LaunchedEffect(key1 = true, key2 = isConnected, key3 = uiState.isAuthenticating) {
+            if(isConnected && uiState.isAuthenticating == false){
+                loginViewModel.loginWithSavedCredentials(context as ComponentActivity)
+            }
+        }
+
         val role = loginViewModel.userRole.collectAsStateWithLifecycle().value
 
         LaunchedEffect(uiState.isLoggedIn) {

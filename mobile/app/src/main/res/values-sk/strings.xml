@@ -131,6 +131,8 @@
     <string name="error_incorrect_data">Skontrolujte svoje údaje a skúste to znova.</string>
     <string name="error_server_error">Vyskytla sa chyba servera. Skúste to znova neskôr.</string>
     <string name="conflict_error">Akciu nie je možné dokončiť kvôli konfliktu.</string>
+    <string name="error_cancelled">Overenie bolo zrušené</string>
+    <string name="error_no_credential">Nepodarilo sa získať prihlasovacie údaje</string>
 
     <!-- Filters-->
 

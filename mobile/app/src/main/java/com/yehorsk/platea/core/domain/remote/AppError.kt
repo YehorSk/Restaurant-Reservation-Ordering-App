@@ -10,6 +10,8 @@ sealed class AppError(val details: ValidationErrorsDto? = null): Error {
     object UNKNOWN_ERROR : AppError()
     object SERIALIZATION_ERROR : AppError()
     object HTTP_ERROR : AppError()
+    object CANCELLED : AppError()
+    object NO_CREDENTIAL : AppError()
 
     data class IncorrectData(val validationErrors: ValidationErrorsDto?, val message: String? = null) :
         AppError(validationErrors)

@@ -1,6 +1,7 @@
 package com.yehorsk.platea.auth.presentation.register
 
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -89,7 +90,7 @@ fun RegisterScreen(
                 onItemValueChange = viewModel::updateRegUiState,
                 onRegClick = {
                     coroutineScope.launch {
-                        viewModel.register()
+                        viewModel.register(context as ComponentActivity)
                     }
                 },
                 modifier = Modifier

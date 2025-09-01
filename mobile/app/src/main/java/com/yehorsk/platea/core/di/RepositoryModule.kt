@@ -1,5 +1,7 @@
 package com.yehorsk.platea.core.di
 
+import android.content.Context
+import androidx.credentials.CredentialManager
 import com.yehorsk.platea.auth.data.remote.AuthRepositoryImpl
 import com.yehorsk.platea.auth.data.remote.service.AuthService
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
@@ -31,6 +33,7 @@ import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -40,7 +43,7 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideAuthRepositoryImpl(authService: AuthService, mainPreferencesRepository: MainPreferencesRepository, mainRoomDatabase: MainRoomDatabase) : AuthRepository = AuthRepositoryImpl(authService, mainPreferencesRepository, mainRoomDatabase)
+    fun provideAuthRepositoryImpl(authService: AuthService, mainPreferencesRepository: MainPreferencesRepository, mainRoomDatabase: MainRoomDatabase, credentialManager: CredentialManager, @ApplicationContext context: Context) : AuthRepository = AuthRepositoryImpl(authService, mainPreferencesRepository, mainRoomDatabase, credentialManager, context)
 
     @Provides
     @Singleton

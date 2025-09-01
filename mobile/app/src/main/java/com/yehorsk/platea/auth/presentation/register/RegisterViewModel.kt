@@ -1,5 +1,6 @@
 package com.yehorsk.platea.auth.presentation.register
 
+import android.app.Activity
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -29,9 +30,8 @@ import javax.inject.Inject
 class RegisterViewModel @Inject constructor(
     authRepository: AuthRepository,
     preferencesRepository: MainPreferencesRepository,
-    networkConnectivityObserver: ConnectivityObserver,
-    @ApplicationContext context: Context
-): BaseAuthViewModel(authRepository, preferencesRepository, networkConnectivityObserver, context) {
+    networkConnectivityObserver: ConnectivityObserver
+): BaseAuthViewModel(authRepository, preferencesRepository, networkConnectivityObserver) {
 
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState.asStateFlow()
@@ -51,22 +51,10 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun register() {
+    fun register(activity: Activity) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
-            val fcmToken = Firebase.messaging.token.await()
-            val deviceId = Utility.getDeviceId(context)
-            val deviceType = "android"
-            _uiState.update { state ->
-                val updatedRegisterForm = state.registerForm.copy(
-                    fcmToken = fcmToken,
-                    deviceId = deviceId,
-                    deviceType = deviceType
-                )
-                state.copy(registerForm = updatedRegisterForm)
-            }
-            Timber.d("Auth state ${uiState.value.registerForm.toString()}")
-            authRepository.register(registerForm = uiState.value.registerForm)
+            authRepository.register(registerForm = uiState.value.registerForm, activity = activity)
                 .onSuccess { data, _ ->
                 Timber.tag("Authorized").v(data.toString())
                 preferencesRepository.saveUser(data.first())

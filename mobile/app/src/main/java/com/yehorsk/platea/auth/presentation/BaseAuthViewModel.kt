@@ -23,8 +23,7 @@ import javax.inject.Inject
 open class BaseAuthViewModel @Inject constructor(
     val authRepository: AuthRepository,
     val preferencesRepository: MainPreferencesRepository,
-    val networkConnectivityObserver: ConnectivityObserver,
-    @ApplicationContext val context: Context
+    val networkConnectivityObserver: ConnectivityObserver
 ) : ViewModel(){
 
     val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)

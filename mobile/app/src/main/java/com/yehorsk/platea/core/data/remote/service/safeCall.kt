@@ -1,5 +1,6 @@
 package com.yehorsk.platea.core.data.remote.service
 
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.core.domain.remote.AppError

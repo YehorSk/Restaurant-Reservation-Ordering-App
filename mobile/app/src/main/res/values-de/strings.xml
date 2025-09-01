@@ -132,6 +132,8 @@
     <string name="error_incorrect_data">Bitte überprüfen Sie Ihre Daten und versuchen Sie es erneut.</string>
     <string name="error_server_error">Ein Serverfehler ist aufgetreten. Bitte versuchen Sie es später erneut.</string>
     <string name="conflict_error">Die Aktion kann aufgrund eines Konflikts nicht abgeschlossen werden.</string>
+    <string name="error_cancelled">Authentifizierung wurde abgebrochen</string>
+    <string name="error_no_credential">Anmeldedaten konnten nicht abgerufen werden</string>
 
     <!-- Filters -->
     <string name="filter">Filter: %s</string>
