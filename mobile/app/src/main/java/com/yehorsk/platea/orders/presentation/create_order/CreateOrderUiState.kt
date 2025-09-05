@@ -1,24 +1,23 @@
-package com.yehorsk.platea.orders.presentation
+package com.yehorsk.platea.orders.presentation.create_order
 
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
-import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.domain.models.OrderMenuItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
-data class OrderUiState(
+data class CreateOrderUiState(
     val orderItems: List<OrderMenuItem> = emptyList(),
-    val orders: List<Order> = emptyList(),
     val orderForm: OrderForm = OrderForm(),
-    val isLoading: Boolean = false,
-    val isLoadingPlaces: Boolean = false,
-    val tables: List<TableDto>? = null,
-    val showBottomSheet: Boolean = false,
+    val isNetwork: Boolean = false,
+    val userRole: String? = null,
     val countryCode: String = "",
     val phone: String = "",
-    val isPhoneValid: Boolean = false
-)
+    val isPhoneValid: Boolean = false,
+    val tables: List<TableDto>? = null,
+    val showBottomSheet: Boolean = false,
+    val isLoading: Boolean = false,
+    )
 
 @Serializable
 data class OrderForm(

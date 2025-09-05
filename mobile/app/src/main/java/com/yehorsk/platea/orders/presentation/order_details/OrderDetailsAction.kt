@@ -9,6 +9,8 @@ sealed interface OrderDetailsAction {
 
     data class UserCancelOrder(val id: String): OrderDetailsAction
 
+    data class OnGetOrderById(val id: String): OrderDetailsAction
+
     data class SetCancelledStatus(val id: String, val status: Status = Status("Cancelled")): OrderDetailsAction
 
     data class SetCompletedStatus(val id: String, val status: Status = Status("Completed")): OrderDetailsAction

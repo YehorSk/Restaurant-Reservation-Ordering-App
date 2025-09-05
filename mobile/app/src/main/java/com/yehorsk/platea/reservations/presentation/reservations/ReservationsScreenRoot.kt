@@ -17,7 +17,6 @@ import com.yehorsk.platea.core.domain.remote.ReservationFilter
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
 import com.yehorsk.platea.core.presentation.components.ReservationDropdownList
-import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.presentation.reservations.components.ReservationsList
 
 @Composable
@@ -32,7 +31,6 @@ fun ReservationScreenRoot(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
-    val reservations by viewModel.reservationItemUiState.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
     val userRole by viewModel.userRole.collectAsStateWithLifecycle()
 
@@ -44,7 +42,6 @@ fun ReservationScreenRoot(
         searchText = searchText,
         filterOption = filterOption,
         showGoBack = showGoBack,
-        reservations = reservations,
         onAction = viewModel::onAction,
         showStatus = (userRole in arrayOf("admin", "chef", "waiter")),
         isLoading = uiState.isLoading
@@ -63,7 +60,6 @@ fun ReservationScreen(
     searchText: String,
     filterOption: ReservationFilter,
     showGoBack: Boolean,
-    reservations: List<Reservation>,
     onAction: (ReservationScreenAction) -> Unit,
     showStatus: Boolean = false
 ){
@@ -91,7 +87,7 @@ fun ReservationScreen(
                     onSelect = { onAction(ReservationScreenAction.UpdateFilter(it)) }
                 )
                 ReservationsList(
-                    items = reservations,
+                    items = uiState.sectionedReservations,
                     onGoToReservationDetails = { onGoToReservationDetails(it) },
                     showStatus = showStatus
                 )

@@ -35,12 +35,11 @@ fun AdminNavGraph(
     NavHost(
         navController = navController,
         route = Graph.ADMIN,
-        startDestination = AdminScreen.Orders.route
+        startDestination = Screen.Orders.route
     ){
         composable(
-            route = AdminScreen.Account.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Account.route,
+
         ) {
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
@@ -49,20 +48,19 @@ fun AdminNavGraph(
                     when(destination){
                         ProfileDestination.Favorites -> {}
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Profile -> navController.navigate(AdminScreen.Profile.route)
-                        ProfileDestination.Orders -> navController.navigate(AdminScreen.Orders.route)
-                        ProfileDestination.Reservations -> navController.navigate(AdminScreen.Reservations.route)
-                        ProfileDestination.Language -> navController.navigate(AdminScreen.Language.route)
-                        ProfileDestination.Theme -> navController.navigate(AdminScreen.Theme.route)
-                        ProfileDestination.Info -> navController.navigate(AdminScreen.Info.route)
+                        ProfileDestination.Profile -> navController.navigate(Screen.Profile.route)
+                        ProfileDestination.Orders -> navController.navigate(Screen.Orders.route)
+                        ProfileDestination.Reservations -> navController.navigate(Screen.Reservations.route)
+                        ProfileDestination.Language -> navController.navigate(Screen.Language.route)
+                        ProfileDestination.Theme -> navController.navigate(Screen.Theme.route)
+                        ProfileDestination.Info -> navController.navigate(Screen.Info.route)
                     }
                 }
             )
         }
         composable(
-            route = AdminScreen.Info.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Info.route,
+
         ) {
             RestaurantInfoScreenRoot(
                 modifier = modifier,
@@ -71,9 +69,8 @@ fun AdminNavGraph(
             )
         }
         composable(
-            route = AdminScreen.Theme.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Theme.route,
+
         ) {
             ChangeThemeScreen(
                 modifier = modifier,
@@ -81,9 +78,8 @@ fun AdminNavGraph(
             )
         }
         composable(
-            route = AdminScreen.Language.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Language.route,
+
         ) {
             ChangeLanguageScreen(
                 modifier = modifier,
@@ -91,9 +87,8 @@ fun AdminNavGraph(
             )
         }
         composable(
-            route = AdminScreen.Profile.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Profile.route,
+
         ) {
             ProfileScreen(
                 modifier = modifier,
@@ -107,14 +102,13 @@ fun AdminNavGraph(
             )
         }
         composable(
-            route = AdminScreen.Orders.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Orders.route,
+
         ) {
             OrdersScreen(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
-                    navController.navigate(AdminScreen.OrderDetails(id))
+                    navController.navigate(Screen.OrderDetails(id))
                 },
                 onGoBack = {
                     navController.popBackStack()
@@ -123,16 +117,15 @@ fun AdminNavGraph(
                 title = R.string.orders,
             )
         }
-        composable<AdminScreen.OrderDetails>(
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+        composable<Screen.OrderDetails>(
+
         ){
-            val args = it.toRoute<AdminScreen.OrderDetails>()
+            val args = it.toRoute<Screen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(AdminScreen.Orders.route){
-                        popUpTo(AdminScreen.Orders.route){
+                    navController.navigate(Screen.Orders.route){
+                        popUpTo(Screen.Orders.route){
                             inclusive = true
                         }
                     }
@@ -142,14 +135,13 @@ fun AdminNavGraph(
             )
         }
         composable(
-            route = AdminScreen.Reservations.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Reservations.route,
+
         ) {
             ReservationScreenRoot(
                 modifier = modifier,
                 onGoToReservationDetails = {id ->
-                    navController.navigate(AdminScreen.ReservationDetails(id))},
+                    navController.navigate(Screen.ReservationDetails(id))},
                 onGoBack = {
                     navController.popBackStack()
                 },
@@ -157,16 +149,15 @@ fun AdminNavGraph(
                 title = R.string.reservations
             )
         }
-        composable<AdminScreen.ReservationDetails>(
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+        composable<Screen.ReservationDetails>(
+
         ){
-            val args = it.toRoute<AdminScreen.ReservationDetails>()
+            val args = it.toRoute<Screen.ReservationDetails>()
             ReservationDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(AdminScreen.Reservations.route){
-                        popUpTo(AdminScreen.Reservations.route){
+                    navController.navigate(Screen.Reservations.route){
+                        popUpTo(Screen.Reservations.route){
                             inclusive = true
                         }
                     }
@@ -175,19 +166,4 @@ fun AdminNavGraph(
             )
         }
     }
-}
-
-@Serializable
-sealed class AdminScreen(val route: String){
-    object Orders: AdminScreen(route = "ORDERS")
-    @Serializable
-    data class OrderDetails(val id: Int): AdminScreen(route = "ORDER_DETAILS")
-    data object Reservations: AdminScreen(route = "RESERVATIONS")
-    @Serializable
-    data class ReservationDetails(val id: Int): AdminScreen(route = "RESERVATION_DETAILS")
-    data object Profile: AdminScreen(route = "PROFILE")
-    object Account: AdminScreen(route = "ACCOUNT")
-    data object Theme: AdminScreen(route = "THEME")
-    data object Language: AdminScreen(route = "LANGUAGE")
-    data object Info: AdminScreen(route = "INFO")
 }

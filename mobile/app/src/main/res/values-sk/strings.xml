@@ -98,6 +98,7 @@
     <string name="today">Dnes</string>
     <string name="today_history">Dnešná história</string>
     <string name="tomorrow">Zajtra</string>
+    <string name="yesterday">Včera</string>
     <string name="history">História</string>
     <string name="later">Neskôr</string>
     <string name="closed">Zatvorené</string>
@@ -191,6 +192,5 @@
     <string name="status_ready_dinein">Pripravené na servírovanie</string>
     <string name="default_channel">com.yehorsk.platea</string>
     <string name="empty">Prosím, vyberte čas</string>
-
 
 </resources>

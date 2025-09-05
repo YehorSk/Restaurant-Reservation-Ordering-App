@@ -33,8 +33,6 @@ import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
-import com.yehorsk.platea.orders.presentation.OrderForm
-import com.yehorsk.platea.orders.presentation.OrderUiState
 import com.yehorsk.platea.orders.presentation.create_order.components.ChooseTimeModal
 import com.yehorsk.platea.orders.presentation.create_order.components.DeliveryDetails
 import com.yehorsk.platea.orders.presentation.create_order.components.OrderAddMore
@@ -57,8 +55,6 @@ fun CreateOrderScreenRoot(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val cartItemsUiState by viewModel.cartItemsUiState.collectAsStateWithLifecycle()
-    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
-    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
     val info by viewModel.restaurantInfoUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
@@ -79,13 +75,11 @@ fun CreateOrderScreenRoot(
         modifier = modifier,
         uiState = uiState,
         items = cartItemsUiState,
-        isConnected = isConnected,
         onGoToCart = onGoToCart,
         onGoToMenu = onGoToMenu,
         onGoToMakeReservation = { onGoToMakeReservation(uiState.orderForm) },
         validateForm = viewModel.validateForm(),
         onAction = viewModel::onAction,
-        userRole = userRole.toString(),
         onTableNumberUpdate = { viewModel.updateTableNumber(it) },
         schedule = info
     )
@@ -94,8 +88,7 @@ fun CreateOrderScreenRoot(
 @Composable
 fun CreateOrderScreen(
     modifier: Modifier = Modifier,
-    uiState: OrderUiState,
-    isConnected: Boolean,
+    uiState: CreateOrderUiState,
     items: List<CartItem>,
     onGoToCart: () -> Unit,
     onGoToMenu: () -> Unit,
@@ -103,7 +96,6 @@ fun CreateOrderScreen(
     onTableNumberUpdate: (TableDto) -> Unit,
     validateForm: Boolean,
     onAction: (CreateOrderAction) -> Unit,
-    userRole: String,
     schedule: RestaurantInfoEntity?
 ){
 
@@ -118,7 +110,7 @@ fun CreateOrderScreen(
                 onGoBack = onGoToCart,
                 title = R.string.go_back
             )
-            if (isConnected){
+            if (uiState.isNetwork){
                 OrderItemList(items = items)
                 HorizontalDivider()
             }
@@ -132,7 +124,7 @@ fun CreateOrderScreen(
                 onRequestChange = {request -> onAction(CreateOrderAction.UpdateRequest(request)) }
             )
             Spacer(modifier = Modifier.height(10.dp))
-            if(userRole == "user" && schedule != null){
+            if(uiState.userRole == "user" && schedule != null){
                 OrderOptions(
                     selected = uiState.orderForm.orderType,
                     onSelectedChange = { type,text ->
@@ -154,11 +146,11 @@ fun CreateOrderScreen(
                 }
             }
             Spacer(modifier = Modifier.height(10.dp))
-            if(userRole == "user") {
-                if (uiState.orderForm.orderType == 0 && isConnected) {
+            if(uiState.userRole == "user") {
+                if (uiState.orderForm.orderType == 0 && uiState.isNetwork) {
                     PickupDetails()
                 }
-                if (uiState.orderForm.orderType == 1 && isConnected) {
+                if (uiState.orderForm.orderType == 1 && uiState.isNetwork) {
                     DeliveryDetails(
                         address = uiState.orderForm.address,
                         instructions = uiState.orderForm.instructions,
@@ -189,7 +181,7 @@ fun CreateOrderScreen(
                     Spacer(modifier = Modifier.height(10.dp))
                 }
             }
-            if (isConnected){
+            if (uiState.isNetwork){
                 val checkout = items.sumOf {
                     it.pivot.price
                 }
@@ -209,7 +201,7 @@ fun CreateOrderScreen(
                     enabled = validateForm,
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary),
                     onClick = {
-                        if(userRole == "user"){
+                        if(uiState.userRole == "user"){
                             if (uiState.orderForm.orderType==2){
                                 onGoToMakeReservation()
                             }else{
@@ -226,7 +218,7 @@ fun CreateOrderScreen(
                 ) {
                     Text(
                         text = stringResource(
-                            id = when (userRole) {
+                            id = when (uiState.userRole) {
                                 "waiter" -> R.string.order_button_place
                                 "user" -> when (uiState.orderForm.orderType) {
                                     0 -> R.string.order_button_pickup

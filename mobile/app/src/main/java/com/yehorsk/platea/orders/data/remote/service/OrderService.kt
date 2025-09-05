@@ -4,7 +4,7 @@ import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
-import com.yehorsk.platea.orders.presentation.OrderForm
+import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 import com.yehorsk.platea.orders.presentation.order_details.Status
 import retrofit2.http.Body
 import retrofit2.http.GET

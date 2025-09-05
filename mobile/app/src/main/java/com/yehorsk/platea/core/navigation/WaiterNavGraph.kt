@@ -44,17 +44,16 @@ fun WaiterNavGraph(
     NavHost(
         navController = navController,
         route = Graph.WAITER,
-        startDestination = WaiterScreen.Home.route
+        startDestination = Screen.Home.route
     ){
         composable(
-            route = WaiterScreen.Home.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Home.route,
+
         ) {
             MenuScreenRoot(
                 modifier = modifier,
                 onSearchClicked = {
-                    navController.navigate(WaiterScreen.Search.route)
+                    navController.navigate(Screen.Search.route)
                 },
                 onCreateReservationClicked = {},
                 viewModel = menuScreenViewModel,
@@ -62,31 +61,29 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.Account.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Account.route,
+
         ) {
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 viewModel = settingsViewModel,
                 onNavigate = { destination ->
                     when(destination){
-                        ProfileDestination.Favorites -> navController.navigate(WaiterScreen.Favorites.route)
+                        ProfileDestination.Favorites -> navController.navigate(Screen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Profile -> navController.navigate(WaiterScreen.Profile.route)
-                        ProfileDestination.Orders -> navController.navigate(WaiterScreen.Orders.route)
-                        ProfileDestination.Reservations -> navController.navigate(WaiterScreen.Reservations.route)
-                        ProfileDestination.Language -> navController.navigate(WaiterScreen.Language.route)
-                        ProfileDestination.Theme -> navController.navigate(WaiterScreen.Theme.route)
-                        ProfileDestination.Info -> navController.navigate(WaiterScreen.Info.route)
+                        ProfileDestination.Profile -> navController.navigate(Screen.Profile.route)
+                        ProfileDestination.Orders -> navController.navigate(Screen.Orders.route)
+                        ProfileDestination.Reservations -> navController.navigate(Screen.Reservations.route)
+                        ProfileDestination.Language -> navController.navigate(Screen.Language.route)
+                        ProfileDestination.Theme -> navController.navigate(Screen.Theme.route)
+                        ProfileDestination.Info -> navController.navigate(Screen.Info.route)
                     }
                 }
             )
         }
         composable(
-            route = WaiterScreen.Info.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Info.route,
+
         ) {
             RestaurantInfoScreenRoot(
                 modifier = modifier,
@@ -95,9 +92,8 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.Theme.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Theme.route,
+
         ) {
             ChangeThemeScreen(
                 modifier = modifier,
@@ -105,9 +101,8 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.Language.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Language.route,
+
         ) {
             ChangeLanguageScreen(
                 modifier = modifier,
@@ -115,9 +110,8 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.Profile.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Profile.route,
+
         ) {
             ProfileScreen(
                 modifier = modifier,
@@ -131,14 +125,13 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.Orders.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Orders.route,
+
         ) {
             OrdersScreen(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
-                    navController.navigate(WaiterScreen.OrderDetails(id))
+                    navController.navigate(Screen.OrderDetails(id))
                 },
                 onGoBack = {
                     navController.popBackStack()
@@ -147,15 +140,14 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.Search.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Search.route,
+
         ) {
             SearchScreen(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(WaiterScreen.Home.route){
-                        popUpTo(WaiterScreen.Home.route){
+                    navController.navigate(Screen.Home.route){
+                        popUpTo(Screen.Home.route){
                             inclusive = true
                         }
                     }
@@ -164,22 +156,20 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.Cart.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Cart.route,
+
         ) {
             CartScreenRoot(
                 modifier = modifier,
                 viewModel = cartScreenViewModel,
                 onGoToCheckoutClick = {
-                    navController.navigate(WaiterScreen.CreateOrder.route)
+                    navController.navigate(Screen.CreateOrder.route)
                 }
             )
         }
         composable(
-            route = WaiterScreen.Favorites.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Favorites.route,
+
         ) {
             FavoritesScreen(
                 modifier = modifier,
@@ -189,22 +179,21 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.CreateOrder.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.CreateOrder.route,
+
         ) {
             CreateOrderScreenRoot(
                 modifier = modifier,
                 onGoToCart = {
-                    navController.navigate(WaiterScreen.Cart.route){
-                        popUpTo(WaiterScreen.Cart.route){
+                    navController.navigate(Screen.Cart.route){
+                        popUpTo(Screen.Cart.route){
                             inclusive = true
                         }
                     }
                 },
                 onGoToMenu = {
-                    navController.navigate(WaiterScreen.Home.route){
-                        popUpTo(WaiterScreen.Home.route){
+                    navController.navigate(Screen.Home.route){
+                        popUpTo(Screen.Home.route){
                             inclusive = true
                         }
                     }
@@ -212,16 +201,15 @@ fun WaiterNavGraph(
                 onGoToMakeReservation = {},
             )
         }
-        composable<WaiterScreen.OrderDetails>(
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+        composable<Screen.OrderDetails>(
+
         ){
-            val args = it.toRoute<WaiterScreen.OrderDetails>()
+            val args = it.toRoute<Screen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(WaiterScreen.Orders.route){
-                        popUpTo(WaiterScreen.Orders.route){
+                    navController.navigate(Screen.Orders.route){
+                        popUpTo(Screen.Orders.route){
                             inclusive = true
                         }
                     }
@@ -231,30 +219,28 @@ fun WaiterNavGraph(
             )
         }
         composable(
-            route = WaiterScreen.Reservations.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Reservations.route,
+
         ) {
             ReservationScreenRoot(
                 modifier = modifier,
                 onGoToReservationDetails = {id ->
-                    navController.navigate(WaiterScreen.ReservationDetails(id))},
+                    navController.navigate(Screen.ReservationDetails(id))},
                 onGoBack = {
                     navController.popBackStack()
                 },
                 showGoBack = true
             )
         }
-        composable<WaiterScreen.ReservationDetails>(
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+        composable<Screen.ReservationDetails>(
+
         ){
-            val args = it.toRoute<WaiterScreen.ReservationDetails>()
+            val args = it.toRoute<Screen.ReservationDetails>()
             ReservationDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(WaiterScreen.Reservations.route){
-                        popUpTo(WaiterScreen.Reservations.route){
+                    navController.navigate(Screen.Reservations.route){
+                        popUpTo(Screen.Reservations.route){
                             inclusive = true
                         }
                     }
@@ -263,24 +249,4 @@ fun WaiterNavGraph(
             )
         }
     }
-}
-
-@Serializable
-sealed class WaiterScreen(val route: String){
-    object Home: WaiterScreen(route = "HOME")
-    object Account: WaiterScreen(route = "ACCOUNT")
-    data object Profile: WaiterScreen(route = "PROFILE")
-    object Cart: WaiterScreen(route = "CART")
-    object Orders: WaiterScreen(route = "ORDERS")
-    object CreateOrder: WaiterScreen(route = "CREATE_ORDER")
-    data object Favorites: WaiterScreen(route = "FAVORITES")
-    data object Search: WaiterScreen(route = "SEARCH")
-    @Serializable
-    data class OrderDetails(val id: Int): WaiterScreen(route = "ORDER_DETAILS")
-    data object Reservations: WaiterScreen(route = "RESERVATIONS")
-    @Serializable
-    data class ReservationDetails(val id: Int): WaiterScreen(route = "RESERVATION_DETAILS")
-    data object Theme: WaiterScreen(route = "THEME")
-    data object Language: WaiterScreen(route = "LANGUAGE")
-    data object Info: WaiterScreen(route = "INFO")
 }

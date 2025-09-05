@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.utils.Utility.getOrderColorIndicator
 import com.yehorsk.platea.core.utils.Utility.statusToString
+import com.yehorsk.platea.core.utils.formatOrderDate
 import com.yehorsk.platea.core.utils.formatOrderDateTime
 import com.yehorsk.platea.core.utils.formattedPrice
 import com.yehorsk.platea.orders.domain.models.Order
@@ -39,22 +40,22 @@ import java.time.LocalTime
 @Composable
 fun OrderListItem(
     modifier: Modifier = Modifier,
-    orderEntity: Order,
+    order: Order,
     onGoToOrderDetails: (Int) -> Unit,
     showStatus: Boolean = false
 ){
     val context = LocalContext.current
     val statusColor = getOrderColorIndicator(
-        status = orderEntity.status,
-        date = orderEntity.date.toString(),
-        endTime = orderEntity.endTime
+        status = order.status,
+        date = order.date.toString(),
+        endTime = order.endTime
     )
     Row(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
             .height(IntrinsicSize.Max)
             .fillMaxWidth()
             .clickable {
-                onGoToOrderDetails(orderEntity.id.toInt())
+                onGoToOrderDetails(order.id.toInt())
             },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -62,21 +63,21 @@ fun OrderListItem(
         Column {
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                text = orderEntity.code,
+                text = order.code,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
             )
-            if(showStatus && (LocalDate.parse(orderEntity.date) == LocalDate.now() && LocalTime.parse(orderEntity.endTime).isAfter(LocalTime.now()))){
+            if(showStatus && (LocalDate.parse(order.date) == LocalDate.now() && LocalTime.parse(order.endTime).isAfter(LocalTime.now()))){
                 Text(
                     modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
-                    text = stringResource(R.string.complete_by, orderEntity.endTime),
+                    text = stringResource(R.string.complete_by, order.endTime),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                 )
             }
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 16.dp, end = 16.dp),
-                text = "€${formattedPrice(orderEntity.price)}",
+                text = "€${formattedPrice(order.price)}",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -84,13 +85,17 @@ fun OrderListItem(
                 modifier = Modifier.padding(top = 8.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
             ) {
                 Text(
-                    text = formatOrderDateTime(orderEntity.createdAt),
+                    text = if(order.date != null){
+                        formatOrderDateTime(order.createdAt)
+                    }else{
+                        ""
+                    },
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.LightGray,
                 )
                 Text(
-                    text = " ${statusToString(orderEntity.status, context)}",
+                    text = " ${statusToString(order.status, context)}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -133,7 +138,7 @@ fun OrderItemPreview(){
     )
     MobileTheme {
         OrderListItem(
-            orderEntity = fakeOrder,
+            order = fakeOrder,
             onGoToOrderDetails = {}
         )
     }

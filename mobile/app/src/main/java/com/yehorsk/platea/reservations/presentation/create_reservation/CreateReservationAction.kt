@@ -1,6 +1,6 @@
 package com.yehorsk.platea.reservations.presentation.create_reservation
 
-import com.yehorsk.platea.orders.presentation.OrderForm
+import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 
 sealed interface CreateReservationAction {
 

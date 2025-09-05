@@ -16,17 +16,17 @@ fun NavGraphBuilder.authNavGraph(
 ){
     navigation(
         route = Graph.AUTHENTICATION,
-        startDestination = AuthScreen.Login.route
+        startDestination = Screen.Login.route
     ){
 
-        composable(AuthScreen.SignUp.route){
+        composable(Screen.SignUp.route){
             RegisterScreen(
                 onLogClick = {
-                    navController.navigate(AuthScreen.Login.route)
+                    navController.navigate(Screen.Login.route)
                 },
                 onSuccess = {
                     navController.navigate(Graph.HOME) {
-                        popUpTo(AuthScreen.SignUp.route) {
+                        popUpTo(Screen.SignUp.route) {
                             inclusive = true
                         }
                     }
@@ -34,14 +34,14 @@ fun NavGraphBuilder.authNavGraph(
             )
         }
 
-        composable(AuthScreen.Login.route) {
+        composable(Screen.Login.route) {
             LoginScreen(
                 loginViewModel = loginViewModel,
                 onRegClick = {
-                    navController.navigate(AuthScreen.SignUp.route)
+                    navController.navigate(Screen.SignUp.route)
                 },
                 onForgotPwdClick = {
-                    navController.navigate(AuthScreen.ForgotPwd.route)
+                    navController.navigate(Screen.ForgotPwd.route)
                 },
                 onSuccessClient = {
                     Timber.d("Navigating to client screen")
@@ -78,16 +78,9 @@ fun NavGraphBuilder.authNavGraph(
             )
         }
 
-        composable(AuthScreen.ForgotPwd.route){
+        composable(Screen.ForgotPwd.route){
             ForgotPasswordScreen(
             )
         }
     }
-}
-
-
-sealed class AuthScreen(val route: String){
-    object Login: AuthScreen(route = "LOGIN")
-    object SignUp: AuthScreen(route = "SIGN_UP")
-    object ForgotPwd: AuthScreen(route = "FORGOT_PWD")
 }

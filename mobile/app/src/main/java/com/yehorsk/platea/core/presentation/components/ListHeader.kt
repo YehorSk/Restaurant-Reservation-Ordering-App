@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun ListHeader(
-    @StringRes title: Int,
+    title: String,
     modifier: Modifier = Modifier
 ){
     Column(
@@ -25,7 +25,7 @@ fun ListHeader(
             .background(MaterialTheme.colorScheme.background)
     ){
         Text(
-            text = stringResource(title),
+            text = title,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             modifier = modifier

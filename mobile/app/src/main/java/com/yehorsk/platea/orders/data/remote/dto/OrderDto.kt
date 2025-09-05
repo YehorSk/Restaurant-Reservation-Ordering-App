@@ -1,6 +1,7 @@
 package com.yehorsk.platea.orders.data.remote.dto
 
 import com.yehorsk.platea.orders.data.db.model.OrderEntity
+import com.yehorsk.platea.orders.domain.models.Order
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -42,6 +43,30 @@ data class OrderDto(
 
 fun OrderDto.toOrderEntity(): OrderEntity{
     return OrderEntity(
+        id = this.id,
+        createdAt = this.createdAt,
+        updatedAt = this.updatedAt,
+        clientId = this.clientId,
+        tableId = this.tableId,
+        waiterId = this.waiterId,
+        reservationId = this.reservationId,
+        price = this.price,
+        status = this.status,
+        specialRequest = this.specialRequest,
+        address = this.address,
+        orderType = this.orderType,
+        instructions = this.instructions,
+        code = this.code,
+        startTime = this.startTime,
+        endTime = this.endTime,
+        completedAt = this.completedAt,
+        phone = this.phone,
+        date = this.date
+    )
+}
+
+fun OrderDto.toOrder(): Order {
+    return Order(
         id = this.id,
         createdAt = this.createdAt,
         updatedAt = this.updatedAt,

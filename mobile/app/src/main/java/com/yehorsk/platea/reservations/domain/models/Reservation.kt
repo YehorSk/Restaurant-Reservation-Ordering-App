@@ -1,5 +1,7 @@
 package com.yehorsk.platea.reservations.domain.models
 
+import com.yehorsk.platea.core.utils.UiText
+
 data class Reservation(
     val id: Int,
     val createdAt: String,
@@ -16,4 +18,9 @@ data class Reservation(
     val phone: String,
     val tableNumber: String,
     val startTime: String,
+)
+
+data class SectionedReservations(
+    val date: UiText,
+    val reservations: List<Reservation>
 )

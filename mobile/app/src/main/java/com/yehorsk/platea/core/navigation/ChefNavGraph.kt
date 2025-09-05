@@ -1,9 +1,8 @@
 package com.yehorsk.platea.core.navigation
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -20,7 +19,9 @@ import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
+import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsAction
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
+import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsViewModel
 import com.yehorsk.platea.orders.presentation.order_details.OrderItemDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
 import kotlinx.serialization.Serializable
@@ -37,34 +38,32 @@ fun ChefNavGraph(
     NavHost(
         navController = navController,
         route = Graph.CHEF,
-        startDestination = ChefScreen.Orders.route
+        startDestination = Screen.Orders.route
     ){
         composable(
-            route = ChefScreen.Account.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Account.route,
+
         ) {
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 viewModel = settingsViewModel,
                 onNavigate = { destination ->
                     when(destination){
-                        ProfileDestination.Favorites -> navController.navigate(ChefScreen.Favorites.route)
+                        ProfileDestination.Favorites -> navController.navigate(Screen.Favorites.route)
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Profile -> navController.navigate(ChefScreen.Profile.route)
+                        ProfileDestination.Profile -> navController.navigate(Screen.Profile.route)
                         ProfileDestination.Orders -> {}
                         ProfileDestination.Reservations -> {}
-                        ProfileDestination.Language -> navController.navigate(ChefScreen.Language.route)
-                        ProfileDestination.Theme -> navController.navigate(ChefScreen.Theme.route)
-                        ProfileDestination.Info -> navController.navigate(ChefScreen.Info.route)
+                        ProfileDestination.Language -> navController.navigate(Screen.Language.route)
+                        ProfileDestination.Theme -> navController.navigate(Screen.Theme.route)
+                        ProfileDestination.Info -> navController.navigate(Screen.Info.route)
                     }
                 }
             )
         }
         composable(
-            route = ChefScreen.Info.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Info.route,
+
         ) {
             RestaurantInfoScreenRoot(
                 modifier = modifier,
@@ -73,9 +72,8 @@ fun ChefNavGraph(
             )
         }
         composable(
-            route = ChefScreen.Theme.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Theme.route,
+
         ) {
             ChangeThemeScreen(
                 modifier = modifier,
@@ -83,9 +81,8 @@ fun ChefNavGraph(
             )
         }
         composable(
-            route = ChefScreen.Language.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Language.route,
+
         ) {
             ChangeLanguageScreen(
                 modifier = modifier,
@@ -93,9 +90,8 @@ fun ChefNavGraph(
             )
         }
         composable(
-            route = ChefScreen.Profile.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Profile.route,
+
         ) {
             ProfileScreen(
                 modifier = modifier,
@@ -109,14 +105,13 @@ fun ChefNavGraph(
             )
         }
         composable(
-            route = ChefScreen.Orders.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Orders.route,
+
         ) {
             OrdersScreen(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
-                    navController.navigate(ChefScreen.OrderDetails(id))
+                    navController.navigate(Screen.OrderDetails(id))
                 },
                 onGoBack = {
                     navController.popBackStack()
@@ -126,9 +121,8 @@ fun ChefNavGraph(
             )
         }
         composable(
-            route = ChefScreen.Favorites.route,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+            route = Screen.Favorites.route,
+
         ) {
             FavoritesScreen(
                 modifier = modifier,
@@ -136,32 +130,37 @@ fun ChefNavGraph(
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable<ChefScreen.OrderDetails>(
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+        composable<Screen.OrderDetails>(
+
         ){
-            val args = it.toRoute<ChefScreen.OrderDetails>()
+            val args = it.toRoute<Screen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(ChefScreen.Orders.route){
-                        popUpTo(ChefScreen.Orders.route){
+                    navController.navigate(Screen.Orders.route){
+                        popUpTo(Screen.Orders.route){
                             inclusive = true
                         }
                     }
                 },
                 id = args.id,
                 onOpenItemDetails = { id ->
-                    navController.navigate(ChefScreen.OrderItemDetails(id))
+                    navController.navigate(Screen.OrderItemDetails(id))
                 }
             )
         }
-        composable<ChefScreen.OrderItemDetails>(
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+        composable<Screen.OrderItemDetails>(
+
         ){
-            val args = it.toRoute<ChefScreen.OrderItemDetails>()
+            val args = it.toRoute<Screen.OrderItemDetails>()
+            val viewModel: OrderDetailsViewModel = hiltViewModel()
+            LaunchedEffect(args.id) {
+                args.id.let { id ->
+                    viewModel.onAction(OrderDetailsAction.OnGetOrderById(id.toString()))
+                }
+            }
             OrderItemDetailsScreenRoot(
+                viewModel = viewModel,
                 modifier = modifier,
                 onGoBack = {
                     navController.popBackStack()
@@ -170,19 +169,4 @@ fun ChefNavGraph(
             )
         }
     }
-}
-
-@Serializable
-sealed class ChefScreen(val route: String){
-    object Account: ChefScreen(route = "ACCOUNT")
-    data object Profile: ChefScreen(route = "PROFILE")
-    object Orders: ChefScreen(route = "ORDERS")
-    data object Favorites: ChefScreen(route = "FAVORITES")
-    @Serializable
-    data class OrderDetails(val id: Int): ChefScreen(route = "ORDER_DETAILS")
-    @Serializable
-    data class OrderItemDetails(val id: Int): ChefScreen(route = "ORDER_ITEM_DETAILS")
-    data object Theme: ChefScreen(route = "THEME")
-    data object Language: ChefScreen(route = "LANGUAGE")
-    data object Info: ChefScreen(route = "INFO")
 }

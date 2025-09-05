@@ -12,6 +12,7 @@ import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -26,6 +27,9 @@ class ReservationDetailsViewModel @Inject constructor(
     preferencesRepository: MainPreferencesRepository,
     restaurantRepository: RestaurantRepository
 ): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, preferencesRepository, restaurantRepository){
+
+    private var reservationDetailsJob: Job? = null
+    private var cachedReservationDetails = emptyList<Reservation>()
 
     val reservationItemUiState: StateFlow<List<Reservation>> = reservationRepository.getUserReservationsFlow()
         .stateIn(

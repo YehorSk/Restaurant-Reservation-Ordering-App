@@ -18,17 +18,16 @@ import com.yehorsk.platea.orders.data.mappers.toTable
 import com.yehorsk.platea.orders.data.remote.dto.OrderDto
 import com.yehorsk.platea.orders.data.remote.dto.OrderMenuItemDto
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
+import com.yehorsk.platea.orders.data.remote.dto.toOrder
 import com.yehorsk.platea.orders.data.remote.dto.toOrderEntity
 import com.yehorsk.platea.orders.data.remote.dto.toOrderMenuItemEntity
 import com.yehorsk.platea.orders.data.remote.service.OrderService
 import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.domain.models.OrderMenuItem
-import com.yehorsk.platea.orders.domain.models.Table
 import com.yehorsk.platea.orders.domain.models.toOrderMenuItem
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
-import com.yehorsk.platea.orders.presentation.OrderForm
+import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 import com.yehorsk.platea.orders.presentation.order_details.Status
-import com.yehorsk.platea.reservations.data.remote.dto.toReservationEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -102,7 +101,7 @@ class OrderRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getUserOrderDetails(id: String): Result<List<OrderDto>, AppError> {
+    override suspend fun getUserOrderDetails(id: String): Result<List<Order>, AppError> {
         Timber.d("Order getUserOrderDetails $id")
         return safeCall<OrderDto>(
             execute = {
@@ -113,6 +112,10 @@ class OrderRepositoryImpl @Inject constructor(
             orderDao.insertOrderItems(data.first().orderItems.map {
                 it.toOrderMenuItemEntity()
             })
+        }.map { data ->
+            data.map {
+                it.toOrder()
+            }
         }
     }
 
@@ -187,7 +190,7 @@ class OrderRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getOrderWithOrderItems(): Flow<List<Order>> {
+    override fun getOrdersWithOrderItems(): Flow<List<Order>> {
         return orderDao
             .getOrderWithOrderItems()
             .map { data ->
@@ -198,16 +201,21 @@ class OrderRepositoryImpl @Inject constructor(
     }
 
 
-    override fun getUserOrders(
-        search: String,
-        filter: String
-    ): Flow<List<Order>> {
+    override fun getUserOrdersFlow(): Flow<List<Order>> {
         return orderDao
-            .getUserOrders(search, filter)
+            .getUserOrders()
             .map { data ->
                 data.map {
                     it.toOrder()
                 }
+            }
+    }
+
+    override fun getUserOrderDetailsFlow(id: Int): Flow<Order> {
+        return orderDao
+            .getUserOrderDetails(id)
+            .map { data ->
+                data.toOrder()
             }
     }
 

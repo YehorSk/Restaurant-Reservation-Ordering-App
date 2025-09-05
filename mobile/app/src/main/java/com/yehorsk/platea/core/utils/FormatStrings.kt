@@ -31,6 +31,11 @@ fun formatOrderDateTime(input: String): String {
     return localDateTime.format(formatter)
 }
 
+fun formatOrderDate(input: String): String {
+    val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
+    return LocalDate.parse(input).format(formatter)
+}
+
 fun formatTime(input: String): String {
     val parser = DateTimeFormatter.ofPattern("HH:mm:ss")
     val localDate = LocalTime.parse(input, parser)

@@ -1,12 +1,17 @@
 package com.yehorsk.platea.reservations.presentation.reservations
 
+import com.yehorsk.platea.core.utils.UiText
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
-import com.yehorsk.platea.orders.presentation.OrderForm
+import com.yehorsk.platea.orders.presentation.create_order.OrderForm
+import com.yehorsk.platea.reservations.domain.models.Reservation
+import com.yehorsk.platea.reservations.domain.models.SectionedReservations
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
 
 data class ReservationUiState(
+    val reservations: Map<UiText, List<Reservation>> = emptyMap(),
+    val currentReservation: Reservation? = null,
     val isLoading: Boolean = false,
     val timeSlots: List<TimeSlotDto>? = null,
     val validPhoneNumber: Boolean = false,
@@ -15,7 +20,14 @@ data class ReservationUiState(
     val phone: String = "",
     val isPhoneValid: Boolean = false,
     val maxCapacity: Int? = null
-)
+){
+    val sectionedReservations = reservations
+        .toList()
+        .map { (date, reservations) ->
+            SectionedReservations(date, reservations)
+        }
+}
+
 
 @Serializable
 data class ReservationForm(

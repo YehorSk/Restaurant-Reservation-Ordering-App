@@ -26,6 +26,6 @@ interface ReservationRepository {
 
     suspend fun cancelUserReservation(id: String) : Result<List<ReservationDto>, AppError>
 
-    fun getUserReservationsFlow(search: String = "", filter: String = ""): Flow<List<Reservation>>
+    fun getUserReservationsFlow(): Flow<List<Reservation>>
 
 }

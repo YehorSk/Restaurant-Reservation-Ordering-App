@@ -25,11 +25,6 @@ import coil3.compose.AsyncImage
 import com.yehorsk.platea.BuildConfig
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.NavBar
-import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.core.utils.SideEffect
-import com.yehorsk.platea.orders.data.db.model.OrderWithOrderItems
-import com.yehorsk.platea.orders.domain.models.Order
-import kotlin.collections.List
 
 @Composable
 fun OrderItemDetailsScreenRoot(
@@ -39,33 +34,24 @@ fun OrderItemDetailsScreenRoot(
     id: Int
 ){
 
-    val ordersUiState by viewModel.ordersUiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
-        when(sideEffect){
-            is SideEffect.NavigateToNextScreen -> onGoBack()
-            is SideEffect.ShowErrorToast -> {}
-            is SideEffect.ShowSuccessToast -> {}
-            is SideEffect.LanguageChanged -> {}
-        }
-    }
     OrderItemDetailsScreen(
         modifier = modifier,
-        ordersUiState = ordersUiState,
-        id = id,
-        onGoBack = onGoBack
+        uiState = uiState,
+        onGoBack = onGoBack,
+        id = id
     )
 }
 
 @Composable
 fun OrderItemDetailsScreen(
     modifier: Modifier = Modifier,
-    ordersUiState: List<Order>,
+    uiState: OrderDetailsUiState,
     id: Int,
     onGoBack: () -> Unit
 ){
     val imgUrl = BuildConfig.BASE_URL_IMG
-    val orderItem = ordersUiState.flatMap { it.orderItems }.find { it.pivot.menuItemId == id }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -76,13 +62,14 @@ fun OrderItemDetailsScreen(
             onGoBack = onGoBack,
             title = R.string.go_back
         )
-        if(orderItem != null){
+        if(uiState.currentOrder != null){
+            val orderItem = uiState.currentOrder.orderItems.find { it.pivot.menuItemId == id }
             Column {
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp),
-                    model = "$imgUrl${orderItem.picture}",
+                    model = "$imgUrl${orderItem!!.picture}",
                     contentDescription = "",
                     placeholder = painterResource(R.drawable.menu_item_placeholder),
                     contentScale = ContentScale.Crop,

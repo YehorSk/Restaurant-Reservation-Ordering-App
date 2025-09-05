@@ -98,6 +98,7 @@
     <string name="today">Today</string>
     <string name="today_history">Today\'s history</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="yesterday">Yesterday</string>
     <string name="history">History</string>
     <string name="later">Later</string>
     <string name="closed">Closed</string>

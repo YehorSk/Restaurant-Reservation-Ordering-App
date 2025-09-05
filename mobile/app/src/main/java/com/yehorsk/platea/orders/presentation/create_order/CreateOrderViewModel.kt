@@ -1,7 +1,7 @@
 package com.yehorsk.platea.orders.presentation.create_order
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yehorsk.platea.cart.data.db.model.CartItemEntity
 import com.yehorsk.platea.cart.domain.models.CartItem
 import com.yehorsk.platea.core.data.dao.RestaurantInfoDao
 import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
@@ -16,10 +16,16 @@ import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.domain.repository.OrderRepository
-import com.yehorsk.platea.orders.presentation.OrderBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -28,11 +34,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateOrderViewModel @Inject constructor(
-    networkConnectivityObserver: ConnectivityObserver,
-    orderRepository: OrderRepository,
-    preferencesRepository: MainPreferencesRepository,
-    restaurantInfoDao: RestaurantInfoDao
-): OrderBaseViewModel(networkConnectivityObserver, orderRepository, preferencesRepository, restaurantInfoDao){
+    private val networkConnectivityObserver: ConnectivityObserver,
+    private val orderRepository: OrderRepository,
+    private val preferencesRepository: MainPreferencesRepository,
+    private val restaurantInfoDao: RestaurantInfoDao
+): ViewModel(){
 
     val restaurantInfoUiState: StateFlow<RestaurantInfoEntity?> = restaurantInfoDao.getRestaurantInfo()
         .stateIn(
@@ -47,6 +53,22 @@ class CreateOrderViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = listOf()
         )
+
+    protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
+    val sideEffectFlow: Flow<SideEffect>
+        get() = _sideEffectChannel.receiveAsFlow()
+
+    private val _uiState = MutableStateFlow(CreateOrderUiState())
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        observeNetwork()
+        observeUserRole()
+        observeUserAddress()
+        observeUserCountryCode()
+        observeUserPhone()
+    }
+
 
     fun onAction(action: CreateOrderAction){
         when(action){
@@ -66,6 +88,62 @@ class CreateOrderViewModel @Inject constructor(
             is CreateOrderAction.UpdatePhone -> updatePhone(phone = action.phone)
             is CreateOrderAction.ValidatePhone -> validatePhoneNumber(action.phone)
         }
+    }
+
+    private fun observeNetwork(){
+        networkConnectivityObserver.observe()
+            .onEach { network ->
+                _uiState.update { it.copy(
+                    isNetwork = network
+                ) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeUserAddress(){
+        preferencesRepository.userAddressFlow
+            .onEach { address ->
+                _uiState.update { it.copy(orderForm = it.orderForm.copy(address = address ?: "")) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeUserRole(){
+        preferencesRepository.userRoleFlow
+            .onEach { role ->
+                _uiState.update { it.copy(
+                    userRole = role
+                ) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeUserCountryCode(){
+        preferencesRepository.userCountryCodeFlow
+            .onEach { code ->
+                _uiState.update { state ->
+                    val updatedCountryCode = code ?: ""
+                    val updatedFullPhone = "${updatedCountryCode}${state.phone}"
+                    state.copy(orderForm = state.orderForm.copy(fullPhone = updatedFullPhone))
+                    state.copy(countryCode = updatedCountryCode)
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeUserPhone(){
+        preferencesRepository.userPhoneFlow
+            .onEach { phone ->
+                _uiState.update { state ->
+                    val updatedPhone = phone ?: ""
+                    val updatedFullPhone = "${state.countryCode}${updatedPhone}"
+                    state.copy(
+                        phone = updatedPhone,
+                        orderForm = state.orderForm.copy(fullPhone = updatedFullPhone)
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun showBottomSheet(){
@@ -313,6 +391,10 @@ class CreateOrderViewModel @Inject constructor(
                     setLoadingState(false)
                 }
         }
+    }
+
+    protected fun setLoadingState(isLoading: Boolean) {
+        _uiState.update { it.copy(isLoading = isLoading) }
     }
 
 }

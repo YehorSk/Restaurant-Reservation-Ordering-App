@@ -4,35 +4,24 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.yehorsk.platea.core.presentation.components.ListHeader
-import com.yehorsk.platea.core.utils.Utility.SectionedOrders
-import com.yehorsk.platea.core.utils.Utility.groupOrdersByDate
-import com.yehorsk.platea.orders.domain.models.Order
+import com.yehorsk.platea.orders.domain.models.SectionedOrders
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OrdersList(
     modifier: Modifier = Modifier,
-    orders: List<Order>,
+    orders: List<SectionedOrders>,
     onGoToOrderDetails: (Int) -> Unit,
     showStatus: Boolean = false,
 ){
     val listState = rememberLazyListState()
-    var ordersGrouped by remember { mutableStateOf<List<SectionedOrders>>(emptyList()) }
-    LaunchedEffect(orders) {
-        ordersGrouped = groupOrdersByDate(orders)
-    }
 
     LazyColumn(
         state = listState,
@@ -40,15 +29,15 @@ fun OrdersList(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        ordersGrouped.forEach{ group ->
+        orders.forEachIndexed { index, (date, orders) ->
             stickyHeader{
                 ListHeader(
-                    title = group.title
+                    title = date.asString()
                 )
             }
-            items(group.orders, key = { it.id }){ item ->
+            itemsIndexed(orders, key = { _, order -> order.id }){ index, order ->
                 OrderListItem(
-                    orderEntity = item,
+                    order = order,
                     onGoToOrderDetails = { onGoToOrderDetails(it) },
                     showStatus = showStatus
                 )

@@ -99,6 +99,7 @@
     <string name="today">Heute</string>
     <string name="today_history">Heutiger Verlauf</string>
     <string name="tomorrow">Morgen</string>
+    <string name="yesterday">Gestern</string>
     <string name="history">Verlauf</string>
     <string name="later">Später</string>
     <string name="closed">Geschlossen</string>

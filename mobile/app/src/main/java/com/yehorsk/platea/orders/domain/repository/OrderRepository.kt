@@ -7,8 +7,7 @@ import com.yehorsk.platea.orders.data.remote.dto.OrderDto
 import com.yehorsk.platea.orders.data.remote.dto.TableDto
 import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.orders.domain.models.OrderMenuItem
-import com.yehorsk.platea.orders.domain.models.Table
-import com.yehorsk.platea.orders.presentation.OrderForm
+import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 import com.yehorsk.platea.orders.presentation.order_details.Status
 import kotlinx.coroutines.flow.Flow
 
@@ -18,7 +17,7 @@ interface OrderRepository {
 
     suspend fun getUserOrders() : Result<List<OrderDto>, AppError>
 
-    suspend fun getUserOrderDetails(id: String) : Result<List<OrderDto>, AppError>
+    suspend fun getUserOrderDetails(id: String) : Result<List<Order>, AppError>
 
     suspend fun cancelUserOrder(id: String) : Result<List<OrderDto>, AppError>
 
@@ -32,9 +31,11 @@ interface OrderRepository {
 
     suspend fun updateOrderStatus(id: String, status: Status) : Result<List<OrderDto>, AppError>
 
-    fun getOrderWithOrderItems(): Flow<List<Order>>
+    fun getOrdersWithOrderItems(): Flow<List<Order>>
 
-    fun getUserOrders(search: String = "", filter: String = ""): Flow<List<Order>>
+    fun getUserOrdersFlow(): Flow<List<Order>>
+
+    fun getUserOrderDetailsFlow(id: Int): Flow<Order>
 
     fun getAllCartItems() : Flow<List<CartItem>>
 

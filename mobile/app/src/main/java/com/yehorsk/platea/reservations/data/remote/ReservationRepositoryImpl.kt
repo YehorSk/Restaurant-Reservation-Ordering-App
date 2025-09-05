@@ -128,10 +128,7 @@ class ReservationRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getUserReservationsFlow(
-        search: String,
-        filter: String
-    ): Flow<List<Reservation>> {
+    override fun getUserReservationsFlow(): Flow<List<Reservation>> {
         return reservationDao.getUserReservations().map { data ->
             data.map {
                 it.toReservation()

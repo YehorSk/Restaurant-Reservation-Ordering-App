@@ -17,7 +17,9 @@ import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBarWithSearch
 import com.yehorsk.platea.core.presentation.components.OrdersDropdownList
+import com.yehorsk.platea.core.utils.UiText
 import com.yehorsk.platea.orders.domain.models.Order
+import com.yehorsk.platea.orders.domain.models.SectionedOrders
 import com.yehorsk.platea.orders.presentation.orders.components.OrdersList
 
 @Composable
@@ -30,11 +32,9 @@ fun OrdersScreen(
     @StringRes title: Int = R.string.go_back
 ){
 
-    val orders by viewModel.orderItemsUiState.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
-    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
 
     OrdersScreenRoot(
         modifier = modifier,
@@ -45,9 +45,9 @@ fun OrdersScreen(
         onGoToOrderDetails = onGoToOrderDetails,
         searchText = searchText,
         filterOption = filterOption,
-        orders = orders,
+        orders = uiState.sectionedOrders,
         onAction = viewModel::onAction,
-        showStatus = (userRole in arrayOf("admin", "chef", "waiter"))
+        showStatus = (uiState.userRole in arrayOf("admin", "chef", "waiter"))
     )
 
 }
@@ -63,7 +63,7 @@ fun OrdersScreenRoot(
     onGoToOrderDetails: (Int) -> Unit,
     searchText: String,
     filterOption: OrderFilter,
-    orders: List<Order>,
+    orders: List<SectionedOrders>,
     onAction: (OrdersAction) -> Unit,
     showStatus: Boolean = false
 ){

@@ -4,8 +4,7 @@ package com.yehorsk.platea.core.navigation.navTypes
 import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.NavType
-import com.yehorsk.platea.orders.presentation.OrderForm
-import kotlinx.serialization.encodeToString
+import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 import kotlinx.serialization.json.Json
 
 object OrderFormNavType {
