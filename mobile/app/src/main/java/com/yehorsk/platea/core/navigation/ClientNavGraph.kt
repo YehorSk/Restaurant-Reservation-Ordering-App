@@ -29,7 +29,7 @@ import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsAction
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsViewModel
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
-import com.yehorsk.platea.reservations.presentation.confirm_reservation.ConfirmReservationScreenRoot
+import com.yehorsk.platea.reservations.presentation.create_reservation.ConfirmReservationScreenRoot
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationScreenRoot
 import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationViewModel
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
@@ -180,7 +180,7 @@ fun ClientNavGraph(
             val args = it.toRoute<Screen.OrderDetails>()
             val viewModel: OrderDetailsViewModel = hiltViewModel()
             LaunchedEffect(args.id) {
-                args.id?.let { id ->
+                args.id.let { id ->
                     viewModel.onAction(OrderDetailsAction.OnGetOrderById(id.toString()))
                 }
             }

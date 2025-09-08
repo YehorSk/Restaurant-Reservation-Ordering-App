@@ -7,7 +7,7 @@ import com.yehorsk.platea.reservations.data.db.model.ReservationEntity
 import com.yehorsk.platea.reservations.data.remote.dto.ReservationDto
 import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.presentation.reservation_details.Status
-import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
+import com.yehorsk.platea.reservations.presentation.create_reservation.ReservationForm
 import kotlinx.coroutines.flow.Flow
 
 interface ReservationRepository {
@@ -21,6 +21,8 @@ interface ReservationRepository {
     suspend fun getMaxCapacity() : Result<List<Int>, AppError>
 
     suspend fun getUserReservationDetails(id: String) : Result<List<Reservation>, AppError>
+
+    fun getUserReservationDetailsFlow(id: String) : Flow<Reservation>
 
     suspend fun updateReservation(id: String, status: Status) : Result<List<ReservationDto>, AppError>
 

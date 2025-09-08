@@ -38,7 +38,6 @@ fun CreateReservationScreenRoot(
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val restaurantInfoUiState by viewModel.restaurantInfoUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.getAvailableTimeSlots()
@@ -61,8 +60,7 @@ fun CreateReservationScreenRoot(
         goToFinishReservation = { goToFinishReservation() },
         orderForm = orderForm,
         withOrder = withOrder,
-        onAction = viewModel::onAction,
-        schedule = restaurantInfoUiState
+        onAction = viewModel::onAction
     )
 }
 
@@ -70,11 +68,10 @@ fun CreateReservationScreenRoot(
 fun CreateReservationScreen(
     modifier: Modifier = Modifier,
     goBack: ()-> Unit,
-    uiState: ReservationUiState,
+    uiState: CreateReservationUiState,
     goToFinishReservation: () -> Unit,
     orderForm: OrderForm,
     withOrder: Boolean,
-    schedule: RestaurantInfoEntity?,
     onAction: (CreateReservationAction) -> Unit
 ){
     if(!uiState.isLoading){
@@ -99,8 +96,8 @@ fun CreateReservationScreen(
                     maxTableSize = uiState.maxCapacity
                 )
             }
-            if(schedule != null){
-                val formattedSchedule = getSchedule(schedule.openingHours)
+            if(uiState.restaurantInfo != null){
+                val formattedSchedule = getSchedule(uiState.restaurantInfo.openingHours)
 
                 val closedDays = formattedSchedule.filter {
                     !it.value.isOpen

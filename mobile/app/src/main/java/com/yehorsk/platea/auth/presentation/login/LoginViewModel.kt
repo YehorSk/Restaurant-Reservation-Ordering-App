@@ -82,13 +82,24 @@ class LoginViewModel @Inject constructor(
 
     fun loginWithSavedCredentials(activity: Activity) {
         Timber.d("Auth loginWithSavedCredentials")
+        _uiState.update { it.copy(
+            isGoogleAuth = true
+        ) }
         viewModelScope.launch {
             authRepository.loginWithSavedCredentials(activity)
                 .onSuccess { data, _ ->
-                    _uiState.update { it.copy(isLoggedIn = true) }
+                    _uiState.update { it.copy(
+                            isLoggedIn = true,
+                            isGoogleAuth = false
+                        )
+                    }
                 }
                 .onError { error ->
-                _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    _uiState.update { it.copy(
+                            isGoogleAuth = false
+                        )
+                    }
             }
         }
     }
@@ -122,7 +133,6 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             val result = authRepository.login(loginForm = uiState.value.loginForm, activity = activity)
-
             result.onSuccess { data, message ->
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onError { error ->

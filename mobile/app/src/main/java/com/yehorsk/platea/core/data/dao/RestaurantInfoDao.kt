@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface RestaurantInfoDao {
 
     @Query("SELECT * FROM restaurant_info LIMIT 1")
-    fun getRestaurantInfo(): Flow<RestaurantInfoEntity>
+    fun getRestaurantInfo(): Flow<RestaurantInfoEntity?>
 
     @Upsert
     suspend fun upsertRestaurantInfo(restaurantInfo: RestaurantInfoEntity)

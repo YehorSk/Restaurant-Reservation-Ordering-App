@@ -18,7 +18,8 @@ class RestaurantRepositoryImpl @Inject constructor(
     private val restaurantInfoDao: RestaurantInfoDao,
     private val restaurantService: RestaurantService
 ): RestaurantRepository {
-    override fun getRestaurantInfoFlow(): Flow<RestaurantInfoEntity> {
+
+    override fun getRestaurantInfoFlow(): Flow<RestaurantInfoEntity?> {
         return restaurantInfoDao.getRestaurantInfo()
     }
 

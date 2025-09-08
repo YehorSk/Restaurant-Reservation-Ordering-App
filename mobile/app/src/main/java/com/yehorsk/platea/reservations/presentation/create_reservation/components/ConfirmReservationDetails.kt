@@ -1,4 +1,4 @@
-package com.yehorsk.platea.reservations.presentation.confirm_reservation.components
+package com.yehorsk.platea.reservations.presentation.create_reservation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

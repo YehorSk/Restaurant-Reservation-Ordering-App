@@ -105,7 +105,7 @@ fun LoginScreen(
         }
 
         LaunchedEffect(key1 = true, key2 = isConnected, key3 = uiState.isAuthenticating) {
-            if(isConnected && uiState.isAuthenticating == false){
+            if(isConnected && !uiState.isAuthenticating && !uiState.isGoogleAuth){
                 loginViewModel.loginWithSavedCredentials(context as ComponentActivity)
             }
         }

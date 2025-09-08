@@ -1,4 +1,4 @@
-package com.yehorsk.platea.reservations.presentation.confirm_reservation
+package com.yehorsk.platea.reservations.presentation.create_reservation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -25,10 +25,8 @@ import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.PhoneInput
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
-import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ConfirmReservationDetails
-import com.yehorsk.platea.reservations.presentation.confirm_reservation.components.ReservationSpecialRequest
-import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationAction
-import com.yehorsk.platea.reservations.presentation.create_reservation.CreateReservationViewModel
+import com.yehorsk.platea.reservations.presentation.create_reservation.components.ConfirmReservationDetails
+import com.yehorsk.platea.reservations.presentation.create_reservation.components.ReservationSpecialRequest
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationUiState
 
 @Composable
@@ -62,7 +60,7 @@ fun ConfirmReservationScreenRoot(
 @Composable
 fun ConfirmReservationScreen(
     modifier: Modifier = Modifier,
-    uiState: ReservationUiState,
+    uiState: CreateReservationUiState,
     goBack: ()->Unit,
     onAction: (CreateReservationAction) -> Unit
 ){

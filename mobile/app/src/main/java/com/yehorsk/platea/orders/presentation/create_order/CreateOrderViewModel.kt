@@ -54,7 +54,7 @@ class CreateOrderViewModel @Inject constructor(
             initialValue = listOf()
         )
 
-    protected val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
+    private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
     val sideEffectFlow: Flow<SideEffect>
         get() = _sideEffectChannel.receiveAsFlow()
 

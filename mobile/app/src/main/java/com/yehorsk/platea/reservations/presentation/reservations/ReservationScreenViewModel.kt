@@ -1,35 +1,27 @@
 package com.yehorsk.platea.reservations.presentation.reservations
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.ReservationFilter
 import com.yehorsk.platea.core.domain.remote.onError
-import com.yehorsk.platea.core.domain.repository.RestaurantRepository
-import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.UiText
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
-import com.yehorsk.platea.orders.domain.models.Order
 import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
-import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -41,14 +33,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReservationScreenViewModel @Inject constructor(
-    networkConnectivityObserver: ConnectivityObserver,
-    reservationRepository: ReservationRepository,
-    preferencesRepository: MainPreferencesRepository,
-    restaurantRepository: RestaurantRepository
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, preferencesRepository, restaurantRepository){
+    val preferencesRepository: MainPreferencesRepository,
+    private val reservationRepository: ReservationRepository,
+): ViewModel(){
 
     private var reservationJob: Job? = null
-    private var cachedReservation = emptyList<Reservation>()
 
     private val _filterOption = MutableStateFlow(ReservationFilter.ALL)
     val filterOption= _filterOption.asStateFlow()
@@ -56,11 +45,13 @@ class ReservationScreenViewModel @Inject constructor(
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
+    private val _uiState = MutableStateFlow(ReservationUiState())
+    val uiState = _uiState.asStateFlow()
+
     init {
         getReservations()
-        if(cachedReservation.isEmpty()){
-            observeReservations()
-        }
+        observeUserRole()
+        observeReservations()
     }
 
     fun onAction(action: ReservationScreenAction){
@@ -106,6 +97,16 @@ class ReservationScreenViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    private fun observeUserRole(){
+        preferencesRepository.userRoleFlow
+            .onEach { role ->
+                _uiState.update { it.copy(
+                    userRole = role
+                ) }
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun observeReservations() {

@@ -3,8 +3,8 @@ package com.yehorsk.platea.reservations.data.remote.service
 import com.yehorsk.platea.core.data.remote.dto.ResponseDto
 import com.yehorsk.platea.orders.data.remote.dto.TimeSlotDto
 import com.yehorsk.platea.reservations.data.remote.dto.ReservationDto
+import com.yehorsk.platea.reservations.presentation.create_reservation.ReservationForm
 import com.yehorsk.platea.reservations.presentation.reservation_details.Status
-import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface RestaurantRepository {
 
-    fun getRestaurantInfoFlow(): Flow<RestaurantInfoEntity>
+    fun getRestaurantInfoFlow(): Flow<RestaurantInfoEntity?>
 
     suspend fun upsertRestaurantInfo(restaurantInfo: RestaurantInfoEntity)
 

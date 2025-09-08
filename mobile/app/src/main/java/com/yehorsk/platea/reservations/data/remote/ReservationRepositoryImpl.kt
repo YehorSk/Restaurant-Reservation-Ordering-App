@@ -16,7 +16,7 @@ import com.yehorsk.platea.reservations.data.remote.service.ReservationService
 import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
 import com.yehorsk.platea.reservations.presentation.reservation_details.Status
-import com.yehorsk.platea.reservations.presentation.reservations.ReservationForm
+import com.yehorsk.platea.reservations.presentation.create_reservation.ReservationForm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -133,6 +133,12 @@ class ReservationRepositoryImpl @Inject constructor(
             data.map {
                 it.toReservation()
             }
+        }
+    }
+
+    override fun getUserReservationDetailsFlow(id: String): Flow<Reservation> {
+        return reservationDao.getUserReservationDetails(id).map { data ->
+            data.toReservation()
         }
     }
 

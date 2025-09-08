@@ -11,6 +11,7 @@ data class LoginState(
     val isAuthenticating: Boolean = true,
     val error: String = "",
     val role: String = "",
+    val isGoogleAuth: Boolean = false
 )
 
 @Serializable

@@ -1,5 +1,6 @@
 package com.yehorsk.platea.reservations.presentation.create_reservation
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.AppError
@@ -12,8 +13,14 @@ import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 import com.yehorsk.platea.reservations.domain.repository.ReservationRepository
-import com.yehorsk.platea.reservations.presentation.ReservationBaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -21,11 +28,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateReservationViewModel @Inject constructor(
-    networkConnectivityObserver: ConnectivityObserver,
-    reservationRepository: ReservationRepository,
-    preferencesRepository: MainPreferencesRepository,
-    restaurantRepository: RestaurantRepository
-): ReservationBaseViewModel(networkConnectivityObserver, reservationRepository, preferencesRepository, restaurantRepository){
+    private val networkConnectivityObserver: ConnectivityObserver,
+    private val reservationRepository: ReservationRepository,
+    private val preferencesRepository: MainPreferencesRepository,
+    private val restaurantRepository: RestaurantRepository
+): ViewModel(){
+
+    private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.BUFFERED)
+    val sideEffectFlow: Flow<SideEffect>
+        get() = _sideEffectChannel.receiveAsFlow()
+
+    private val _uiState = MutableStateFlow(CreateReservationUiState())
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        observeRestaurantInfo()
+        observeNetwork()
+        observeUserCountryCode()
+        observeUserPhone()
+    }
 
     fun onAction(action: CreateReservationAction){
         when(action){
@@ -39,6 +60,54 @@ class CreateReservationViewModel @Inject constructor(
             is CreateReservationAction.UpdateWithOrder -> updateWithOrder(action.withOrder, action.form)
             is CreateReservationAction.UpdateSpecialRequest -> updateSpecialRequest(action.request)
         }
+    }
+
+    private fun observeRestaurantInfo(){
+        restaurantRepository.getRestaurantInfoFlow()
+            .onEach { info ->
+                _uiState.update { it.copy(
+                    restaurantInfo = info
+                ) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeNetwork(){
+        networkConnectivityObserver.observe()
+            .onEach { network ->
+                _uiState.update { it.copy(
+                    isNetwork = network
+                ) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeUserCountryCode(){
+        preferencesRepository.userCountryCodeFlow
+            .onEach { code ->
+                _uiState.update { state ->
+                    val updatedCountryCode = code ?: ""
+                    val updatedFullPhone = "${updatedCountryCode}${state.phone}"
+                    state.copy(reservationForm = state.reservationForm.copy(fullPhone = updatedFullPhone))
+                    state.copy(countryCode = updatedCountryCode)
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeUserPhone(){
+        preferencesRepository.userPhoneFlow
+            .onEach { phone ->
+                _uiState.update { state ->
+                    val updatedPhone = phone ?: ""
+                    val updatedFullPhone = "${state.countryCode}${updatedPhone}"
+                    state.copy(
+                        phone = updatedPhone,
+                        reservationForm = state.reservationForm.copy(fullPhone = updatedFullPhone)
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun updatePartySize(size: Int){
@@ -188,6 +257,16 @@ class CreateReservationViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun clearForm(){
+        _uiState.update {
+            it.copy(
+                timeSlots = null,
+                reservationForm = ReservationForm()
+            )
+        }
+        Timber.d("Reservation state: ${_uiState.value}")
     }
 
 }

@@ -6,7 +6,6 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
 import com.yehorsk.platea.core.domain.remote.OrderFilter
 import com.yehorsk.platea.core.domain.remote.onError
-import com.yehorsk.platea.core.utils.ConnectivityObserver
 import com.yehorsk.platea.core.utils.UiText
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
@@ -34,7 +33,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrdersViewModel @Inject constructor(
-    private val networkConnectivityObserver: ConnectivityObserver,
     private val orderRepository: OrderRepository,
     val preferencesRepository: MainPreferencesRepository,
     ): ViewModel(){
@@ -168,6 +166,5 @@ class OrdersViewModel @Inject constructor(
     private fun setLoadingState(isLoading: Boolean) {
         _uiState.update { it.copy(isLoading = isLoading) }
     }
-
 
 }

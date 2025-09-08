@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -21,12 +20,8 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.ActionButton
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBar
-import com.yehorsk.platea.core.presentation.components.SingleEventEffect
-import com.yehorsk.platea.core.utils.SideEffect
-import com.yehorsk.platea.reservations.domain.models.Reservation
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationDetails
 import com.yehorsk.platea.reservations.presentation.reservation_details.components.ReservationStatus
-import com.yehorsk.platea.reservations.presentation.reservations.ReservationUiState
 
 @Composable
 fun ReservationDetailsScreenRoot(
@@ -36,20 +31,7 @@ fun ReservationDetailsScreenRoot(
     id: Int
 ){
 
-    val context = LocalContext.current
-    val reservationItemUiState by viewModel.reservationItemUiState.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
-    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
-
-    SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
-        when(sideEffect){
-            is SideEffect.ShowErrorToast -> {}
-            is SideEffect.ShowSuccessToast -> {}
-            is SideEffect.NavigateToNextScreen -> { onGoBack() }
-            is SideEffect.LanguageChanged -> {}
-        }
-    }
 
     LaunchedEffect(Unit) {
         viewModel.getReservationDetails(id.toString())
@@ -59,11 +41,8 @@ fun ReservationDetailsScreenRoot(
         modifier = modifier,
         onGoBack = onGoBack,
         id = id,
-        isConnected = isConnected,
         onAction = viewModel::onAction,
         uiState = uiState,
-        reservationItemUiState = reservationItemUiState,
-        userRole = userRole.toString()
     )
 
 }
@@ -73,17 +52,13 @@ fun ReservationDetailsScreen(
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit,
     id: Int,
-    isConnected: Boolean,
     onAction: (ReservationDetailsAction) -> Unit,
-    uiState: ReservationUiState,
-    reservationItemUiState: List<Reservation>,
-    userRole: String
+    uiState: ReservationDetailsUiState,
 ){
-    val data = reservationItemUiState.find { it.id.toString() == id.toString() }
 
     if(uiState.isLoading){
         LoadingPart()
-    }else if(data!=null){
+    }else if(uiState.currentReservation!=null){
 
         Column(
             modifier = modifier
@@ -96,22 +71,22 @@ fun ReservationDetailsScreen(
                 title = R.string.go_back
             )
             ReservationStatus(
-                status = data.status,
-                date = data.createdAt,
-                code = data.code
+                status = uiState.currentReservation.status,
+                date = uiState.currentReservation.createdAt,
+                code = uiState.currentReservation.code
             )
             HorizontalDivider()
             ReservationDetails(
-                time = data.startTime,
-                table = data.tableNumber,
-                date = data.date,
-                request = data.specialRequest,
-                phone = data.phone,
-                partySize = data.partySize.toString(),
-                orderCode = data.orderCode
+                time = uiState.currentReservation.startTime,
+                table = uiState.currentReservation.tableNumber,
+                date = uiState.currentReservation.date,
+                request = uiState.currentReservation.specialRequest,
+                phone = uiState.currentReservation.phone,
+                partySize = uiState.currentReservation.partySize.toString(),
+                orderCode = uiState.currentReservation.orderCode
             )
-            if(isConnected){
-                if(userRole == "user"){
+            if(uiState.isNetwork){
+                if(uiState.userRole == "user"){
                     ActionButton(
                         modifier = Modifier
                             .padding(
@@ -122,7 +97,7 @@ fun ReservationDetailsScreen(
                             ),
                         onAction = { onAction(ReservationDetailsAction.CancelReservation(id.toString())) },
                         text = R.string.cancel_reservation,
-                        enabled = data.status != "Cancelled"
+                        enabled = uiState.currentReservation.status != "Cancelled"
                     )
                 }else{
                     Column(
@@ -140,7 +115,7 @@ fun ReservationDetailsScreen(
                                 ),
                             onAction = { onAction(ReservationDetailsAction.SetPendingStatus(id.toString())) },
                             text = R.string.pending_reservation,
-                            enabled = data.status != "Pending"
+                            enabled = uiState.currentReservation.status != "Pending"
                         )
                         ActionButton(
                             modifier = Modifier
@@ -152,7 +127,7 @@ fun ReservationDetailsScreen(
                                 ),
                             onAction = { onAction(ReservationDetailsAction.SetConfirmedStatus(id.toString())) },
                             text = R.string.confirm_reservation,
-                            enabled = data.status != "Confirmed"
+                            enabled = uiState.currentReservation.status != "Confirmed"
                         )
                         ActionButton(
                             modifier = Modifier
@@ -164,7 +139,7 @@ fun ReservationDetailsScreen(
                                 ),
                             onAction = { onAction(ReservationDetailsAction.SetCancelledStatus(id.toString())) },
                             text = R.string.cancel_reservation,
-                            enabled = data.status != "Cancelled"
+                            enabled = uiState.currentReservation.status != "Cancelled"
                         )
                     }
                 }

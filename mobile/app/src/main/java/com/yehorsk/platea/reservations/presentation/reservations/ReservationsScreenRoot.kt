@@ -32,7 +32,6 @@ fun ReservationScreenRoot(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchText by viewModel.searchText.collectAsStateWithLifecycle()
     val filterOption by viewModel.filterOption.collectAsStateWithLifecycle()
-    val userRole by viewModel.userRole.collectAsStateWithLifecycle()
 
     ReservationScreen(
         modifier = modifier,
@@ -43,7 +42,7 @@ fun ReservationScreenRoot(
         filterOption = filterOption,
         showGoBack = showGoBack,
         onAction = viewModel::onAction,
-        showStatus = (userRole in arrayOf("admin", "chef", "waiter")),
+        showStatus = (uiState.userRole in arrayOf("admin", "chef", "waiter")),
         isLoading = uiState.isLoading
     )
 

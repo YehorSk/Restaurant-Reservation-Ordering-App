@@ -19,6 +19,9 @@ interface ReservationDao {
     @Query("SELECT * FROM reservation_table;")
     suspend fun getUserReservationsOnce(): List<ReservationEntity>
 
+    @Query("SELECT * FROM reservation_table WHERE id = :id;")
+    fun getUserReservationDetails(id: String): Flow<ReservationEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReservations(reservations: List<ReservationEntity>)
 
