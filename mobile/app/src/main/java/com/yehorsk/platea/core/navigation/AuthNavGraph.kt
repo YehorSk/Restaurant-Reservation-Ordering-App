@@ -18,7 +18,6 @@ fun NavGraphBuilder.authNavGraph(
         route = Graph.AUTHENTICATION,
         startDestination = Screen.Login.route
     ){
-
         composable(Screen.SignUp.route){
             RegisterScreen(
                 onLogClick = {

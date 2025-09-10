@@ -22,7 +22,7 @@ import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
 import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenRoot
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
-import com.yehorsk.platea.menu.presentation.search.SearchScreen
+import com.yehorsk.platea.menu.presentation.menu.SearchScreen
 import com.yehorsk.platea.orders.presentation.create_order.CreateOrderScreenRoot
 import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsAction

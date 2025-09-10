@@ -9,18 +9,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -37,10 +31,7 @@ import com.yehorsk.platea.core.navigation.ClientNavGraph
 import com.yehorsk.platea.core.navigation.WaiterNavGraph
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.utils.getUserBarItems
-import com.yehorsk.platea.core.utils.snackbar.ObserveAsEvents
-import com.yehorsk.platea.core.utils.snackbar.SnackbarController
-import com.yehorsk.platea.core.utils.toString
-import kotlinx.coroutines.launch
+import com.yehorsk.platea.core.utils.snackbar.LocalSnackbarHostState
 
 @Composable
 fun MainScreenGraph(
@@ -52,28 +43,7 @@ fun MainScreenGraph(
 
     val uiState by mainScreenViewModel.cartItemCount.collectAsStateWithLifecycle()
 
-    val snackbarHostState = remember {
-        SnackbarHostState()
-    }
-
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-
-    ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
-        scope.launch{
-            snackbarHostState.currentSnackbarData?.dismiss()
-
-            val result = snackbarHostState.showSnackbar(
-                message = if(event.error != null) event.error.toString(context) else event.message!!,
-                actionLabel = event.action?.name,
-                duration = SnackbarDuration.Short,
-                withDismissAction = true
-            )
-            if(result == SnackbarResult.ActionPerformed){
-                event.action?.action?.invoke()
-            }
-        }
-    }
+    val snackbarHostState = LocalSnackbarHostState.current
 
     Scaffold(
         bottomBar = {
@@ -128,7 +98,7 @@ fun BottomBar(
     userRoles: UserRoles,
     cartItems: Int
 ){
-    var screens = getUserBarItems(userRoles)
+    val screens = getUserBarItems(userRoles)
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

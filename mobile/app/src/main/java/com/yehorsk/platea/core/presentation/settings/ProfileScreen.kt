@@ -50,9 +50,6 @@ fun ProfileScreen(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> onDeleteAccount()
-            is SideEffect.ShowErrorToast -> {}
-            is SideEffect.ShowSuccessToast -> {}
-            is SideEffect.LanguageChanged -> {}
         }
     }
 

@@ -65,9 +65,6 @@ fun CreateOrderScreenRoot(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> onGoToCart()
-            is SideEffect.ShowErrorToast -> {}
-            is SideEffect.ShowSuccessToast -> {}
-            is SideEffect.LanguageChanged -> {}
         }
     }
 

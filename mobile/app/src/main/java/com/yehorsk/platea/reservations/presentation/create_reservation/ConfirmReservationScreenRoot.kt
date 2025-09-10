@@ -42,9 +42,6 @@ fun ConfirmReservationScreenRoot(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> { goBackToMenu() }
-            is SideEffect.ShowErrorToast -> {}
-            is SideEffect.ShowSuccessToast -> {}
-            is SideEffect.LanguageChanged -> {}
         }
     }
 

@@ -1,6 +1,7 @@
 package com.yehorsk.platea
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.LocaleManager
 import android.content.Context
 import android.content.pm.PackageManager
@@ -13,9 +14,20 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocal
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
@@ -30,6 +42,11 @@ import com.yehorsk.platea.ui.theme.MobileTheme
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import androidx.core.content.ContextCompat.getContextForLanguage
+import com.yehorsk.platea.core.utils.snackbar.LocalSnackbarHostState
+import com.yehorsk.platea.core.utils.snackbar.ObserveAsEvents
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.toString
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -57,6 +74,29 @@ class MainActivity : AppCompatActivity() {
 
             setLocale(themeState.language, this)
 
+            val snackbarHostState = remember {
+                SnackbarHostState()
+            }
+
+            val scope = rememberCoroutineScope()
+            val context = LocalContext.current
+
+            ObserveAsEvents(flow = SnackbarController.events, snackbarHostState) { event ->
+                scope.launch{
+                    snackbarHostState.currentSnackbarData?.dismiss()
+
+                    val result = snackbarHostState.showSnackbar(
+                        message = if(event.error != null) event.error.toString(context) else event.message!!,
+                        actionLabel = event.action?.name,
+                        duration = SnackbarDuration.Short,
+                        withDismissAction = true
+                    )
+                    if(result == SnackbarResult.ActionPerformed){
+                        event.action?.action?.invoke()
+                    }
+                }
+            }
+
             MobileTheme(
                 isDarkMode = themeState.isDarkMode
             ) {
@@ -72,15 +112,20 @@ class MainActivity : AppCompatActivity() {
                         "chef" -> Graph.CHEF
                         else -> Graph.AUTHENTICATION
                     }
+
                     else -> Graph.AUTHENTICATION
                 }
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    if(!uiState.isAuthenticating){
-                        RootNavGraph(
-                            navController = rememberNavController(),
-                            loginViewModel = loginViewModel,
-                            startDestination = startDestination
-                        )
+                CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        if (!uiState.isAuthenticating) {
+                            RootNavGraph(
+                                navController = rememberNavController(),
+                                loginViewModel = loginViewModel,
+                                startDestination = startDestination
+                            )
+                        }
                     }
                 }
             }

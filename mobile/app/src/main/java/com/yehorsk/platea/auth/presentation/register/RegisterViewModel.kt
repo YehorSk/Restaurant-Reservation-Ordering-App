@@ -1,10 +1,7 @@
 package com.yehorsk.platea.auth.presentation.register
 
 import android.app.Activity
-import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.Firebase
-import com.google.firebase.messaging.messaging
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
 import com.yehorsk.platea.auth.presentation.BaseAuthViewModel
 import com.yehorsk.platea.core.data.repository.MainPreferencesRepository
@@ -12,17 +9,15 @@ import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
-import com.yehorsk.platea.core.utils.SideEffect
-import com.yehorsk.platea.core.utils.Utility
 import com.yehorsk.platea.core.utils.cleanError
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -74,7 +69,11 @@ class RegisterViewModel @Inject constructor(
                 when (error) {
                     AppError.UNAUTHORIZED -> {
                         preferencesRepository.clearAllTokens()
-                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = error
+                            )
+                        )
                         _uiState.update { currentState ->
                             currentState.copy(
                                 isLoggedIn = false,
@@ -89,7 +88,11 @@ class RegisterViewModel @Inject constructor(
                         }
                     }
                     AppError.UNKNOWN_ERROR -> {
-                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = error
+                            )
+                        )
                         _uiState.update { it.copy(isLoading = false) }
                     }
                     is AppError.IncorrectData -> {
@@ -109,7 +112,11 @@ class RegisterViewModel @Inject constructor(
                     }
                     else -> {
                         _uiState.update { it.copy(isLoading = false) }
-                        _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                        SnackbarController.sendEvent(
+                            event = SnackbarEvent(
+                                error = error
+                            )
+                        )
                         Timber.tag("UnhandledError").e(error.toString())
                     }
                 }

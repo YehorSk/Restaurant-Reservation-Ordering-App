@@ -82,7 +82,7 @@ class AuthController extends Controller
         return $this->success(data: [[
             'user' => $user,
             'token' => $user->createToken($user->name)->plainTextToken,
-        ]]);
+        ]], message: __("messages.logged_in_successfully"));
     }
 
     public function register(StoreUserRequest $request){

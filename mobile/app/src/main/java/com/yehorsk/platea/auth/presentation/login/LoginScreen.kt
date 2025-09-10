@@ -1,6 +1,5 @@
 package com.yehorsk.platea.auth.presentation.login
 
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +23,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -47,7 +48,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
 import com.yehorsk.platea.core.utils.SideEffect
-import com.yehorsk.platea.core.utils.toString
+import com.yehorsk.platea.core.utils.snackbar.LocalSnackbarHostState
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -66,73 +67,76 @@ fun LoginScreen(
     val coroutineScope = rememberCoroutineScope()
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
     val isConnected by loginViewModel.isNetwork.collectAsStateWithLifecycle(false)
+    val snackbarHostState = LocalSnackbarHostState.current
 
-    SingleEventEffect(loginViewModel.sideEffectFlow) { sideEffect ->
-        when(sideEffect){
-            is SideEffect.ShowErrorToast -> Toast.makeText(context, sideEffect.message.toString(context), Toast.LENGTH_SHORT).show()
-            is SideEffect.ShowSuccessToast -> Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
-            is SideEffect.NavigateToNextScreen -> {}
-            is SideEffect.LanguageChanged -> {}
-        }
-    }
-
-    Box(
+    Scaffold(
         modifier = modifier
-            .fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            LogBody(
-                itemUiState = uiState,
-                onItemValueChange = loginViewModel::updateLogUiState,
-                onLogClick = {
-                    coroutineScope.launch {
-                        loginViewModel.login(context as ComponentActivity)
-                    }
-                },
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .fillMaxWidth(),
-                onRegClick = onRegClick,
-                onForgotPwdClick = onForgotPwdClick,
-                isConnected = isConnected
+            .fillMaxSize(),
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState
             )
         }
-
-        LaunchedEffect(key1 = true, key2 = isConnected, key3 = uiState.isAuthenticating) {
-            if(isConnected && !uiState.isAuthenticating && !uiState.isGoogleAuth){
-                loginViewModel.loginWithSavedCredentials(context as ComponentActivity)
-            }
-        }
-
-        val role = loginViewModel.userRole.collectAsStateWithLifecycle().value
-
-        LaunchedEffect(uiState.isLoggedIn) {
-            Timber.tag("LaunchedEffect").v("UI State Is Logged In: ${uiState.isLoggedIn} $role")
-            if(uiState.isLoggedIn){
-                when(role.toString()){
-                    "user" -> onSuccessClient()
-                    "waiter" -> onSuccessWaiter()
-                    "admin" -> onSuccessAdmin()
-                    "chef" -> onSuccessChef()
-                    else -> {}
-                }
-            }
-        }
-
-        if (uiState.isLoading) {
-            Box(
+    ) { innerPadding ->
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ){
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
-                contentAlignment = Alignment.Center
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                CircularProgressIndicator()
+                LogBody(
+                    itemUiState = uiState,
+                    onItemValueChange = loginViewModel::updateLogUiState,
+                    onLogClick = {
+                        coroutineScope.launch {
+                            loginViewModel.login(context as ComponentActivity)
+                        }
+                    },
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .fillMaxWidth(),
+                    onRegClick = onRegClick,
+                    onForgotPwdClick = onForgotPwdClick,
+                    isConnected = isConnected
+                )
+            }
+
+            LaunchedEffect(key1 = true, key2 = isConnected, key3 = uiState.isAuthenticating) {
+                if(isConnected && !uiState.isAuthenticating && !uiState.isGoogleAuth){
+                    loginViewModel.loginWithSavedCredentials(context as ComponentActivity)
+                }
+            }
+
+            val role = loginViewModel.userRole.collectAsStateWithLifecycle().value
+
+            LaunchedEffect(uiState.isLoggedIn) {
+                Timber.tag("LaunchedEffect").v("UI State Is Logged In: ${uiState.isLoggedIn} $role")
+                if(uiState.isLoggedIn){
+                    when(role.toString()){
+                        "user" -> onSuccessClient()
+                        "waiter" -> onSuccessWaiter()
+                        "admin" -> onSuccessAdmin()
+                        "chef" -> onSuccessChef()
+                        else -> {}
+                    }
+                }
+            }
+
+            if (uiState.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
         }
     }

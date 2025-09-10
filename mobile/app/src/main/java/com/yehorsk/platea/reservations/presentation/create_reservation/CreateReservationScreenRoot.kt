@@ -12,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
-import com.yehorsk.platea.core.data.db.models.RestaurantInfoEntity
 import com.yehorsk.platea.core.presentation.components.LoadingPart
 import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.core.presentation.components.SingleEventEffect
@@ -22,7 +21,6 @@ import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.CalendarRoot
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.PartySize
 import com.yehorsk.platea.reservations.presentation.create_reservation.components.TimeRoot
-import com.yehorsk.platea.reservations.presentation.reservations.ReservationUiState
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.Locale
@@ -47,9 +45,6 @@ fun CreateReservationScreenRoot(
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
             is SideEffect.NavigateToNextScreen -> { goBack() }
-            is SideEffect.ShowErrorToast -> {}
-            is SideEffect.ShowSuccessToast -> {}
-            is SideEffect.LanguageChanged -> {}
         }
     }
 

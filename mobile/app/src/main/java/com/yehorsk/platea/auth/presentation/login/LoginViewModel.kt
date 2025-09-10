@@ -9,7 +9,8 @@ import com.yehorsk.platea.core.domain.remote.AppError
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
-import com.yehorsk.platea.core.utils.SideEffect
+import com.yehorsk.platea.core.utils.snackbar.SnackbarController
+import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,7 +96,11 @@ class LoginViewModel @Inject constructor(
                     }
                 }
                 .onError { error ->
-                    _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                    SnackbarController.sendEvent(
+                        event = SnackbarEvent(
+                            error = error
+                        )
+                    )
                     _uiState.update { it.copy(
                             isGoogleAuth = false
                         )
@@ -137,7 +142,11 @@ class LoginViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onError { error ->
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = false) }
-                _sideEffectChannel.send(SideEffect.ShowErrorToast(error))
+                SnackbarController.sendEvent(
+                    event = SnackbarEvent(
+                        error = error
+                    )
+                )
             }
         }
     }

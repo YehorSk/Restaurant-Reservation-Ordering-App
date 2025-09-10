@@ -24,7 +24,6 @@ import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRo
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsViewModel
 import com.yehorsk.platea.orders.presentation.order_details.OrderItemDetailsScreenRoot
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
-import kotlinx.serialization.Serializable
 
 @Composable
 fun ChefNavGraph(

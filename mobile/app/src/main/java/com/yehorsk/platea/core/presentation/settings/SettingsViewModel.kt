@@ -266,7 +266,6 @@ class SettingsViewModel @Inject constructor(
             preferencesRepository.setAppLanguage(value)
             authRepository.setLocale(value)
                 .onSuccess { data,message ->
-                    _sideEffectChannel.send(SideEffect.LanguageChanged)
                     SnackbarController.sendEvent(
                         event = SnackbarEvent(
                             message = message.toString()

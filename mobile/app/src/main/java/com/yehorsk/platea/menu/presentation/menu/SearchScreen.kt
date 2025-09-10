@@ -1,4 +1,4 @@
-package com.yehorsk.platea.menu.presentation.search
+package com.yehorsk.platea.menu.presentation.menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.menu.presentation.components.MenuItem
 import com.yehorsk.platea.menu.presentation.components.SearchBar
-import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 
 @Composable
 fun SearchScreen(

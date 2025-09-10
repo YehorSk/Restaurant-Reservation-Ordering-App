@@ -137,7 +137,13 @@ class MainPreferencesRepository @Inject constructor(
 
     suspend fun clearAllTokens(){
         dataStore.edit { preferences ->
+            val currentLanguage = preferences[APP_LANGUAGE]
+            val currentTheme = preferences[APP_THEME]
+
             preferences.clear()
+
+            currentLanguage?.let { preferences[APP_LANGUAGE] = it }
+            currentTheme?.let { preferences[APP_THEME] = it }
         }
     }
 }

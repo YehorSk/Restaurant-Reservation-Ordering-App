@@ -29,12 +29,7 @@ fun ChangeLanguageScreen(
 
     SingleEventEffect(viewModel.sideEffectFlow) { sideEffect ->
         when(sideEffect){
-            is SideEffect.ShowErrorToast -> {}
-            is SideEffect.ShowSuccessToast -> {}
             is SideEffect.NavigateToNextScreen -> onGoBack()
-            is SideEffect.LanguageChanged -> {
-
-            }
         }
     }
     key(userLang) {
