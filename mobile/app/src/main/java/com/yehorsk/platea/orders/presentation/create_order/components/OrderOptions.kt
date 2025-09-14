@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.DeliveryDining
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Restaurant
@@ -56,7 +57,7 @@ fun OrderOptions(
 
 
     val options = listOf<OrderOption>(
-        OrderOption(id = 0, icon = Icons.Filled.DirectionsWalk, text = R.string.pickup_option, subText = R.string.empty),
+        OrderOption(id = 0, icon = Icons.AutoMirrored.Filled.DirectionsWalk, text = R.string.pickup_option, subText = R.string.empty),
         OrderOption(id = 1, icon = Icons.Filled.DeliveryDining, text = R.string.delivery_option, subText = R.string.empty),
         OrderOption(id = 2, icon = Icons.Filled.Restaurant, text = R.string.reservation_option, subText = R.string.select_date),
 //        OrderOption(id = 3, icon = Icons.Filled.Schedule, text = R.string.schedule, subText = R.string.select_time),

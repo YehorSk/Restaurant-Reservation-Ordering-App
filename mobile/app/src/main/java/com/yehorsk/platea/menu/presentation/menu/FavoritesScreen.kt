@@ -1,4 +1,4 @@
-package com.yehorsk.platea.menu.presentation.favorites
+package com.yehorsk.platea.menu.presentation.menu
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +17,6 @@ import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
 import com.yehorsk.platea.core.presentation.components.NavBar
 import com.yehorsk.platea.menu.presentation.components.MenuItem
-import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 
 @Composable
 fun FavoritesScreen(

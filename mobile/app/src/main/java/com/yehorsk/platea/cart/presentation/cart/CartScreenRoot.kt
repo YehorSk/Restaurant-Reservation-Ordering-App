@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yehorsk.platea.R
 import com.yehorsk.platea.cart.data.mappers.toMenuItem
-import com.yehorsk.platea.cart.domain.models.CartItem
 import com.yehorsk.platea.cart.presentation.cart.components.CartItem
 import com.yehorsk.platea.core.presentation.components.AutoResizedText
 import com.yehorsk.platea.core.presentation.components.MenuItemModal
@@ -43,8 +42,6 @@ fun CartScreenRoot(
     onGoToCheckoutClick: () -> Unit
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val cartItems by viewModel.cartItemUiState.collectAsStateWithLifecycle()
-    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle(false)
 
     LaunchedEffect(Unit) {
         viewModel.onAction(CartAction.GetItems)
@@ -53,8 +50,6 @@ fun CartScreenRoot(
     CartScreen(
         modifier = modifier,
         uiState = uiState,
-        cartItems = cartItems,
-        isConnected = isConnected,
         onGoToCheckoutClick = onGoToCheckoutClick,
         onAction = viewModel::onAction
     )
@@ -65,8 +60,6 @@ fun CartScreenRoot(
 fun CartScreen(
     modifier: Modifier = Modifier,
     uiState: CartScreenUiState,
-    cartItems: List<CartItem>,
-    isConnected: Boolean,
     onGoToCheckoutClick: () -> Unit,
     onAction: (CartAction) -> Unit
 ){
@@ -95,7 +88,7 @@ fun CartScreen(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(
-                        items = cartItems,
+                        items = uiState.items,
                         key = {it.pivot.id}
                     ) { item ->
                         CartItem(
@@ -109,15 +102,15 @@ fun CartScreen(
                         HorizontalDivider()
                     }
                     item {
-                        if(cartItems.isNotEmpty()){
+                        if(uiState.items.isNotEmpty()){
                             Spacer(modifier = Modifier.height(60.dp))
                         }
                     }
                 }
-                val checkout = cartItems.sumOf {
+                val checkout = uiState.items.sumOf {
                     it.pivot.price
                 }
-                if(cartItems.isNotEmpty() && isConnected){
+                if(uiState.items.isNotEmpty() && uiState.isNetwork){
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()

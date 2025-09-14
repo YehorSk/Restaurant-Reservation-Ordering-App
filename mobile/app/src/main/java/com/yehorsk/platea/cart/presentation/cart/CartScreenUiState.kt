@@ -6,6 +6,8 @@ import com.yehorsk.platea.menu.domain.models.MenuItem
 
 data class CartScreenUiState(
     val error: String = "",
+    val items: List<CartItem> = emptyList(),
+    val isNetwork: Boolean = false,
     val currentItem: MenuItem? = null,
     val showBottomSheet: Boolean = false,
     val cartItem: CartItem? = null,

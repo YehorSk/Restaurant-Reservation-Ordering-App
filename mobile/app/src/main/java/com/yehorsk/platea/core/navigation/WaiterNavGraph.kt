@@ -17,7 +17,7 @@ import com.yehorsk.platea.core.presentation.settings.ProfileDestination
 import com.yehorsk.platea.core.presentation.settings.ProfileScreen
 import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
-import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
+import com.yehorsk.platea.menu.presentation.menu.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenRoot
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.menu.presentation.menu.SearchScreen
@@ -34,10 +34,6 @@ fun WaiterNavGraph(
     onLoggedOut: () -> Unit
 ){
 
-    val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
-    val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
-    val settingsViewModel: SettingsViewModel = hiltViewModel()
-
     NavHost(
         navController = navController,
         route = Graph.WAITER,
@@ -47,6 +43,8 @@ fun WaiterNavGraph(
             route = Screen.Home.route,
 
         ) {
+            val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
+
             MenuScreenRoot(
                 modifier = modifier,
                 onSearchClicked = {
@@ -61,6 +59,8 @@ fun WaiterNavGraph(
             route = Screen.Account.route,
 
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 viewModel = settingsViewModel,
@@ -82,6 +82,8 @@ fun WaiterNavGraph(
             route = Screen.Info.route,
 
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             RestaurantInfoScreenRoot(
                 modifier = modifier,
                 viewModel = settingsViewModel,
@@ -110,6 +112,8 @@ fun WaiterNavGraph(
             route = Screen.Profile.route,
 
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             ProfileScreen(
                 modifier = modifier,
                 viewModel = settingsViewModel,
@@ -140,6 +144,8 @@ fun WaiterNavGraph(
             route = Screen.Search.route,
 
         ) {
+            val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
+
             SearchScreen(
                 modifier = modifier,
                 onGoBack = {
@@ -156,6 +162,8 @@ fun WaiterNavGraph(
             route = Screen.Cart.route,
 
         ) {
+            val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
+
             CartScreenRoot(
                 modifier = modifier,
                 viewModel = cartScreenViewModel,
@@ -168,6 +176,8 @@ fun WaiterNavGraph(
             route = Screen.Favorites.route,
 
         ) {
+            val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
+
             FavoritesScreen(
                 modifier = modifier,
                 viewModel = menuScreenViewModel,

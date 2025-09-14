@@ -3,7 +3,6 @@ package com.yehorsk.platea.auth.data.remote
 import android.app.Activity
 import android.content.Context
 import androidx.credentials.CreatePasswordRequest
-import androidx.credentials.CreatePasswordResponse
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse

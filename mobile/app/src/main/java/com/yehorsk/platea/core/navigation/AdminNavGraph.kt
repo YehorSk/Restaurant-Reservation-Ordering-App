@@ -1,7 +1,5 @@
 package com.yehorsk.platea.core.navigation
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,7 +20,6 @@ import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRo
 import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationScreenRoot
-import kotlinx.serialization.Serializable
 
 @Composable
 fun AdminNavGraph(
@@ -30,7 +27,6 @@ fun AdminNavGraph(
     navController: NavHostController,
     onLoggedOut: () -> Unit
 ){
-    val settingsViewModel: SettingsViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -41,6 +37,7 @@ fun AdminNavGraph(
             route = Screen.Account.route,
 
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 viewModel = settingsViewModel,
@@ -60,8 +57,8 @@ fun AdminNavGraph(
         }
         composable(
             route = Screen.Info.route,
-
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
             RestaurantInfoScreenRoot(
                 modifier = modifier,
                 viewModel = settingsViewModel,
@@ -70,7 +67,6 @@ fun AdminNavGraph(
         }
         composable(
             route = Screen.Theme.route,
-
         ) {
             ChangeThemeScreen(
                 modifier = modifier,
@@ -79,7 +75,6 @@ fun AdminNavGraph(
         }
         composable(
             route = Screen.Language.route,
-
         ) {
             ChangeLanguageScreen(
                 modifier = modifier,
@@ -88,8 +83,8 @@ fun AdminNavGraph(
         }
         composable(
             route = Screen.Profile.route,
-
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
             ProfileScreen(
                 modifier = modifier,
                 viewModel = settingsViewModel,
@@ -103,7 +98,6 @@ fun AdminNavGraph(
         }
         composable(
             route = Screen.Orders.route,
-
         ) {
             OrdersScreen(
                 modifier = modifier,
@@ -117,9 +111,7 @@ fun AdminNavGraph(
                 title = R.string.orders,
             )
         }
-        composable<Screen.OrderDetails>(
-
-        ){
+        composable<Screen.OrderDetails>{
             val args = it.toRoute<Screen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
@@ -136,7 +128,6 @@ fun AdminNavGraph(
         }
         composable(
             route = Screen.Reservations.route,
-
         ) {
             ReservationScreenRoot(
                 modifier = modifier,
@@ -149,9 +140,7 @@ fun AdminNavGraph(
                 title = R.string.reservations
             )
         }
-        composable<Screen.ReservationDetails>(
-
-        ){
+        composable<Screen.ReservationDetails>{
             val args = it.toRoute<Screen.ReservationDetails>()
             ReservationDetailsScreenRoot(
                 modifier = modifier,

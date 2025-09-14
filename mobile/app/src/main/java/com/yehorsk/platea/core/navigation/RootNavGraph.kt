@@ -95,9 +95,9 @@ object Graph{
 }
 
 @Composable
-private inline fun <reified T: ViewModel> NavBackStackEntry.sharedHiltViewModel(
+inline fun <reified T: ViewModel> NavBackStackEntry.sharedHiltViewModel(
     navController: NavController
-): T {
+): T{
     val navGraphRoute = destination.parent?.route ?: return hiltViewModel<T>()
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)

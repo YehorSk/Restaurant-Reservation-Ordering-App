@@ -19,7 +19,7 @@ import com.yehorsk.platea.core.presentation.settings.ProfileDestination
 import com.yehorsk.platea.core.presentation.settings.ProfileScreen
 import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
-import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
+import com.yehorsk.platea.menu.presentation.menu.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenRoot
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.menu.presentation.menu.SearchScreen
@@ -42,10 +42,6 @@ fun ClientNavGraph(
     modifier: Modifier,
     onLoggedOut: () -> Unit
 ){
-    val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
-    val createReservationViewModel: CreateReservationViewModel = hiltViewModel()
-    val cartViewModel: CartScreenViewModel = hiltViewModel()
-    val settingsViewModel: SettingsViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -55,6 +51,7 @@ fun ClientNavGraph(
         composable(
             route = Screen.Home.route
         ) {
+            val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
             MenuScreenRoot(
                 modifier = modifier,
                 onSearchClicked = {
@@ -70,6 +67,8 @@ fun ClientNavGraph(
         composable(
             route = Screen.Account.route
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 viewModel = settingsViewModel,
@@ -90,6 +89,8 @@ fun ClientNavGraph(
         composable(
             route = Screen.Profile.route
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             ProfileScreen(
                 modifier = modifier,
                 viewModel = settingsViewModel,
@@ -120,6 +121,8 @@ fun ClientNavGraph(
                 typeOf<OrderForm>() to OrderFormNavType.OrderFormType
             )
         ) {
+            val createReservationViewModel = it.sharedHiltViewModel<CreateReservationViewModel>(navController)
+
             val args = it.toRoute<Screen.CreateReservation>()
             CreateReservationScreenRoot(
                 modifier = modifier,
@@ -137,6 +140,8 @@ fun ClientNavGraph(
         composable(
             route = Screen.ConfirmReservation.route
         ) {
+            val createReservationViewModel = it.sharedHiltViewModel<CreateReservationViewModel>(navController)
+
             ConfirmReservationScreenRoot(
                 modifier = modifier,
                 viewModel = createReservationViewModel,
@@ -231,6 +236,8 @@ fun ClientNavGraph(
         composable(
             route = Screen.Info.route
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             RestaurantInfoScreenRoot(
                 modifier = modifier,
                 viewModel = settingsViewModel,
@@ -240,24 +247,24 @@ fun ClientNavGraph(
         composable(
             route = Screen.Favorites.route
         ) {
+            val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
+
             FavoritesScreen(
                 modifier = modifier,
                 viewModel = menuScreenViewModel,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(
-            route = Screen.Cart.route
-            ) {
+        composable(Screen.Cart.route) {
+            val cartViewModel: CartScreenViewModel = hiltViewModel()
+
             CartScreenRoot(
                 modifier = modifier,
                 viewModel = cartViewModel,
                 onGoToCheckoutClick = { navController.navigate(Screen.CreateOrder.route) }
             )
         }
-        composable(
-            route = Screen.Reservations.route
-        ) {
+        composable(Screen.Reservations.route) {
             ReservationScreenRoot(
                 modifier = modifier,
                 onGoToReservationDetails = {id ->
@@ -269,6 +276,8 @@ fun ClientNavGraph(
         composable(
             route = Screen.Search.route
         ) {
+            val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
+
             SearchScreen(
                 modifier = modifier,
                 onGoBack = {

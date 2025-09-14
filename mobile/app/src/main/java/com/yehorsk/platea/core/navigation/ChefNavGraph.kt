@@ -17,7 +17,7 @@ import com.yehorsk.platea.core.presentation.settings.ProfileDestination
 import com.yehorsk.platea.core.presentation.settings.ProfileScreen
 import com.yehorsk.platea.core.presentation.settings.RestaurantInfoScreenRoot
 import com.yehorsk.platea.core.presentation.settings.SettingsViewModel
-import com.yehorsk.platea.menu.presentation.favorites.FavoritesScreen
+import com.yehorsk.platea.menu.presentation.menu.FavoritesScreen
 import com.yehorsk.platea.menu.presentation.menu.MenuScreenViewModel
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsAction
 import com.yehorsk.platea.orders.presentation.order_details.OrderDetailsScreenRoot
@@ -31,8 +31,6 @@ fun ChefNavGraph(
     navController: NavHostController,
     onLoggedOut: () -> Unit
 ){
-    val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
-    val settingsViewModel: SettingsViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -43,6 +41,8 @@ fun ChefNavGraph(
             route = Screen.Account.route,
 
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
                 viewModel = settingsViewModel,
@@ -64,6 +64,8 @@ fun ChefNavGraph(
             route = Screen.Info.route,
 
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             RestaurantInfoScreenRoot(
                 modifier = modifier,
                 viewModel = settingsViewModel,
@@ -92,6 +94,8 @@ fun ChefNavGraph(
             route = Screen.Profile.route,
 
         ) {
+            val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
+
             ProfileScreen(
                 modifier = modifier,
                 viewModel = settingsViewModel,
@@ -123,6 +127,8 @@ fun ChefNavGraph(
             route = Screen.Favorites.route,
 
         ) {
+            val menuScreenViewModel: MenuScreenViewModel = hiltViewModel()
+
             FavoritesScreen(
                 modifier = modifier,
                 viewModel = menuScreenViewModel,

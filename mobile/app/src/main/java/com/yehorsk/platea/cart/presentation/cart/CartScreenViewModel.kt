@@ -7,22 +7,16 @@ import com.yehorsk.platea.cart.domain.repository.CartRepository
 import com.yehorsk.platea.core.domain.remote.onError
 import com.yehorsk.platea.core.domain.remote.onSuccess
 import com.yehorsk.platea.core.utils.ConnectivityObserver
-import com.yehorsk.platea.core.utils.SideEffect
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
 import com.yehorsk.platea.core.utils.snackbar.SnackbarEvent
 import com.yehorsk.platea.menu.domain.models.MenuItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,26 +28,9 @@ class CartScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CartScreenUiState())
     val uiState = _uiState.asStateFlow()
 
-    val isNetwork = MutableStateFlow<Boolean>(networkConnectivityObserver.isAvailable)
-
-    val cartItemUiState: StateFlow<List<CartItem>> = cartRepository.getAllItemsFlow()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Companion.WhileSubscribed(5000),
-            initialValue = listOf()
-        )
-
-    private val _sideEffectChannel = Channel<SideEffect>(capacity = Channel.Factory.BUFFERED)
-    val sideEffectFlow: Flow<SideEffect>
-        get() = _sideEffectChannel.receiveAsFlow()
-
     init {
-        viewModelScope.launch {
-            networkConnectivityObserver.observe().collect { status ->
-                isNetwork.value = status
-            }
-        }
-        Timber.Forest.d("Cart items get init")
+        observeCartItems()
+        observeNetwork()
         getItems()
     }
 
@@ -81,7 +58,28 @@ class CartScreenViewModel @Inject constructor(
         }
     }
 
-    fun showBottomSheet(){
+    private fun observeNetwork(){
+        networkConnectivityObserver.observe()
+            .onEach { network ->
+                _uiState.update { it.copy(
+                    isNetwork = network
+                ) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+
+    private fun observeCartItems(){
+        cartRepository.getAllItemsFlow()
+            .onEach { items ->
+                _uiState.update { it.copy(
+                    items = items
+                ) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    private fun showBottomSheet(){
         _uiState.update {
             it.copy(showBottomSheet = true)
         }
