@@ -17,7 +17,7 @@ import com.yehorsk.platea.menu.domain.models.Menu
 fun MenuHeader(
     menu: Menu,
     modifier: Modifier = Modifier,
-    onMenuClick: () -> Unit
+    onMenuClick: () -> Unit,
 ){
     Column(
         modifier = Modifier

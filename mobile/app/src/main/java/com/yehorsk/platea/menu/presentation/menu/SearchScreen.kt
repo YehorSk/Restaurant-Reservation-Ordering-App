@@ -71,7 +71,7 @@ fun SearchScreen(
                     menuItem = item,
                     onClick = { menuItem ->
                         viewModel.setMenu(menuItem)
-                        viewModel.updatePrice(menuItem.price.toDouble())
+                        viewModel.updatePrice(menuItem.price)
                         viewModel.setMenuItemId(menuItem.id)
                         viewModel.showBottomSheet()
                         onGoBack()

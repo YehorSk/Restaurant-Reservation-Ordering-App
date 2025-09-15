@@ -68,7 +68,6 @@ class CartScreenViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-
     private fun observeCartItems(){
         cartRepository.getAllItemsFlow()
             .onEach { items ->

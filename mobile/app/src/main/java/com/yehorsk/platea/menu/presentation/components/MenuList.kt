@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import com.yehorsk.platea.menu.domain.models.Menu
 import com.yehorsk.platea.menu.domain.models.MenuItem
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MenuList(
     modifier: Modifier = Modifier,
     items: List<Menu>,
     onClick: (MenuItem) -> Unit,
+    onMenuClick: (Menu) -> Unit,
     listState: LazyListState = rememberLazyListState(),
 ){
     Column{
@@ -30,7 +30,7 @@ fun MenuList(
                 if(menu.availability){
                     MenuHeader(
                         menu = menu,
-                        onMenuClick = {  }
+                        onMenuClick = { onMenuClick(menu) }
                     )
                     var i = 0;
                     Column {

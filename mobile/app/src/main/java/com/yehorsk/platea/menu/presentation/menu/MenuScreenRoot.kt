@@ -41,8 +41,6 @@ fun MenuScreenRoot(
 ){
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val menuUiState by viewModel.menuUiState.collectAsStateWithLifecycle()
-    val isConnected by viewModel.isNetwork.collectAsStateWithLifecycle()
 
     if(uiState.isLoading){
         LoadingPart()
@@ -50,8 +48,8 @@ fun MenuScreenRoot(
         MenuScreen(
             modifier = modifier,
             uiState = uiState,
-            menuUiState = menuUiState,
-            isConnected = isConnected,
+            menuUiState = uiState.menuItems,
+            isConnected = uiState.isNetwork,
             onSearchClicked = { onSearchClicked() },
             onCreateReservationClicked = { onCreateReservationClicked() },
             onAction = viewModel::onAction,
@@ -103,6 +101,9 @@ fun MenuScreen(
                     items = menuUiState,
                     onClick = {
                             menuItem -> onAction(MenuAction.OnMenuItemClick(menuItem))
+                    },
+                    onMenuClick = {
+                        menu -> onAction(MenuAction.ShowMenuDetails(menu))
                     },
                     listState = lazyListState
                 )

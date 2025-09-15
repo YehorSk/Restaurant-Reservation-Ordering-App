@@ -26,8 +26,6 @@ fun FavoritesScreen(
     showGoBack: Boolean = false
 ){
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val favoriteUiState by viewModel.favoriteUiState.collectAsStateWithLifecycle()
-
 
     Column(
         modifier = modifier
@@ -45,7 +43,7 @@ fun FavoritesScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             items(
-                items = favoriteUiState,
+                items = uiState.favoriteItems,
                 key = { it.id }
             ){ item ->
                 MenuItem(
