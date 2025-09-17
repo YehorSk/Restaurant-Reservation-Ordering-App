@@ -8,24 +8,22 @@ import com.yehorsk.platea.auth.presentation.forgot.ForgotPasswordScreen
 import com.yehorsk.platea.auth.presentation.login.LoginScreen
 import com.yehorsk.platea.auth.presentation.login.LoginViewModel
 import com.yehorsk.platea.auth.presentation.register.RegisterScreen
-import timber.log.Timber
 
 fun NavGraphBuilder.authNavGraph(
     navController: NavController,
     loginViewModel: LoginViewModel
 ){
-    navigation(
-        route = Graph.AUTHENTICATION,
-        startDestination = Screen.Login.route
+    navigation<Graph.Authentication>(
+        startDestination = Screen.Login
     ){
-        composable(Screen.SignUp.route){
+        composable<Screen.SignUp>{
             RegisterScreen(
                 onLogClick = {
-                    navController.navigate(Screen.Login.route)
+                    navController.navigate(Screen.Login)
                 },
                 onSuccess = {
-                    navController.navigate(Graph.HOME) {
-                        popUpTo(Screen.SignUp.route) {
+                    navController.navigate(Graph.Client) {
+                        popUpTo(Screen.SignUp) {
                             inclusive = true
                         }
                     }
@@ -33,53 +31,20 @@ fun NavGraphBuilder.authNavGraph(
             )
         }
 
-        composable(Screen.Login.route) {
+        composable<Screen.Login> {
             LoginScreen(
                 loginViewModel = loginViewModel,
                 onRegClick = {
-                    navController.navigate(Screen.SignUp.route)
+                    navController.navigate(Screen.SignUp)
                 },
                 onForgotPwdClick = {
-                    navController.navigate(Screen.ForgotPwd.route)
-                },
-                onSuccessClient = {
-                    Timber.d("Navigating to client screen")
-                    navController.navigate(Graph.HOME) {
-                        popUpTo(Graph.ROOT) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onSuccessWaiter = {
-                    Timber.d("Navigating to waiter screen")
-                    navController.navigate(Graph.WAITER) {
-                        popUpTo(Graph.ROOT) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onSuccessAdmin = {
-                    Timber.d("Navigating to admin screen")
-                    navController.navigate(Graph.ADMIN) {
-                        popUpTo(Graph.ROOT) {
-                            inclusive = true
-                        }
-                    }
-                },
-                onSuccessChef = {
-                    Timber.d("Navigating to chef screen")
-                    navController.navigate(Graph.CHEF) {
-                        popUpTo(Graph.ROOT) {
-                            inclusive = true
-                        }
-                    }
+                    navController.navigate(Screen.ForgotPwd)
                 },
             )
         }
 
-        composable(Screen.ForgotPwd.route){
-            ForgotPasswordScreen(
-            )
+        composable<Screen.ForgotPwd>{
+            ForgotPasswordScreen()
         }
     }
 }

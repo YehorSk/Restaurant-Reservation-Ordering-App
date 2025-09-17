@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.yehorsk.platea.cart.presentation.cart.CartScreenRoot
 import com.yehorsk.platea.cart.presentation.cart.CartScreenViewModel
@@ -27,38 +29,29 @@ import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationScreenRoot
 
-@Composable
-fun WaiterNavGraph(
+fun NavGraphBuilder.waiterNavGraph(
     modifier:Modifier = Modifier,
     navController: NavHostController,
     onLoggedOut: () -> Unit
 ){
 
-    NavHost(
-        navController = navController,
-        route = Graph.WAITER,
-        startDestination = Screen.Home.route
+    navigation<Graph.Waiter>(
+        startDestination = Screen.Home
     ){
-        composable(
-            route = Screen.Home.route,
-
-        ) {
+        composable<Screen.Home> {
             val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
 
             MenuScreenRoot(
                 modifier = modifier,
                 onSearchClicked = {
-                    navController.navigate(Screen.Search.route)
+                    navController.navigate(Screen.Search)
                 },
                 onCreateReservationClicked = {},
                 viewModel = menuScreenViewModel,
                 isUser = false
             )
         }
-        composable(
-            route = Screen.Account.route,
-
-        ) {
+        composable<Screen.Account> {
             val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
 
             MainSettingsScreen(
@@ -66,22 +59,19 @@ fun WaiterNavGraph(
                 viewModel = settingsViewModel,
                 onNavigate = { destination ->
                     when(destination){
-                        ProfileDestination.Favorites -> navController.navigate(Screen.Favorites.route)
+                        ProfileDestination.Favorites -> navController.navigate(Screen.Favorites)
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Profile -> navController.navigate(Screen.Profile.route)
-                        ProfileDestination.Orders -> navController.navigate(Screen.Orders.route)
-                        ProfileDestination.Reservations -> navController.navigate(Screen.Reservations.route)
-                        ProfileDestination.Language -> navController.navigate(Screen.Language.route)
-                        ProfileDestination.Theme -> navController.navigate(Screen.Theme.route)
-                        ProfileDestination.Info -> navController.navigate(Screen.Info.route)
+                        ProfileDestination.Profile -> navController.navigate(Screen.Profile)
+                        ProfileDestination.Orders -> navController.navigate(Screen.Orders)
+                        ProfileDestination.Reservations -> navController.navigate(Screen.Reservations)
+                        ProfileDestination.Language -> navController.navigate(Screen.Language)
+                        ProfileDestination.Theme -> navController.navigate(Screen.Theme)
+                        ProfileDestination.Info -> navController.navigate(Screen.Info)
                     }
                 }
             )
         }
-        composable(
-            route = Screen.Info.route,
-
-        ) {
+        composable<Screen.Info>{
             val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
 
             RestaurantInfoScreenRoot(
@@ -90,28 +80,19 @@ fun WaiterNavGraph(
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(
-            route = Screen.Theme.route,
-
-        ) {
+        composable<Screen.Theme>{
             ChangeThemeScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(
-            route = Screen.Language.route,
-
-        ) {
+        composable<Screen.Language>{
             ChangeLanguageScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(
-            route = Screen.Profile.route,
-
-        ) {
+        composable<Screen.Profile>{
             val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
 
             ProfileScreen(
@@ -125,10 +106,7 @@ fun WaiterNavGraph(
                 }
             )
         }
-        composable(
-            route = Screen.Orders.route,
-
-        ) {
+        composable<Screen.Orders>{
             OrdersScreen(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
@@ -140,17 +118,14 @@ fun WaiterNavGraph(
                 showGoBack = true
             )
         }
-        composable(
-            route = Screen.Search.route,
-
-        ) {
+        composable<Screen.Search>{
             val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
 
             SearchScreen(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(Screen.Home.route){
-                        popUpTo(Screen.Home.route){
+                    navController.navigate(Screen.Home){
+                        popUpTo(Screen.Home){
                             inclusive = true
                         }
                     }
@@ -158,24 +133,18 @@ fun WaiterNavGraph(
                 viewModel = menuScreenViewModel
             )
         }
-        composable(
-            route = Screen.Cart.route,
-
-        ) {
+        composable<Screen.Cart>{
             val cartScreenViewModel: CartScreenViewModel = hiltViewModel()
 
             CartScreenRoot(
                 modifier = modifier,
                 viewModel = cartScreenViewModel,
                 onGoToCheckoutClick = {
-                    navController.navigate(Screen.CreateOrder.route)
+                    navController.navigate(Screen.CreateOrder)
                 }
             )
         }
-        composable(
-            route = Screen.Favorites.route,
-
-        ) {
+        composable<Screen.Favorites>{
             val menuScreenViewModel = it.sharedHiltViewModel<MenuScreenViewModel>(navController)
 
             FavoritesScreen(
@@ -185,22 +154,19 @@ fun WaiterNavGraph(
                 showGoBack = false
             )
         }
-        composable(
-            route = Screen.CreateOrder.route,
-
-        ) {
+        composable<Screen.CreateOrder>{
             CreateOrderScreenRoot(
                 modifier = modifier,
                 onGoToCart = {
-                    navController.navigate(Screen.Cart.route){
-                        popUpTo(Screen.Cart.route){
+                    navController.navigate(Screen.Cart){
+                        popUpTo(Screen.Cart){
                             inclusive = true
                         }
                     }
                 },
                 onGoToMenu = {
-                    navController.navigate(Screen.Home.route){
-                        popUpTo(Screen.Home.route){
+                    navController.navigate(Screen.Home){
+                        popUpTo(Screen.Home){
                             inclusive = true
                         }
                     }
@@ -208,15 +174,13 @@ fun WaiterNavGraph(
                 onGoToMakeReservation = {},
             )
         }
-        composable<Screen.OrderDetails>(
-
-        ){
+        composable<Screen.OrderDetails>{
             val args = it.toRoute<Screen.OrderDetails>()
             OrderDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(Screen.Orders.route){
-                        popUpTo(Screen.Orders.route){
+                    navController.navigate(Screen.Orders){
+                        popUpTo(Screen.Orders){
                             inclusive = true
                         }
                     }
@@ -225,10 +189,7 @@ fun WaiterNavGraph(
                 onOpenItemDetails = {}
             )
         }
-        composable(
-            route = Screen.Reservations.route,
-
-        ) {
+        composable<Screen.Reservations>{
             ReservationScreenRoot(
                 modifier = modifier,
                 onGoToReservationDetails = {id ->
@@ -239,15 +200,13 @@ fun WaiterNavGraph(
                 showGoBack = true
             )
         }
-        composable<Screen.ReservationDetails>(
-
-        ){
+        composable<Screen.ReservationDetails>{
             val args = it.toRoute<Screen.ReservationDetails>()
             ReservationDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(Screen.Reservations.route){
-                        popUpTo(Screen.Reservations.route){
+                    navController.navigate(Screen.Reservations){
+                        popUpTo(Screen.Reservations){
                             inclusive = true
                         }
                     }

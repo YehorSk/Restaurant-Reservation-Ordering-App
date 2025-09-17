@@ -1,6 +1,6 @@
 package com.yehorsk.platea.core.data.repository
 
-import com.yehorsk.platea.auth.data.remote.model.UserDto
+import com.yehorsk.platea.auth.data.remote.models.UserDto
 import com.yehorsk.platea.core.data.db.MainRoomDatabase
 import com.yehorsk.platea.core.data.remote.service.ProfileService
 import com.yehorsk.platea.core.data.remote.service.safeCall

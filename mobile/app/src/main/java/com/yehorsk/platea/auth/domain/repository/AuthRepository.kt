@@ -2,7 +2,7 @@ package com.yehorsk.platea.auth.domain.repository
 
 import android.app.Activity
 import androidx.credentials.GetCredentialResponse
-import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
+import com.yehorsk.platea.auth.data.remote.models.AuthDataDto
 import com.yehorsk.platea.auth.presentation.forgot.ForgotFormState
 import com.yehorsk.platea.auth.presentation.login.LoginForm
 import com.yehorsk.platea.auth.presentation.register.RegisterForm

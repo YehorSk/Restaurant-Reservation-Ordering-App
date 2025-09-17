@@ -56,10 +56,6 @@ import timber.log.Timber
 fun LoginScreen(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel,
-    onSuccessClient: () -> Unit,
-    onSuccessWaiter: () -> Unit,
-    onSuccessAdmin: () -> Unit,
-    onSuccessChef: () -> Unit,
     onRegClick: () -> Unit,
     onForgotPwdClick: () -> Unit,
 ) {
@@ -110,21 +106,6 @@ fun LoginScreen(
             LaunchedEffect(key1 = true, key2 = isConnected, key3 = uiState.isAuthenticating) {
                 if(isConnected && !uiState.isAuthenticating && !uiState.isGoogleAuth){
                     loginViewModel.loginWithSavedCredentials(context as ComponentActivity)
-                }
-            }
-
-            val role = loginViewModel.userRole.collectAsStateWithLifecycle().value
-
-            LaunchedEffect(uiState.isLoggedIn) {
-                Timber.tag("LaunchedEffect").v("UI State Is Logged In: ${uiState.isLoggedIn} $role")
-                if(uiState.isLoggedIn){
-                    when(role.toString()){
-                        "user" -> onSuccessClient()
-                        "waiter" -> onSuccessWaiter()
-                        "admin" -> onSuccessAdmin()
-                        "chef" -> onSuccessChef()
-                        else -> {}
-                    }
                 }
             }
 

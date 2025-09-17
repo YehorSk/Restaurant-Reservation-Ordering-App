@@ -1,4 +1,4 @@
-package com.yehorsk.platea.auth.data.remote.model
+package com.yehorsk.platea.auth.data.remote.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

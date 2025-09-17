@@ -62,7 +62,8 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(
                 isLoading = true,
-                isAuthenticating = true
+                isAuthenticating = true,
+                isLoggedIn = false
             )
             }
             preferencesRepository.jwtTokenFlow.collect { token ->
@@ -84,7 +85,8 @@ class LoginViewModel @Inject constructor(
     fun loginWithSavedCredentials(activity: Activity) {
         Timber.d("Auth loginWithSavedCredentials")
         _uiState.update { it.copy(
-            isGoogleAuth = true
+            isGoogleAuth = true,
+            isLoggedIn = false
         ) }
         viewModelScope.launch {
             authRepository.loginWithSavedCredentials(activity)
@@ -136,7 +138,11 @@ class LoginViewModel @Inject constructor(
 
     fun login(activity: Activity) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update { it.copy(
+                isLoading = true,
+                isLoggedIn = false
+                )
+            }
             val result = authRepository.login(loginForm = uiState.value.loginForm, activity = activity)
             result.onSuccess { data, message ->
                 _uiState.update { it.copy(isLoading = false, isLoggedIn = true) }

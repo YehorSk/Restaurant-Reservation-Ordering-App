@@ -45,6 +45,7 @@ class CartRepositoryImpl @Inject constructor(
                 cartService.getUserCartItems()
             }
         ).onSuccess{ data, _ ->
+            Timber.d("refreshData $data")
             syncCartItemsWithServer(data)
         }
     }

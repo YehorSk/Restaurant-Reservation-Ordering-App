@@ -3,46 +3,41 @@ package com.yehorsk.platea.core.navigation
 import com.yehorsk.platea.orders.presentation.create_order.OrderForm
 import kotlinx.serialization.Serializable
 
-@Serializable
-sealed class Screen(val route: String) {
-    // 🔹 Auth
-    @Serializable data object Login : Screen("LOGIN")
-    @Serializable data object SignUp : Screen("SIGN_UP")
-    @Serializable data object ForgotPwd : Screen("FORGOT_PWD")
+sealed interface Screen {
+    @Serializable data object Login : Screen
+    @Serializable data object SignUp : Screen
+    @Serializable data object ForgotPwd : Screen
 
-    // 🔹 Common / Main
-    @Serializable data object Home : Screen("HOME")
-    @Serializable data object Cart : Screen("CART")
-    @Serializable data object Orders : Screen("ORDERS")
-    @Serializable data object CreateOrder : Screen("CREATE_ORDER")
+    @Serializable data object Home : Screen
+    @Serializable data object Cart : Screen
+    @Serializable data object Orders : Screen
+    @Serializable data object CreateOrder : Screen
 
     @Serializable
     data class CreateReservation(
         val withOrder: Boolean,
         val orderForm: OrderForm = OrderForm()
-    ) : Screen("MAKE_RESERVATION")
+    ) : Screen
 
-    @Serializable data object ConfirmReservation : Screen("CONFIRM_RESERVATION")
-
-    @Serializable
-    data class OrderDetails(val id: Int) : Screen("ORDER_DETAILS")
-
-    @Serializable data object Reservations : Screen("RESERVATIONS")
+    @Serializable data object ConfirmReservation : Screen
 
     @Serializable
-    data class ReservationDetails(val id: Int) : Screen("RESERVATION_DETAILS")
+    data class OrderDetails(val id: Int) : Screen
 
-    // 🔹 Shared screens
-    @Serializable data object Account : Screen("ACCOUNT")
-    @Serializable data object Profile : Screen("PROFILE")
-    @Serializable data object Favorites : Screen("FAVORITES")
-    @Serializable data object Search : Screen("SEARCH")
-    @Serializable data object Theme : Screen("THEME")
-    @Serializable data object Language : Screen("LANGUAGE")
-    @Serializable data object Info : Screen("INFO")
+    @Serializable data object Reservations : Screen
 
-    // 🔹 Extra
     @Serializable
-    data class OrderItemDetails(val id: Int) : Screen("ORDER_ITEM_DETAILS")
+    data class ReservationDetails(val id: Int) : Screen
+
+    @Serializable data object Account : Screen
+    @Serializable data object Profile : Screen
+    @Serializable data object Favorites : Screen
+    @Serializable data object Search : Screen
+    @Serializable data object Theme : Screen
+    @Serializable data object Language : Screen
+    @Serializable data object Info : Screen
+
+    @Serializable
+    data class OrderItemDetails(val id: Int) :Screen
 }
 

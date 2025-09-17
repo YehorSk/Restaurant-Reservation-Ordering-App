@@ -46,6 +46,7 @@ class CreateReservationViewModel @Inject constructor(
         observeNetwork()
         observeUserCountryCode()
         observeUserPhone()
+        getRestaurantInfo()
     }
 
     fun onAction(action: CreateReservationAction){
@@ -62,12 +63,19 @@ class CreateReservationViewModel @Inject constructor(
         }
     }
 
+    private fun getRestaurantInfo(){
+        viewModelScope.launch {
+            restaurantRepository.getRestaurantInfo()
+        }
+    }
+
     private fun observeRestaurantInfo(){
         restaurantRepository.getRestaurantInfoFlow()
             .onEach { info ->
                 _uiState.update { it.copy(
                     restaurantInfo = info
                 ) }
+                Timber.d("Restaurant info: $info ")
             }
             .launchIn(viewModelScope)
     }

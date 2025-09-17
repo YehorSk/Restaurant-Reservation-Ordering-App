@@ -1,7 +1,6 @@
 package com.yehorsk.platea
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.LocaleManager
 import android.content.Context
 import android.content.pm.PackageManager
@@ -14,18 +13,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.CompositionLocal
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
@@ -37,11 +33,12 @@ import androidx.navigation.compose.rememberNavController
 import com.yehorsk.platea.auth.presentation.login.LoginViewModel
 import com.yehorsk.platea.core.navigation.Graph
 import com.yehorsk.platea.core.navigation.RootNavGraph
-import com.yehorsk.platea.core.presentation.ThemeViewModel
 import com.yehorsk.platea.ui.theme.MobileTheme
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import androidx.core.content.ContextCompat.getContextForLanguage
+import com.yehorsk.platea.core.data.remote.UserRoles
+import com.yehorsk.platea.core.presentation.MainScreenViewModel
 import com.yehorsk.platea.core.utils.snackbar.LocalSnackbarHostState
 import com.yehorsk.platea.core.utils.snackbar.ObserveAsEvents
 import com.yehorsk.platea.core.utils.snackbar.SnackbarController
@@ -52,7 +49,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private val loginViewModel: LoginViewModel by viewModels()
-    private val themeViewModel: ThemeViewModel by viewModels()
+    private val mainScreenViewModel: MainScreenViewModel by viewModels()
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(getContextForLanguage(newBase))
@@ -70,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
 
-            val themeState by themeViewModel.uiState.collectAsStateWithLifecycle()
+            val themeState by mainScreenViewModel.uiState.collectAsStateWithLifecycle()
 
             setLocale(themeState.language, this)
 
@@ -100,30 +97,37 @@ class MainActivity : AppCompatActivity() {
             MobileTheme(
                 isDarkMode = themeState.isDarkMode
             ) {
-
                 val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
                 val role by loginViewModel.userRole.collectAsStateWithLifecycle()
 
-                val startDestination = when {
-                    uiState.isLoggedIn -> when (role.toString()) {
-                        "user" -> Graph.HOME
-                        "waiter" -> Graph.WAITER
-                        "admin" -> Graph.ADMIN
-                        "chef" -> Graph.CHEF
-                        else -> Graph.AUTHENTICATION
+                LaunchedEffect(uiState.isLoggedIn) {
+                    if(uiState.isLoggedIn){
+                        mainScreenViewModel.refreshData()
                     }
+                }
 
-                    else -> Graph.AUTHENTICATION
+                val (startDestination, userRoles) = when {
+                    uiState.isLoggedIn -> when (role.toString()) {
+                        "user" -> Pair(Graph.Client, UserRoles.USER)
+                        "waiter" -> Pair(Graph.Waiter, UserRoles.WAITER)
+                        "admin" -> Pair(Graph.Admin, UserRoles.ADMIN)
+                        "chef" -> Pair(Graph.Chef, UserRoles.CHEF)
+                        else -> Pair(Graph.Authentication, UserRoles.AUTH)
+                    }
+                    else -> Pair(Graph.Authentication, UserRoles.AUTH)
                 }
                 CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                     ) {
                         if (!uiState.isAuthenticating) {
+                            val navController = rememberNavController()
                             RootNavGraph(
-                                navController = rememberNavController(),
+                                navController = navController,
                                 loginViewModel = loginViewModel,
-                                startDestination = startDestination
+                                startDestination = startDestination,
+                                userRoles = userRoles,
+                                mainScreenViewModel = mainScreenViewModel
                             )
                         }
                     }

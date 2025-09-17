@@ -12,7 +12,7 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import com.google.firebase.Firebase
 import com.google.firebase.messaging.messaging
-import com.yehorsk.platea.auth.data.remote.model.AuthDataDto
+import com.yehorsk.platea.auth.data.remote.models.AuthDataDto
 import com.yehorsk.platea.auth.data.remote.service.AuthService
 import com.yehorsk.platea.auth.domain.repository.AuthRepository
 import com.yehorsk.platea.auth.presentation.forgot.ForgotFormState

@@ -1,97 +1,120 @@
 package com.yehorsk.platea.core.navigation
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.yehorsk.platea.auth.presentation.login.LoginViewModel
 import com.yehorsk.platea.core.data.remote.UserRoles
-import com.yehorsk.platea.core.presentation.MainScreenGraph
+import com.yehorsk.platea.core.presentation.MainScreenViewModel
+import com.yehorsk.platea.core.presentation.components.BottomBar
+import com.yehorsk.platea.core.utils.snackbar.LocalSnackbarHostState
+import kotlinx.serialization.Serializable
 
 @Composable
 fun RootNavGraph(
     navController: NavHostController,
     loginViewModel: LoginViewModel,
-    startDestination: String
+    mainScreenViewModel: MainScreenViewModel,
+    startDestination: Graph,
+    userRoles: UserRoles,
 ) {
-    NavHost(
-        navController = navController,
-        route = Graph.ROOT,
-        startDestination = startDestination
-    ) {
 
-        authNavGraph(
+    val uiState by mainScreenViewModel.cartItemCount.collectAsStateWithLifecycle()
+
+    val snackbarHostState = LocalSnackbarHostState.current
+
+    Scaffold(
+        bottomBar = {
+            BottomBar(
+                navController = navController,
+                userRoles = userRoles,
+                cartItems = uiState
+            )
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState
+            )
+        }
+    ) { contentPadding ->
+        NavHost(
             navController = navController,
-            loginViewModel = loginViewModel
-        )
+            startDestination = startDestination,
+        ) {
+            authNavGraph(
+                navController = navController,
+                loginViewModel = loginViewModel
+            )
 
-        composable(route = Graph.HOME) {
-            MainScreenGraph(
+            clientNavGraph(
+                modifier = Modifier.padding(contentPadding),
+                navController = navController,
                 onLoggedOut = {
-                    navController.navigate(Graph.AUTHENTICATION) {
-                        popUpTo(Graph.ROOT) {
+                    navController.navigate(Graph.Authentication) {
+                        popUpTo(Graph.Root) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+
+            waiterNavGraph(
+                modifier = Modifier.padding(contentPadding),
+                navController = navController,
+                onLoggedOut = {
+                    navController.navigate(Graph.Authentication) {
+                        popUpTo(Graph.Root) {
                             inclusive = true
                         }
                     }
                 },
-                userRoles = UserRoles.USER
             )
-        }
 
-        composable(route = Graph.WAITER) {
-            MainScreenGraph(
+            adminNavGraph(
+                modifier = Modifier.padding(contentPadding),
+                navController = navController,
                 onLoggedOut = {
-                    navController.navigate(Graph.AUTHENTICATION) {
-                        popUpTo(Graph.ROOT) {
+                    navController.navigate(Graph.Authentication) {
+                        popUpTo(Graph.Root) {
                             inclusive = true
                         }
                     }
                 },
-                userRoles = UserRoles.WAITER
             )
-        }
 
-        composable(route = Graph.ADMIN) {
-            MainScreenGraph(
+            chefNavGraph(
+                modifier = Modifier.padding(contentPadding),
+                navController = navController,
                 onLoggedOut = {
-                    navController.navigate(Graph.AUTHENTICATION) {
-                        popUpTo(Graph.ROOT) {
+                    navController.navigate(Graph.Authentication) {
+                        popUpTo(Graph.Root) {
                             inclusive = true
                         }
                     }
                 },
-                userRoles = UserRoles.ADMIN
             )
         }
-
-        composable(route = Graph.CHEF) {
-            MainScreenGraph(
-                onLoggedOut = {
-                    navController.navigate(Graph.AUTHENTICATION) {
-                        popUpTo(Graph.ROOT) {
-                            inclusive = true
-                        }
-                    }
-                },
-                userRoles = UserRoles.CHEF
-            )
-        }
-
     }
 }
-
-object Graph{
-    const val ROOT = "root_graph"
-    const val AUTHENTICATION = "auth_graph"
-    const val HOME = "home_graph"
-    const val WAITER = "waiter_graph"
-    const val ADMIN = "admin_graph"
-    const val CHEF = "chef_graph"
+@Serializable
+sealed class Graph{
+    @Serializable data object Root: Graph()
+    @Serializable data object Authentication: Graph()
+    @Serializable data object Client: Graph()
+    @Serializable data object Waiter: Graph()
+    @Serializable data object Admin: Graph()
+    @Serializable data object Chef: Graph()
 }
 
 @Composable

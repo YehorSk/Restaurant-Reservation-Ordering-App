@@ -5,4 +5,5 @@ sealed interface UserRoles{
     object ADMIN: UserRoles
     object WAITER: UserRoles
     object CHEF: UserRoles
+    object AUTH: UserRoles
 }

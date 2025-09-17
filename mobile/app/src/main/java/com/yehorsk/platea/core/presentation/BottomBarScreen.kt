@@ -16,9 +16,10 @@ import androidx.compose.material.icons.outlined.Receipt
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.yehorsk.platea.R
+import com.yehorsk.platea.core.navigation.Screen
 
 sealed class BottomBarScreen(
-    val route: String,
+    val screen: Screen,
     @StringRes val title: Int,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
@@ -26,14 +27,14 @@ sealed class BottomBarScreen(
     val badgeCount: Int = 0
 ) {
     object Home : BottomBarScreen(
-        route = "HOME",
+        screen = Screen.Home,
         title = R.string.home_item,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home
     )
 
     object Cart : BottomBarScreen(
-        route = "CART",
+        screen = Screen.Cart,
         title = R.string.cart_item,
         selectedIcon = Icons.Filled.ShoppingCart,
         unselectedIcon = Icons.Outlined.ShoppingCart,
@@ -41,32 +42,30 @@ sealed class BottomBarScreen(
     )
 
     object Orders : BottomBarScreen(
-        route = "ORDERS",
+        screen = Screen.Orders,
         title = R.string.orders_item,
         selectedIcon = Icons.Filled.Receipt,
         unselectedIcon = Icons.Outlined.Receipt
     )
 
     object Account : BottomBarScreen(
-        route = "ACCOUNT",
+        screen = Screen.Account,
         title = R.string.account_item,
         selectedIcon = Icons.Filled.AccountCircle,
         unselectedIcon = Icons.Outlined.AccountCircle
     )
 
     object Reservations : BottomBarScreen(
-        route = "RESERVATIONS",
+        screen = Screen.Reservations,
         title = R.string.reservations_item,
         selectedIcon = Icons.Filled.CalendarMonth,
         unselectedIcon = Icons.Outlined.CalendarMonth
     )
 
     object Favorites : BottomBarScreen(
-        route = "FAVORITES",
+        screen = Screen.Favorites,
         title = R.string.favorites_item,
         selectedIcon = Icons.Filled.Favorite,
         unselectedIcon = Icons.Outlined.FavoriteBorder
     )
-
-
 }

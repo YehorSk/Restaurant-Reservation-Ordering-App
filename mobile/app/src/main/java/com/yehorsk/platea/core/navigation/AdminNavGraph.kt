@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.yehorsk.platea.R
 import com.yehorsk.platea.core.presentation.settings.ChangeLanguageScreen
@@ -21,22 +23,16 @@ import com.yehorsk.platea.orders.presentation.orders.OrdersScreen
 import com.yehorsk.platea.reservations.presentation.reservation_details.ReservationDetailsScreenRoot
 import com.yehorsk.platea.reservations.presentation.reservations.ReservationScreenRoot
 
-@Composable
-fun AdminNavGraph(
+fun NavGraphBuilder.adminNavGraph(
     modifier:Modifier = Modifier,
     navController: NavHostController,
     onLoggedOut: () -> Unit
 ){
 
-    NavHost(
-        navController = navController,
-        route = Graph.ADMIN,
-        startDestination = Screen.Orders.route
+    navigation<Graph.Admin>(
+        startDestination = Screen.Orders
     ){
-        composable(
-            route = Screen.Account.route,
-
-        ) {
+        composable<Screen.Account>{
             val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
             MainSettingsScreen(
                 modifier = modifier.fillMaxSize(),
@@ -45,19 +41,17 @@ fun AdminNavGraph(
                     when(destination){
                         ProfileDestination.Favorites -> {}
                         ProfileDestination.Logout -> onLoggedOut()
-                        ProfileDestination.Profile -> navController.navigate(Screen.Profile.route)
-                        ProfileDestination.Orders -> navController.navigate(Screen.Orders.route)
-                        ProfileDestination.Reservations -> navController.navigate(Screen.Reservations.route)
-                        ProfileDestination.Language -> navController.navigate(Screen.Language.route)
-                        ProfileDestination.Theme -> navController.navigate(Screen.Theme.route)
-                        ProfileDestination.Info -> navController.navigate(Screen.Info.route)
+                        ProfileDestination.Profile -> navController.navigate(Screen.Profile)
+                        ProfileDestination.Orders -> navController.navigate(Screen.Orders)
+                        ProfileDestination.Reservations -> navController.navigate(Screen.Reservations)
+                        ProfileDestination.Language -> navController.navigate(Screen.Language)
+                        ProfileDestination.Theme -> navController.navigate(Screen.Theme)
+                        ProfileDestination.Info -> navController.navigate(Screen.Info)
                     }
                 }
             )
         }
-        composable(
-            route = Screen.Info.route,
-        ) {
+        composable<Screen.Info>{
             val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
             RestaurantInfoScreenRoot(
                 modifier = modifier,
@@ -65,25 +59,19 @@ fun AdminNavGraph(
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(
-            route = Screen.Theme.route,
-        ) {
+        composable<Screen.Theme>{
             ChangeThemeScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(
-            route = Screen.Language.route,
-        ) {
+        composable<Screen.Language>{
             ChangeLanguageScreen(
                 modifier = modifier,
                 onGoBack = { navController.popBackStack() }
             )
         }
-        composable(
-            route = Screen.Profile.route,
-        ) {
+        composable<Screen.Profile>{
             val settingsViewModel = it.sharedHiltViewModel<SettingsViewModel>(navController)
             ProfileScreen(
                 modifier = modifier,
@@ -96,9 +84,7 @@ fun AdminNavGraph(
                 }
             )
         }
-        composable(
-            route = Screen.Orders.route,
-        ) {
+        composable<Screen.Orders>{
             OrdersScreen(
                 modifier = modifier,
                 onGoToOrderDetails = { id ->
@@ -116,8 +102,8 @@ fun AdminNavGraph(
             OrderDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(Screen.Orders.route){
-                        popUpTo(Screen.Orders.route){
+                    navController.navigate(Screen.Orders){
+                        popUpTo(Screen.Orders){
                             inclusive = true
                         }
                     }
@@ -126,9 +112,7 @@ fun AdminNavGraph(
                 onOpenItemDetails = {}
             )
         }
-        composable(
-            route = Screen.Reservations.route,
-        ) {
+        composable<Screen.Reservations>{
             ReservationScreenRoot(
                 modifier = modifier,
                 onGoToReservationDetails = {id ->
@@ -145,8 +129,8 @@ fun AdminNavGraph(
             ReservationDetailsScreenRoot(
                 modifier = modifier,
                 onGoBack = {
-                    navController.navigate(Screen.Reservations.route){
-                        popUpTo(Screen.Reservations.route){
+                    navController.navigate(Screen.Reservations){
+                        popUpTo(Screen.Reservations){
                             inclusive = true
                         }
                     }

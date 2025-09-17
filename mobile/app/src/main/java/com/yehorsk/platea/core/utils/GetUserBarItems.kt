@@ -35,5 +35,8 @@ fun getUserBarItems(userRole: UserRoles): List<BottomBarScreen>{
                 BottomBarScreen.Account
             )
         }
+        UserRoles.AUTH -> {
+            listOf()
+        }
     }
 }
