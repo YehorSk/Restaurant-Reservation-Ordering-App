@@ -3,33 +3,36 @@ accompanistPermissions = "0.37.3"
 agp = "8.13.0"
 appcompat = "1.7.1"
 coilCompose = "3.3.0"
+compose = "2.9.0"
 coreSplashscreen = "1.0.1"
 datastorePreferences = "1.1.7"
-hiltAndroidCompiler = "2.57.1"
-hiltCompiler = "1.2.0"
-komposecountrycodepicker = "1.4.4"
-kotlin = "2.2.10"
+firebaseBom = "34.4.0"
+hiltAndroidCompiler = "2.57.2"
+hiltCompiler = "1.3.0"
+komposecountrycodepicker = "1.4.7"
+kotlin = "2.2.20"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 kotlinxMetadataJvm = "0.9.0"
 kotlinxSerializationJson = "1.9.0"
-lifecycleRuntimeKtx = "2.9.2"
-activityCompose = "1.10.1"
-composeBom = "2025.08.00"
-navigationCompose = "2.8.6" # Тут ошибка
-okhttp = "5.1.0"
+libphonenumber = "9.0.16"
+lifecycleRuntimeKtx = "2.9.4"
+activityCompose = "1.11.0"
+composeBom = "2025.10.00"
+navigationCompose = "2.9.5"
+okhttp = "5.2.1"
 retrofit = "3.0.0"
 retrofit2KotlinxSerializationConverter = "1.0.0"
-roomCompiler = "2.7.2"
-roomKtx = "2.7.2"
-roomRuntime = "2.7.2"
+roomCompiler = "2.8.2"
+roomKtx = "2.8.2"
+roomRuntime = "2.8.2"
 secretsGradlePlugin = "2.0.1"
 tabsyncCompose = "1.0.1"
 timber = "5.0.1"
-uiTextGoogleFonts = "1.9.0"
-googleServices = "4.4.3"
+uiTextGoogleFonts = "1.9.3"
+googleServices = "4.4.4"
 firebaseCrashlytics = "3.0.6"
 firebasePerf = "2.0.1"
 ksp = "2.1.21-2.0.1"
@@ -47,6 +50,13 @@ androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-com
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+compose = { module = "com.kizitonwose.calendar:compose", version.ref = "compose" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ndk" }
+firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
+firebase-perf = { module = "com.google.firebase:firebase-perf" }
+libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumber" }
 material3-adaptive-navigation-suite = { module = "androidx.compose.material3:material3-adaptive-navigation-suite" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
@@ -75,7 +85,7 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.3.2" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.4.0" }
 komposecountrycodepicker = { module = "io.github.joelkanyi:komposecountrycodepicker", version.ref = "komposecountrycodepicker" }
 kotlinx-metadata-jvm = { module = "org.jetbrains.kotlinx:kotlinx-metadata-jvm", version.ref = "kotlinxMetadataJvm" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -97,3 +107,4 @@ firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "fireb
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroidCompiler" }
 devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 secrets-gradle = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

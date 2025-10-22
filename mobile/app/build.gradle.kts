@@ -5,13 +5,12 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.10"
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.firebase.firebase-perf")
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.perf)
 }
 
 val localProps = Properties()
@@ -85,18 +84,18 @@ dependencies {
 
     implementation(libs.androidx.appcompat)
 
-    implementation("com.googlecode.libphonenumber:libphonenumber:8.13.26")
+    implementation(libs.libphonenumber)
 
     // Firebase
 
-    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation(platform(libs.firebase.bom))
 
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
     
-    implementation("com.google.firebase:firebase-messaging")
+    implementation(libs.firebase.messaging)
 
-    implementation("com.google.firebase:firebase-perf")
+    implementation(libs.firebase.perf)
 
     implementation(libs.komposecountrycodepicker)
 
@@ -110,7 +109,7 @@ dependencies {
     implementation(libs.tabsync.compose)
 
     // The compose calendar library for Android
-    implementation("com.kizitonwose.calendar:compose:2.6.1")
+    implementation(libs.compose)
 
     implementation(libs.kotlinx.metadata.jvm)
 
@@ -146,7 +145,7 @@ dependencies {
     //Timber
     implementation(libs.timber)
 
-    //SplashScren
+    //SplashScreen
     implementation(libs.androidx.core.splashscreen)
 
     //Coil
